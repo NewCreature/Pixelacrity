@@ -164,7 +164,7 @@ void quixel_process_ui(QUIXEL_UI * uip)
 	}
 	if(t3f_mouse_button[0])
 	{
-		draw_pixel(uip, uip->hover_x, uip->hover_y + 1, al_map_rgba_f(1.0, 0.0, 0.0, 1.0));
+		draw_pixel(uip, uip->hover_x, uip->hover_y, al_map_rgba_f(1.0, 0.0, 0.0, 1.0));
 	}
 	quixel_expand_canvas(uip->canvas, uip->view_x, uip->view_y);
 }
