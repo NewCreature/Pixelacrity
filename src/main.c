@@ -1,5 +1,6 @@
 #include "t3f/t3f.h"
 #include "instance.h"
+#include "canvas_file.h"
 
 /* main logic routine */
 void app_logic(void * data)
@@ -33,8 +34,20 @@ bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 		printf("Unable to create UI!\n");
 		return false;
 	}
+	al_set_blender(ALLEGRO_ADD, ALLEGRO_ALPHA, ALLEGRO_INVERSE_ALPHA);
 
 	return true;
+}
+
+void app_exit(APP_INSTANCE * app)
+{
+	char buf[1024];
+
+	t3f_get_filename(t3f_data_path, "last.qcanvas", buf, 1024);
+	if(!quixel_save_canvas(app->ui->canvas, buf, ".png"))
+	{
+		printf("failed to save\n");
+	}
 }
 
 int main(int argc, char * argv[])
@@ -49,5 +62,7 @@ int main(int argc, char * argv[])
 	{
 		printf("Error: could not initialize T3F!\n");
 	}
+	app_exit(&app);
+
 	return 0;
 }

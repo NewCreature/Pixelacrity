@@ -1,6 +1,7 @@
 #include "t3f/t3f.h"
 #include "ui.h"
 #include "canvas.h"
+#include "canvas_file.h"
 
 static ALLEGRO_BITMAP * make_checkerboard_bitmap(ALLEGRO_COLOR c1, ALLEGRO_COLOR c2)
 {
@@ -30,6 +31,7 @@ static ALLEGRO_BITMAP * make_checkerboard_bitmap(ALLEGRO_COLOR c1, ALLEGRO_COLOR
 QUIXEL_UI * quixel_create_ui(void)
 {
 	QUIXEL_UI * uip;
+	char buf[1024];
 
 	uip = malloc(sizeof(QUIXEL_UI));
 	if(uip)
@@ -56,7 +58,13 @@ QUIXEL_UI * quixel_create_ui(void)
 		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_button_proc, 640 - 64, 160, 64, 32, 0, 0, 0, 0, "FOval", NULL, NULL);
 		t3gui_show_dialog(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, T3GUI_PLAYER_NO_ESCAPE, uip);
 
-		uip->canvas = quixel_create_canvas();
+		t3f_get_filename(t3f_data_path, "last.qcanvas", buf, 1024);
+		uip->canvas = quixel_load_canvas(buf);
+		if(!uip->canvas)
+		{
+			printf("failed to load previous work\n");
+			uip->canvas = quixel_create_canvas();
+		}
 		if(!uip->canvas)
 		{
 			goto error;

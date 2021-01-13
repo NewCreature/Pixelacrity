@@ -1,6 +1,8 @@
 #ifndef QUIXEL_CANVAS_H
 #define QUIXEL_CANVAS_H
 
+#include "t3f/t3f.h"
+
 #define QUIXEL_CANVAS_MAX_WIDTH  32
 #define QUIXEL_CANVAS_MAX_HEIGHT 32
 
