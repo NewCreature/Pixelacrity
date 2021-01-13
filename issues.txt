@@ -1,0 +1,10 @@
+Quixel 0.1 Issues
+-----------------
+
+[ ]Add ability to import image files.
+
+[ ]Add ability to export image files.
+
+   [ ]Need to implement visible area settings.
+
+[ ]Add color selection options.
