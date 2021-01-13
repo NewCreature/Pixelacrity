@@ -2,6 +2,7 @@
 #include "ui.h"
 #include "canvas.h"
 #include "canvas_file.h"
+#include "canvas_helpers.h"
 
 static ALLEGRO_BITMAP * make_checkerboard_bitmap(ALLEGRO_COLOR c1, ALLEGRO_COLOR c2)
 {
@@ -147,7 +148,29 @@ static void draw_pixel(QUIXEL_UI * uip, int x, int y, ALLEGRO_COLOR color)
 
 void quixel_process_ui(QUIXEL_UI * uip)
 {
+	ALLEGRO_BITMAP * bp;
+
 	t3gui_logic();
+	if(t3f_key[ALLEGRO_KEY_F2])
+	{
+		bp = quixel_render_canvas_to_bitmap(uip->canvas);
+		if(bp)
+		{
+			al_save_bitmap("test.png", bp);
+			al_destroy_bitmap(bp);
+		}
+		t3f_key[ALLEGRO_KEY_F2] = 0;
+	}
+	if(t3f_key[ALLEGRO_KEY_F3])
+	{
+		bp = al_load_bitmap_flags("data/drawing_tool_0.pcx", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
+		if(bp)
+		{
+			quixel_import_bitmap_to_canvas(uip->canvas, bp, uip->current_layer, uip->view_x, uip->view_y);
+			al_destroy_bitmap(bp);
+		}
+		t3f_key[ALLEGRO_KEY_F3] = 0;
+	}
 	uip->hover_x = uip->view_x + t3f_mouse_x / uip->view_zoom;
 	uip->hover_y = uip->view_y + t3f_mouse_y / uip->view_zoom;
 	if(t3f_key[ALLEGRO_KEY_LEFT])
