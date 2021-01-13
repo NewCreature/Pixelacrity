@@ -47,6 +47,10 @@ static QUIXEL_CANVAS * quixel_load_canvas_f(ALLEGRO_FILE * fp, int bitmap_max)
 					{
 						goto fail;
 					}
+					else
+					{
+						cp->bitmap_size = al_get_bitmap_width(cp->layer[i]->bitmap[j][k]);
+					}
 				}
 			}
 		}
@@ -65,7 +69,8 @@ static QUIXEL_CANVAS * quixel_load_canvas_f(ALLEGRO_FILE * fp, int bitmap_max)
 QUIXEL_CANVAS * quixel_load_canvas(const char * fn, int bitmap_max)
 {
 	ALLEGRO_FILE * fp;
-	QUIXEL_CANVAS * cp;
+	QUIXEL_CANVAS * cp = NULL;
+	ALLEGRO_PATH * pp;
 
 	fp = al_fopen(fn, "rb");
 	if(!fp)
@@ -75,6 +80,22 @@ QUIXEL_CANVAS * quixel_load_canvas(const char * fn, int bitmap_max)
 	cp = quixel_load_canvas_f(fp, bitmap_max);
 	al_fclose(fp);
 
+	pp = al_create_path(fn);
+	if(pp)
+	{
+		al_set_path_extension(pp, ".ini");
+		cp->config = al_load_config_file(al_path_cstr(pp, '/'));
+		if(!cp->config)
+		{
+			cp->config = al_create_config();
+			if(!cp->config)
+			{
+				goto fail;
+			}
+		}
+		al_destroy_path(pp);
+	}
+
 	return cp;
 
 	fail:
@@ -83,6 +104,7 @@ QUIXEL_CANVAS * quixel_load_canvas(const char * fn, int bitmap_max)
 		{
 			al_fclose(fp);
 		}
+		quixel_destroy_canvas(cp);
 		return NULL;
 	}
 }
@@ -154,6 +176,7 @@ bool quixel_save_canvas(QUIXEL_CANVAS * cp, const char * fn, const char * format
 {
 	ALLEGRO_FILE * fp;
 	bool ret;
+	ALLEGRO_PATH * pp;
 
 	fp = al_fopen(fn, "wb");
 	if(!fp)
@@ -162,6 +185,15 @@ bool quixel_save_canvas(QUIXEL_CANVAS * cp, const char * fn, const char * format
 	}
 	ret = quixel_save_canvas_f(cp, fp, format);
 	al_fclose(fp);
+
+	pp = al_create_path(fn);
+	if(pp)
+	{
+		al_set_path_extension(pp, ".ini");
+		al_save_config_file(al_path_cstr(pp, '/'), cp->config);
+		al_destroy_path(pp);
+	}
+
 	return ret;
 
 	fail:

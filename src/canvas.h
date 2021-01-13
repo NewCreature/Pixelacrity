@@ -21,6 +21,8 @@ typedef struct
 	QUIXEL_CANVAS_LAYER ** layer;
 	int layer_max;
 
+	ALLEGRO_CONFIG * config;
+
 } QUIXEL_CANVAS;
 
 QUIXEL_CANVAS * quixel_create_canvas(int bitmap_max);

@@ -43,6 +43,14 @@ void app_exit(APP_INSTANCE * app)
 {
 	char buf[1024];
 
+	sprintf(buf, "%d", app->ui->current_layer);
+	al_set_config_value(app->ui->canvas->config, "state", "current_layer", buf);
+	sprintf(buf, "%d", app->ui->view_x);
+	al_set_config_value(app->ui->canvas->config, "state", "view_x", buf);
+	sprintf(buf, "%d", app->ui->view_y);
+	al_set_config_value(app->ui->canvas->config, "state", "view_y", buf);
+	sprintf(buf, "%d", app->ui->view_zoom);
+	al_set_config_value(app->ui->canvas->config, "state", "view_zoom", buf);
 	t3f_get_filename(t3f_data_path, "last.qcanvas", buf, 1024);
 	if(!quixel_save_canvas(app->ui->canvas, buf, ".png"))
 	{

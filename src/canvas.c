@@ -26,6 +26,11 @@ QUIXEL_CANVAS * quixel_create_canvas(int bitmap_max)
 		{
 			cp->bitmap_size = bitmap_max;
 		}
+		cp->config = al_create_config();
+		if(!cp->config)
+		{
+			goto fail;
+		}
 		if(!quixel_add_canvas_layer(cp))
 		{
 			goto fail;
@@ -46,6 +51,10 @@ void quixel_destroy_canvas(QUIXEL_CANVAS * cp)
 
 	if(cp)
 	{
+		if(cp->config)
+		{
+			al_destroy_config(cp->config);
+		}
 		if(cp->layer)
 		{
 			for(i = 0; i < cp->layer_max; i++)

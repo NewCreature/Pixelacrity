@@ -28,6 +28,18 @@ static ALLEGRO_BITMAP * make_checkerboard_bitmap(ALLEGRO_COLOR c1, ALLEGRO_COLOR
 	return bp;
 }
 
+static int get_config_val(ALLEGRO_CONFIG * cp, const char * section, const char * key, int default_val)
+{
+	const char * val;
+
+	val = al_get_config_value(cp, section, key);
+	if(val)
+	{
+		return atoi(val);
+	}
+	return default_val;
+}
+
 QUIXEL_UI * quixel_create_ui(void)
 {
 	QUIXEL_UI * uip;
@@ -69,9 +81,10 @@ QUIXEL_UI * quixel_create_ui(void)
 		{
 			goto error;
 		}
-		uip->view_x = uip->canvas->bitmap_size * 8 + 1024;
-		uip->view_y = uip->canvas->bitmap_size * 8 + 1024;
-		uip->view_zoom = 8;
+		uip->current_layer = get_config_val(uip->canvas->config, "state", "current_layer", 0);
+		uip->view_x = get_config_val(uip->canvas->config, "state", "view_x", uip->canvas->bitmap_size * 8 + 1024);
+		uip->view_y = get_config_val(uip->canvas->config, "state", "view_y", uip->canvas->bitmap_size * 8 + 1024);
+		uip->view_zoom = get_config_val(uip->canvas->config, "state", "view_zoom", 8);
 
 		uip->bg_scale = 24;
 	}
