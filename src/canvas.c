@@ -31,10 +31,6 @@ QUIXEL_CANVAS * quixel_create_canvas(int bitmap_max)
 		{
 			goto fail;
 		}
-		if(!quixel_add_canvas_layer(cp))
-		{
-			goto fail;
-		}
 	}
 	return cp;
 
