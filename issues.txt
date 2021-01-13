@@ -3,7 +3,13 @@ Quixel 0.1 Issues
 
 [ ]Add ability to import image files.
 
+   [ ]Add UI for importing images (menu, file dialog, etc.).
+
 [ ]Add ability to export image files.
+
+   [ ]Add a way to specify the area we want to export.
+
+      [ ]We should default to exporting the whole image if no area is specified.
 
    [ ]Need to implement visible area settings.
 
