@@ -2,7 +2,7 @@
 
 static const char canvas_header[4] = {'Q', 'X', 'L', 1};
 
-static QUIXEL_CANVAS * quixel_load_canvas_f(ALLEGRO_FILE * fp)
+static QUIXEL_CANVAS * quixel_load_canvas_f(ALLEGRO_FILE * fp, int bitmap_max)
 {
 	QUIXEL_CANVAS * cp = NULL;
 	ALLEGRO_STATE old_state;
@@ -21,7 +21,7 @@ static QUIXEL_CANVAS * quixel_load_canvas_f(ALLEGRO_FILE * fp)
 		goto fail;
 	}
 	al_fread(fp, format, 16);
-	cp = quixel_create_canvas();
+	cp = quixel_create_canvas(bitmap_max);
 	if(!cp)
 	{
 		goto fail;
@@ -62,7 +62,7 @@ static QUIXEL_CANVAS * quixel_load_canvas_f(ALLEGRO_FILE * fp)
 	}
 }
 
-QUIXEL_CANVAS * quixel_load_canvas(const char * fn)
+QUIXEL_CANVAS * quixel_load_canvas(const char * fn, int bitmap_max)
 {
 	ALLEGRO_FILE * fp;
 	QUIXEL_CANVAS * cp;
@@ -72,7 +72,7 @@ QUIXEL_CANVAS * quixel_load_canvas(const char * fn)
 	{
 		goto fail;
 	}
-	cp = quixel_load_canvas_f(fp);
+	cp = quixel_load_canvas_f(fp, bitmap_max);
 	al_fclose(fp);
 
 	return cp;

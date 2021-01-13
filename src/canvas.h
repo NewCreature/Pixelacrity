@@ -23,7 +23,7 @@ typedef struct
 
 } QUIXEL_CANVAS;
 
-QUIXEL_CANVAS * quixel_create_canvas(void);
+QUIXEL_CANVAS * quixel_create_canvas(int bitmap_max);
 void quixel_destroy_canvas(QUIXEL_CANVAS * cp);
 
 bool quixel_add_canvas_layer(QUIXEL_CANVAS * cp);

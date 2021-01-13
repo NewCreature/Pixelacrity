@@ -59,11 +59,11 @@ QUIXEL_UI * quixel_create_ui(void)
 		t3gui_show_dialog(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, T3GUI_PLAYER_NO_ESCAPE, uip);
 
 		t3f_get_filename(t3f_data_path, "last.qcanvas", buf, 1024);
-		uip->canvas = quixel_load_canvas(buf);
+		uip->canvas = quixel_load_canvas(buf, 2048);
 		if(!uip->canvas)
 		{
 			printf("failed to load previous work\n");
-			uip->canvas = quixel_create_canvas();
+			uip->canvas = quixel_create_canvas(2048);
 		}
 		if(!uip->canvas)
 		{

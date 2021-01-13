@@ -13,7 +13,7 @@ static QUIXEL_CANVAS_LAYER * quixel_create_canvas_layer(void)
 	return lp;
 }
 
-QUIXEL_CANVAS * quixel_create_canvas(void)
+QUIXEL_CANVAS * quixel_create_canvas(int bitmap_max)
 {
 	QUIXEL_CANVAS * cp;
 
@@ -22,6 +22,10 @@ QUIXEL_CANVAS * quixel_create_canvas(void)
 	{
 		memset(cp, 0, sizeof(QUIXEL_CANVAS));
 		cp->bitmap_size = al_get_display_option(t3f_display, ALLEGRO_MAX_BITMAP_SIZE) / 2;
+		if(cp->bitmap_size > bitmap_max)
+		{
+			cp->bitmap_size = bitmap_max;
+		}
 		if(!quixel_add_canvas_layer(cp))
 		{
 			goto fail;
