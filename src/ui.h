@@ -29,6 +29,7 @@ typedef struct
 	int view_x, view_y;
 	int view_zoom;
 	int hover_x, hover_y;
+	int current_layer;
 
 } QUIXEL_UI;
 

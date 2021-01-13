@@ -118,7 +118,7 @@ static void draw_pixel(QUIXEL_UI * uip, int x, int y, ALLEGRO_COLOR color)
 	ALLEGRO_STATE old_state;
 
 	al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_TRANSFORM);
-	al_set_target_bitmap(uip->canvas->bitmap[y / uip->canvas->bitmap_size][x / uip->canvas->bitmap_size]);
+	al_set_target_bitmap(uip->canvas->layer[uip->current_layer]->bitmap[y / uip->canvas->bitmap_size][x / uip->canvas->bitmap_size]);
 	al_identity_transform(&identity);
 	al_draw_pixel(x % uip->canvas->bitmap_size, y % uip->canvas->bitmap_size, color);
 	al_restore_state(&old_state);
@@ -162,11 +162,43 @@ void quixel_process_ui(QUIXEL_UI * uip)
 		uip->view_y -= (uip->view_y + t3f_mouse_y / uip->view_zoom) - uip->hover_y;
 		t3f_key[ALLEGRO_KEY_EQUALS] = 0;
 	}
+	if(t3f_key[ALLEGRO_KEY_PGUP])
+	{
+		uip->current_layer++;
+		t3f_key[ALLEGRO_KEY_PGUP] = 0;
+	}
+	if(t3f_key[ALLEGRO_KEY_PGDN])
+	{
+		if(uip->current_layer > 0)
+		{
+			uip->current_layer--;
+		}
+		t3f_key[ALLEGRO_KEY_PGDN] = 0;
+	}
+	if(t3f_key[ALLEGRO_KEY_DELETE])
+	{
+		if(!quixel_remove_canvas_layer(uip->canvas, uip->current_layer))
+		{
+			printf("Failed to remove layer!\n");
+		}
+		if(uip->current_layer >= uip->canvas->layer_max)
+		{
+			uip->current_layer = uip->canvas->layer_max - 1;
+		}
+		if(uip->current_layer < 0)
+		{
+			uip->current_layer = 0;
+		}
+		t3f_key[ALLEGRO_KEY_DELETE] = 0;
+	}
+	if(!quixel_expand_canvas(uip->canvas, uip->current_layer, uip->view_x, uip->view_y))
+	{
+		printf("Tried to expand canvas but failed!\n");
+	}
 	if(t3f_mouse_button[0])
 	{
-		draw_pixel(uip, uip->hover_x, uip->hover_y, al_map_rgba_f(1.0, 0.0, 0.0, 1.0));
+		draw_pixel(uip, uip->hover_x, uip->hover_y, al_map_rgba_f(uip->current_layer == 0 ? 1.0 : 0.0, uip->current_layer == 1 ? 1.0 : 0.0, uip->current_layer == 2 ? 1.0 : 0.0, 1.0));
 	}
-	quixel_expand_canvas(uip->canvas, uip->view_x, uip->view_y);
 }
 
 void quixel_render_ui(QUIXEL_UI * uip)

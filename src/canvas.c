@@ -1,6 +1,18 @@
 #include "t3f/t3f.h"
 #include "canvas.h"
 
+static QUIXEL_CANVAS_LAYER * quixel_create_canvas_layer(void)
+{
+	QUIXEL_CANVAS_LAYER * lp;
+
+	lp = malloc(sizeof(QUIXEL_CANVAS_LAYER));
+	if(lp)
+	{
+		memset(lp, 0, sizeof(QUIXEL_CANVAS_LAYER));
+	}
+	return lp;
+}
+
 QUIXEL_CANVAS * quixel_create_canvas(void)
 {
 	QUIXEL_CANVAS * cp;
@@ -10,42 +22,139 @@ QUIXEL_CANVAS * quixel_create_canvas(void)
 	{
 		memset(cp, 0, sizeof(QUIXEL_CANVAS));
 		cp->bitmap_size = al_get_display_option(t3f_display, ALLEGRO_MAX_BITMAP_SIZE) / 2;
+		if(!quixel_add_canvas_layer(cp))
+		{
+			goto fail;
+		}
 	}
 	return cp;
+
+	fail:
+	{
+		quixel_destroy_canvas(cp);
+		return NULL;
+	}
 }
 
 void quixel_destroy_canvas(QUIXEL_CANVAS * cp)
 {
-	int i, j;
+	int i, j, k;
 
-	for(i = 0; i < QUIXEL_CANVAS_MAX_HEIGHT; i++)
+	if(cp)
 	{
-		for(j = 0; j < QUIXEL_CANVAS_MAX_WIDTH; j++)
+		if(cp->layer)
 		{
-			if(cp->bitmap[i][j])
+			for(i = 0; i < cp->layer_max; i++)
 			{
-				al_destroy_bitmap(cp->bitmap[i][j]);
+				if(cp->layer[i])
+				{
+					for(j = 0; j < QUIXEL_CANVAS_MAX_HEIGHT; j++)
+					{
+						for(k = 0; k < QUIXEL_CANVAS_MAX_WIDTH; k++)
+						{
+							if(cp->layer[i]->bitmap[j][k])
+							{
+								al_destroy_bitmap(cp->layer[i]->bitmap[j][k]);
+							}
+						}
+					}
+					free(cp->layer[i]);
+				}
 			}
+			free(cp->layer);
 		}
+		free(cp);
 	}
 }
 
-void quixel_expand_canvas(QUIXEL_CANVAS * cp, int x, int y)
+bool quixel_add_canvas_layer(QUIXEL_CANVAS * cp)
+{
+	QUIXEL_CANVAS_LAYER ** old_layer;
+	int layer_size;
+	int i;
+
+	old_layer = cp->layer;
+	layer_size = sizeof(QUIXEL_CANVAS_LAYER *) * cp->layer_max + 1;
+	cp->layer = malloc(layer_size);
+	if(cp->layer)
+	{
+		memset(cp->layer, 0, layer_size);
+		for(i = 0; i < cp->layer_max; i++)
+		{
+			cp->layer[i] = old_layer[i];
+		}
+		cp->layer[cp->layer_max] = quixel_create_canvas_layer();
+		if(cp->layer[cp->layer_max])
+		{
+			cp->layer_max++;
+			free(old_layer);
+			return true;
+		}
+	}
+	cp->layer = old_layer;
+	return false;
+}
+
+bool quixel_remove_canvas_layer(QUIXEL_CANVAS * cp, int layer)
+{
+	QUIXEL_CANVAS_LAYER ** old_layer;
+	int layer_size;
+	int i;
+
+	old_layer = cp->layer;
+	layer_size = sizeof(QUIXEL_CANVAS_LAYER *) * cp->layer_max - 1;
+	cp->layer = malloc(layer_size);
+	if(cp->layer)
+	{
+		memset(cp->layer, 0, layer_size);
+		for(i = 0; i < layer; i++)
+		{
+			cp->layer[i] = old_layer[i];
+		}
+		for(i = layer; i < cp->layer_max - 1; i++)
+		{
+			cp->layer[i] = old_layer[i + 1];
+		}
+		cp->layer_max--;
+		free(old_layer);
+		return true;
+	}
+	cp->layer = old_layer;
+	return false;
+}
+
+bool quixel_expand_canvas(QUIXEL_CANVAS * cp, int layer, int x, int y)
 {
 	ALLEGRO_STATE old_state;
+	int i;
 
-	if(!cp->bitmap[y / cp->bitmap_size][x / cp->bitmap_size])
+	for(i = 0; i < layer - (cp->layer_max - 1); i++)
+	{
+		if(!quixel_add_canvas_layer(cp))
+		{
+			printf("Failed to add new layer!\n");
+			return false;
+		}
+	}
+
+	if(!cp->layer[layer]->bitmap[y / cp->bitmap_size][x / cp->bitmap_size])
 	{
 		al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS | ALLEGRO_STATE_TARGET_BITMAP);
 		al_set_new_bitmap_flags(0);
-		cp->bitmap[y / cp->bitmap_size][x / cp->bitmap_size] = al_create_bitmap(cp->bitmap_size, cp->bitmap_size);
-		if(cp->bitmap[y / cp->bitmap_size][x / cp->bitmap_size])
+		cp->layer[layer]->bitmap[y / cp->bitmap_size][x / cp->bitmap_size] = al_create_bitmap(cp->bitmap_size, cp->bitmap_size);
+		if(cp->layer[layer]->bitmap[y / cp->bitmap_size][x / cp->bitmap_size])
 		{
-			al_set_target_bitmap(cp->bitmap[y / cp->bitmap_size][x / cp->bitmap_size]);
+			al_set_target_bitmap(cp->layer[layer]->bitmap[y / cp->bitmap_size][x / cp->bitmap_size]);
 			al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
+		}
+		else
+		{
+			printf("Failed to expand canvas!\n");
+			return false;
 		}
 		al_restore_state(&old_state);
 	}
+	return true;
 }
 
 static bool bitmap_visible(QUIXEL_CANVAS * cp, int j, int i, int x, int y, int width, int height, int scale)
@@ -71,17 +180,20 @@ static bool bitmap_visible(QUIXEL_CANVAS * cp, int j, int i, int x, int y, int w
 void quixel_render_canvas(QUIXEL_CANVAS * cp, int x, int y, int width, int height, int scale)
 {
 //	int cx, cy, cw, ch;
-	int i, j;
+	int i, j, k;
 
 //	al_get_clipping_rectangle(&cx, &cy, &cw, &ch);
 //	al_set_clipping_rectangle(x, y, width, height);
-	for(i = 0; i < QUIXEL_CANVAS_MAX_HEIGHT; i++)
+	for(i = 0; i < cp->layer_max; i++)
 	{
-		for(j = 0; j < QUIXEL_CANVAS_MAX_WIDTH; j++)
+		for(j = 0; j < QUIXEL_CANVAS_MAX_HEIGHT; j++)
 		{
-			if(cp->bitmap[i][j] && bitmap_visible(cp, j, i, x, y, width, height, scale))
+			for(k = 0; k < QUIXEL_CANVAS_MAX_WIDTH; k++)
 			{
-				t3f_draw_scaled_bitmap(cp->bitmap[i][j], t3f_color_white, (j * cp->bitmap_size - x) * scale, (i * cp->bitmap_size - y) * scale, 0, cp->bitmap_size * scale, cp->bitmap_size * scale, 0);
+				if(cp->layer[i]->bitmap[j][k] && bitmap_visible(cp, k, j, x, y, width, height, scale))
+				{
+					t3f_draw_scaled_bitmap(cp->layer[i]->bitmap[j][k], t3f_color_white, (k * cp->bitmap_size - x) * scale, (j * cp->bitmap_size - y) * scale, 0, cp->bitmap_size * scale, cp->bitmap_size * scale, 0);
+				}
 			}
 		}
 	}
