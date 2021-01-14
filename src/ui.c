@@ -153,7 +153,7 @@ void quixel_process_ui(QUIXEL_UI * uip)
 	t3gui_logic();
 	if(t3f_key[ALLEGRO_KEY_F2])
 	{
-		bp = quixel_render_canvas_to_bitmap(uip->canvas);
+		bp = quixel_render_canvas_to_bitmap(uip->canvas, 0, uip->canvas->layer_max);
 		if(bp)
 		{
 			al_save_bitmap("test.png", bp);

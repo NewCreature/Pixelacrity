@@ -84,33 +84,41 @@ static void get_canvas_dimensions(QUIXEL_CANVAS * cp, int * offset_x, int * offs
 	*height = (bottom_y - top_y);
 }
 
-static void draw_canvas(QUIXEL_CANVAS * cp, ALLEGRO_BITMAP * bp, int offset_x, int offset_y, int width, int height)
+static void draw_canvas_layer(QUIXEL_CANVAS * cp, int layer, ALLEGRO_BITMAP * bp, int offset_x, int offset_y, int width, int height)
 {
-	ALLEGRO_TRANSFORM identity;
-	int i, j, k, x, y;
+	int j, k;
+	int x, y;
 
-	al_identity_transform(&identity);
-	al_set_target_bitmap(bp);
-	al_use_transform(&identity);
-	al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
-	for(i = 0; i < cp->layer_max; i++)
+	for(j = 0; j < QUIXEL_CANVAS_MAX_HEIGHT; j++)
 	{
-		for(j = 0; j < QUIXEL_CANVAS_MAX_HEIGHT; j++)
+		for(k = 0; k < QUIXEL_CANVAS_MAX_WIDTH; k++)
 		{
-			for(k = 0; k < QUIXEL_CANVAS_MAX_WIDTH; k++)
+			if(cp->layer[layer]->bitmap[j][k])
 			{
-				if(cp->layer[i]->bitmap[j][k])
-				{
-					x = k * cp->bitmap_size - offset_x;
-					y = j * cp->bitmap_size - offset_y;
-					al_draw_bitmap(cp->layer[i]->bitmap[j][k], x, y, 0);
-				}
+				x = k * cp->bitmap_size - offset_x;
+				y = j * cp->bitmap_size - offset_y;
+				al_draw_bitmap(cp->layer[layer]->bitmap[j][k], x, y, 0);
 			}
 		}
 	}
 }
 
-ALLEGRO_BITMAP * quixel_render_canvas_to_bitmap(QUIXEL_CANVAS * cp)
+static void draw_canvas_layers(QUIXEL_CANVAS * cp, int start_layer, int end_layer, ALLEGRO_BITMAP * bp, int offset_x, int offset_y, int width, int height)
+{
+	ALLEGRO_TRANSFORM identity;
+	int i;
+
+	al_identity_transform(&identity);
+	al_set_target_bitmap(bp);
+	al_use_transform(&identity);
+	al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
+	for(i = start_layer; i < end_layer; i++)
+	{
+		draw_canvas_layer(cp, i, bp, offset_x, offset_y, width, height);
+	}
+}
+
+ALLEGRO_BITMAP * quixel_render_canvas_to_bitmap(QUIXEL_CANVAS * cp, int start_layer, int end_layer)
 {
 	ALLEGRO_BITMAP * bp;
 	ALLEGRO_STATE old_state;
@@ -124,7 +132,7 @@ ALLEGRO_BITMAP * quixel_render_canvas_to_bitmap(QUIXEL_CANVAS * cp)
 	{
 		goto fail;
 	}
-	draw_canvas(cp, bp, ox, oy, w, h);
+	draw_canvas_layers(cp, start_layer, end_layer, bp, ox, oy, w, h);
 	al_restore_state(&old_state);
 	return bp;
 
