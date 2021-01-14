@@ -114,7 +114,10 @@ static void draw_canvas_layers(QUIXEL_CANVAS * cp, int start_layer, int end_laye
 	al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
 	for(i = start_layer; i < end_layer; i++)
 	{
-		draw_canvas_layer(cp, i, bp, offset_x, offset_y, width, height);
+		if(!(cp->layer[i]->flags & QUIXEL_CANVAS_FLAG_HIDDEN))
+		{
+			draw_canvas_layer(cp, i, bp, offset_x, offset_y, width, height);
+		}
 	}
 }
 

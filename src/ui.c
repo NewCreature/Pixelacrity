@@ -206,6 +206,11 @@ void quixel_process_ui(QUIXEL_UI * uip)
 		uip->view_y -= (uip->view_y + t3f_mouse_y / uip->view_zoom) - uip->hover_y;
 		t3f_key[ALLEGRO_KEY_EQUALS] = 0;
 	}
+	if(t3f_key[ALLEGRO_KEY_H])
+	{
+		uip->canvas->layer[uip->current_layer]->flags ^= QUIXEL_CANVAS_FLAG_HIDDEN;
+		t3f_key[ALLEGRO_KEY_H] = 0;
+	}
 	if(t3f_key[ALLEGRO_KEY_PGUP])
 	{
 		uip->current_layer++;

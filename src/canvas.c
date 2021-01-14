@@ -199,7 +199,7 @@ void quixel_render_canvas(QUIXEL_CANVAS * cp, int x, int y, int width, int heigh
 		{
 			for(k = 0; k < QUIXEL_CANVAS_MAX_WIDTH; k++)
 			{
-				if(cp->layer[i]->bitmap[j][k] && bitmap_visible(cp, k, j, x, y, width, height, scale))
+				if(!(cp->layer[i]->flags & QUIXEL_CANVAS_FLAG_HIDDEN) && cp->layer[i]->bitmap[j][k] && bitmap_visible(cp, k, j, x, y, width, height, scale))
 				{
 					t3f_draw_scaled_bitmap(cp->layer[i]->bitmap[j][k], t3f_color_white, (k * cp->bitmap_size - x) * scale, (j * cp->bitmap_size - y) * scale, 0, cp->bitmap_size * scale, cp->bitmap_size * scale, 0);
 				}
