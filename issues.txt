@@ -1,6 +1,9 @@
 Quixel 0.1 Issues
 -----------------
 
+[ ]Modify save routine to utilize import/export code instead of saving entire
+   tiles.
+
 [ ]Add ability to import image files.
 
    [ ]Add UI for importing images (menu, file dialog, etc.).
