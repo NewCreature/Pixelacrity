@@ -4,6 +4,20 @@ Quixel 0.1 Issues
 [ ]Modify save routine to utilize import/export code instead of saving entire
    tiles.
 
+   [ ]Update canvas_helpers module to handle different rendering scenarios. When
+      saving the canvas, we need all of the data in the canvas to be saved.
+      Exports should honor flags and other things that affect the final output.
+
+      We can probably get away with adding an ignore_flags argument to the
+      rendering functions. We can logically combine the canvas flags with the
+      ignore_flags parameter and use the result as our flags. This would allow
+      us to use the same function as our final export routine as well as saving
+      the canvas data into our internal file format.
+
+      Ultimately, we want the raw image data to make it into the saved data
+      when saving our canvas. Then we import that information back into a new
+      canvas instead of loading the canvas directly like we do now.
+
 [ ]Add ability to import image files.
 
    [ ]Add UI for importing images (menu, file dialog, etc.).
