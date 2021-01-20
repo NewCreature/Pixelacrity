@@ -83,8 +83,8 @@ QUIXEL_UI * quixel_create_ui(void)
 			goto error;
 		}
 		uip->current_layer = get_config_val(uip->canvas->config, "state", "current_layer", 0);
-		uip->view_x = get_config_val(uip->canvas->config, "state", "view_x", uip->canvas->bitmap_size * 8 + 1024);
-		uip->view_y = get_config_val(uip->canvas->config, "state", "view_y", uip->canvas->bitmap_size * 8 + 1024);
+		uip->view_x = get_config_val(uip->canvas->config, "state", "view_x", uip->canvas->bitmap_size * 8 + uip->canvas->bitmap_size / 2);
+		uip->view_y = get_config_val(uip->canvas->config, "state", "view_y", uip->canvas->bitmap_size * 8 + uip->canvas->bitmap_size / 2);
 		uip->view_zoom = get_config_val(uip->canvas->config, "state", "view_zoom", 8);
 
 		uip->bg_scale = 24;
@@ -153,7 +153,7 @@ void quixel_process_ui(QUIXEL_UI * uip)
 	t3gui_logic();
 	if(t3f_key[ALLEGRO_KEY_F2])
 	{
-		bp = quixel_render_canvas_to_bitmap(uip->canvas, 0, uip->canvas->layer_max);
+		bp = quixel_render_canvas_to_bitmap(uip->canvas, 0, uip->canvas->layer_max, 0);
 		if(bp)
 		{
 			al_save_bitmap("test.png", bp);
