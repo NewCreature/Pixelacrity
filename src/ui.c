@@ -41,6 +41,77 @@ static int get_config_val(ALLEGRO_CONFIG * cp, const char * section, const char 
 	return default_val;
 }
 
+static int menu_base_update_proc(ALLEGRO_MENU * mp, int item, void * data)
+{
+	return 0;
+}
+
+int quixel_menu_file_new(int id, void * data)
+{
+	return 0;
+}
+
+int quixel_menu_file_load(int id, void * data)
+{
+	return 0;
+}
+
+int quixel_menu_file_save(int id, void * data)
+{
+	return 0;
+}
+
+int quixel_menu_file_save_as(int id, void * data)
+{
+	return 0;
+}
+
+int quixel_menu_file_import(int id, void * data)
+{
+	return 0;
+}
+
+int quixel_menu_file_export(int id, void * data)
+{
+	return 0;
+}
+
+int quixel_menu_file_exit(int id, void * data)
+{
+	t3f_exit();
+	return 0;
+}
+
+static bool setup_menus(QUIXEL_UI * uip)
+{
+	uip->menu[QUIXEL_UI_MENU_FILE] = al_create_menu();
+	if(!uip->menu[QUIXEL_UI_MENU_FILE])
+	{
+		return false;
+	}
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FILE], "New", 0, NULL, quixel_menu_file_new, menu_base_update_proc);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FILE], "Load", 0, NULL, quixel_menu_file_load, menu_base_update_proc);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FILE], "Save", 0, NULL, quixel_menu_file_save, menu_base_update_proc);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FILE], "Save As", 0, NULL, quixel_menu_file_save_as, menu_base_update_proc);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FILE], NULL, 0, NULL, NULL, NULL);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FILE], "Import", 0, NULL, quixel_menu_file_import, menu_base_update_proc);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FILE], "Export", 0, NULL, quixel_menu_file_export, menu_base_update_proc);
+	#ifndef ALLEGRO_MACOSX
+		t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FILE], NULL, 0, NULL, NULL, NULL);
+		t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FILE], "Exit", 0, NULL, quixel_menu_file_exit, menu_base_update_proc);
+	#endif
+
+	uip->menu[QUIXEL_UI_MENU_MAIN] = al_create_menu();
+	if(!uip->menu[QUIXEL_UI_MENU_MAIN])
+	{
+		return false;
+	}
+
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_MAIN], "File", 0, uip->menu[QUIXEL_UI_MENU_FILE], NULL, NULL);
+
+	return true;
+}
+
 QUIXEL_UI * quixel_create_ui(void)
 {
 	QUIXEL_UI * uip;
@@ -50,6 +121,12 @@ QUIXEL_UI * quixel_create_ui(void)
 	if(uip)
 	{
 		memset(uip, 0, sizeof(QUIXEL_UI));
+
+		if(!setup_menus(uip))
+		{
+			return false;
+		}
+		t3f_attach_menu(uip->menu[QUIXEL_UI_MENU_MAIN]);
 
 		uip->bitmap[QUIXEL_UI_BITMAP_BG] = make_checkerboard_bitmap(t3f_color_white, al_map_rgba_f(0.9, 0.9, 0.9, 1.0));
 		if(!uip->bitmap[QUIXEL_UI_BITMAP_BG])

@@ -9,6 +9,8 @@
 #define QUIXEL_UI_BITMAP_BG    0
 
 #define QUIXEL_UI_MAX_MENUS   32
+#define QUIXEL_UI_MENU_MAIN    0
+#define QUIXEL_UI_MENU_FILE    1
 
 #define QUIXEL_UI_MAX_DIALOGS 32
 #define QUIXEL_UI_DIALOG_MAIN  0
