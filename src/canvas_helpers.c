@@ -83,10 +83,22 @@ static void get_canvas_dimensions(QUIXEL_CANVAS * cp, int * offset_x, int * offs
 			}
 		}
 	}
-	*offset_x = left_x;
-	*offset_y = top_y;
-	*width = (right_x - left_x);
-	*height = (bottom_y - top_y);
+	if(offset_x)
+	{
+		*offset_x = left_x;
+	}
+	if(offset_y)
+	{
+		*offset_y = top_y;
+	}
+	if(width)
+	{
+		*width = (right_x - left_x);
+	}
+	if(height)
+	{
+		*height = (bottom_y - top_y);
+	}
 }
 
 static void draw_canvas_layer(QUIXEL_CANVAS * cp, int layer, int flags, ALLEGRO_BITMAP * bp, int offset_x, int offset_y, int width, int height)
