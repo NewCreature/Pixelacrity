@@ -11,7 +11,7 @@ static QUIXEL_CANVAS * quixel_load_canvas_f(ALLEGRO_FILE * fp, int bitmap_max)
 	char header[4] = {0};
 	char format[16] = {0};
 	int max_width, max_height, max_layers;
-	int i, x, y;
+	int i;
 
 	al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);
 	al_set_new_bitmap_flags(0);
@@ -37,14 +37,14 @@ static QUIXEL_CANVAS * quixel_load_canvas_f(ALLEGRO_FILE * fp, int bitmap_max)
 			goto fail;
 		}
 		cp->layer[i]->flags = al_fread32le(fp);
+		cp->export_offset_x = al_fread32le(fp);
+		cp->export_offset_y = al_fread32le(fp);
 		bp = al_load_bitmap_flags_f(fp, format, ALLEGRO_NO_PREMULTIPLIED_ALPHA);
 		if(!bp)
 		{
 			goto fail;
 		}
-		x = (max_width * cp->bitmap_size) / 2 - al_get_bitmap_width(bp) / 2;
-		y = (max_height * cp->bitmap_size) / 2 - al_get_bitmap_height(bp) / 2;
-		quixel_import_bitmap_to_canvas(cp, bp, i, x, y);
+		quixel_import_bitmap_to_canvas(cp, bp, i, cp->export_offset_x, cp->export_offset_y);
 		al_destroy_bitmap(bp);
 	}
 	al_restore_state(&old_state);
@@ -144,6 +144,14 @@ static bool quixel_save_canvas_f(QUIXEL_CANVAS * cp, ALLEGRO_FILE * fp, const ch
 		}
 		bp = quixel_render_canvas_to_bitmap(cp, i, i + 1, 0);
 		if(!bp)
+		{
+			goto fail;
+		}
+		if(!al_fwrite32le(fp, cp->export_offset_x))
+		{
+			goto fail;
+		}
+		if(!al_fwrite32le(fp, cp->export_offset_y))
 		{
 			goto fail;
 		}

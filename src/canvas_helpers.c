@@ -132,17 +132,17 @@ ALLEGRO_BITMAP * quixel_render_canvas_to_bitmap(QUIXEL_CANVAS * cp, int start_la
 {
 	ALLEGRO_BITMAP * bp;
 	ALLEGRO_STATE old_state;
-	int ox, oy, w, h;
+	int w, h;
 
 	al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS | ALLEGRO_STATE_TRANSFORM | ALLEGRO_STATE_TARGET_BITMAP);
-	get_canvas_dimensions(cp, &ox, &oy, &w, &h, flags_filter);
+	get_canvas_dimensions(cp, &cp->export_offset_x, &cp->export_offset_y, &w, &h, flags_filter);
 	al_set_new_bitmap_flags(ALLEGRO_MEMORY_BITMAP);
 	bp = al_create_bitmap(w, h);
 	if(!bp)
 	{
 		goto fail;
 	}
-	draw_canvas_layers(cp, start_layer, end_layer, flags_filter, bp, ox, oy, w, h);
+	draw_canvas_layers(cp, start_layer, end_layer, flags_filter, bp, cp->export_offset_x, cp->export_offset_y, w, h);
 	al_restore_state(&old_state);
 	return bp;
 
