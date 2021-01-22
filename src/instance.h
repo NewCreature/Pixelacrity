@@ -1,7 +1,7 @@
 #ifndef QUIXEL_INSTANCE_H
 #define QUIXEL_INSTANCE_H
 
-#include "ui.h"
+#include "ui/ui.h"
 
 /* structure to hold all of our app-specific data */
 typedef struct
