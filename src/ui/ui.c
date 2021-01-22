@@ -1,5 +1,7 @@
 #include "t3f/t3f.h"
 #include "ui.h"
+#include "menu.h"
+#include "menu_proc.h"
 #include "canvas.h"
 #include "canvas_file.h"
 #include "canvas_helpers.h"
@@ -41,77 +43,6 @@ static int get_config_val(ALLEGRO_CONFIG * cp, const char * section, const char 
 	return default_val;
 }
 
-static int menu_base_update_proc(ALLEGRO_MENU * mp, int item, void * data)
-{
-	return 0;
-}
-
-int quixel_menu_file_new(int id, void * data)
-{
-	return 0;
-}
-
-int quixel_menu_file_load(int id, void * data)
-{
-	return 0;
-}
-
-int quixel_menu_file_save(int id, void * data)
-{
-	return 0;
-}
-
-int quixel_menu_file_save_as(int id, void * data)
-{
-	return 0;
-}
-
-int quixel_menu_file_import(int id, void * data)
-{
-	return 0;
-}
-
-int quixel_menu_file_export(int id, void * data)
-{
-	return 0;
-}
-
-int quixel_menu_file_exit(int id, void * data)
-{
-	t3f_exit();
-	return 0;
-}
-
-static bool setup_menus(QUIXEL_UI * uip)
-{
-	uip->menu[QUIXEL_UI_MENU_FILE] = al_create_menu();
-	if(!uip->menu[QUIXEL_UI_MENU_FILE])
-	{
-		return false;
-	}
-	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FILE], "New", 0, NULL, quixel_menu_file_new, menu_base_update_proc);
-	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FILE], "Load", 0, NULL, quixel_menu_file_load, menu_base_update_proc);
-	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FILE], "Save", 0, NULL, quixel_menu_file_save, menu_base_update_proc);
-	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FILE], "Save As", 0, NULL, quixel_menu_file_save_as, menu_base_update_proc);
-	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FILE], NULL, 0, NULL, NULL, NULL);
-	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FILE], "Import", 0, NULL, quixel_menu_file_import, menu_base_update_proc);
-	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FILE], "Export", 0, NULL, quixel_menu_file_export, menu_base_update_proc);
-	#ifndef ALLEGRO_MACOSX
-		t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FILE], NULL, 0, NULL, NULL, NULL);
-		t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FILE], "Exit", 0, NULL, quixel_menu_file_exit, menu_base_update_proc);
-	#endif
-
-	uip->menu[QUIXEL_UI_MENU_MAIN] = al_create_menu();
-	if(!uip->menu[QUIXEL_UI_MENU_MAIN])
-	{
-		return false;
-	}
-
-	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_MAIN], "File", 0, uip->menu[QUIXEL_UI_MENU_FILE], NULL, NULL);
-
-	return true;
-}
-
 QUIXEL_UI * quixel_create_ui(void)
 {
 	QUIXEL_UI * uip;
@@ -122,7 +53,7 @@ QUIXEL_UI * quixel_create_ui(void)
 	{
 		memset(uip, 0, sizeof(QUIXEL_UI));
 
-		if(!setup_menus(uip))
+		if(!quixel_setup_menus(uip))
 		{
 			return false;
 		}
@@ -153,7 +84,7 @@ QUIXEL_UI * quixel_create_ui(void)
 		if(!uip->canvas)
 		{
 			printf("failed to load previous work\n");
-			uip->canvas = quixel_create_canvas(2048);
+			quixel_menu_file_new(0, uip);
 		}
 		if(!uip->canvas)
 		{
@@ -186,13 +117,7 @@ void quixel_destroy_ui(QUIXEL_UI * uip)
 			al_destroy_bitmap(uip->bitmap[i]);
 		}
 	}
-	for(i = 0; i < QUIXEL_UI_MAX_MENUS; i++)
-	{
-		if(uip->menu[i])
-		{
-			al_destroy_menu(uip->menu[i]);
-		}
-	}
+	quixel_destroy_menus(uip);
 	for(i = 0; i < QUIXEL_UI_MAX_DIALOGS; i++)
 	{
 		if(uip->dialog[i])
