@@ -52,7 +52,7 @@ void app_exit(APP_INSTANCE * app)
 	sprintf(buf, "%d", app->ui->view_zoom);
 	al_set_config_value(app->ui->canvas->config, "state", "view_zoom", buf);
 	t3f_get_filename(t3f_data_path, "last.qcanvas", buf, 1024);
-	if(!quixel_save_canvas(app->ui->canvas, buf, ".png"))
+	if(!quixel_save_canvas(app->ui->canvas, buf, ".png", QUIXEL_CANVAS_SAVE_AUTO))
 	{
 		printf("failed to save\n");
 	}
