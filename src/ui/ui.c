@@ -84,7 +84,7 @@ QUIXEL_UI * quixel_create_ui(void)
 		if(!uip->canvas)
 		{
 			printf("failed to load previous work\n");
-			quixel_menu_file_new(0, uip);
+			quixel_menu_file_new_helper(0, uip);
 		}
 		if(!uip->canvas)
 		{

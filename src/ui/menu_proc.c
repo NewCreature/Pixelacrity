@@ -12,18 +12,25 @@ static bool close_canvas(QUIXEL_UI * uip)
 		uip->canvas = NULL;
 		return true;
 	}
-	return false;
+	return true;
+}
+
+int quixel_menu_file_new_helper(int id, void * data)
+{
+	QUIXEL_UI * uip = (QUIXEL_UI *)data;
+
+	if(close_canvas(uip))
+	{
+		uip->canvas = quixel_create_canvas(2048);
+	}
+	return 0;
 }
 
 int quixel_menu_file_new(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	if(close_canvas(app->ui))
-	{
-		app->ui->canvas = quixel_create_canvas(2048);
-	}
-	return 0;
+	return quixel_menu_file_new_helper(id, app->ui);
 }
 
 int quixel_menu_file_load(int id, void * data)
