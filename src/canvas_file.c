@@ -209,7 +209,7 @@ static bool save_canvas_full_f(QUIXEL_CANVAS * cp, ALLEGRO_FILE * fp, const char
 			{
 				if(cp->layer[i]->bitmap[j][k])
 				{
-					if(!al_fputc(fp, 1))
+					if(al_fputc(fp, 1) == EOF)
 					{
 						goto fail;
 					}
@@ -220,7 +220,7 @@ static bool save_canvas_full_f(QUIXEL_CANVAS * cp, ALLEGRO_FILE * fp, const char
 				}
 				else
 				{
-					if(!al_fputc(fp, 0))
+					if(al_fputc(fp, 0) == EOF)
 					{
 						goto fail;
 					}
