@@ -42,6 +42,7 @@ QUIXEL_CANVAS_EDITOR * quixel_create_canvas_editor(void)
 	{
 		goto fail;
 	}
+	cep->base_color = al_map_rgba_f(1.0, 0.0, 0.0, 1.0);
 	return cep;
 
 	fail:

@@ -7,6 +7,7 @@
 #include "canvas_file.h"
 #include "canvas_helpers.h"
 #include "palette.h"
+#include "gui_color_picker.h"
 
 QUIXEL_UI * quixel_create_ui(void)
 {
@@ -35,7 +36,7 @@ QUIXEL_UI * quixel_create_ui(void)
 		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_button_proc, 640 - 64, 96, 64, 32, 0, 0, 0, 0, "FRectangle", NULL, NULL);
 		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_button_proc, 640 - 64, 128, 64, 32, 0, 0, 0, 0, "Oval", NULL, NULL);
 		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_button_proc, 640 - 64, 160, 64, 32, 0, 0, 0, 0, "FOval", NULL, NULL);
-		t3gui_show_dialog(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, T3GUI_PLAYER_NO_ESCAPE, uip);
+		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, quixel_gui_color_picker_proc, 0, 0, 72, 72, 0, 0, 0, 0, NULL, NULL, NULL);
 	}
 	return uip;
 

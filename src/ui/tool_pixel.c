@@ -20,5 +20,5 @@ void quixel_tool_pixel_logic(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_CANVAS * cp)
 	{
 		printf("Tried to expand canvas but failed!\n");
 	}
-	draw_pixel(cep, cp, cep->hover_x, cep->hover_y, al_map_rgba_f(cep->current_layer == 0 ? 1.0 : 0.0, cep->current_layer == 1 ? 1.0 : 0.0, cep->current_layer == 2 ? 1.0 : 0.0, 1.0));
+	draw_pixel(cep, cp, cep->hover_x, cep->hover_y, cep->left_color);
 }

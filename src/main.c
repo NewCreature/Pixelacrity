@@ -76,6 +76,11 @@ bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 	{
 		return false;
 	}
+	app->canvas_editor->current_layer = get_config_val(app->canvas->config, "state", "current_layer", 0);
+	app->canvas_editor->view_x = get_config_val(app->canvas->config, "state", "view_x", app->canvas->bitmap_size * 8 + app->canvas->bitmap_size / 2);
+	app->canvas_editor->view_y = get_config_val(app->canvas->config, "state", "view_y", app->canvas->bitmap_size * 8 + app->canvas->bitmap_size / 2);
+	app->canvas_editor->view_zoom = get_config_val(app->canvas->config, "state", "view_zoom", 8);
+	app->canvas_editor->bg_scale = 24;
 
 	app->ui = quixel_create_ui();
 	if(!app->ui)
@@ -83,11 +88,7 @@ bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 		printf("Unable to create UI!\n");
 		return false;
 	}
-	app->canvas_editor->current_layer = get_config_val(app->canvas->config, "state", "current_layer", 0);
-	app->canvas_editor->view_x = get_config_val(app->canvas->config, "state", "view_x", app->canvas->bitmap_size * 8 + app->canvas->bitmap_size / 2);
-	app->canvas_editor->view_y = get_config_val(app->canvas->config, "state", "view_y", app->canvas->bitmap_size * 8 + app->canvas->bitmap_size / 2);
-	app->canvas_editor->view_zoom = get_config_val(app->canvas->config, "state", "view_zoom", 8);
-	app->canvas_editor->bg_scale = 24;
+	t3gui_show_dialog(app->ui->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, T3GUI_PLAYER_NO_ESCAPE, app);
 
 	al_set_blender(ALLEGRO_ADD, ALLEGRO_ALPHA, ALLEGRO_INVERSE_ALPHA);
 

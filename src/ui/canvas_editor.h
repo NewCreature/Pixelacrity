@@ -25,6 +25,9 @@ typedef struct
 	int current_layer;
 	int current_tool;
 	int tool_state;
+	ALLEGRO_COLOR base_color;
+	ALLEGRO_COLOR left_color;
+	ALLEGRO_COLOR right_color;
 
 	int signal;
 
