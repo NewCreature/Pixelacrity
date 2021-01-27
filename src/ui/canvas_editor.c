@@ -1,5 +1,6 @@
 #include "t3f/t3f.h"
 #include "canvas_editor.h"
+#include "tool_pixel.h"
 
 static ALLEGRO_BITMAP * make_checkerboard_bitmap(ALLEGRO_COLOR c1, ALLEGRO_COLOR c2)
 {
@@ -55,18 +56,6 @@ QUIXEL_CANVAS_EDITOR * quixel_create_canvas_editor(void)
 		}
 		return NULL;
 	}
-}
-
-static void draw_pixel(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_CANVAS * cp, int x, int y, ALLEGRO_COLOR color)
-{
-	ALLEGRO_TRANSFORM identity;
-	ALLEGRO_STATE old_state;
-
-	al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_TRANSFORM);
-	al_set_target_bitmap(cp->layer[cep->current_layer]->bitmap[y / cp->bitmap_size][x / cp->bitmap_size]);
-	al_identity_transform(&identity);
-	al_draw_pixel(x % cp->bitmap_size, y % cp->bitmap_size, color);
-	al_restore_state(&old_state);
 }
 
 void quixel_canvas_editor_logic(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_CANVAS * cp)
@@ -133,11 +122,14 @@ void quixel_canvas_editor_logic(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_CANVAS * cp)
 
 	if(t3f_mouse_button[0])
 	{
-		if(!quixel_expand_canvas(cp, cep->current_layer, cep->view_x, cep->view_y))
+		switch(cep->current_tool)
 		{
-			printf("Tried to expand canvas but failed!\n");
+			case QUIXEL_CANVAS_EDITOR_TOOL_PIXEL:
+			{
+				quixel_tool_pixel_logic(cep, cp);
+				break;
+			}
 		}
-		draw_pixel(cep, cp, cep->hover_x, cep->hover_y, al_map_rgba_f(cep->current_layer == 0 ? 1.0 : 0.0, cep->current_layer == 1 ? 1.0 : 0.0, cep->current_layer == 2 ? 1.0 : 0.0, 1.0));
 	}
 }
 
