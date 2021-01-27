@@ -1,6 +1,7 @@
 #include "t3f/t3f.h"
 #include "ui.h"
-#include "menu_proc.h"
+#include "menu_file_proc.h"
+#include "menu_edit_proc.h"
 
 static int menu_base_update_proc(ALLEGRO_MENU * mp, int item, void * data)
 {

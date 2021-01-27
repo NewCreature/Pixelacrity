@@ -1,13 +1,30 @@
 #include "t3f/t3f.h"
 #include "instance.h"
 #include "canvas_file.h"
+#include "ui/canvas_editor.h"
+#include "ui/menu_file_proc.h"
+#include "ui/menu_edit_proc.h"
 
 /* main logic routine */
 void app_logic(void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
+	/* handle signals */
+	if(app->canvas_editor)
+	{
+		switch(app->canvas_editor->signal)
+		{
+			case QUIXEL_CANVAS_EDITOR_SIGNAL_DELETE_LAYER:
+			{
+				app->canvas_editor->signal = QUIXEL_CANVAS_EDITOR_SIGNAL_NONE;
+				break;
+			}
+		}
+	}
+
 	quixel_process_ui(app->ui);
+	quixel_canvas_editor_logic(app->canvas_editor, app->canvas);
 }
 
 /* main rendering routine */
@@ -16,15 +33,47 @@ void app_render(void * data)
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
 	quixel_render_ui(app->ui);
+	quixel_canvas_editor_render(app->canvas_editor, app->canvas);
+}
+
+static int get_config_val(ALLEGRO_CONFIG * cp, const char * section, const char * key, int default_val)
+{
+	const char * val;
+
+	val = al_get_config_value(cp, section, key);
+	if(val)
+	{
+		return atoi(val);
+	}
+	return default_val;
 }
 
 /* initialize our app, load graphics, etc. */
 bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 {
+	char buf[1024];
+
 	/* initialize T3F */
 	if(!t3f_initialize(T3F_APP_TITLE, 640, 480, 60.0, app_logic, app_render, T3F_DEFAULT | T3F_USE_MENU, app))
 	{
 		printf("Error initializing T3F\n");
+		return false;
+	}
+
+	t3f_get_filename(t3f_data_path, "last.qcanvas", buf, 1024);
+	app->canvas = quixel_load_canvas(buf, 2048);
+	if(!app->canvas)
+	{
+		printf("failed to load previous work\n");
+		quixel_menu_file_new(0, app);
+	}
+	if(!app->canvas)
+	{
+		return false;
+	}
+	app->canvas_editor = quixel_create_canvas_editor();
+	if(!app->canvas_editor)
+	{
 		return false;
 	}
 
@@ -34,6 +83,12 @@ bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 		printf("Unable to create UI!\n");
 		return false;
 	}
+	app->canvas_editor->current_layer = get_config_val(app->canvas->config, "state", "current_layer", 0);
+	app->canvas_editor->view_x = get_config_val(app->canvas->config, "state", "view_x", app->canvas->bitmap_size * 8 + app->canvas->bitmap_size / 2);
+	app->canvas_editor->view_y = get_config_val(app->canvas->config, "state", "view_y", app->canvas->bitmap_size * 8 + app->canvas->bitmap_size / 2);
+	app->canvas_editor->view_zoom = get_config_val(app->canvas->config, "state", "view_zoom", 8);
+	app->canvas_editor->bg_scale = 24;
+
 	al_set_blender(ALLEGRO_ADD, ALLEGRO_ALPHA, ALLEGRO_INVERSE_ALPHA);
 
 	return true;
@@ -43,19 +98,20 @@ void app_exit(APP_INSTANCE * app)
 {
 	char buf[1024];
 
-	sprintf(buf, "%d", app->ui->current_layer);
-	al_set_config_value(app->ui->canvas->config, "state", "current_layer", buf);
-	sprintf(buf, "%d", app->ui->view_x);
-	al_set_config_value(app->ui->canvas->config, "state", "view_x", buf);
-	sprintf(buf, "%d", app->ui->view_y);
-	al_set_config_value(app->ui->canvas->config, "state", "view_y", buf);
-	sprintf(buf, "%d", app->ui->view_zoom);
-	al_set_config_value(app->ui->canvas->config, "state", "view_zoom", buf);
+	sprintf(buf, "%d", app->canvas_editor->current_layer);
+	al_set_config_value(app->canvas->config, "state", "current_layer", buf);
+	sprintf(buf, "%d", app->canvas_editor->view_x);
+	al_set_config_value(app->canvas->config, "state", "view_x", buf);
+	sprintf(buf, "%d", app->canvas_editor->view_y);
+	al_set_config_value(app->canvas->config, "state", "view_y", buf);
+	sprintf(buf, "%d", app->canvas_editor->view_zoom);
+	al_set_config_value(app->canvas->config, "state", "view_zoom", buf);
 	t3f_get_filename(t3f_data_path, "last.qcanvas", buf, 1024);
-	if(!quixel_save_canvas(app->ui->canvas, buf, ".png", QUIXEL_CANVAS_SAVE_AUTO))
+	if(!quixel_save_canvas(app->canvas, buf, ".png", QUIXEL_CANVAS_SAVE_AUTO))
 	{
 		printf("failed to save\n");
 	}
+	quixel_destroy_canvas(app->canvas);
 }
 
 int main(int argc, char * argv[])

@@ -6,7 +6,6 @@
 #include "canvas.h"
 
 #define QUIXEL_UI_MAX_BITMAPS 32
-#define QUIXEL_UI_BITMAP_BG    0
 
 #define QUIXEL_UI_MAX_MENUS   32
 #define QUIXEL_UI_MENU_MAIN    0
@@ -24,14 +23,6 @@ typedef struct
 	ALLEGRO_MENU * menu[QUIXEL_UI_MAX_MENUS];
 	T3GUI_DIALOG * dialog[QUIXEL_UI_MAX_DIALOGS];
 	T3GUI_THEME * theme[QUIXEL_UI_MAX_THEMES];
-	QUIXEL_CANVAS * canvas;
-
-	int bg_scale;
-
-	int view_x, view_y;
-	int view_zoom;
-	int hover_x, hover_y;
-	int current_layer;
 
 } QUIXEL_UI;
 
