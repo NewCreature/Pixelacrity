@@ -32,8 +32,8 @@ void app_render(void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	quixel_render_ui(app->ui);
 	quixel_canvas_editor_render(app->canvas_editor, app->canvas);
+	quixel_render_ui(app->ui);
 }
 
 static int get_config_val(ALLEGRO_CONFIG * cp, const char * section, const char * key, int default_val)
