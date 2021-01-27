@@ -30,4 +30,14 @@ Quixel 0.1 Issues
 
    [ ]Need to implement visible area settings.
 
-[ ]Add color selection options.
+[ ]Finish implementing color selection.
+
+   [ ]Add color palette.
+
+   [ ]Add current colors element.
+
+   [ ]Finish color picker element implementation.
+
+      [ ]Add slider for setting color alpha.
+
+      [ ]Offer 9 shades of current base color in addition to black and white.
