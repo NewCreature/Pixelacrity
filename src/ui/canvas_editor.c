@@ -71,8 +71,6 @@ static void draw_pixel(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_CANVAS * cp, int x, in
 
 void quixel_canvas_editor_logic(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_CANVAS * cp)
 {
-	cep->hover_x = cep->view_x + t3f_mouse_x / cep->view_zoom;
-	cep->hover_y = cep->view_y + t3f_mouse_y / cep->view_zoom;
 	if(t3f_key[ALLEGRO_KEY_LEFT])
 	{
 		cep->view_x--;
@@ -111,6 +109,9 @@ void quixel_canvas_editor_logic(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_CANVAS * cp)
 		cp->layer[cep->current_layer]->flags ^= QUIXEL_CANVAS_FLAG_HIDDEN;
 		t3f_key[ALLEGRO_KEY_H] = 0;
 	}
+	cep->hover_x = cep->view_x + t3f_mouse_x / cep->view_zoom;
+	cep->hover_y = cep->view_y + t3f_mouse_y / cep->view_zoom;
+
 	if(t3f_key[ALLEGRO_KEY_PGUP])
 	{
 		cep->current_layer++;
