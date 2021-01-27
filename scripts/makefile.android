@@ -8,6 +8,7 @@ T3F_PLATFORM_LIBS =\
 	-lallegro_font\
 	-lallegro_ttf\
 	-lallegro_primitives\
+	-lallegro_color\
 	-lallegro_memfile\
 	-lallegro_physfs
 #DEL_COMMAND = rm -f
