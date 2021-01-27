@@ -5,7 +5,7 @@
 #include "t3gui/t3gui.h"
 #include "canvas.h"
 
-#define QUIXEL_UI_MAX_BITMAPS 32
+#define QUIXEL_UI_MAX_BITMAPS    32
 
 #define QUIXEL_UI_MAX_MENUS   32
 #define QUIXEL_UI_MENU_MAIN    0

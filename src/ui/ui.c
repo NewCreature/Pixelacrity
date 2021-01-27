@@ -6,6 +6,7 @@
 #include "canvas.h"
 #include "canvas_file.h"
 #include "canvas_helpers.h"
+#include "palette.h"
 
 QUIXEL_UI * quixel_create_ui(void)
 {
@@ -18,14 +19,14 @@ QUIXEL_UI * quixel_create_ui(void)
 
 		if(!quixel_setup_menus(uip))
 		{
-			return false;
+			goto fail;
 		}
 		t3f_attach_menu(uip->menu[QUIXEL_UI_MENU_MAIN]);
 
 		uip->dialog[QUIXEL_UI_DIALOG_MAIN] = t3gui_create_dialog();
 		if(!uip->dialog[QUIXEL_UI_DIALOG_MAIN])
 		{
-			goto error;
+			goto fail;
 		}
 		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_box_proc, 640 - 64, 0, 64, 480, 0, 0, 0, 0, NULL, NULL, NULL);
 		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_button_proc, 640 - 64, 0, 64, 32, 0, 0, 0, 0, "Pixel", NULL, NULL);
@@ -38,7 +39,7 @@ QUIXEL_UI * quixel_create_ui(void)
 	}
 	return uip;
 
-	error:
+	fail:
 	{
 		quixel_destroy_ui(uip);
 		return NULL;
