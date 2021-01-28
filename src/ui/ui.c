@@ -36,7 +36,8 @@ QUIXEL_UI * quixel_create_ui(void)
 		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_button_proc, 640 - 64, 96, 64, 32, 0, 0, 0, 0, "FRectangle", NULL, NULL);
 		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_button_proc, 640 - 64, 128, 64, 32, 0, 0, 0, 0, "Oval", NULL, NULL);
 		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_button_proc, 640 - 64, 160, 64, 32, 0, 0, 0, 0, "FOval", NULL, NULL);
-		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, quixel_gui_color_picker_proc, 0, 0, 72, 72, 0, 0, 0, 0, NULL, NULL, NULL);
+//		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, quixel_gui_selected_colors_proc, 0, 0, )
+		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, quixel_gui_color_picker_proc, 0, 0, QUIXEL_COLOR_PICKER_SHADES * QUIXEL_COLOR_PICKER_SCALE + QUIXEL_COLOR_PICKER_SCALE, QUIXEL_COLOR_PICKER_SCALE, 0, 0, 0, 0, NULL, NULL, NULL);
 	}
 	return uip;
 
