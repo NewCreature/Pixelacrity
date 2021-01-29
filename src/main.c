@@ -82,7 +82,7 @@ bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 	app->canvas_editor->view_zoom = get_config_val(app->canvas->config, "state", "view_zoom", 8);
 	app->canvas_editor->bg_scale = 24;
 
-	app->ui = quixel_create_ui();
+	app->ui = quixel_create_ui(app->canvas_editor);
 	if(!app->ui)
 	{
 		printf("Unable to create UI!\n");

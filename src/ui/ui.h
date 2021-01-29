@@ -4,6 +4,7 @@
 #include "t3f/t3f.h"
 #include "t3gui/t3gui.h"
 #include "canvas.h"
+#include "canvas_editor.h"
 
 #define QUIXEL_UI_MAX_BITMAPS    32
 
@@ -26,7 +27,7 @@ typedef struct
 
 } QUIXEL_UI;
 
-QUIXEL_UI * quixel_create_ui(void);
+QUIXEL_UI * quixel_create_ui(QUIXEL_CANVAS_EDITOR * cep);
 void quixel_destroy_ui(QUIXEL_UI * uip);
 
 void quixel_process_ui(QUIXEL_UI * uip);
