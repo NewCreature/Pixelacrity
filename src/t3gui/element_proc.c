@@ -873,7 +873,8 @@ int t3gui_radio_proc(int msg, T3GUI_ELEMENT *d, int c)
  */
 int t3gui_slider_proc(int msg, T3GUI_ELEMENT *d, int c)
 {
-   ALLEGRO_BITMAP *slhan = NULL;
+   ALLEGRO_BITMAP * handle_bp = NULL;
+   ALLEGRO_BITMAP * groove_bp = NULL;
    NINE_PATCH_BITMAP *p9;
    int oldpos, newpos;
    int vert = true;        /* flag: is slider vertical? */
@@ -901,13 +902,31 @@ int t3gui_slider_proc(int msg, T3GUI_ELEMENT *d, int c)
    if (d->h < d->w)
       vert = false;
 
+   if(d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].bitmap[3])
+   {
+     handle_bp = d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].bitmap[3];
+   }
+   else
+   {
+     handle_bp = d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].bitmap[0];
+   }
+
+   if(d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].bitmap[2])
+   {
+     groove_bp = d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].bitmap[2];
+   }
+   else
+   {
+     groove_bp = d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].bitmap[0];
+   }
+
    /* set up the metrics for the control */
    if (vert) {
       hh = d->h * d->h / (range + d->h);
 
       if (hh > d->h) hh = d->h;
 
-      p9 = d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].bitmap[3];
+      p9 = handle_bp;
       if(hh < get_nine_patch_bitmap_min_height(p9))
       {
           hh = get_nine_patch_bitmap_min_height(p9);
@@ -917,7 +936,7 @@ int t3gui_slider_proc(int msg, T3GUI_ELEMENT *d, int c)
 
       if (hh > d->w) hh = d->w;
 
-      p9 = d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].bitmap[3];
+      p9 = handle_bp;
       if(hh < get_nine_patch_bitmap_min_width(p9))
       {
           hh = get_nine_patch_bitmap_min_width(p9);
@@ -943,7 +962,7 @@ int t3gui_slider_proc(int msg, T3GUI_ELEMENT *d, int c)
 
          if (hh > d->h) hh = d->h;
 
-         p9 = d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].bitmap[3];
+         p9 = handle_bp;
          if(hh < get_nine_patch_bitmap_min_height(p9))
          {
              hh = get_nine_patch_bitmap_min_height(p9);
@@ -954,7 +973,7 @@ int t3gui_slider_proc(int msg, T3GUI_ELEMENT *d, int c)
 
          if (hh > d->w) hh = d->w;
 
-         offset = (d->w - hh) * value / range;
+         offset = (int)(d->w - hh) * value / range;
       }
 
       if (vert) {
@@ -970,13 +989,13 @@ int t3gui_slider_proc(int msg, T3GUI_ELEMENT *d, int c)
       }
 
       /* draw body */
-      if (d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].bitmap[2])
+      if (groove_bp)
       {
-          p9 = d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].bitmap[2];
+          p9 = groove_bp;
           draw_nine_patch_bitmap(p9, d->theme->state[T3GUI_ELEMENT_STATE_EXTRA].color[T3GUI_THEME_COLOR_BG], d->x, d->y, d->w, d->h);
       }
-      if (!(d->flags & D_DISABLED) && d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].bitmap[3]) {
-         p9 = d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].bitmap[3];
+      if (!(d->flags & D_DISABLED) && handle_bp) {
+         p9 = handle_bp;
          int w = max(slw, get_nine_patch_bitmap_min_width(p9));
          int h = max(slh, get_nine_patch_bitmap_min_height(p9));
          draw_nine_patch_bitmap(p9, d->theme->state[T3GUI_ELEMENT_STATE_EXTRA].color[T3GUI_THEME_COLOR_FG], slx, sly, w, h);
