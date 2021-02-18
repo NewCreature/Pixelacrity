@@ -13,7 +13,6 @@ T3F_PLATFORM_LIBRARIES =\
   -lallegro_ttf$(ALLEGRO_SUFFIX)\
   -lallegro_font$(ALLEGRO_SUFFIX)\
   -lallegro_primitives$(ALLEGRO_SUFFIX)\
-  -lallegro_color$(ALLEGRO_SUFFIX)\
   -lallegro_memfile$(ALLEGRO_SUFFIX)\
   -lallegro_physfs$(ALLEGRO_SUFFIX)\
   -lallegro_dialog$(ALLEGRO_SUFFIX)\
