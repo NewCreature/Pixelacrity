@@ -146,6 +146,11 @@ QUIXEL_CANVAS * quixel_load_canvas(const char * fn, int bitmap_max)
 	}
 	cp = quixel_load_canvas_f(fp, bitmap_max);
 	al_fclose(fp);
+	fp = NULL;
+	if(!cp)
+	{
+		goto fail;
+	}
 
 	pp = al_create_path(fn);
 	if(pp)
