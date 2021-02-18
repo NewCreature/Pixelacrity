@@ -17,7 +17,7 @@ int quixel_gui_color_proc(int msg, T3GUI_ELEMENT * d, int c)
 		}
 		case MSG_DRAW:
 		{
-			al_draw_filled_rectangle(d->x, d->y, d->w, d->h, *(ALLEGRO_COLOR *)d->dp);
+			al_draw_filled_rectangle(d->x, d->y, d->x + d->w, d->y + d->h, *(ALLEGRO_COLOR *)d->dp);
 			break;
 		}
 	}
