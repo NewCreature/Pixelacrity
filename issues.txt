@@ -32,16 +32,16 @@ Quixel 0.1 Issues
 
 [ ]Finish implementing color selection.
 
-   [ ]Add color palette.
+   [X]Add color palette.
 
-   [ ]Add current colors element.
+   [X]Add current colors element.
 
    [ ]Finish color picker element implementation.
 
-      [ ]Investigate why t3gui_slider_proc() crashes with the default theme.
+      [X]Investigate why t3gui_slider_proc() crashes with the default theme.
 
       [ ]Add slider for setting color shade.
 
       [ ]Add slider for setting color alpha.
 
-      [ ]Offer 9 shades of current base color in addition to black and white.
+      [X]Offer 9 shades of current base color in addition to black and white.
