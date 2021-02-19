@@ -7,9 +7,32 @@
 #include "canvas_file.h"
 #include "canvas_helpers.h"
 #include "palette.h"
-#include "gui_color_picker.h"
 #include "gui_color.h"
 #include "gui_palette.h"
+
+static ALLEGRO_COLOR pick_color[QUIXEL_COLOR_PICKER_SHADES];
+
+static bool add_color_picker(QUIXEL_CANVAS_EDITOR * cep, T3GUI_DIALOG * dp, int x, int y)
+{
+	int i, pos_x = x;
+	int left_panel_width;
+
+	left_panel_width = QUIXEL_COLOR_PICKER_SHADES * QUIXEL_COLOR_PICKER_SCALE + QUIXEL_COLOR_PICKER_SCALE;
+	for(i = 0; i < QUIXEL_COLOR_PICKER_SHADES; i++)
+	{
+		t3gui_dialog_add_element(dp, NULL, quixel_gui_color_proc, pos_x, y, QUIXEL_COLOR_PICKER_SCALE, QUIXEL_COLOR_PICKER_SCALE, 0, 0, 0, 0, &cep->pick_color[i], &cep->left_color, NULL);
+		if(i <= 0 || i >= QUIXEL_COLOR_PICKER_SHADES - 1)
+		{
+			pos_x += QUIXEL_COLOR_PICKER_SCALE + QUIXEL_COLOR_PICKER_SCALE / 2;
+		}
+		else
+		{
+			pos_x += QUIXEL_COLOR_PICKER_SCALE;
+		}
+	}
+
+	return true;
+}
 
 QUIXEL_UI * quixel_create_ui(QUIXEL_CANVAS_EDITOR * cep)
 {
@@ -44,7 +67,9 @@ QUIXEL_UI * quixel_create_ui(QUIXEL_CANVAS_EDITOR * cep)
 		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_box_proc, 0, 0, left_panel_width, 480, 0, 0, 0, 0, NULL, NULL, NULL);
 		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, quixel_gui_color_proc, 0, 0, left_panel_width / 2, 32, 0, 0, 0, 0, &cep->left_color, NULL, NULL);
 		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, quixel_gui_color_proc, left_panel_width / 2, 0, left_panel_width / 2, 32, 0, 0, 0, 0, &cep->right_color, NULL, NULL);
-		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, quixel_gui_color_picker_proc, 0, 32, QUIXEL_COLOR_PICKER_SHADES * QUIXEL_COLOR_PICKER_SCALE + QUIXEL_COLOR_PICKER_SCALE, QUIXEL_COLOR_PICKER_SCALE, 0, 0, 0, 0, NULL, NULL, NULL);
+		quixel_canvas_editor_update_pick_colors(cep);
+		add_color_picker(cep, uip->dialog[QUIXEL_UI_DIALOG_MAIN], 0, 32);
+//		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, quixel_gui_color_picker_proc, 0, 32, QUIXEL_COLOR_PICKER_SHADES * QUIXEL_COLOR_PICKER_SCALE + QUIXEL_COLOR_PICKER_SCALE, QUIXEL_COLOR_PICKER_SCALE, 0, 0, 0, 0, NULL, NULL, NULL);
 		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_slider_proc, 0, 32 + QUIXEL_COLOR_PICKER_SCALE, QUIXEL_COLOR_PICKER_SHADES * QUIXEL_COLOR_PICKER_SCALE + QUIXEL_COLOR_PICKER_SCALE - QUIXEL_COLOR_PICKER_SCALE, QUIXEL_COLOR_PICKER_SCALE, 0, 0, 1000, 0, NULL, NULL, NULL);
 		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_slider_proc, 0, 32 + QUIXEL_COLOR_PICKER_SCALE + QUIXEL_COLOR_PICKER_SCALE, QUIXEL_COLOR_PICKER_SHADES * QUIXEL_COLOR_PICKER_SCALE + QUIXEL_COLOR_PICKER_SCALE - QUIXEL_COLOR_PICKER_SCALE, QUIXEL_COLOR_PICKER_SCALE, 0, 0, 1000, 0, NULL, NULL, NULL);
 		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, quixel_gui_palette_proc, 0, 100, left_panel_width, t3f_default_view->height, 0, 0, 0, 0, &cep->base_color, NULL, NULL);

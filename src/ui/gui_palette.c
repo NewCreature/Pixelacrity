@@ -43,7 +43,6 @@ int quixel_gui_palette_proc(int msg, T3GUI_ELEMENT * d, int c)
 		}
 		case MSG_MOUSEMOVE:
 		{
-			printf("!\n");
 			if(t3f_mouse_button[0])
 			{
 				quixel_gui_palette_proc(MSG_MOUSEDOWN, d, c);

@@ -13,6 +13,9 @@
 #define QUIXEL_CANVAS_EDITOR_TOOL_OVAL             4
 #define QUIXEL_CANVAS_EDITOR_TOOL_FILLED_OVAL      5
 
+#define QUIXEL_COLOR_PICKER_SHADES 11
+#define QUIXEL_COLOR_PICKER_SCALE   8
+
 typedef struct
 {
 
@@ -29,6 +32,7 @@ typedef struct
 	ALLEGRO_COLOR last_base_color;
 	ALLEGRO_COLOR left_color;
 	ALLEGRO_COLOR right_color;
+	ALLEGRO_COLOR pick_color[QUIXEL_COLOR_PICKER_SHADES];
 
 	int signal;
 
@@ -37,6 +41,7 @@ typedef struct
 QUIXEL_CANVAS_EDITOR * quixel_create_canvas_editor(void);
 void quixel_destroy_canvas_editor(QUIXEL_CANVAS_EDITOR * cep);
 
+void quixel_canvas_editor_update_pick_colors(QUIXEL_CANVAS_EDITOR * cep);
 void quixel_canvas_editor_logic(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_CANVAS * cp);
 void quixel_canvas_editor_render(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_CANVAS * cp);
 

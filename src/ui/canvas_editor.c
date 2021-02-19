@@ -59,6 +59,22 @@ QUIXEL_CANVAS_EDITOR * quixel_create_canvas_editor(void)
 	}
 }
 
+void quixel_canvas_editor_update_pick_colors(QUIXEL_CANVAS_EDITOR * cep)
+{
+	float h, s, l, new_l, step;
+	float r, g, b;
+	int i;
+
+	step = 1.0 / (float)(QUIXEL_COLOR_PICKER_SHADES - 1);
+	al_unmap_rgb_f(cep->base_color, &r, &g, &b);
+	al_color_rgb_to_hsl(r, g, b, &h, &s, &l);
+	for(i = 0; i < QUIXEL_COLOR_PICKER_SHADES; i++)
+	{
+		new_l = step * (float)i;
+		cep->pick_color[i] = al_color_hsl(h, s, new_l);
+	}
+}
+
 static bool color_equal(ALLEGRO_COLOR c1, ALLEGRO_COLOR c2)
 {
 	unsigned char r[2], g[2], b[2], a[2];
@@ -78,7 +94,7 @@ void quixel_canvas_editor_logic(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_CANVAS * cp)
 	{
 		cep->left_color = cep->base_color;
 		cep->last_base_color = cep->base_color;
-		printf("change color\n");
+		quixel_canvas_editor_update_pick_colors(cep);
 	}
 	if(t3f_key[ALLEGRO_KEY_LEFT])
 	{

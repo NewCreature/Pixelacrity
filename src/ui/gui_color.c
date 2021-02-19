@@ -1,7 +1,7 @@
 #include "t3f/t3f.h"
 #include "t3gui/t3gui.h"
 #include "instance.h"
-#include "gui_color_picker.h"
+#include "gui_color.h"
 
 int quixel_gui_color_proc(int msg, T3GUI_ELEMENT * d, int c)
 {
