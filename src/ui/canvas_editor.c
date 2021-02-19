@@ -59,8 +59,27 @@ QUIXEL_CANVAS_EDITOR * quixel_create_canvas_editor(void)
 	}
 }
 
+static bool color_equal(ALLEGRO_COLOR c1, ALLEGRO_COLOR c2)
+{
+	unsigned char r[2], g[2], b[2], a[2];
+
+	al_unmap_rgba(c1, &r[0], &g[0], &b[0], &a[0]);
+	al_unmap_rgba(c2, &r[1], &g[1], &b[1], &a[1]);
+	if(r[0] != r[1] || g[0] != g[1] || b[0] != b[1] || a[0] != a[1])
+	{
+		return false;
+	}
+	return true;
+}
+
 void quixel_canvas_editor_logic(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_CANVAS * cp)
 {
+	if(!color_equal(cep->base_color, cep->last_base_color))
+	{
+		cep->left_color = cep->base_color;
+		cep->last_base_color = cep->base_color;
+		printf("change color\n");
+	}
 	if(t3f_key[ALLEGRO_KEY_LEFT])
 	{
 		cep->view_x--;
