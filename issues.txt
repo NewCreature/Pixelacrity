@@ -42,6 +42,15 @@ Quixel 0.1 Issues
 
       [ ]Add slider for setting color shade.
 
+         [ ]Add a color element for the slider and update the color based on the
+            position of the slider.
+
       [ ]Add slider for setting color alpha.
 
-      [X]Offer 9 shades of current base color in addition to black and white.
+         [ ]Add a color element for the slider and update the color based on the
+            position of the slider.
+
+      [ ]Offer 9 shades of current base color in addition to black and white.
+
+         [ ]Separate the black and white color elements from the main color
+            picker element.
