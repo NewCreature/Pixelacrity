@@ -59,19 +59,36 @@ QUIXEL_CANVAS_EDITOR * quixel_create_canvas_editor(void)
 	}
 }
 
+static ALLEGRO_COLOR shade_color(ALLEGRO_COLOR color, float l)
+{
+	float h, s, old_l;
+	float r, g, b;
+
+	al_unmap_rgb_f(color, &r, &g, &b);
+	al_color_rgb_to_hsl(r, g, b, &h, &s, &old_l);
+
+	return al_color_hsl(h, s, l);
+}
+
+static ALLEGRO_COLOR alpha_color(ALLEGRO_COLOR color, float alpha)
+{
+	float r, g, b;
+
+	al_unmap_rgb_f(color, &r, &g, &b);
+
+	return al_map_rgba_f(r, g, b, alpha);
+}
+
 void quixel_canvas_editor_update_pick_colors(QUIXEL_CANVAS_EDITOR * cep)
 {
-	float h, s, l, new_l, step;
-	float r, g, b;
+	float new_l, step;
 	int i;
 
 	step = 1.0 / (float)(QUIXEL_COLOR_PICKER_SHADES - 1);
-	al_unmap_rgb_f(cep->base_color, &r, &g, &b);
-	al_color_rgb_to_hsl(r, g, b, &h, &s, &l);
 	for(i = 0; i < QUIXEL_COLOR_PICKER_SHADES; i++)
 	{
 		new_l = step * (float)i;
-		cep->pick_color[i] = al_color_hsl(h, s, new_l);
+		cep->pick_color[i] = shade_color(cep->base_color, new_l);
 	}
 }
 
@@ -96,6 +113,8 @@ void quixel_canvas_editor_logic(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_CANVAS * cp)
 		cep->last_base_color = cep->base_color;
 		quixel_canvas_editor_update_pick_colors(cep);
 	}
+	cep->shade_color = shade_color(cep->base_color, (float)cep->shade_slider_element->d2 / 1000.0);
+	cep->alpha_color = alpha_color(cep->base_color, (float)cep->alpha_slider_element->d2 / 1000.0);;
 	if(t3f_key[ALLEGRO_KEY_LEFT])
 	{
 		cep->view_x--;

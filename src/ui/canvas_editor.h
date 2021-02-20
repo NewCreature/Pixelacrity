@@ -1,6 +1,7 @@
 #ifndef QUIXEL_CANVAS_EDITOR_H
 #define QUIXEL_CANVAS_EDITOR_H
 
+#include "t3gui/t3gui.h"
 #include "canvas.h"
 
 #define QUIXEL_CANVAS_EDITOR_SIGNAL_NONE         0
@@ -33,6 +34,12 @@ typedef struct
 	ALLEGRO_COLOR left_color;
 	ALLEGRO_COLOR right_color;
 	ALLEGRO_COLOR pick_color[QUIXEL_COLOR_PICKER_SHADES];
+	ALLEGRO_COLOR start_color;
+	ALLEGRO_COLOR shade_color;
+	ALLEGRO_COLOR alpha_color;
+
+	T3GUI_ELEMENT * shade_slider_element;
+	T3GUI_ELEMENT * alpha_slider_element;
 
 	int signal;
 
