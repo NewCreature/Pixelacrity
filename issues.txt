@@ -40,17 +40,24 @@ Quixel 0.1 Issues
 
       [X]Investigate why t3gui_slider_proc() crashes with the default theme.
 
-      [ ]Add slider for setting color shade.
+      [X]Add slider for setting color shade.
 
-         [ ]Add a color element for the slider and update the color based on the
+         [X]Add a color element for the slider and update the color based on the
             position of the slider.
 
-      [ ]Add slider for setting color alpha.
+      [X]Add slider for setting color alpha.
 
-         [ ]Add a color element for the slider and update the color based on the
+         [X]Add a color element for the slider and update the color based on the
             position of the slider.
+
+      [ ]Update position of slider based on the lightness value of the selected
+         color. We might want to move the black and white color elements on the
+         color picker to be adjacent to the other shades so the slider will
+         correspond exactly with the shade selected.
 
       [ ]Offer 9 shades of current base color in addition to black and white.
 
          [ ]Separate the black and white color elements from the main color
             picker element.
+
+            [ ]Fix position of white.
