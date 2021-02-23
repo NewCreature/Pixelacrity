@@ -1161,7 +1161,7 @@ void t3gui_process_dialog(T3GUI_PLAYER * player)
 {
     ALLEGRO_EVENT event;
 
-    while(al_get_next_event(player->input, &event))
+    t3gui_dialog_message(player->dialog, MSG_IDLE, 0, &player->obj);    while(al_get_next_event(player->input, &event))
 	{
         dialog_thread_internal_event_handler(player, &event);
         if(!player->paused)

@@ -27,7 +27,7 @@ static ALLEGRO_BITMAP * make_checkerboard_bitmap(ALLEGRO_COLOR c1, ALLEGRO_COLOR
 	return bp;
 }
 
-QUIXEL_CANVAS_EDITOR * quixel_create_canvas_editor(void)
+QUIXEL_CANVAS_EDITOR * quixel_create_canvas_editor(QUIXEL_CANVAS * cp)
 {
 	QUIXEL_CANVAS_EDITOR * cep;
 
@@ -42,6 +42,7 @@ QUIXEL_CANVAS_EDITOR * quixel_create_canvas_editor(void)
 	{
 		goto fail;
 	}
+	cep->canvas = cp;
 	cep->base_color = al_map_rgba_f(1.0, 0.0, 0.0, 1.0);
 	return cep;
 
@@ -105,7 +106,7 @@ static bool color_equal(ALLEGRO_COLOR c1, ALLEGRO_COLOR c2)
 	return true;
 }
 
-void quixel_canvas_editor_logic(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_CANVAS * cp)
+void quixel_canvas_editor_logic(QUIXEL_CANVAS_EDITOR * cep)
 {
 	if(!color_equal(cep->base_color, cep->last_base_color))
 	{
@@ -150,7 +151,7 @@ void quixel_canvas_editor_logic(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_CANVAS * cp)
 	}
 	if(t3f_key[ALLEGRO_KEY_H])
 	{
-		cp->layer[cep->current_layer]->flags ^= QUIXEL_CANVAS_FLAG_HIDDEN;
+		cep->canvas->layer[cep->current_layer]->flags ^= QUIXEL_CANVAS_FLAG_HIDDEN;
 		t3f_key[ALLEGRO_KEY_H] = 0;
 	}
 	cep->hover_x = cep->view_x + t3f_mouse_x / cep->view_zoom;
@@ -181,14 +182,14 @@ void quixel_canvas_editor_logic(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_CANVAS * cp)
 		{
 			case QUIXEL_CANVAS_EDITOR_TOOL_PIXEL:
 			{
-				quixel_tool_pixel_logic(cep, cp);
+				quixel_tool_pixel_logic(cep);
 				break;
 			}
 		}
 	}
 }
 
-void quixel_canvas_editor_render(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_CANVAS * cp)
+void quixel_canvas_editor_render(QUIXEL_CANVAS_EDITOR * cep)
 {
 	ALLEGRO_STATE old_state;
 	ALLEGRO_TRANSFORM identity;
@@ -207,6 +208,6 @@ void quixel_canvas_editor_render(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_CANVAS * cp)
 			t3f_draw_scaled_bitmap(cep->bg_tile, t3f_color_white, j * cep->bg_scale, i * cep->bg_scale, 0, cep->bg_scale, cep->bg_scale, 0);
 		}
 	}
-	quixel_render_canvas(cp, cep->view_x, cep->view_y, al_get_display_width(t3f_display), al_get_display_height(t3f_display), cep->view_zoom);
+	quixel_render_canvas(cep->canvas, cep->view_x, cep->view_y, al_get_display_width(t3f_display), al_get_display_height(t3f_display), cep->view_zoom);
 	al_restore_state(&old_state);
 }

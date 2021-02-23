@@ -42,14 +42,15 @@ typedef struct
 	T3GUI_ELEMENT * alpha_slider_element;
 
 	int signal;
+	QUIXEL_CANVAS * canvas;
 
 } QUIXEL_CANVAS_EDITOR;
 
-QUIXEL_CANVAS_EDITOR * quixel_create_canvas_editor(void);
+QUIXEL_CANVAS_EDITOR * quixel_create_canvas_editor(QUIXEL_CANVAS * cp);
 void quixel_destroy_canvas_editor(QUIXEL_CANVAS_EDITOR * cep);
 
 void quixel_canvas_editor_update_pick_colors(QUIXEL_CANVAS_EDITOR * cep);
-void quixel_canvas_editor_logic(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_CANVAS * cp);
-void quixel_canvas_editor_render(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_CANVAS * cp);
+void quixel_canvas_editor_logic(QUIXEL_CANVAS_EDITOR * cep);
+void quixel_canvas_editor_render(QUIXEL_CANVAS_EDITOR * cep);
 
 #endif

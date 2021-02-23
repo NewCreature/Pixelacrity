@@ -24,7 +24,7 @@ void app_logic(void * data)
 	}
 
 	quixel_process_ui(app->ui);
-	quixel_canvas_editor_logic(app->canvas_editor, app->canvas);
+//	quixel_canvas_editor_logic(app->canvas_editor);
 }
 
 /* main rendering routine */
@@ -32,7 +32,7 @@ void app_render(void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	quixel_canvas_editor_render(app->canvas_editor, app->canvas);
+//	quixel_canvas_editor_render(app->canvas_editor);
 	quixel_render_ui(app->ui);
 }
 
@@ -71,7 +71,7 @@ bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 	{
 		return false;
 	}
-	app->canvas_editor = quixel_create_canvas_editor();
+	app->canvas_editor = quixel_create_canvas_editor(app->canvas);
 	if(!app->canvas_editor)
 	{
 		return false;
