@@ -18,6 +18,8 @@ Quixel 0.1 Issues
       when saving our canvas. Then we import that information back into a new
       canvas instead of loading the canvas directly like we do now.
 
+[ ]Investigate why pixel x-coordinate is offset by -1.
+
 [ ]Add ability to import image files.
 
    [ ]Add UI for importing images (menu, file dialog, etc.).
