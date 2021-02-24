@@ -74,7 +74,6 @@ QUIXEL_UI * quixel_create_ui(QUIXEL_CANVAS_EDITOR * cep)
 		pos_y = 0;
 		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, quixel_gui_color_proc, 0, pos_y, left_panel_width / 2, 32, 0, 0, 0, 0, &cep->left_color, NULL, NULL);
 		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, quixel_gui_color_proc, left_panel_width / 2, 0, left_panel_width / 2, 32, 0, 0, 0, 0, &cep->right_color, NULL, NULL);
-		quixel_canvas_editor_update_pick_colors(cep);
 		pos_y += 32;
 		add_color_picker(cep, uip->dialog[QUIXEL_UI_DIALOG_MAIN], 0, pos_y);
 		pos_y += QUIXEL_COLOR_PICKER_SCALE;

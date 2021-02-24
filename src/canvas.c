@@ -186,7 +186,7 @@ static bool bitmap_visible(QUIXEL_CANVAS * cp, int j, int i, int x, int y, int w
 	return false;
 }
 
-void quixel_render_canvas(QUIXEL_CANVAS * cp, int x, int y, int width, int height, int scale)
+void quixel_render_canvas(QUIXEL_CANVAS * cp, int x, int y, int scale, float ox, float oy, int width, int height)
 {
 //	int cx, cy, cw, ch;
 	int i, j, k;
@@ -201,7 +201,7 @@ void quixel_render_canvas(QUIXEL_CANVAS * cp, int x, int y, int width, int heigh
 			{
 				if(!(cp->layer[i]->flags & QUIXEL_CANVAS_FLAG_HIDDEN) && cp->layer[i]->bitmap[j][k] && bitmap_visible(cp, k, j, x, y, width, height, scale))
 				{
-					t3f_draw_scaled_bitmap(cp->layer[i]->bitmap[j][k], t3f_color_white, (k * cp->bitmap_size - x) * scale, (j * cp->bitmap_size - y) * scale, 0, cp->bitmap_size * scale, cp->bitmap_size * scale, 0);
+					t3f_draw_scaled_bitmap(cp->layer[i]->bitmap[j][k], t3f_color_white, ox + (k * cp->bitmap_size - x) * scale, oy + (j * cp->bitmap_size - y) * scale, 0, cp->bitmap_size * scale, cp->bitmap_size * scale, 0);
 				}
 			}
 		}

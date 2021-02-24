@@ -37,6 +37,6 @@ void quixel_destroy_canvas(QUIXEL_CANVAS * cp);
 bool quixel_add_canvas_layer(QUIXEL_CANVAS * cp);
 bool quixel_remove_canvas_layer(QUIXEL_CANVAS * cp, int layer);
 bool quixel_expand_canvas(QUIXEL_CANVAS * cp, int layer, int x, int y);
-void quixel_render_canvas(QUIXEL_CANVAS * cp, int x, int y, int width, int height, int scale);
+void quixel_render_canvas(QUIXEL_CANVAS * cp, int x, int y, int scale, float ox, float oy, int width, int height);
 
 #endif

@@ -49,8 +49,4 @@ typedef struct
 QUIXEL_CANVAS_EDITOR * quixel_create_canvas_editor(QUIXEL_CANVAS * cp);
 void quixel_destroy_canvas_editor(QUIXEL_CANVAS_EDITOR * cep);
 
-void quixel_canvas_editor_update_pick_colors(QUIXEL_CANVAS_EDITOR * cep);
-void quixel_canvas_editor_logic(QUIXEL_CANVAS_EDITOR * cep);
-void quixel_canvas_editor_render(QUIXEL_CANVAS_EDITOR * cep);
-
 #endif
