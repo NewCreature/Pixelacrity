@@ -2,27 +2,32 @@
 #include "canvas.h"
 
 /* assume all canvas bitmaps are already locked */
-static int get_canvas_alpha(QUIXEL_CANVAS * cp, int x, int y)
+static int get_canvas_alpha(QUIXEL_CANVAS * cp, int x, int y, int flags_filter)
 {
 	ALLEGRO_COLOR color;
 	int i;
 	int offset_x, offset_y;
 	int tile_x, tile_y;
 	unsigned char r, a;
+	int flags;
 
 	for(i = 0; i < cp->layer_max; i++)
 	{
-		tile_x = x / cp->bitmap_size;
-		tile_y = y / cp->bitmap_size;
-		if(cp->layer[i]->bitmap[tile_y][tile_x])
+		flags = cp->layer[i]->flags & ~flags_filter;
+		if(!(flags & QUIXEL_CANVAS_FLAG_HIDDEN))
 		{
-			offset_x = cp->bitmap_size * tile_x;
-			offset_y = cp->bitmap_size * tile_y;
-			color = al_get_pixel(cp->layer[i]->bitmap[y / cp->bitmap_size][x / cp->bitmap_size], x - offset_x, y - offset_y);
-			al_unmap_rgba(color, &r, &r, &r, &a);
-			if(a > 0)
+			tile_x = x / cp->bitmap_size;
+			tile_y = y / cp->bitmap_size;
+			if(cp->layer[i]->bitmap[tile_y][tile_x])
 			{
-				return a;
+				offset_x = cp->bitmap_size * tile_x;
+				offset_y = cp->bitmap_size * tile_y;
+				color = al_get_pixel(cp->layer[i]->bitmap[y / cp->bitmap_size][x / cp->bitmap_size], x - offset_x, y - offset_y);
+				al_unmap_rgba(color, &r, &r, &r, &a);
+				if(a > 0)
+				{
+					return a;
+				}
 			}
 		}
 	}
@@ -36,47 +41,63 @@ static void get_canvas_dimensions(QUIXEL_CANVAS * cp, int * offset_x, int * offs
 	int right_x = 0;
 	int top_y = cp->bitmap_size * QUIXEL_CANVAS_MAX_HEIGHT;
 	int bottom_y = 0;
+	bool need_check;
 	int flags;
 
-	for(i = 0; i < cp->layer_max; i++)
+	for(j = 0; j < QUIXEL_CANVAS_MAX_HEIGHT; j++)
 	{
-		flags = cp->layer[i]->flags & ~flags_filter;
-		if(!(flags & QUIXEL_CANVAS_FLAG_HIDDEN))
+		for(k = 0; k < QUIXEL_CANVAS_MAX_WIDTH; k++)
 		{
-			for(j = 0; j < QUIXEL_CANVAS_MAX_HEIGHT; j++)
+			need_check = false;
+			for(i = 0; i < cp->layer_max; i++)
 			{
-				for(k = 0; k < QUIXEL_CANVAS_MAX_WIDTH; k++)
+				flags = cp->layer[i]->flags & ~flags_filter;
+				if(!(flags & QUIXEL_CANVAS_FLAG_HIDDEN))
 				{
 					if(cp->layer[i]->bitmap[j][k])
 					{
 						al_lock_bitmap(cp->layer[i]->bitmap[j][k], ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_READONLY);
-						for(l = 0; l < cp->bitmap_size; l++)
+						need_check = true;
+					}
+				}
+			}
+			if(need_check)
+			{
+				for(l = 0; l < cp->bitmap_size; l++)
+				{
+					for(m = 0; m < cp->bitmap_size; m++)
+					{
+						x = k * cp->bitmap_size + m;
+						y = j * cp->bitmap_size + l;
+						if(get_canvas_alpha(cp, x, y, flags_filter))
 						{
-							for(m = 0; m < cp->bitmap_size; m++)
+							if(x < left_x)
 							{
-								x = k * cp->bitmap_size + m;
-								y = j * cp->bitmap_size + l;
-								if(get_canvas_alpha(cp, x, y))
-								{
-									if(x < left_x)
-									{
-										left_x = x;
-									}
-									if(x > right_x)
-									{
-										right_x = x;
-									}
-									if(y < top_y)
-									{
-										top_y = y;
-									}
-									if(y > bottom_y)
-									{
-										bottom_y = y;
-									}
-								}
+								left_x = x;
+							}
+							if(x > right_x)
+							{
+								right_x = x;
+							}
+							if(y < top_y)
+							{
+								top_y = y;
+							}
+							if(y > bottom_y)
+							{
+								bottom_y = y;
 							}
 						}
+					}
+				}
+			}
+			for(i = 0; i < cp->layer_max; i++)
+			{
+				flags = cp->layer[i]->flags & ~flags_filter;
+				if(!(flags & QUIXEL_CANVAS_FLAG_HIDDEN))
+				{
+					if(cp->layer[i]->bitmap[j][k])
+					{
 						al_unlock_bitmap(cp->layer[i]->bitmap[j][k]);
 					}
 				}
