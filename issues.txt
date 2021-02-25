@@ -35,13 +35,16 @@ Quixel 0.1 Issues
 
    [ ]Need to implement visible area settings.
 
-[ ]Finish implementing color selection.
+[ ]Investigate why pixels along the right and bottom edge of the canvas are
+   disappearing.
+
+[X]Finish implementing color selection.
 
    [X]Add color palette.
 
    [X]Add current colors element.
 
-   [ ]Finish color picker element implementation.
+   [X]Finish color picker element implementation.
 
       [X]Investigate why t3gui_slider_proc() crashes with the default theme.
 
@@ -65,4 +68,4 @@ Quixel 0.1 Issues
          [X]Separate the black and white color elements from the main color
             picker element.
 
-            [ ]Fix position of white.
+            [X]Fix position of white.
