@@ -24,6 +24,25 @@ static ALLEGRO_COLOR alpha_color(ALLEGRO_COLOR color, float alpha)
 	return al_map_rgba_f(r, g, b, alpha);
 }
 
+static float get_shade(ALLEGRO_COLOR color)
+{
+	float r, g, b, h, s, l;
+
+	al_unmap_rgb_f(color, &r, &g, &b);
+	al_color_rgb_to_hsl(r, g, b, &h, &s, &l);
+
+	return l;
+}
+
+static float get_alpha(ALLEGRO_COLOR color)
+{
+	float r, a;
+
+	al_unmap_rgba_f(color, &r, &r, &r, &a);
+
+	return a;
+}
+
 void quixel_canvas_editor_update_pick_colors(QUIXEL_CANVAS_EDITOR * cep)
 {
 	float new_l, step;
@@ -93,6 +112,12 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				canvas_editor->left_color = canvas_editor->base_color;
 				canvas_editor->last_base_color = canvas_editor->base_color;
 				quixel_canvas_editor_update_pick_colors(canvas_editor);
+			}
+			if(!color_equal(canvas_editor->left_color, canvas_editor->last_left_color))
+			{
+				canvas_editor->last_left_color = canvas_editor->left_color;
+				canvas_editor->shade_slider_element->d2 = get_shade(canvas_editor->left_color) * 1000.0;
+				canvas_editor->alpha_slider_element->d2 = get_alpha(canvas_editor->left_color) * 1000.0;
 			}
 			canvas_editor->shade_color = shade_color(canvas_editor->base_color, (float)canvas_editor->shade_slider_element->d2 / 1000.0);
 			canvas_editor->alpha_color = alpha_color(canvas_editor->base_color, (float)canvas_editor->alpha_slider_element->d2 / 1000.0);;

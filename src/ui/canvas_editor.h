@@ -32,7 +32,9 @@ typedef struct
 	ALLEGRO_COLOR base_color;
 	ALLEGRO_COLOR last_base_color;
 	ALLEGRO_COLOR left_color;
+	ALLEGRO_COLOR last_left_color;
 	ALLEGRO_COLOR right_color;
+	ALLEGRO_COLOR last_right_color;
 	ALLEGRO_COLOR pick_color[QUIXEL_COLOR_PICKER_SHADES];
 	ALLEGRO_COLOR start_color;
 	ALLEGRO_COLOR shade_color;

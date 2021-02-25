@@ -20,7 +20,7 @@ static bool add_color_picker(QUIXEL_CANVAS_EDITOR * cep, T3GUI_DIALOG * dp, int 
 	for(i = 0; i < QUIXEL_COLOR_PICKER_SHADES; i++)
 	{
 		t3gui_dialog_add_element(dp, NULL, quixel_gui_color_proc, pos_x, y, QUIXEL_COLOR_PICKER_SCALE, QUIXEL_COLOR_PICKER_SCALE, 0, 0, 0, 0, &cep->pick_color[i], &cep->left_color, NULL);
-		if(i <= 0 || i >= QUIXEL_COLOR_PICKER_SHADES - 1)
+		if(i <= 0 || i >= QUIXEL_COLOR_PICKER_SHADES - 2)
 		{
 			pos_x += QUIXEL_COLOR_PICKER_SCALE + QUIXEL_COLOR_PICKER_SCALE / 2;
 		}
