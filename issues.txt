@@ -20,6 +20,9 @@ Quixel 0.1 Issues
 
 [ ]Investigate why pixel x-coordinate is offset by -1.
 
+   [ ]This might be a bug with Apple high resolution displays. I wasn't able to
+      replicate the issue on a normal 1080p monitor.
+
 [ ]Add ability to import image files.
 
    [ ]Add UI for importing images (menu, file dialog, etc.).
@@ -52,14 +55,14 @@ Quixel 0.1 Issues
          [X]Add a color element for the slider and update the color based on the
             position of the slider.
 
-      [ ]Update position of slider based on the lightness value of the selected
+      [X]Update position of slider based on the lightness value of the selected
          color. We might want to move the black and white color elements on the
          color picker to be adjacent to the other shades so the slider will
          correspond exactly with the shade selected.
 
-      [ ]Offer 9 shades of current base color in addition to black and white.
+      [X]Offer 9 shades of current base color in addition to black and white.
 
-         [ ]Separate the black and white color elements from the main color
+         [X]Separate the black and white color elements from the main color
             picker element.
 
             [ ]Fix position of white.
