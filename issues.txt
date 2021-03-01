@@ -35,7 +35,7 @@ Quixel 0.1 Issues
 
    [ ]Need to implement visible area settings.
 
-[ ]Investigate why pixels along the right and bottom edge of the canvas are
+[X]Investigate why pixels along the right and bottom edge of the canvas are
    disappearing.
 
 [X]Finish implementing color selection.
