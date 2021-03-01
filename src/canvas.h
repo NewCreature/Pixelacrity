@@ -19,10 +19,24 @@ typedef struct
 typedef struct
 {
 
+	char * name;
+	int x;
+	int y;
+	int width;
+	int height;
+
+} QUIXEL_CANVAS_FRAME;
+
+typedef struct
+{
+
 	int bitmap_size;
 
 	QUIXEL_CANVAS_LAYER ** layer;
 	int layer_max;
+
+	QUIXEL_CANVAS_FRAME ** frame;
+	int frame_max;
 
 	ALLEGRO_CONFIG * config;
 
@@ -36,7 +50,12 @@ void quixel_destroy_canvas(QUIXEL_CANVAS * cp);
 
 bool quixel_add_canvas_layer(QUIXEL_CANVAS * cp);
 bool quixel_remove_canvas_layer(QUIXEL_CANVAS * cp, int layer);
+
+bool quixel_add_canvas_frame(QUIXEL_CANVAS * cp, const char * name, int x, int y, int width, int height);
+bool quixel_remove_canvas_frame(QUIXEL_CANVAS * cp, int frame);
+
 bool quixel_expand_canvas(QUIXEL_CANVAS * cp, int layer, int x, int y);
+
 void quixel_render_canvas(QUIXEL_CANVAS * cp, int x, int y, int scale, float ox, float oy, int width, int height);
 
 #endif

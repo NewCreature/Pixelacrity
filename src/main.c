@@ -24,7 +24,11 @@ void app_logic(void * data)
 	}
 
 	quixel_process_ui(app->ui);
-//	quixel_canvas_editor_logic(app->canvas_editor);
+	strcpy(app->ui->status_left_message, "");
+	if(app->canvas_editor->current_frame < app->canvas->frame_max)
+	{
+		sprintf(app->ui->status_left_message, "Frame: %s (%d, %d)", app->canvas->frame[app->canvas_editor->current_frame]->name, app->canvas->frame[app->canvas_editor->current_frame]->width, app->canvas->frame[app->canvas_editor->current_frame]->height);
+	}
 }
 
 /* main rendering routine */
@@ -32,7 +36,6 @@ void app_render(void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-//	quixel_canvas_editor_render(app->canvas_editor);
 	quixel_render_ui(app->ui);
 }
 

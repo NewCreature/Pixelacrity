@@ -17,6 +17,8 @@
 
 #define QUIXEL_UI_MAX_THEMES  32
 
+#define QUIXEL_UI_ELEMENT_SPACE 8
+
 typedef struct
 {
 
@@ -24,6 +26,9 @@ typedef struct
 	ALLEGRO_MENU * menu[QUIXEL_UI_MAX_MENUS];
 	T3GUI_DIALOG * dialog[QUIXEL_UI_MAX_DIALOGS];
 	T3GUI_THEME * theme[QUIXEL_UI_MAX_THEMES];
+	char status_left_message[1024];
+	char status_middle_message[1024];
+	char status_right_message[1024];
 
 } QUIXEL_UI;
 

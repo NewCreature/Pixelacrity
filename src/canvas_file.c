@@ -83,6 +83,9 @@ static QUIXEL_CANVAS * quixel_load_canvas_f(ALLEGRO_FILE * fp, int bitmap_max)
 	char header[4] = {0};
 	char format[16] = {0};
 	int method;
+	int frame_count = 0;
+	char * frame_name_buf = NULL;
+	int i, l, x, y, w, h;
 
 	al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);
 	al_set_new_bitmap_flags(0);
@@ -92,12 +95,37 @@ static QUIXEL_CANVAS * quixel_load_canvas_f(ALLEGRO_FILE * fp, int bitmap_max)
 	{
 		goto fail;
 	}
-	al_fread(fp, format, 16);
 	cp = quixel_create_canvas(bitmap_max);
 	if(!cp)
 	{
 		goto fail;
 	}
+	frame_count = al_fread32le(fp);
+	for(i = 0; i < frame_count; i++)
+	{
+		l = al_fread32le(fp);
+		if(l > 0)
+		{
+			frame_name_buf = malloc(l + 1);
+			memset(frame_name_buf, 0, l + 1);
+			al_fread(fp, frame_name_buf, l);
+		}
+		x = al_fread32le(fp);
+		y = al_fread32le(fp);
+		w = al_fread32le(fp);
+		h = al_fread32le(fp);
+		if(!quixel_add_canvas_frame(cp, frame_name_buf, x, y, w, h))
+		{
+			goto fail;
+		}
+		if(frame_name_buf)
+		{
+			free(frame_name_buf);
+			frame_name_buf = NULL;
+		}
+	}
+
+	al_fread(fp, format, 16);
 	method = al_fread32le(fp);
 	switch(method)
 	{
@@ -286,6 +314,7 @@ static bool save_canvas_minimal_f(QUIXEL_CANVAS * cp, ALLEGRO_FILE * fp, const c
 static bool quixel_save_canvas_f(QUIXEL_CANVAS * cp, ALLEGRO_FILE * fp, const char * format, int method)
 {
 	char format_string[16] = {0};
+	int i, l;
 
 	if(strlen(format) < 16)
 	{
@@ -301,6 +330,31 @@ static bool quixel_save_canvas_f(QUIXEL_CANVAS * cp, ALLEGRO_FILE * fp, const ch
 		goto fail;
 		return false;
 	}
+	al_fwrite32le(fp, cp->frame_max);
+	for(i = 0; i < cp->frame_max; i++)
+	{
+		if(cp->frame[i]->name)
+		{
+			l = strlen(cp->frame[i]->name);
+		}
+		else
+		{
+			l = 0;
+		}
+		al_fwrite32le(fp, l);
+		if(l > 0)
+		{
+			if(al_fwrite(fp, cp->frame[i]->name, l) < l)
+			{
+				goto fail;
+			}
+			al_fwrite32le(fp, cp->frame[i]->x);
+			al_fwrite32le(fp, cp->frame[i]->y);
+			al_fwrite32le(fp, cp->frame[i]->width);
+			al_fwrite32le(fp, cp->frame[i]->height);
+		}
+	}
+
 	if(al_fwrite(fp, format_string, 16) < 16)
 	{
 		goto fail;

@@ -13,6 +13,42 @@ static QUIXEL_CANVAS_LAYER * quixel_create_canvas_layer(void)
 	return lp;
 }
 
+static QUIXEL_CANVAS_FRAME * quixel_create_canvas_frame(const char * name, int x, int y, int width, int height)
+{
+	QUIXEL_CANVAS_FRAME * fp = NULL;
+
+	fp = malloc(sizeof(QUIXEL_CANVAS_FRAME));
+	if(!fp)
+	{
+		goto fail;
+	}
+	memset(fp, 0, sizeof(QUIXEL_CANVAS_FRAME));
+	fp->name = strdup(name);
+	if(!fp->name)
+	{
+		goto fail;
+	}
+	fp->x = x;
+	fp->y = y;
+	fp->width = width;
+	fp->height = height;
+
+	return fp;
+
+	fail:
+	{
+		if(fp)
+		{
+			if(fp->name)
+			{
+				free(fp->name);
+			}
+			free(fp);
+		}
+	}
+	return NULL;
+}
+
 QUIXEL_CANVAS * quixel_create_canvas(int bitmap_max)
 {
 	QUIXEL_CANVAS * cp;
@@ -131,6 +167,64 @@ bool quixel_remove_canvas_layer(QUIXEL_CANVAS * cp, int layer)
 	cp->layer = old_layer;
 	return false;
 }
+
+bool quixel_add_canvas_frame(QUIXEL_CANVAS * cp, const char * name, int x, int y, int width, int height)
+{
+	QUIXEL_CANVAS_FRAME ** old_frame;
+	int frame_size;
+	int i;
+
+	old_frame = cp->frame;
+	frame_size = sizeof(QUIXEL_CANVAS_FRAME *) * cp->frame_max + 1;
+	cp->frame = malloc(frame_size);
+	if(cp->frame)
+	{
+		memset(cp->frame, 0, frame_size);
+		for(i = 0; i < cp->frame_max; i++)
+		{
+			cp->frame[i] = old_frame[i];
+		}
+		cp->frame[cp->frame_max] = quixel_create_canvas_frame(name, x, y, width, height);
+		if(cp->frame[cp->frame_max])
+		{
+			cp->frame_max++;
+			free(old_frame);
+			return true;
+		}
+	}
+	cp->frame = old_frame;
+	return false;
+}
+
+bool quixel_remove_canvas_frame(QUIXEL_CANVAS * cp, int frame)
+{
+	QUIXEL_CANVAS_FRAME ** old_frame;
+	int frame_size;
+	int i;
+
+	old_frame = cp->frame;
+	frame_size = sizeof(QUIXEL_CANVAS_FRAME *) * cp->frame_max - 1;
+	cp->frame = malloc(frame_size);
+	if(cp->frame)
+	{
+		memset(cp->frame, 0, frame_size);
+		for(i = 0; i < frame; i++)
+		{
+			cp->frame[i] = old_frame[i];
+		}
+		for(i = frame; i < cp->frame_max - 1; i++)
+		{
+			cp->frame[i] = old_frame[i + 1];
+		}
+		cp->frame_max--;
+		free(old_frame);
+		return true;
+	}
+	cp->frame = old_frame;
+	return false;
+}
+
+
 
 bool quixel_expand_canvas(QUIXEL_CANVAS * cp, int layer, int x, int y)
 {

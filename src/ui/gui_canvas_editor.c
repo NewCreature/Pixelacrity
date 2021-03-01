@@ -1,5 +1,6 @@
 #include "t3f/t3f.h"
 #include "canvas.h"
+#include "canvas_helpers.h"
 #include "canvas_editor.h"
 #include "gui_canvas_editor.h"
 #include "tool_pixel.h"
@@ -72,6 +73,8 @@ static bool color_equal(ALLEGRO_COLOR c1, ALLEGRO_COLOR c2)
 int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 {
 	QUIXEL_CANVAS_EDITOR * canvas_editor = (QUIXEL_CANVAS_EDITOR *)d->dp;
+	char frame_name[256];
+	int frame_x, frame_y, frame_width, frame_height;
 
 	switch(msg)
 	{
@@ -175,6 +178,29 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				}
 				t3f_key[ALLEGRO_KEY_PGDN] = 0;
 			}
+			if(t3f_key[ALLEGRO_KEY_F])
+			{
+				sprintf(frame_name, "Frame %d", canvas_editor->canvas->frame_max + 1);
+				quixel_get_canvas_dimensions(canvas_editor->canvas, &frame_x, &frame_y, &frame_width, &frame_height, 0);
+				if(quixel_add_canvas_frame(canvas_editor->canvas, frame_name, frame_x, frame_y, frame_width, frame_height))
+				{
+					canvas_editor->current_frame = canvas_editor->canvas->frame_max - 1;
+				}
+				t3f_key[ALLEGRO_KEY_F] = 0;
+			}
+			if(t3f_key[ALLEGRO_KEY_G])
+			{
+				quixel_remove_canvas_frame(canvas_editor->canvas, canvas_editor->current_frame);
+				if(canvas_editor->current_frame >= canvas_editor->canvas->frame_max)
+				{
+					canvas_editor->current_frame = canvas_editor->canvas->frame_max - 1;
+				}
+				if(canvas_editor->current_frame < 0)
+				{
+					canvas_editor->current_frame = 0;
+				}
+				t3f_key[ALLEGRO_KEY_G] = 0;
+			}
 			if(t3f_key[ALLEGRO_KEY_DELETE])
 			{
 				canvas_editor->signal = QUIXEL_CANVAS_EDITOR_SIGNAL_DELETE_LAYER;
@@ -202,6 +228,10 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				}
 			}
 			quixel_render_canvas(canvas_editor->canvas, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, d->w, d->h);
+			for(i = 0; i < canvas_editor->canvas->frame_max; i++)
+			{
+				al_draw_rectangle(d->x + (canvas_editor->canvas->frame[i]->x - canvas_editor->view_x) * canvas_editor->view_zoom - 1.0 + 0.5, d->y + (canvas_editor->canvas->frame[i]->y - canvas_editor->view_y) * canvas_editor->view_zoom - 1.0 + 0.5, d->x + (canvas_editor->canvas->frame[i]->x + canvas_editor->canvas->frame[i]->width - canvas_editor->view_x) * canvas_editor->view_zoom + 0.5, d->y + (canvas_editor->canvas->frame[i]->y + canvas_editor->canvas->frame[i]->height - canvas_editor->view_y) * canvas_editor->view_zoom + 0.5, t3f_color_black, 1.0);
+			}
 			al_restore_state(&old_state);
 			break;
 		}

@@ -27,6 +27,7 @@ typedef struct
 	int view_zoom;
 	int hover_x, hover_y;
 	int current_layer;
+	int current_frame;
 	int current_tool;
 	int tool_state;
 	ALLEGRO_COLOR base_color;
