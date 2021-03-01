@@ -8,7 +8,10 @@ Quixel 0.1 Issues
 
 [ ]Add ability to import image files.
 
-   [ ]Add UI for importing images (menu, file dialog, etc.).
+   [X]Add UI for importing images (menu, file dialog, etc.).
+
+   [ ]Ensure pre-multiplied alpha setting is correct when importing images. Pre-
+      multiplied alpha should always be disabled when loading images.
 
 [ ]Add ability to export image files.
 
@@ -20,6 +23,10 @@ Quixel 0.1 Issues
       [ ]Consider saving the export path for each frame in the canvas settings
          file and adding a re-export option that overwrites the previously
          exported file.
+
+      [ ]Pre-multiply color alpha values in exported image files by default. We
+         typically use pre-multiplied alpha in games to get the most accurate
+         rendering.
 
 [ ]Implement frame editing.
 
