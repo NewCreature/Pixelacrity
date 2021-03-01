@@ -1,23 +1,6 @@
 Quixel 0.1 Issues
 -----------------
 
-[X]Modify save routine to utilize import/export code instead of saving entire
-   tiles.
-
-   [X]Update canvas_helpers module to handle different rendering scenarios. When
-      saving the canvas, we need all of the data in the canvas to be saved.
-      Exports should honor flags and other things that affect the final output.
-
-      We can probably get away with adding an ignore_flags argument to the
-      rendering functions. We can logically combine the canvas flags with the
-      ignore_flags parameter and use the result as our flags. This would allow
-      us to use the same function as our final export routine as well as saving
-      the canvas data into our internal file format.
-
-      Ultimately, we want the raw image data to make it into the saved data
-      when saving our canvas. Then we import that information back into a new
-      canvas instead of loading the canvas directly like we do now.
-
 [ ]Investigate why pixel x-coordinate is offset by -1.
 
    [ ]This might be a bug with Apple high resolution displays. I wasn't able to
@@ -29,11 +12,30 @@ Quixel 0.1 Issues
 
 [ ]Add ability to export image files.
 
-   [ ]Add a way to specify the area we want to export.
+   [ ]Export current frame to specified file.
 
-      [ ]We should default to exporting the whole image if no area is specified.
+      [ ]We should default to exporting the whole image if no frame is
+         selected.
 
-   [ ]Need to implement visible area settings.
+      [ ]Consider saving the export path for each frame in the canvas settings
+         file and adding a re-export option that overwrites the previously
+         exported file.
+
+[ ]Implement frame editing.
+
+   [ ]There should be handles on the corners of each frame so we can edit them
+      by dragging the handles.
+
+   [ ]There should be a special handle on the top edge to make a frame the
+      current frame.
+
+   [ ]Need controls for adding and removing frames (menu items, etc.).
+
+[ ]Add color palette with all primary and secondary colors.
+
+
+Closed Issues
+-------------
 
 [X]Investigate why pixels along the right and bottom edge of the canvas are
    disappearing.
@@ -69,3 +71,20 @@ Quixel 0.1 Issues
             picker element.
 
             [X]Fix position of white.
+
+[X]Modify save routine to utilize import/export code instead of saving entire
+   tiles.
+
+   [X]Update canvas_helpers module to handle different rendering scenarios. When
+      saving the canvas, we need all of the data in the canvas to be saved.
+      Exports should honor flags and other things that affect the final output.
+
+      We can probably get away with adding an ignore_flags argument to the
+      rendering functions. We can logically combine the canvas flags with the
+      ignore_flags parameter and use the result as our flags. This would allow
+      us to use the same function as our final export routine as well as saving
+      the canvas data into our internal file format.
+
+      Ultimately, we want the raw image data to make it into the saved data
+      when saving our canvas. Then we import that information back into a new
+      canvas instead of loading the canvas directly like we do now.
