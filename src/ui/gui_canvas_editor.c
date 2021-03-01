@@ -123,7 +123,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				canvas_editor->alpha_slider_element->d2 = get_alpha(canvas_editor->left_color) * 1000.0;
 			}
 			canvas_editor->shade_color = shade_color(canvas_editor->base_color, (float)canvas_editor->shade_slider_element->d2 / 1000.0);
-			canvas_editor->alpha_color = alpha_color(canvas_editor->base_color, (float)canvas_editor->alpha_slider_element->d2 / 1000.0);;
+			canvas_editor->alpha_color = alpha_color(canvas_editor->shade_color, (float)canvas_editor->alpha_slider_element->d2 / 1000.0);;
 			if(t3f_key[ALLEGRO_KEY_LEFT])
 			{
 				canvas_editor->view_x--;
