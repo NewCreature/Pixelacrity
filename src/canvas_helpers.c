@@ -114,11 +114,11 @@ static void get_canvas_dimensions(QUIXEL_CANVAS * cp, int * offset_x, int * offs
 	}
 	if(width)
 	{
-		*width = (right_x - left_x);
+		*width = (right_x - left_x) + 1;
 	}
 	if(height)
 	{
-		*height = (bottom_y - top_y);
+		*height = (bottom_y - top_y) + 1;
 	}
 }
 
