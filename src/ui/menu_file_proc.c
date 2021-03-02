@@ -41,7 +41,7 @@ static QUIXEL_CANVAS * canvas_from_image(const char * fn)
 	{
 		goto fail;
 	}
-	bp = al_load_bitmap(fn);
+	bp = al_load_bitmap_flags(fn, ALLEGRO_NO_PREMULTIPLIED_ALPHA);
 	if(!bp)
 	{
 		goto fail;
