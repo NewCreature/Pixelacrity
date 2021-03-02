@@ -102,8 +102,11 @@ int quixel_menu_file_load(int id, void * data)
 						if(import_image)
 						{
 							app->canvas = canvas_from_image(file_path);
-							app->canvas_editor->view_x = app->canvas->frame[0]->x;
-							app->canvas_editor->view_y = app->canvas->frame[0]->y;
+							if(app->canvas)
+							{
+								app->canvas_editor->view_x = app->canvas->frame[0]->x;
+								app->canvas_editor->view_y = app->canvas->frame[0]->y;
+							}
 						}
 						else
 						{
@@ -112,6 +115,15 @@ int quixel_menu_file_load(int id, void * data)
 						if(app->canvas)
 						{
 							app->canvas_editor->canvas = app->canvas;
+						}
+						else
+						{
+							printf("Unable to load!\n");
+							app->canvas = quixel_create_canvas(2048);
+							if(app->canvas)
+							{
+								app->canvas_editor->canvas = app->canvas;
+							}
 						}
 					}
 				}
