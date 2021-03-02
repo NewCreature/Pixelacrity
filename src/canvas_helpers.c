@@ -196,7 +196,7 @@ void quixel_import_bitmap_to_canvas(QUIXEL_CANVAS * cp, ALLEGRO_BITMAP * bp, int
 	int x_use, y_use;
 
 	al_identity_transform(&identity);
-	al_store_state(&old_state, ALLEGRO_STATE_TRANSFORM | ALLEGRO_STATE_TARGET_BITMAP);
+	al_store_state(&old_state, ALLEGRO_STATE_TRANSFORM | ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_BLENDER);
 	y_remaining = al_get_bitmap_height(bp);
 	y_use = cp->bitmap_size - y % cp->bitmap_size;
 	tile_y = y / cp->bitmap_size;
@@ -214,6 +214,7 @@ void quixel_import_bitmap_to_canvas(QUIXEL_CANVAS * cp, ALLEGRO_BITMAP * bp, int
 			{
 				al_set_target_bitmap(cp->layer[layer]->bitmap[tile_y][tile_x]);
 				al_use_transform(&identity);
+				al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
 				al_draw_bitmap(bp, offset_x, offset_y, 0);
 			}
 			offset_x -= cp->bitmap_size;
