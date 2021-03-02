@@ -6,12 +6,18 @@ Quixel 0.1 Issues
    [ ]This might be a bug with Apple high resolution displays. I wasn't able to
       replicate the issue on a normal 1080p monitor.
 
-[ ]Add ability to import image files.
+[ ]Investigate why importing an image into a canvas repeatedly causes the color
+   alpha information to shift. We are using the Allegro functionality that
+   reportedly copies the pixels without modification.
 
-   [X]Add UI for importing images (menu, file dialog, etc.).
+   When saving and loading repeatedly using the QUIXEL_CANVAS_SAVE_FULL option,
+   no color data is lost. This suggests that the data is being lost when the
+   image data is copied into the canvas bitmaps. I tried copying the pixels
+   directly into the bitmaps myself and the color data was still lost.
 
-   [ ]Ensure pre-multiplied alpha setting is correct when importing images. Pre-
-      multiplied alpha should always be disabled when loading images.
+   If this can't be solved, we may need to eliminate the
+   QUIXEL_CANVAS_SAVE_MINIMAL option and just have it always save the full
+   canvas data.
 
 [ ]Add ability to export image files.
 
@@ -95,3 +101,10 @@ Closed Issues
       Ultimately, we want the raw image data to make it into the saved data
       when saving our canvas. Then we import that information back into a new
       canvas instead of loading the canvas directly like we do now.
+
+[X]Add ability to import image files.
+
+   [X]Add UI for importing images (menu, file dialog, etc.).
+
+   [X]Ensure pre-multiplied alpha setting is correct when importing images. Pre-
+      multiplied alpha should always be disabled when loading images.
