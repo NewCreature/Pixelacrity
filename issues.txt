@@ -11,6 +11,14 @@ Quixel 0.1 Issues
    without using pre-multiplied alpha. This will also fix the incorrect
    rendering of alpha blended colors throughout the entire program.
 
+   [ ]For now, we render the bottom layer using the copy blending mode and
+      others using the no pre-multiplied alpha standard blending mode. This
+      fixes the issue of the alpha being lost when saving the canvas with
+      QUIXEL_CANVAS_SAVE_MINIMAL, since we render each layer to a separate
+      bitmap. This will not give the best results when exporting a full multi-
+      layer canvas to an image file. We need to implement a compositing method
+      so we can export the most accurate image data.
+
 [ ]Add ability to export image files.
 
    [ ]Export current frame to specified file.
