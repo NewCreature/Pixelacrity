@@ -1,6 +1,8 @@
 Quixel 0.1 Issues
 -----------------
 
+[ ]Allow saving directly back into loaded image if no data will be lost.
+
 [ ]Investigate why pixel x-coordinate is offset by -1.
 
    [ ]This might be a bug with Apple high resolution displays. I wasn't able to
@@ -8,19 +10,6 @@ Quixel 0.1 Issues
 
    [ ]The mouse coordinate seems to be correct as interacting with other
       elements of the UI work properly.
-
-[ ]Fix saving with QUIXEL_CANVAS_SAVE_MINIMAL causing alpha information to be
-   lost. We need to implement a pixel shader so we can render the correct colors
-   without using pre-multiplied alpha. This will also fix the incorrect
-   rendering of alpha blended colors throughout the entire program.
-
-   [ ]For now, we render the bottom layer using the copy blending mode and
-      others using the no pre-multiplied alpha standard blending mode. This
-      fixes the issue of the alpha being lost when saving the canvas with
-      QUIXEL_CANVAS_SAVE_MINIMAL, since we render each layer to a separate
-      bitmap. This will not give the best results when exporting a full multi-
-      layer canvas to an image file. We need to implement a compositing method
-      so we can export the most accurate image data.
 
 [ ]Add ability to export image files.
 
@@ -33,9 +22,9 @@ Quixel 0.1 Issues
          file and adding a re-export option that overwrites the previously
          exported file.
 
-      [ ]Pre-multiply color alpha values in exported image files by default. We
-         typically use pre-multiplied alpha in games to get the most accurate
-         rendering.
+      [ ]Investigate compositing methods for exporting multi-layered canvases.
+         The current method will supposedly result in inaccurate colors where
+         alpha is used, but I'm not sure that applies to non-filtered textures.
 
 [ ]Implement frame editing.
 
@@ -111,3 +100,16 @@ Closed Issues
 
    [X]Ensure pre-multiplied alpha setting is correct when importing images. Pre-
       multiplied alpha should always be disabled when loading images.
+
+[X]Fix saving with QUIXEL_CANVAS_SAVE_MINIMAL causing alpha information to be
+   lost. We need to implement a pixel shader so we can render the correct colors
+   without using pre-multiplied alpha. This will also fix the incorrect
+   rendering of alpha blended colors throughout the entire program.
+
+   [X]For now, we render the bottom layer using the copy blending mode and
+      others using the no pre-multiplied alpha standard blending mode. This
+      fixes the issue of the alpha being lost when saving the canvas with
+      QUIXEL_CANVAS_SAVE_MINIMAL, since we render each layer to a separate
+      bitmap. This will not give the best results when exporting a full multi-
+      layer canvas to an image file. We need to implement a compositing method
+      so we can export the most accurate image data.
