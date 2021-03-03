@@ -31,6 +31,7 @@ typedef struct
 	int current_tool;
 	int tool_state;
 	bool modified;
+	bool update_title;
 	ALLEGRO_COLOR base_color;
 	ALLEGRO_COLOR last_base_color;
 	ALLEGRO_COLOR left_color;

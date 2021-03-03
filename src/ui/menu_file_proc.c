@@ -116,6 +116,7 @@ int quixel_menu_file_load(int id, void * data)
 						{
 							app->canvas_editor->canvas = app->canvas;
 							strcpy(app->canvas_editor->canvas_path, file_path);
+							app->canvas_editor->update_title = true;
 						}
 						else
 						{
@@ -167,6 +168,7 @@ int quixel_menu_file_save(int id, void * data)
 			al_save_bitmap(app->canvas_editor->canvas_path, bp);
 			al_destroy_bitmap(bp);
 			app->canvas_editor->modified = false;
+			app->canvas_editor->update_title = true;
 		}
 	}
 	return 0;

@@ -1,4 +1,5 @@
 #include "t3f/t3f.h"
+#include "t3f/file_utils.h"
 #include "canvas.h"
 #include "canvas_helpers.h"
 #include "canvas_editor.h"
@@ -70,6 +71,27 @@ static bool color_equal(ALLEGRO_COLOR c1, ALLEGRO_COLOR c2)
 	return true;
 }
 
+static void update_window_title(QUIXEL_CANVAS_EDITOR * cep)
+{
+	char buf[1024];
+	const char * fn;
+
+	if(cep->update_title)
+	{
+		fn = t3f_get_path_filename(cep->canvas_path);
+		if(fn)
+		{
+			sprintf(buf, "Quixel - %s%s", fn, cep->modified ? "*" : "");
+			al_set_window_title(t3f_display, buf);
+		}
+		else
+		{
+			sprintf(buf, "Quixel - Untitled%s", cep->modified ? "*" : "");
+		}
+		cep->update_title = false;
+	}
+}
+
 int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 {
 	QUIXEL_CANVAS_EDITOR * canvas_editor = (QUIXEL_CANVAS_EDITOR *)d->dp;
@@ -87,6 +109,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				{
 					quixel_tool_pixel_logic(canvas_editor);
 					canvas_editor->modified = true;
+					canvas_editor->update_title = true;
 					break;
 				}
 			}
@@ -105,6 +128,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				{
 					quixel_tool_pixel_logic(canvas_editor);
 					canvas_editor->modified = true;
+					canvas_editor->update_title = true;
 					break;
 				}
 			}
@@ -112,6 +136,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 		}
 		case MSG_IDLE:
 		{
+			update_window_title(canvas_editor);
 			if(!color_equal(canvas_editor->base_color, canvas_editor->last_base_color))
 			{
 				canvas_editor->left_color = canvas_editor->base_color;
