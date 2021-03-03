@@ -86,6 +86,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				case QUIXEL_CANVAS_EDITOR_TOOL_PIXEL:
 				{
 					quixel_tool_pixel_logic(canvas_editor);
+					canvas_editor->modified = true;
 					break;
 				}
 			}
@@ -103,6 +104,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				case QUIXEL_CANVAS_EDITOR_TOOL_PIXEL:
 				{
 					quixel_tool_pixel_logic(canvas_editor);
+					canvas_editor->modified = true;
 					break;
 				}
 			}

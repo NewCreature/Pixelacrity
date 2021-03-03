@@ -115,6 +115,7 @@ int quixel_menu_file_load(int id, void * data)
 						if(app->canvas)
 						{
 							app->canvas_editor->canvas = app->canvas;
+							strcpy(app->canvas_editor->canvas_path, file_path);
 						}
 						else
 						{
@@ -134,8 +135,40 @@ int quixel_menu_file_load(int id, void * data)
 	return 0;
 }
 
+static bool resave_allowed(QUIXEL_CANVAS_EDITOR * cep)
+{
+	int offset_x, offset_y, width, height;
+
+	if(!strcasecmp(t3f_get_path_extension(cep->canvas_path), ".qcanvas"))
+	{
+		return false;
+	}
+	if(cep->canvas->frame_max == 1 && cep->canvas->layer_max < 2)
+	{
+		quixel_get_canvas_dimensions(cep->canvas, &offset_x, &offset_y, &width, &height, 0);
+		if(offset_x >= cep->canvas->frame[0]->x && offset_x + width <= cep->canvas->frame[0]->x + cep->canvas->frame[0]->width && offset_y >= cep->canvas->frame[0]->y && offset_y + height <= cep->canvas->frame[0]->y + cep->canvas->frame[0]->height)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 int quixel_menu_file_save(int id, void * data)
 {
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+	ALLEGRO_BITMAP * bp;
+
+	if(resave_allowed(app->canvas_editor))
+	{
+		bp = quixel_render_canvas_to_bitmap(app->canvas, 0, app->canvas->layer_max, 0);
+		if(bp)
+		{
+			al_save_bitmap(app->canvas_editor->canvas_path, bp);
+			al_destroy_bitmap(bp);
+			app->canvas_editor->modified = false;
+		}
+	}
 	return 0;
 }
 

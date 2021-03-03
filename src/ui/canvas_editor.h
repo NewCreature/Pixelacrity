@@ -30,6 +30,7 @@ typedef struct
 	int current_frame;
 	int current_tool;
 	int tool_state;
+	bool modified;
 	ALLEGRO_COLOR base_color;
 	ALLEGRO_COLOR last_base_color;
 	ALLEGRO_COLOR left_color;
@@ -46,6 +47,7 @@ typedef struct
 
 	int signal;
 	QUIXEL_CANVAS * canvas;
+	char canvas_path[4096];
 
 } QUIXEL_CANVAS_EDITOR;
 
