@@ -63,6 +63,31 @@ bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 		return false;
 	}
 
+	app->alpha_shader = al_create_shader(ALLEGRO_SHADER_AUTO);
+	if(!app->alpha_shader)
+	{
+		printf("Error initializing alpha shader!\n");
+		return false;
+	}
+
+	if(!al_attach_shader_source(app->alpha_shader, ALLEGRO_VERTEX_SHADER, al_get_default_shader_source(ALLEGRO_SHADER_AUTO, ALLEGRO_VERTEX_SHADER)))
+	{
+		printf("Error attaching default vertex shader!\n");
+		return false;
+	}
+
+	if(!al_attach_shader_source_file(app->alpha_shader, ALLEGRO_PIXEL_SHADER, "data/shaders/alpha_blend_shader.glsl"))
+	{
+		printf("Error attaching alpha shader!\n");
+		return false;
+	}
+	if(!al_build_shader(app->alpha_shader))
+	{
+		printf("Error building alpha shader!\n");
+		printf("%s\n", al_get_shader_log(app->alpha_shader));
+		return false;
+	}
+
 	t3f_get_filename(t3f_data_path, "last.qcanvas", buf, 1024);
 	app->canvas = quixel_load_canvas(buf, 2048);
 	if(!app->canvas)
