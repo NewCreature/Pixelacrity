@@ -1,6 +1,7 @@
 #include "t3f/t3f.h"
 #include "instance.h"
 #include "canvas_file.h"
+#include "pixel_shader.h"
 #include "ui/canvas_editor.h"
 #include "ui/menu_file_proc.h"
 #include "ui/menu_edit_proc.h"
@@ -63,30 +64,14 @@ bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 		return false;
 	}
 
-	app->alpha_shader = al_create_shader(ALLEGRO_SHADER_AUTO);
+	app->alpha_shader = quixel_create_pixel_shader("data/shaders/alpha_blend_shader.glsl");
 	if(!app->alpha_shader)
 	{
 		printf("Error initializing alpha shader!\n");
 		return false;
 	}
 
-	if(!al_attach_shader_source(app->alpha_shader, ALLEGRO_VERTEX_SHADER, al_get_default_shader_source(ALLEGRO_SHADER_AUTO, ALLEGRO_VERTEX_SHADER)))
-	{
-		printf("Error attaching default vertex shader!\n");
-		return false;
-	}
-
-	if(!al_attach_shader_source_file(app->alpha_shader, ALLEGRO_PIXEL_SHADER, "data/shaders/alpha_blend_shader.glsl"))
-	{
-		printf("Error attaching alpha shader!\n");
-		return false;
-	}
-	if(!al_build_shader(app->alpha_shader))
-	{
-		printf("Error building alpha shader!\n");
-		printf("%s\n", al_get_shader_log(app->alpha_shader));
-		return false;
-	}
+	al_use_shader(app->alpha_shader);
 
 	t3f_get_filename(t3f_data_path, "last.qcanvas", buf, 1024);
 	app->canvas = quixel_load_canvas(buf, 2048);

@@ -23,6 +23,9 @@ void main()
     c = varying_color * texture2D(al_tex, varying_texcoord);
   else
     c = varying_color;
+  c.r = c.r * c.a;
+  c.g = c.g * c.a;
+  c.b = c.b * c.a;
   if (!al_alpha_test || alpha_test_func(c.a, al_alpha_func, al_alpha_test_val))
     gl_FragColor = c;
   else

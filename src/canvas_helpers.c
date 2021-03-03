@@ -1,5 +1,6 @@
 #include "t3f/t3f.h"
 #include "canvas.h"
+#include "pixel_shader.h"
 
 /* assume all canvas bitmaps are already locked */
 static int get_canvas_alpha(QUIXEL_CANVAS * cp, int x, int y, int flags_filter)
@@ -144,11 +145,18 @@ static void draw_canvas_layer(QUIXEL_CANVAS * cp, int layer, int flags, ALLEGRO_
 static void draw_canvas_layers(QUIXEL_CANVAS * cp, int start_layer, int end_layer, int flags_filter, ALLEGRO_BITMAP * bp, int offset_x, int offset_y, int width, int height)
 {
 	ALLEGRO_TRANSFORM identity;
+	ALLEGRO_SHADER * shader;
 	int flags;
 	int i;
 
+	shader = quixel_create_pixel_shader("data/shaders/alpha_blend_shader.glsl");
+	if(!shader)
+	{
+		printf("Shader error:\n\n%s", al_get_shader_log(shader));
+	}
 	al_identity_transform(&identity);
 	al_set_target_bitmap(bp);
+	al_use_shader(shader);
 	al_use_transform(&identity);
 	al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
 	for(i = start_layer; i < end_layer; i++)
@@ -159,6 +167,7 @@ static void draw_canvas_layers(QUIXEL_CANVAS * cp, int start_layer, int end_laye
 			draw_canvas_layer(cp, i, flags, bp, offset_x, offset_y, width, height);
 		}
 	}
+	al_destroy_shader(shader);
 }
 
 ALLEGRO_BITMAP * quixel_render_canvas_to_bitmap(QUIXEL_CANVAS * cp, int start_layer, int end_layer, int flags_filter)
