@@ -637,7 +637,7 @@ int t3f_set_gfx_mode(int w, int h, int flags)
 {
 	const char * cvalue = NULL;
 	const char * cvalue2 = NULL;
-	int dflags = 0;
+	int dflags = ALLEGRO_PROGRAMMABLE_PIPELINE;
 	int dx, dy, doy;
 	int dw, dh;
 	int ret = 1;
@@ -801,7 +801,7 @@ int t3f_set_gfx_mode(int w, int h, int flags)
 		t3f_display = al_create_display(dw, dh);
 		if(!t3f_display)
 		{
-			dflags = 0;
+			dflags = ALLEGRO_PROGRAMMABLE_PIPELINE;
 			if(flags & T3F_RESIZABLE)
 			{
 				dflags |= ALLEGRO_RESIZABLE;
