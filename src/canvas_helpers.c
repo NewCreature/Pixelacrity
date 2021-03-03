@@ -145,29 +145,29 @@ static void draw_canvas_layer(QUIXEL_CANVAS * cp, int layer, int flags, ALLEGRO_
 static void draw_canvas_layers(QUIXEL_CANVAS * cp, int start_layer, int end_layer, int flags_filter, ALLEGRO_BITMAP * bp, int offset_x, int offset_y, int width, int height)
 {
 	ALLEGRO_TRANSFORM identity;
-	ALLEGRO_SHADER * shader;
 	int flags;
 	int i;
 
-	shader = quixel_create_pixel_shader("data/shaders/alpha_blend_shader.glsl");
-	if(!shader)
-	{
-		printf("Shader error:\n\n%s", al_get_shader_log(shader));
-	}
 	al_identity_transform(&identity);
 	al_set_target_bitmap(bp);
-	al_use_shader(shader);
 	al_use_transform(&identity);
 	al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
 	for(i = start_layer; i < end_layer; i++)
 	{
+		if(i == start_layer)
+		{
+			al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
+		}
+		else
+		{
+			al_set_blender(ALLEGRO_ADD, ALLEGRO_ALPHA, ALLEGRO_INVERSE_ALPHA);
+		}
 		flags = cp->layer[i]->flags & ~flags_filter;
 		if(!(flags & QUIXEL_CANVAS_FLAG_HIDDEN))
 		{
 			draw_canvas_layer(cp, i, flags, bp, offset_x, offset_y, width, height);
 		}
 	}
-	al_destroy_shader(shader);
 }
 
 ALLEGRO_BITMAP * quixel_render_canvas_to_bitmap(QUIXEL_CANVAS * cp, int start_layer, int end_layer, int flags_filter)
@@ -176,7 +176,7 @@ ALLEGRO_BITMAP * quixel_render_canvas_to_bitmap(QUIXEL_CANVAS * cp, int start_la
 	ALLEGRO_STATE old_state;
 	int w, h;
 
-	al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS | ALLEGRO_STATE_TRANSFORM | ALLEGRO_STATE_TARGET_BITMAP);
+	al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS | ALLEGRO_STATE_TRANSFORM | ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_BLENDER);
 	quixel_get_canvas_dimensions(cp, &cp->export_offset_x, &cp->export_offset_y, &w, &h, flags_filter);
 	al_set_new_bitmap_flags(ALLEGRO_MEMORY_BITMAP);
 	bp = al_create_bitmap(w, h);
