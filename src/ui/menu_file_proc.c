@@ -127,6 +127,7 @@ int quixel_menu_file_load(int id, void * data)
 					}
 				}
 			}
+			al_destroy_native_file_dialog(file_chooser);
 			al_start_timer(t3f_timer);
 		}
 	}
@@ -219,6 +220,7 @@ int quixel_menu_file_save_as(int id, void * data)
 				}
 			}
 		}
+		al_destroy_native_file_dialog(file_chooser);
 		al_start_timer(t3f_timer);
 	}
 	return 0;
@@ -231,6 +233,46 @@ int quixel_menu_file_import(int id, void * data)
 
 int quixel_menu_file_export(int id, void * data)
 {
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+	ALLEGRO_FILECHOOSER * file_chooser;
+	const char * file_path;
+	const char * extension;
+	ALLEGRO_PATH * path;
+	ALLEGRO_BITMAP * bp;
+
+	file_chooser = al_create_native_file_dialog(NULL, "Export canvas to image file...", "*.png;*.tga;*.pcx;*.bmp;*.jpg", ALLEGRO_FILECHOOSER_SAVE);
+	if(file_chooser)
+	{
+		al_stop_timer(t3f_timer);
+		if(al_show_native_file_dialog(t3f_display, file_chooser))
+		{
+			if(al_get_native_file_dialog_count(file_chooser) > 0)
+			{
+				file_path = al_get_native_file_dialog_path(file_chooser, 0);
+				if(file_path)
+				{
+					path = al_create_path(file_path);
+					if(path)
+					{
+						extension = al_get_path_extension(path);
+						if(strcasecmp(extension, ".png") && strcasecmp(extension, ".pcx") && strcasecmp(extension, ".tga") && strcasecmp(extension, ".bmp") && strcasecmp(extension, ".jpg"))
+						{
+							al_set_path_extension(path, ".png");
+						}
+						bp = quixel_get_bitmap_from_canvas(app->canvas, 0, app->canvas->layer_max, 0);
+						if(bp)
+						{
+							al_save_bitmap(al_path_cstr(path, '/'), bp);
+							al_destroy_bitmap(bp);
+						}
+						al_destroy_path(path);
+					}
+				}
+			}
+		}
+		al_destroy_native_file_dialog(file_chooser);
+		al_start_timer(t3f_timer);
+	}
 	return 0;
 }
 
