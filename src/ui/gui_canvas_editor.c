@@ -98,6 +98,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 	QUIXEL_CANVAS_EDITOR * canvas_editor = (QUIXEL_CANVAS_EDITOR *)d->dp;
 	char frame_name[256];
 	int frame_x, frame_y, frame_width, frame_height;
+	int cx, cy;
 
 	switch(msg)
 	{
@@ -182,17 +183,21 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			{
 				if(canvas_editor->view_zoom > 1)
 				{
+					cx = canvas_editor->view_x + (d->w / canvas_editor->view_zoom) / 2;
+					cy = canvas_editor->view_y + (d->h / canvas_editor->view_zoom) / 2;
 					canvas_editor->view_zoom--;
-					canvas_editor->view_x -= (canvas_editor->view_x + t3f_mouse_x / canvas_editor->view_zoom) - canvas_editor->hover_x;
-					canvas_editor->view_y -= (canvas_editor->view_y + t3f_mouse_y / canvas_editor->view_zoom) - canvas_editor->hover_y;
+					canvas_editor->view_x = cx - (d->w / canvas_editor->view_zoom) / 2;
+					canvas_editor->view_y = cy - (d->h / canvas_editor->view_zoom) / 2;
 				}
 				t3f_key[ALLEGRO_KEY_MINUS] = 0;
 			}
 			if(t3f_key[ALLEGRO_KEY_EQUALS])
 			{
+				cx = canvas_editor->view_x + (d->w / canvas_editor->view_zoom) / 2;
+				cy = canvas_editor->view_y + (d->h / canvas_editor->view_zoom) / 2;
 				canvas_editor->view_zoom++;
-				canvas_editor->view_x -= (canvas_editor->view_x + t3f_mouse_x / canvas_editor->view_zoom) - canvas_editor->hover_x;
-				canvas_editor->view_y -= (canvas_editor->view_y + t3f_mouse_y / canvas_editor->view_zoom) - canvas_editor->hover_y;
+				canvas_editor->view_x = cx - (d->w / canvas_editor->view_zoom) / 2;
+				canvas_editor->view_y = cy - (d->h / canvas_editor->view_zoom) / 2;
 				t3f_key[ALLEGRO_KEY_EQUALS] = 0;
 			}
 			if(t3f_key[ALLEGRO_KEY_H])
