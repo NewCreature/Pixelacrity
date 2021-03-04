@@ -1,0 +1,9 @@
+#ifndef QUIXEL_BUTTON_PROC_H
+#define QUIXEL_BUTTON_PROC_H
+
+#include "t3gui/t3gui.h"
+
+int quixel_tool_pixel_button_proc(T3GUI_ELEMENT * d, void *dp3);
+int quixel_tool_dropper_button_proc(T3GUI_ELEMENT * d, void *dp3);
+
+#endif

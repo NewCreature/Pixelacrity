@@ -3,6 +3,7 @@
 #include "menu.h"
 #include "menu_file_proc.h"
 #include "menu_edit_proc.h"
+#include "button_proc.h"
 #include "canvas.h"
 #include "canvas_file.h"
 #include "canvas_helpers.h"
@@ -59,7 +60,7 @@ QUIXEL_UI * quixel_create_ui(QUIXEL_CANVAS_EDITOR * cep)
 		}
 		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_box_proc, 640 - 64, 0, 64, 480, 0, 0, 0, 0, NULL, NULL, NULL);
 		pos_y = 0;
-		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_button_proc, 640 - 64, pos_y, 64, 32, 0, 0, 0, 0, "Pixel", NULL, NULL);
+		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 640 - 64, pos_y, 64, 32, 0, 0, 0, 0, "Pixel", quixel_tool_pixel_button_proc, NULL);
 		pos_y += 32;
 		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_button_proc, 640 - 64, pos_y, 64, 32, 0, 0, 0, 0, "Line", NULL, NULL);
 		pos_y += 32;
@@ -70,6 +71,8 @@ QUIXEL_UI * quixel_create_ui(QUIXEL_CANVAS_EDITOR * cep)
 		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_button_proc, 640 - 64, pos_y, 64, 32, 0, 0, 0, 0, "Oval", NULL, NULL);
 		pos_y += 32;
 		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_button_proc, 640 - 64, pos_y, 64, 32, 0, 0, 0, 0, "FOval", NULL, NULL);
+		pos_y += 32;
+		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 640 - 64, pos_y, 64, 32, 0, 0, 0, 0, "Dropper", quixel_tool_dropper_button_proc, NULL);
 
 		left_panel_width = QUIXEL_COLOR_PICKER_SHADES * QUIXEL_COLOR_PICKER_SCALE + QUIXEL_COLOR_PICKER_SCALE;
 		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_box_proc, 0, 0, left_panel_width, 480, 0, 0, 0, 0, NULL, NULL, NULL);

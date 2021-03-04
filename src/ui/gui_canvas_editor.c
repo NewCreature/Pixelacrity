@@ -5,6 +5,7 @@
 #include "canvas_editor.h"
 #include "gui_canvas_editor.h"
 #include "tool_pixel.h"
+#include "tool_dropper.h"
 
 static ALLEGRO_COLOR shade_color(ALLEGRO_COLOR color, float l)
 {
@@ -112,6 +113,11 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 					canvas_editor->update_title = true;
 					break;
 				}
+				case QUIXEL_CANVAS_EDITOR_TOOL_DROPPER:
+				{
+					quixel_tool_dropper_logic(canvas_editor);
+					break;
+				}
 			}
 			break;
 		}
@@ -129,6 +135,11 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 					quixel_tool_pixel_logic(canvas_editor);
 					canvas_editor->modified = true;
 					canvas_editor->update_title = true;
+					break;
+				}
+				case QUIXEL_CANVAS_EDITOR_TOOL_DROPPER:
+				{
+					quixel_tool_dropper_logic(canvas_editor);
 					break;
 				}
 			}
