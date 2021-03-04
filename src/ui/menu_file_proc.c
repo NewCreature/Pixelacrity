@@ -136,17 +136,21 @@ int quixel_menu_file_load(int id, void * data)
 static bool resave_allowed(QUIXEL_CANVAS_EDITOR * cep)
 {
 	int offset_x, offset_y, width, height;
+	const char * extension = t3f_get_path_extension(cep->canvas_path);
 
-	if(!strcasecmp(t3f_get_path_extension(cep->canvas_path), ".qcanvas"))
+	if(!strcasecmp(extension, ".qcanvas"))
 	{
 		return false;
 	}
 	if(cep->canvas->frame_max == 1 && cep->canvas->layer_max < 2)
 	{
-		quixel_get_canvas_dimensions(cep->canvas, &offset_x, &offset_y, &width, &height, 0);
-		if(offset_x >= cep->canvas->frame[0]->x && offset_x + width <= cep->canvas->frame[0]->x + cep->canvas->frame[0]->width && offset_y >= cep->canvas->frame[0]->y && offset_y + height <= cep->canvas->frame[0]->y + cep->canvas->frame[0]->height)
+		if(!strcasecmp(extension, ".png") || !strcasecmp(extension, ".tga"))
 		{
-			return true;
+			quixel_get_canvas_dimensions(cep->canvas, &offset_x, &offset_y, &width, &height, 0);
+			if(offset_x >= cep->canvas->frame[0]->x && offset_x + width <= cep->canvas->frame[0]->x + cep->canvas->frame[0]->width && offset_y >= cep->canvas->frame[0]->y && offset_y + height <= cep->canvas->frame[0]->y + cep->canvas->frame[0]->height)
+			{
+				return true;
+			}
 		}
 	}
 	return false;
