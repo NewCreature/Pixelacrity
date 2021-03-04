@@ -47,6 +47,15 @@ int quixel_tool_oval_button_proc(T3GUI_ELEMENT * d, void *dp3)
 	return 0;
 }
 
+int quixel_tool_filled_oval_button_proc(T3GUI_ELEMENT * d, void *dp3)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)dp3;
+
+	app->canvas_editor->current_tool = QUIXEL_TOOL_FILLED_OVAL;
+
+	return 0;
+}
+
 int quixel_tool_dropper_button_proc(T3GUI_ELEMENT * d, void *dp3)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)dp3;

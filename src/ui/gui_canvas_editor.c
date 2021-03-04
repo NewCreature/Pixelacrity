@@ -10,6 +10,7 @@
 #include "tool_rectangle.h"
 #include "tool_filled_rectangle.h"
 #include "tool_oval.h"
+#include "tool_filled_oval.h"
 #include "tool_dropper.h"
 
 static ALLEGRO_COLOR shade_color(ALLEGRO_COLOR color, float l)
@@ -151,6 +152,14 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 					canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
 					break;
 				}
+				case QUIXEL_TOOL_FILLED_OVAL:
+				{
+					canvas_editor->click_x = canvas_editor->hover_x;
+					canvas_editor->click_y = canvas_editor->hover_y;
+					quixel_tool_filled_oval_logic(canvas_editor);
+					canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
+					break;
+				}
 				case QUIXEL_TOOL_DROPPER:
 				{
 					quixel_tool_dropper_logic(canvas_editor);
@@ -204,6 +213,16 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 					canvas_editor->tool_state = QUIXEL_TOOL_STATE_OFF;
 					break;
 				}
+				case QUIXEL_TOOL_FILLED_OVAL:
+				{
+					canvas_editor->release_x = canvas_editor->hover_x;
+					canvas_editor->release_y = canvas_editor->hover_y;
+					quixel_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, canvas_editor->left_color, quixel_draw_filled_oval);
+					canvas_editor->modified = true;
+					canvas_editor->update_title = true;
+					canvas_editor->tool_state = QUIXEL_TOOL_STATE_OFF;
+					break;
+				}
 			}
 			break;
 		}
@@ -241,6 +260,11 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				case QUIXEL_TOOL_OVAL:
 				{
 					quixel_tool_oval_logic(canvas_editor);
+					break;
+				}
+				case QUIXEL_TOOL_FILLED_OVAL:
+				{
+					quixel_tool_filled_oval_logic(canvas_editor);
 					break;
 				}
 			}
