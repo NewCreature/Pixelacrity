@@ -73,13 +73,7 @@ bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 
 	al_use_shader(app->alpha_shader);
 
-	t3f_get_filename(t3f_data_path, "last.qcanvas", buf, 1024);
-	app->canvas = quixel_load_canvas(buf, 2048);
-	if(!app->canvas)
-	{
-		printf("failed to load previous work\n");
-		quixel_menu_file_new(0, app);
-	}
+	quixel_menu_file_new(0, app);
 	if(!app->canvas)
 	{
 		return false;
@@ -120,11 +114,6 @@ void app_exit(APP_INSTANCE * app)
 	al_set_config_value(app->canvas->config, "state", "view_y", buf);
 	sprintf(buf, "%d", app->canvas_editor->view_zoom);
 	al_set_config_value(app->canvas->config, "state", "view_zoom", buf);
-	t3f_get_filename(t3f_data_path, "last.qcanvas", buf, 1024);
-	if(!quixel_save_canvas(app->canvas, buf, ".png", QUIXEL_CANVAS_SAVE_AUTO))
-	{
-		printf("failed to save\n");
-	}
 	quixel_destroy_canvas(app->canvas);
 }
 
