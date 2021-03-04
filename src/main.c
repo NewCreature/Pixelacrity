@@ -114,6 +114,7 @@ void app_exit(APP_INSTANCE * app)
 	al_set_config_value(app->canvas->config, "state", "view_y", buf);
 	sprintf(buf, "%d", app->canvas_editor->view_zoom);
 	al_set_config_value(app->canvas->config, "state", "view_zoom", buf);
+	quixel_destroy_canvas_editor(app->canvas_editor);
 	quixel_destroy_canvas(app->canvas);
 }
 

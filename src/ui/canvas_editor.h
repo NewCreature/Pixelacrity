@@ -22,6 +22,7 @@ typedef struct
 {
 
 	ALLEGRO_BITMAP * bg_tile;
+	ALLEGRO_BITMAP * scratch_bitmap;
 
 	int bg_scale;
 	int view_x, view_y;

@@ -42,6 +42,11 @@ QUIXEL_CANVAS_EDITOR * quixel_create_canvas_editor(QUIXEL_CANVAS * cp)
 	{
 		goto fail;
 	}
+	cep->scratch_bitmap = al_create_bitmap(al_get_display_width(t3f_display), al_get_display_height(t3f_display));
+	if(!cep->scratch_bitmap)
+	{
+		goto fail;
+	}
 	cep->canvas = cp;
 	cep->base_color = al_map_rgba_f(1.0, 0.0, 0.0, 1.0);
 	return cep;
@@ -50,12 +55,21 @@ QUIXEL_CANVAS_EDITOR * quixel_create_canvas_editor(QUIXEL_CANVAS * cp)
 	{
 		if(cep)
 		{
-			if(cep->bg_tile)
-			{
-				al_destroy_bitmap(cep->bg_tile);
-			}
-			free(cep);
+			quixel_destroy_canvas_editor(cep);
 		}
 		return NULL;
 	}
+}
+
+void quixel_destroy_canvas_editor(QUIXEL_CANVAS_EDITOR * cep)
+{
+	if(cep->scratch_bitmap)
+	{
+		al_destroy_bitmap(cep->scratch_bitmap);
+	}
+	if(cep->bg_tile)
+	{
+		al_destroy_bitmap(cep->bg_tile);
+	}
+	free(cep);
 }
