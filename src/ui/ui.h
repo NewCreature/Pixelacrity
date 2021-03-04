@@ -6,7 +6,8 @@
 #include "canvas.h"
 #include "canvas_editor.h"
 
-#define QUIXEL_UI_MAX_BITMAPS    32
+#define QUIXEL_UI_MAX_BITMAPS 32
+#define QUIXEL_UI_BITMAP_BG    0
 
 #define QUIXEL_UI_MAX_MENUS   32
 #define QUIXEL_UI_MENU_MAIN    0
@@ -18,6 +19,7 @@
 #define QUIXEL_UI_MAX_THEMES  32
 
 #define QUIXEL_UI_ELEMENT_SPACE 8
+#define QUIXEL_UI_BG_SCALE     24
 
 typedef struct
 {

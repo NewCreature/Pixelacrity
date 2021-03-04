@@ -386,21 +386,11 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 		{
 			ALLEGRO_STATE old_state;
 			ALLEGRO_TRANSFORM identity;
-			int i, j;
-			int tw, th;
+			int i;
 
-			tw = d->w / canvas_editor->bg_scale + 1;
-			th = d->h / canvas_editor->bg_scale + 1;
 			al_store_state(&old_state, ALLEGRO_STATE_TRANSFORM);
 			al_identity_transform(&identity);
 			al_use_transform(&identity);
-			for(i = 0; i < th; i++)
-			{
-				for(j = 0; j < tw; j++)
-				{
-					t3f_draw_scaled_bitmap(canvas_editor->bg_tile, t3f_color_white, d->x + j * canvas_editor->bg_scale, d->y + i * canvas_editor->bg_scale, 0, canvas_editor->bg_scale, canvas_editor->bg_scale, 0);
-				}
-			}
 			if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_OFF)
 			{
 				quixel_render_canvas(canvas_editor->canvas, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, d->w, d->h);

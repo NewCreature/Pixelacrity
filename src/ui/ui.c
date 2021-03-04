@@ -12,6 +12,31 @@
 #include "gui_palette.h"
 #include "gui_canvas_editor.h"
 
+static ALLEGRO_BITMAP * make_checkerboard_bitmap(ALLEGRO_COLOR c1, ALLEGRO_COLOR c2)
+{
+	ALLEGRO_STATE old_state;
+	ALLEGRO_TRANSFORM identity;
+	ALLEGRO_BITMAP * bp;
+
+	al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS | ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_TRANSFORM);
+	al_set_new_bitmap_flags(0);
+	bp = al_create_bitmap(2, 2);
+	if(bp)
+	{
+		al_set_target_bitmap(bp);
+		al_identity_transform(&identity);
+		al_use_transform(&identity);
+		al_lock_bitmap(bp, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_WRITEONLY);
+		al_put_pixel(0, 0, c1);
+		al_put_pixel(0, 1, c2);
+		al_put_pixel(1, 0, c2);
+		al_put_pixel(1, 1, c1);
+		al_unlock_bitmap(bp);
+	}
+	al_restore_state(&old_state);
+	return bp;
+}
+
 static bool add_color_picker(QUIXEL_CANVAS_EDITOR * cep, T3GUI_DIALOG * dp, int x, int y)
 {
 	int i, pos_x = x;
@@ -46,6 +71,12 @@ QUIXEL_UI * quixel_create_ui(QUIXEL_CANVAS_EDITOR * cep)
 	if(uip)
 	{
 		memset(uip, 0, sizeof(QUIXEL_UI));
+
+		uip->bitmap[QUIXEL_UI_BITMAP_BG] = make_checkerboard_bitmap(t3f_color_white, al_map_rgba_f(0.9, 0.9, 0.9, 1.0));
+		if(!uip->bitmap[QUIXEL_UI_BITMAP_BG])
+		{
+			goto fail;
+		}
 
 		if(!quixel_setup_menus(uip))
 		{
@@ -148,5 +179,17 @@ void quixel_process_ui(QUIXEL_UI * uip)
 
 void quixel_render_ui(QUIXEL_UI * uip)
 {
+	int i, j;
+	int tw, th;
+
+	tw = t3f_default_view->width / QUIXEL_UI_BG_SCALE + 1;
+	th = t3f_default_view->height / QUIXEL_UI_BG_SCALE + 1;
+	for(i = 0; i < th; i++)
+	{
+		for(j = 0; j < tw; j++)
+		{
+			t3f_draw_scaled_bitmap(uip->bitmap[QUIXEL_UI_BITMAP_BG], t3f_color_white, j * QUIXEL_UI_BG_SCALE, i * QUIXEL_UI_BG_SCALE, 0, QUIXEL_UI_BG_SCALE, QUIXEL_UI_BG_SCALE, 0);
+		}
+	}
 	t3gui_render();
 }

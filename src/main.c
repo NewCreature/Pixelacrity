@@ -91,7 +91,6 @@ bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 	app->canvas_editor->view_x = get_config_val(app->canvas->config, "state", "view_x", app->canvas->bitmap_size * 8 + app->canvas->bitmap_size / 2);
 	app->canvas_editor->view_y = get_config_val(app->canvas->config, "state", "view_y", app->canvas->bitmap_size * 8 + app->canvas->bitmap_size / 2);
 	app->canvas_editor->view_zoom = get_config_val(app->canvas->config, "state", "view_zoom", 8);
-	app->canvas_editor->bg_scale = 24;
 
 	app->ui = quixel_create_ui(app->canvas_editor);
 	if(!app->ui)
