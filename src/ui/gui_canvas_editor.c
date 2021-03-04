@@ -12,6 +12,7 @@
 #include "tool_oval.h"
 #include "tool_filled_oval.h"
 #include "tool_dropper.h"
+#include "tool_selection.h"
 
 static ALLEGRO_COLOR shade_color(ALLEGRO_COLOR color, float l)
 {
@@ -165,6 +166,14 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 					quixel_tool_dropper_logic(canvas_editor);
 					break;
 				}
+				case QUIXEL_TOOL_SELECTION:
+				{
+					canvas_editor->click_x = canvas_editor->hover_x;
+					canvas_editor->click_y = canvas_editor->hover_y;
+					quixel_tool_selection_logic(canvas_editor);
+//					canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
+					break;
+				}
 			}
 			break;
 		}
@@ -265,6 +274,11 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				case QUIXEL_TOOL_FILLED_OVAL:
 				{
 					quixel_tool_filled_oval_logic(canvas_editor);
+					break;
+				}
+				case QUIXEL_TOOL_SELECTION:
+				{
+					quixel_tool_selection_logic(canvas_editor);
 					break;
 				}
 			}
@@ -406,6 +420,10 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			for(i = 0; i < canvas_editor->canvas->frame_max; i++)
 			{
 				al_draw_rectangle(d->x + (canvas_editor->canvas->frame[i]->x - canvas_editor->view_x) * canvas_editor->view_zoom - 1.0 + 0.5, d->y + (canvas_editor->canvas->frame[i]->y - canvas_editor->view_y) * canvas_editor->view_zoom - 1.0 + 0.5, d->x + (canvas_editor->canvas->frame[i]->x + canvas_editor->canvas->frame[i]->width - canvas_editor->view_x) * canvas_editor->view_zoom + 0.5, d->y + (canvas_editor->canvas->frame[i]->y + canvas_editor->canvas->frame[i]->height - canvas_editor->view_y) * canvas_editor->view_zoom + 0.5, t3f_color_black, 1.0);
+			}
+			if(canvas_editor->selection.width > 0 && canvas_editor->selection.height > 0)
+			{
+				al_draw_rectangle(d->x + (canvas_editor->selection.x - canvas_editor->view_x) * canvas_editor->view_zoom - 1.0 + 0.5, d->y + (canvas_editor->selection.y - canvas_editor->view_y) * canvas_editor->view_zoom - 1.0 + 0.5, d->x + (canvas_editor->selection.x + canvas_editor->selection.width - canvas_editor->view_x) * canvas_editor->view_zoom + 0.5, d->y + (canvas_editor->selection.y + canvas_editor->selection.height - canvas_editor->view_y) * canvas_editor->view_zoom + 0.5, t3f_color_black, 1.0);
 			}
 			al_restore_state(&old_state);
 			break;

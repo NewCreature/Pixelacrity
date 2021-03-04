@@ -10,5 +10,6 @@ int quixel_tool_filled_rectangle_button_proc(T3GUI_ELEMENT * d, void *dp3);
 int quixel_tool_oval_button_proc(T3GUI_ELEMENT * d, void *dp3);
 int quixel_tool_filled_oval_button_proc(T3GUI_ELEMENT * d, void *dp3);
 int quixel_tool_dropper_button_proc(T3GUI_ELEMENT * d, void *dp3);
+int quixel_tool_selection_button_proc(T3GUI_ELEMENT * d, void * dp3);
 
 #endif

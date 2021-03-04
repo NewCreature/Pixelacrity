@@ -14,6 +14,7 @@
 #define QUIXEL_TOOL_OVAL             4
 #define QUIXEL_TOOL_FILLED_OVAL      5
 #define QUIXEL_TOOL_DROPPER          6
+#define QUIXEL_TOOL_SELECTION        7
 
 #define QUIXEL_TOOL_STATE_OFF        0
 #define QUIXEL_TOOL_STATE_DRAWING    1
@@ -24,8 +25,16 @@
 typedef struct
 {
 
-	ALLEGRO_BITMAP * scratch_bitmap;
+	int layer;
+	int x, y;
+	int width, height;
 
+} QUIXEL_SELECTION_DATA;
+
+typedef struct
+{
+
+	ALLEGRO_BITMAP * scratch_bitmap;
 	int view_x, view_y;
 	int view_zoom;
 	int hover_x, hover_y;
@@ -35,6 +44,7 @@ typedef struct
 	int current_frame;
 	int current_tool;
 	int tool_state;
+	QUIXEL_SELECTION_DATA selection;
 	bool modified;
 	bool update_title;
 	ALLEGRO_COLOR base_color;
