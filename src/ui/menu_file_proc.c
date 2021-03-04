@@ -4,6 +4,7 @@
 #include "ui.h"
 #include "canvas_file.h"
 #include "canvas_helpers.h"
+#include "menu_file_proc.h"
 
 static bool close_canvas(APP_INSTANCE * app)
 {
@@ -102,11 +103,6 @@ int quixel_menu_file_load(int id, void * data)
 						if(import_image)
 						{
 							app->canvas = canvas_from_image(file_path);
-							if(app->canvas)
-							{
-								app->canvas_editor->view_x = app->canvas->frame[0]->x;
-								app->canvas_editor->view_y = app->canvas->frame[0]->y;
-							}
 						}
 						else
 						{
@@ -115,6 +111,7 @@ int quixel_menu_file_load(int id, void * data)
 						if(app->canvas)
 						{
 							app->canvas_editor->canvas = app->canvas;
+							quixel_center_canvas_editor(app->canvas_editor, 0);
 							strcpy(app->canvas_editor->canvas_path, file_path);
 							app->canvas_editor->update_title = true;
 						}
@@ -162,7 +159,7 @@ int quixel_menu_file_save(int id, void * data)
 
 	if(resave_allowed(app->canvas_editor))
 	{
-		bp = quixel_render_canvas_to_bitmap(app->canvas, 0, app->canvas->layer_max, 0);
+		bp = quixel_get_bitmap_from_canvas(app->canvas, 0, app->canvas->layer_max, 0);
 		if(bp)
 		{
 			al_save_bitmap(app->canvas_editor->canvas_path, bp);
@@ -171,11 +168,55 @@ int quixel_menu_file_save(int id, void * data)
 			app->canvas_editor->update_title = true;
 		}
 	}
+	else
+	{
+		if(strcasecmp(t3f_get_path_extension(app->canvas_editor->canvas_path), ".qcanvas"))
+		{
+			quixel_menu_file_save_as(id, data);
+		}
+		else
+		{
+			if(quixel_save_canvas(app->canvas, app->canvas_editor->canvas_path, ".png", QUIXEL_CANVAS_SAVE_AUTO))
+			{
+				app->canvas_editor->modified = false;
+				app->canvas_editor->update_title = true;
+			}
+		}
+	}
 	return 0;
 }
 
 int quixel_menu_file_save_as(int id, void * data)
 {
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+	ALLEGRO_FILECHOOSER * file_chooser;
+	const char * file_path;
+	ALLEGRO_PATH * path;
+
+	file_chooser = al_create_native_file_dialog(NULL, "Save canvas as...", "*.qcanvas", ALLEGRO_FILECHOOSER_SAVE);
+	if(file_chooser)
+	{
+		al_stop_timer(t3f_timer);
+		if(al_show_native_file_dialog(t3f_display, file_chooser))
+		{
+			if(al_get_native_file_dialog_count(file_chooser) > 0)
+			{
+				file_path = al_get_native_file_dialog_path(file_chooser, 0);
+				if(file_path)
+				{
+					path = al_create_path(file_path);
+					if(path)
+					{
+						al_set_path_extension(path, ".qcanvas");
+						strcpy(app->canvas_editor->canvas_path, al_path_cstr(path, '/'));
+						quixel_menu_file_save(id, data);
+						al_destroy_path(path);
+					}
+				}
+			}
+		}
+		al_start_timer(t3f_timer);
+	}
 	return 0;
 }
 

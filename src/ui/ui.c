@@ -101,7 +101,7 @@ QUIXEL_UI * quixel_create_ui(QUIXEL_CANVAS_EDITOR * cep)
 		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_text_proc, QUIXEL_UI_ELEMENT_SPACE, t3f_default_view->height - status_height + QUIXEL_UI_ELEMENT_SPACE, t3f_default_view->width - QUIXEL_UI_ELEMENT_SPACE * 2, status_height - QUIXEL_UI_ELEMENT_SPACE * 2, 0, 0, 0, 0, uip->status_middle_message, NULL, NULL);
 		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_text_proc, QUIXEL_UI_ELEMENT_SPACE, t3f_default_view->height - status_height + QUIXEL_UI_ELEMENT_SPACE, t3f_default_view->width - QUIXEL_UI_ELEMENT_SPACE * 2, status_height - QUIXEL_UI_ELEMENT_SPACE * 2, 0, 0, 0, 0, uip->status_right_message, NULL, NULL);
 
-		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, quixel_gui_canvas_editor_proc, left_panel_width, 0, t3f_default_view->width - left_panel_width - 64, t3f_default_view->height - status_height, 0, 0, 0, 0, cep, NULL, NULL);
+		cep->editor_element = t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, quixel_gui_canvas_editor_proc, left_panel_width, 0, t3f_default_view->width - left_panel_width - 64, t3f_default_view->height - status_height, 0, 0, 0, 0, cep, NULL, NULL);
 	}
 	return uip;
 

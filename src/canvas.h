@@ -40,9 +40,6 @@ typedef struct
 
 	ALLEGRO_CONFIG * config;
 
-	int export_offset_x;
-	int export_offset_y;
-
 } QUIXEL_CANVAS;
 
 QUIXEL_CANVAS * quixel_create_canvas(int bitmap_max);

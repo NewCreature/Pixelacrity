@@ -1,6 +1,7 @@
 #include "t3f/t3f.h"
+#include "t3gui/t3gui.h"
 #include "canvas_editor.h"
-#include "tool_pixel.h"
+#include "canvas_helpers.h"
 
 static ALLEGRO_BITMAP * make_checkerboard_bitmap(ALLEGRO_COLOR c1, ALLEGRO_COLOR c2)
 {
@@ -72,4 +73,21 @@ void quixel_destroy_canvas_editor(QUIXEL_CANVAS_EDITOR * cep)
 		al_destroy_bitmap(cep->bg_tile);
 	}
 	free(cep);
+}
+
+void quixel_center_canvas_editor(QUIXEL_CANVAS_EDITOR * cep, int frame)
+{
+	int x, y, w, h;
+
+	if(frame < cep->canvas->frame_max)
+	{
+		cep->view_x = cep->canvas->frame[frame]->x + cep->canvas->frame[frame]->width / 2 - (cep->editor_element->w / cep->view_zoom) / 2;
+		cep->view_y = cep->canvas->frame[frame]->y + cep->canvas->frame[frame]->height / 2 - (cep->editor_element->h / cep->view_zoom) / 2;
+	}
+	else
+	{
+		quixel_get_canvas_dimensions(cep->canvas, &x, &y, &w, &h, 0);
+		cep->view_x = x + w / 2 - (cep->editor_element->w / cep->view_zoom) / 2;
+		cep->view_y = y + h / 2 - (cep->editor_element->h / cep->view_zoom) / 2;
+	}
 }

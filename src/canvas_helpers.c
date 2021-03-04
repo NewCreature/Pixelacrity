@@ -170,27 +170,35 @@ static void draw_canvas_layers(QUIXEL_CANVAS * cp, int start_layer, int end_laye
 	}
 }
 
-ALLEGRO_BITMAP * quixel_render_canvas_to_bitmap(QUIXEL_CANVAS * cp, int start_layer, int end_layer, int flags_filter)
+void quixel_render_canvas_to_bitmap(QUIXEL_CANVAS * cp, int start_layer, int end_layer, int x, int y, int w, int h, int flags_filter, ALLEGRO_BITMAP * bp)
+{
+	ALLEGRO_STATE old_state;
+
+	al_store_state(&old_state, ALLEGRO_STATE_TRANSFORM | ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_BLENDER);
+	draw_canvas_layers(cp, start_layer, end_layer, flags_filter, bp, x, y, w, h);
+	al_restore_state(&old_state);
+}
+
+ALLEGRO_BITMAP * quixel_get_bitmap_from_canvas(QUIXEL_CANVAS * cp, int start_layer, int end_layer, int flags_filter)
 {
 	ALLEGRO_BITMAP * bp;
 	ALLEGRO_STATE old_state;
-	int w, h;
+	int x, y, w, h;
 
-	al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS | ALLEGRO_STATE_TRANSFORM | ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_BLENDER);
-	quixel_get_canvas_dimensions(cp, &cp->export_offset_x, &cp->export_offset_y, &w, &h, flags_filter);
+	al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);
+	quixel_get_canvas_dimensions(cp, &x, &y, &w, &h, flags_filter);
 	al_set_new_bitmap_flags(ALLEGRO_MEMORY_BITMAP);
 	bp = al_create_bitmap(w, h);
+	al_restore_state(&old_state);
 	if(!bp)
 	{
 		goto fail;
 	}
-	draw_canvas_layers(cp, start_layer, end_layer, flags_filter, bp, cp->export_offset_x, cp->export_offset_y, w, h);
-	al_restore_state(&old_state);
+	quixel_render_canvas_to_bitmap(cp, start_layer, end_layer, x, y, w, h, flags_filter, bp);
 	return bp;
 
 	fail:
 	{
-		al_restore_state(&old_state);
 		return NULL;
 	}
 }

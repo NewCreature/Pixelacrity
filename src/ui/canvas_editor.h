@@ -47,6 +47,7 @@ typedef struct
 
 	T3GUI_ELEMENT * shade_slider_element;
 	T3GUI_ELEMENT * alpha_slider_element;
+	T3GUI_ELEMENT * editor_element;
 
 	int signal;
 	QUIXEL_CANVAS * canvas;
@@ -56,5 +57,7 @@ typedef struct
 
 QUIXEL_CANVAS_EDITOR * quixel_create_canvas_editor(QUIXEL_CANVAS * cp);
 void quixel_destroy_canvas_editor(QUIXEL_CANVAS_EDITOR * cep);
+
+void quixel_center_canvas_editor(QUIXEL_CANVAS_EDITOR * cep, int frame);
 
 #endif
