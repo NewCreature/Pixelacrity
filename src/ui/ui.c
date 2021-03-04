@@ -62,7 +62,7 @@ QUIXEL_UI * quixel_create_ui(QUIXEL_CANVAS_EDITOR * cep)
 		pos_y = 0;
 		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 640 - 64, pos_y, 64, 32, 0, 0, 0, 0, "Pixel", quixel_tool_pixel_button_proc, NULL);
 		pos_y += 32;
-		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_button_proc, 640 - 64, pos_y, 64, 32, 0, 0, 0, 0, "Line", NULL, NULL);
+		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 640 - 64, pos_y, 64, 32, 0, 0, 0, 0, "Line", quixel_tool_line_button_proc, NULL);
 		pos_y += 32;
 		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_button_proc, 640 - 64, pos_y, 64, 32, 0, 0, 0, 0, "Rectangle", NULL, NULL);
 		pos_y += 32;

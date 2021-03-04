@@ -7,13 +7,16 @@
 #define QUIXEL_CANVAS_EDITOR_SIGNAL_NONE         0
 #define QUIXEL_CANVAS_EDITOR_SIGNAL_DELETE_LAYER 1
 
-#define QUIXEL_CANVAS_EDITOR_TOOL_PIXEL            0
-#define QUIXEL_CANVAS_EDITOR_TOOL_LINE             1
-#define QUIXEL_CANVAS_EDITOR_TOOL_RECTANGLE        2
-#define QUIXEL_CANVAS_EDITOR_TOOL_FILLED_RECTANGLE 3
-#define QUIXEL_CANVAS_EDITOR_TOOL_OVAL             4
-#define QUIXEL_CANVAS_EDITOR_TOOL_FILLED_OVAL      5
-#define QUIXEL_CANVAS_EDITOR_TOOL_DROPPER          6
+#define QUIXEL_TOOL_PIXEL            0
+#define QUIXEL_TOOL_LINE             1
+#define QUIXEL_TOOL_RECTANGLE        2
+#define QUIXEL_TOOL_FILLED_RECTANGLE 3
+#define QUIXEL_TOOL_OVAL             4
+#define QUIXEL_TOOL_FILLED_OVAL      5
+#define QUIXEL_TOOL_DROPPER          6
+
+#define QUIXEL_TOOL_STATE_OFF        0
+#define QUIXEL_TOOL_STATE_DRAWING    1
 
 #define QUIXEL_COLOR_PICKER_SHADES 11
 #define QUIXEL_COLOR_PICKER_SCALE   8
@@ -28,6 +31,8 @@ typedef struct
 	int view_x, view_y;
 	int view_zoom;
 	int hover_x, hover_y;
+	int click_x, click_y;
+	int release_x, release_y;
 	int current_layer;
 	int current_frame;
 	int current_tool;

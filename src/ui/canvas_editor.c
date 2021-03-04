@@ -31,6 +31,7 @@ static ALLEGRO_BITMAP * make_checkerboard_bitmap(ALLEGRO_COLOR c1, ALLEGRO_COLOR
 QUIXEL_CANVAS_EDITOR * quixel_create_canvas_editor(QUIXEL_CANVAS * cp)
 {
 	QUIXEL_CANVAS_EDITOR * cep;
+	ALLEGRO_STATE old_state;
 
 	cep = malloc(sizeof(QUIXEL_CANVAS_EDITOR));
 	if(!cep)
@@ -43,7 +44,10 @@ QUIXEL_CANVAS_EDITOR * quixel_create_canvas_editor(QUIXEL_CANVAS * cp)
 	{
 		goto fail;
 	}
+	al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);
+	al_set_new_bitmap_flags(0);
 	cep->scratch_bitmap = al_create_bitmap(al_get_display_width(t3f_display), al_get_display_height(t3f_display));
+	al_restore_state(&old_state);
 	if(!cep->scratch_bitmap)
 	{
 		goto fail;

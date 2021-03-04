@@ -246,3 +246,83 @@ void quixel_import_bitmap_to_canvas(QUIXEL_CANVAS * cp, ALLEGRO_BITMAP * bp, int
 	}
 	al_restore_state(&old_state);
 }
+
+static bool loop_break_test(int i1, int i2, int dir)
+{
+	if(dir < 0)
+	{
+		if(i2 <= i1)
+		{
+			return true;
+		}
+	}
+	else
+	{
+		if(i1 <= i2)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+void quixel_draw_primitive_to_canvas(QUIXEL_CANVAS * cp, int layer, int x1, int y1, int x2, int y2, ALLEGRO_COLOR color, void (*primitive_proc)(int x1, int y1, int x2, int y2, ALLEGRO_COLOR color))
+{
+	ALLEGRO_STATE old_state;
+	ALLEGRO_TRANSFORM identity;
+	bool use_bitmap[QUIXEL_CANVAS_MAX_HEIGHT][QUIXEL_CANVAS_MAX_WIDTH] = {false};
+	int start_bitmap_x, start_bitmap_y;
+	int end_bitmap_x, end_bitmap_y;
+	int x_dir, y_dir;
+	int i, j, offset_x, offset_y;
+
+	al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_BLENDER | ALLEGRO_STATE_TRANSFORM);
+	al_identity_transform(&identity);
+	start_bitmap_x = x1 / cp->bitmap_size;
+	start_bitmap_y = y1 / cp->bitmap_size;
+	end_bitmap_x = x2 / cp->bitmap_size;
+	end_bitmap_y = y2 / cp->bitmap_size;
+	if(start_bitmap_x < end_bitmap_x)
+	{
+		x_dir = 1;
+	}
+	else
+	{
+		x_dir = -1;
+	}
+	if(start_bitmap_y < end_bitmap_y)
+	{
+		y_dir = 1;
+	}
+	else
+	{
+		y_dir = -1;
+	}
+	use_bitmap[start_bitmap_y][start_bitmap_x] = true;
+	use_bitmap[end_bitmap_y][end_bitmap_x] = true;
+	while(!loop_break_test(start_bitmap_y, end_bitmap_y, y_dir))
+	{
+		start_bitmap_x = x1 / cp->bitmap_size;
+		while(!loop_break_test(start_bitmap_x, end_bitmap_x, x_dir))
+		{
+			use_bitmap[start_bitmap_y][start_bitmap_x] = true;
+		}
+	}
+	for(i = 0; i < QUIXEL_CANVAS_MAX_HEIGHT; i++)
+	{
+		for(j = 0; j < QUIXEL_CANVAS_MAX_WIDTH; j++)
+		{
+			if(use_bitmap[i][j])
+			{
+				quixel_expand_canvas(cp, layer, j * cp->bitmap_size, i * cp->bitmap_size);
+				al_set_target_bitmap(cp->layer[layer]->bitmap[i][j]);
+				al_use_transform(&identity);
+				al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
+				offset_x = j * cp->bitmap_size;
+				offset_y = i * cp->bitmap_size;
+				primitive_proc(x1 - offset_x, y1 - offset_y, x2 - offset_x, y2 - offset_y, color);
+			}
+		}
+	}
+	al_restore_state(&old_state);
+}

@@ -280,25 +280,32 @@ static bool bitmap_visible(QUIXEL_CANVAS * cp, int j, int i, int x, int y, int w
 	return false;
 }
 
+void quixel_render_canvas_layer(QUIXEL_CANVAS * cp, int i, int x, int y, int scale, float ox, float oy, int width, int height)
+{
+	int j, k;
+
+	for(j = 0; j < QUIXEL_CANVAS_MAX_HEIGHT; j++)
+	{
+		for(k = 0; k < QUIXEL_CANVAS_MAX_WIDTH; k++)
+		{
+			if(!(cp->layer[i]->flags & QUIXEL_CANVAS_FLAG_HIDDEN) && cp->layer[i]->bitmap[j][k] && bitmap_visible(cp, k, j, x, y, width, height, scale))
+			{
+				t3f_draw_scaled_bitmap(cp->layer[i]->bitmap[j][k], t3f_color_white, ox + (k * cp->bitmap_size - x) * scale, oy + (j * cp->bitmap_size - y) * scale, 0, cp->bitmap_size * scale, cp->bitmap_size * scale, 0);
+			}
+		}
+	}
+}
+
 void quixel_render_canvas(QUIXEL_CANVAS * cp, int x, int y, int scale, float ox, float oy, int width, int height)
 {
 //	int cx, cy, cw, ch;
-	int i, j, k;
+	int i;
 
 //	al_get_clipping_rectangle(&cx, &cy, &cw, &ch);
 //	al_set_clipping_rectangle(x, y, width, height);
 	for(i = 0; i < cp->layer_max; i++)
 	{
-		for(j = 0; j < QUIXEL_CANVAS_MAX_HEIGHT; j++)
-		{
-			for(k = 0; k < QUIXEL_CANVAS_MAX_WIDTH; k++)
-			{
-				if(!(cp->layer[i]->flags & QUIXEL_CANVAS_FLAG_HIDDEN) && cp->layer[i]->bitmap[j][k] && bitmap_visible(cp, k, j, x, y, width, height, scale))
-				{
-					t3f_draw_scaled_bitmap(cp->layer[i]->bitmap[j][k], t3f_color_white, ox + (k * cp->bitmap_size - x) * scale, oy + (j * cp->bitmap_size - y) * scale, 0, cp->bitmap_size * scale, cp->bitmap_size * scale, 0);
-				}
-			}
-		}
+		quixel_render_canvas_layer(cp, i, x, y, scale, ox, oy, width, height);
 	}
 //	al_set_clipping_rectangle(cx, cy, cw, ch);
 }

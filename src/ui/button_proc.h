@@ -4,6 +4,7 @@
 #include "t3gui/t3gui.h"
 
 int quixel_tool_pixel_button_proc(T3GUI_ELEMENT * d, void *dp3);
+int quixel_tool_line_button_proc(T3GUI_ELEMENT * d, void *dp3);
 int quixel_tool_dropper_button_proc(T3GUI_ELEMENT * d, void *dp3);
 
 #endif
