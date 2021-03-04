@@ -2,6 +2,8 @@
 
 void quixel_draw_line(int x1, int y1, int x2, int y2, ALLEGRO_COLOR color)
 {
+	al_draw_pixel(x1, y1, color);
+	al_draw_pixel(x2, y2, color);
 	al_draw_line((float)x1 + 0.5, (float)y1 + 0.5, (float)x2 + 0.5, (float)y2 + 0.5, color, 1.0);
 }
 
