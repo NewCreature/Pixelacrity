@@ -1,6 +1,8 @@
 Quixel 0.1 Issues
 -----------------
 
+[ ]Add selection tool.
+
 [ ]Investigate why pixel x-coordinate is offset by -1.
 
    [ ]This might be a bug with Apple high resolution displays. I wasn't able to
