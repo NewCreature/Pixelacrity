@@ -21,7 +21,7 @@ void quixel_tool_oval_logic(QUIXEL_CANVAS_EDITOR * cep)
 	al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
 	al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
 	quixel_render_canvas_layer(cep->canvas, cep->current_layer, cep->view_x, cep->view_y, 1, 0, 0, cep->editor_element->w, cep->editor_element->h);
-	quixel_draw_oval(start_x, start_y, end_x, end_y, cep->left_color);
+	quixel_draw_oval(start_x, start_y, end_x, end_y, NULL, cep->left_color);
 	al_restore_state(&old_state);
 }
 

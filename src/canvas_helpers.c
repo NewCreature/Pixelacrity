@@ -266,7 +266,7 @@ static bool loop_break_test(int i1, int i2, int dir)
 	return false;
 }
 
-void quixel_draw_primitive_to_canvas(QUIXEL_CANVAS * cp, int layer, int x1, int y1, int x2, int y2, ALLEGRO_COLOR color, void (*primitive_proc)(int x1, int y1, int x2, int y2, ALLEGRO_COLOR color))
+void quixel_draw_primitive_to_canvas(QUIXEL_CANVAS * cp, int layer, int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_COLOR color, void (*primitive_proc)(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_COLOR color))
 {
 	ALLEGRO_STATE old_state;
 	ALLEGRO_TRANSFORM identity;
@@ -320,7 +320,7 @@ void quixel_draw_primitive_to_canvas(QUIXEL_CANVAS * cp, int layer, int x1, int 
 				al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
 				offset_x = j * cp->bitmap_size;
 				offset_y = i * cp->bitmap_size;
-				primitive_proc(x1 - offset_x, y1 - offset_y, x2 - offset_x, y2 - offset_y, color);
+				primitive_proc(x1 - offset_x, y1 - offset_y, x2 - offset_x, y2 - offset_y, bp, color);
 			}
 		}
 	}
