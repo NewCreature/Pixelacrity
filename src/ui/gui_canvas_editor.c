@@ -113,7 +113,7 @@ static void finalize_selection(QUIXEL_CANVAS_EDITOR * cep)
 	al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
 	quixel_render_canvas_layer(cep->canvas, cep->current_layer, cep->selection.x, cep->selection.y, 1, 0, 0, cep->selection.width, cep->selection.height);
 	al_restore_state(&old_state);
-	quixel_draw_primitive_to_canvas(cep->canvas, cep->current_layer, cep->selection.x, cep->selection.y, cep->selection.x + cep->selection.width, cep->selection.y + cep->selection.height, NULL, al_map_rgba_f(0, 0, 0, 0), quixel_draw_filled_rectangle);
+	quixel_draw_primitive_to_canvas(cep->canvas, cep->current_layer, cep->selection.x, cep->selection.y, cep->selection.x + cep->selection.width - 1, cep->selection.y + cep->selection.height - 1, NULL, al_map_rgba_f(0, 0, 0, 0), quixel_draw_filled_rectangle);
 }
 
 static void start_selection(QUIXEL_CANVAS_EDITOR * cep)
