@@ -2,6 +2,7 @@
 #include "t3gui/t3gui.h"
 #include "canvas_editor.h"
 #include "canvas_helpers.h"
+#include "primitives.h"
 
 QUIXEL_CANVAS_EDITOR * quixel_create_canvas_editor(QUIXEL_CANVAS * cp)
 {
@@ -60,4 +61,11 @@ void quixel_center_canvas_editor(QUIXEL_CANVAS_EDITOR * cep, int frame)
 		cep->view_x = x + w / 2 - (cep->editor_element->w / cep->view_zoom) / 2;
 		cep->view_y = y + h / 2 - (cep->editor_element->h / cep->view_zoom) / 2;
 	}
+}
+
+void quixel_unfloat_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep)
+{
+	quixel_draw_primitive_to_canvas(cep->canvas, cep->current_layer, cep->selection.x, cep->selection.y, cep->selection.x + cep->selection.width, cep->selection.y + cep->selection.height, cep->scratch_bitmap, al_map_rgba_f(0, 0, 0, 0), quixel_draw_quad);
+	cep->selection.width = 0;
+	cep->selection.height = 0;
 }

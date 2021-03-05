@@ -116,6 +116,20 @@ static void finalize_selection(QUIXEL_CANVAS_EDITOR * cep)
 	quixel_draw_primitive_to_canvas(cep->canvas, cep->current_layer, cep->selection.x, cep->selection.y, cep->selection.x + cep->selection.width, cep->selection.y + cep->selection.height, NULL, al_map_rgba_f(0, 0, 0, 0), quixel_draw_filled_rectangle);
 }
 
+static void start_selection(QUIXEL_CANVAS_EDITOR * cep)
+{
+	ALLEGRO_STATE old_state;
+
+	if(cep->selection.width > 0 && cep->selection.height > 0)
+	{
+		quixel_unfloat_canvas_editor_selection(cep);
+	}
+	al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP);
+	al_set_target_bitmap(cep->scratch_bitmap);
+	al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
+	al_restore_state(&old_state);
+}
+
 int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 {
 	QUIXEL_CANVAS_EDITOR * canvas_editor = (QUIXEL_CANVAS_EDITOR *)d->dp;
@@ -186,6 +200,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				{
 					canvas_editor->click_x = canvas_editor->hover_x;
 					canvas_editor->click_y = canvas_editor->hover_y;
+					start_selection(canvas_editor);
 					quixel_tool_selection_logic(canvas_editor);
 //					canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
 					break;

@@ -4,18 +4,11 @@
 #include "canvas_helpers.h"
 #include "primitives.h"
 
-static void unfloat_selection(QUIXEL_CANVAS_EDITOR * cep)
-{
-	quixel_draw_primitive_to_canvas(cep->canvas, cep->current_layer, cep->selection.x, cep->selection.y, cep->selection.x + cep->selection.width, cep->selection.y + cep->selection.height, cep->scratch_bitmap, al_map_rgba_f(0, 0, 0, 0), quixel_draw_quad);
-	cep->selection.width = 0;
-	cep->selection.height = 0;
-}
-
 static void change_tool(QUIXEL_CANVAS_EDITOR * cep, int tool)
 {
 	if(cep->current_tool == QUIXEL_TOOL_SELECTION && tool != QUIXEL_TOOL_SELECTION)
 	{
-		unfloat_selection(cep);
+		quixel_unfloat_canvas_editor_selection(cep);
 	}
 	cep->current_tool = tool;
 }
