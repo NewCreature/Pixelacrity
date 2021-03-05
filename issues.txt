@@ -1,7 +1,14 @@
 Quixel 0.1 Issues
 -----------------
 
-[ ]Add selection tool.
+[ ]Clear scratch bitmap when starting a selection.
+
+[ ]Selection tool erases pixels adjacent to the selection box. Check coordinates
+   to ensure we only erase what's within the selection area.
+
+[ ]Allow floating selection to be moved.
+
+[ ]Add controls for resizing selection.
 
 [ ]Investigate why pixel x-coordinate is offset by -1.
 
