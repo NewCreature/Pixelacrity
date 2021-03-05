@@ -179,13 +179,12 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 		}
 		case MSG_MOUSEUP:
 		{
-			d->flags &= ~D_TRACKMOUSE;
+			canvas_editor->release_x = canvas_editor->hover_x;
+			canvas_editor->release_y = canvas_editor->hover_y;
 			switch(canvas_editor->current_tool)
 			{
 				case QUIXEL_TOOL_LINE:
 				{
-					canvas_editor->release_x = canvas_editor->hover_x;
-					canvas_editor->release_y = canvas_editor->hover_y;
 					quixel_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, canvas_editor->left_color, quixel_draw_line);
 					canvas_editor->modified = true;
 					canvas_editor->update_title = true;
@@ -194,8 +193,6 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				}
 				case QUIXEL_TOOL_RECTANGLE:
 				{
-					canvas_editor->release_x = canvas_editor->hover_x;
-					canvas_editor->release_y = canvas_editor->hover_y;
 					quixel_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, canvas_editor->left_color, quixel_draw_rectangle);
 					canvas_editor->modified = true;
 					canvas_editor->update_title = true;
@@ -204,8 +201,6 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				}
 				case QUIXEL_TOOL_FILLED_RECTANGLE:
 				{
-					canvas_editor->release_x = canvas_editor->hover_x;
-					canvas_editor->release_y = canvas_editor->hover_y;
 					quixel_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, canvas_editor->left_color, quixel_draw_filled_rectangle);
 					canvas_editor->modified = true;
 					canvas_editor->update_title = true;
@@ -214,8 +209,6 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				}
 				case QUIXEL_TOOL_OVAL:
 				{
-					canvas_editor->release_x = canvas_editor->hover_x;
-					canvas_editor->release_y = canvas_editor->hover_y;
 					quixel_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, canvas_editor->left_color, quixel_draw_oval);
 					canvas_editor->modified = true;
 					canvas_editor->update_title = true;
@@ -224,8 +217,6 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				}
 				case QUIXEL_TOOL_FILLED_OVAL:
 				{
-					canvas_editor->release_x = canvas_editor->hover_x;
-					canvas_editor->release_y = canvas_editor->hover_y;
 					quixel_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, canvas_editor->left_color, quixel_draw_filled_oval);
 					canvas_editor->modified = true;
 					canvas_editor->update_title = true;
@@ -233,6 +224,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 					break;
 				}
 			}
+			d->flags &= ~D_TRACKMOUSE;
 			break;
 		}
 		case MSG_MOUSEMOVE:
