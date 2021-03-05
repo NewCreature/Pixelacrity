@@ -1,9 +1,6 @@
 Quixel 0.1 Issues
 -----------------
 
-[ ]Selection tool erases pixels adjacent to the selection box. Check coordinates
-   to ensure we only erase what's within the selection area.
-
 [ ]Allow floating selection to be moved.
 
 [ ]Add controls for resizing selection.
@@ -122,3 +119,6 @@ Closed Issues
 [X]Allow saving directly back into loaded image if no data will be lost.
 
 [X]Clear scratch bitmap when starting a selection.
+
+[X]Selection tool erases pixels adjacent to the selection box. Check coordinates
+   to ensure we only erase what's within the selection area.
