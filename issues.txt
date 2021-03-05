@@ -1,8 +1,6 @@
 Quixel 0.1 Issues
 -----------------
 
-[ ]Clear scratch bitmap when starting a selection.
-
 [ ]Selection tool erases pixels adjacent to the selection box. Check coordinates
    to ensure we only erase what's within the selection area.
 
@@ -122,3 +120,5 @@ Closed Issues
       so we can export the most accurate image data.
 
 [X]Allow saving directly back into loaded image if no data will be lost.
+
+[X]Clear scratch bitmap when starting a selection.
