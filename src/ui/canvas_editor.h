@@ -18,6 +18,7 @@
 
 #define QUIXEL_TOOL_STATE_OFF        0
 #define QUIXEL_TOOL_STATE_DRAWING    1
+#define QUIXEL_TOOL_STATE_EDITING    2
 
 #define QUIXEL_COLOR_PICKER_SHADES 11
 #define QUIXEL_COLOR_PICKER_SCALE   8
@@ -28,6 +29,9 @@ typedef struct
 	int layer;
 	int x, y;
 	int width, height;
+
+	bool moving;
+	int pin_x, pin_y;
 
 } QUIXEL_SELECTION_DATA;
 
@@ -43,6 +47,8 @@ typedef struct
 	int current_layer;
 	int current_frame;
 	int current_tool;
+	ALLEGRO_SYSTEM_MOUSE_CURSOR old_cursor;
+	ALLEGRO_SYSTEM_MOUSE_CURSOR current_cursor;
 	int tool_state;
 	QUIXEL_SELECTION_DATA selection;
 	bool modified;

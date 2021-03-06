@@ -128,6 +128,24 @@ static void start_selection(QUIXEL_CANVAS_EDITOR * cep)
 	al_set_target_bitmap(cep->scratch_bitmap);
 	al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
 	al_restore_state(&old_state);
+	cep->selection.moving = false;
+}
+
+static void update_cursor(QUIXEL_CANVAS_EDITOR * cep)
+{
+	if(cep->selection.width > 0 && cep->selection.height > 0 && cep->tool_state == QUIXEL_TOOL_STATE_OFF && cep->hover_x >= cep->selection.x && cep->hover_x < cep->selection.x + cep->selection.width && cep->hover_y >= cep->selection.y && cep->hover_y < cep->selection.y + cep->selection.height)
+	{
+		cep->current_cursor = ALLEGRO_SYSTEM_MOUSE_CURSOR_LINK;
+	}
+	else
+	{
+		cep->current_cursor = ALLEGRO_SYSTEM_MOUSE_CURSOR_PRECISION;
+	}
+	if(cep->current_cursor != cep->old_cursor)
+	{
+		al_set_system_mouse_cursor(t3f_display, cep->current_cursor);
+	}
+	cep->old_cursor = cep->current_cursor;
 }
 
 int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
@@ -202,7 +220,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 					canvas_editor->click_y = canvas_editor->hover_y;
 					start_selection(canvas_editor);
 					quixel_tool_selection_logic(canvas_editor);
-//					canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
+					canvas_editor->tool_state = QUIXEL_TOOL_STATE_EDITING;
 					break;
 				}
 			}
@@ -257,6 +275,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				case QUIXEL_TOOL_SELECTION:
 				{
 					finalize_selection(canvas_editor);
+					canvas_editor->tool_state = QUIXEL_TOOL_STATE_OFF;
 					break;
 				}
 			}
@@ -315,6 +334,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 		case MSG_IDLE:
 		{
 			update_window_title(canvas_editor);
+//			update_cursor(canvas_editor);
 			if(!color_equal(canvas_editor->base_color, canvas_editor->last_base_color))
 			{
 				canvas_editor->left_color = canvas_editor->base_color;
@@ -433,7 +453,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			al_store_state(&old_state, ALLEGRO_STATE_TRANSFORM);
 			al_identity_transform(&identity);
 			al_use_transform(&identity);
-			if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_OFF)
+			if(canvas_editor->tool_state != QUIXEL_TOOL_STATE_DRAWING)
 			{
 				quixel_render_canvas(canvas_editor->canvas, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, d->w, d->h);
 			}
