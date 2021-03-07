@@ -23,6 +23,11 @@ QUIXEL_CANVAS_EDITOR * quixel_create_canvas_editor(QUIXEL_CANVAS * cp)
 	{
 		goto fail;
 	}
+	cep->peg_bitmap = al_load_bitmap_flags("data/graphics/peg.png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
+	if(!cep->peg_bitmap)
+	{
+		goto fail;
+	}
 	cep->canvas = cp;
 	cep->base_color = al_map_rgba_f(1.0, 0.0, 0.0, 1.0);
 	return cep;
@@ -39,6 +44,10 @@ QUIXEL_CANVAS_EDITOR * quixel_create_canvas_editor(QUIXEL_CANVAS * cp)
 
 void quixel_destroy_canvas_editor(QUIXEL_CANVAS_EDITOR * cep)
 {
+	if(cep->peg_bitmap)
+	{
+		al_destroy_bitmap(cep->peg_bitmap);
+	}
 	if(cep->scratch_bitmap)
 	{
 		al_destroy_bitmap(cep->scratch_bitmap);
@@ -65,7 +74,7 @@ void quixel_center_canvas_editor(QUIXEL_CANVAS_EDITOR * cep, int frame)
 
 void quixel_unfloat_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep)
 {
-	quixel_draw_primitive_to_canvas(cep->canvas, cep->current_layer, cep->selection.x, cep->selection.y, cep->selection.x + cep->selection.width, cep->selection.y + cep->selection.height, cep->scratch_bitmap, al_map_rgba_f(0, 0, 0, 0), quixel_draw_quad);
-	cep->selection.width = 0;
-	cep->selection.height = 0;
+	quixel_draw_primitive_to_canvas(cep->canvas, cep->current_layer, cep->selection.box.start_x, cep->selection.box.start_y, cep->selection.box.start_x + cep->selection.box.width, cep->selection.box.start_y + cep->selection.box.height, cep->scratch_bitmap, al_map_rgba_f(0, 0, 0, 0), quixel_draw_quad);
+	cep->selection.box.width = 0;
+	cep->selection.box.height = 0;
 }

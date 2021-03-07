@@ -3,6 +3,7 @@
 
 #include "t3gui/t3gui.h"
 #include "canvas.h"
+#include "box.h"
 
 #define QUIXEL_CANVAS_EDITOR_SIGNAL_NONE         0
 #define QUIXEL_CANVAS_EDITOR_SIGNAL_DELETE_LAYER 1
@@ -27,8 +28,7 @@ typedef struct
 {
 
 	int layer;
-	int x, y;
-	int width, height;
+	QUIXEL_BOX box;
 
 	bool moving;
 	int pin_x, pin_y;
@@ -39,6 +39,7 @@ typedef struct
 {
 
 	ALLEGRO_BITMAP * scratch_bitmap;
+	ALLEGRO_BITMAP * peg_bitmap;
 	int view_x, view_y;
 	int view_zoom;
 	int hover_x, hover_y;

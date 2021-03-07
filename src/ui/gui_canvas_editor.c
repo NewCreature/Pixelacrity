@@ -111,16 +111,16 @@ static void finalize_selection(QUIXEL_CANVAS_EDITOR * cep)
 	al_use_transform(&identity);
 	al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
 	al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
-	quixel_render_canvas_layer(cep->canvas, cep->current_layer, cep->selection.x, cep->selection.y, 1, 0, 0, cep->selection.width, cep->selection.height);
+	quixel_render_canvas_layer(cep->canvas, cep->current_layer, cep->selection.box.start_x, cep->selection.box.start_y, 1, 0, 0, cep->selection.box.width, cep->selection.box.height);
 	al_restore_state(&old_state);
-	quixel_draw_primitive_to_canvas(cep->canvas, cep->current_layer, cep->selection.x, cep->selection.y, cep->selection.x + cep->selection.width - 1, cep->selection.y + cep->selection.height - 1, NULL, al_map_rgba_f(0, 0, 0, 0), quixel_draw_filled_rectangle);
+	quixel_draw_primitive_to_canvas(cep->canvas, cep->current_layer, cep->selection.box.start_x, cep->selection.box.start_y, cep->selection.box.start_x + cep->selection.box.width - 1, cep->selection.box.start_y + cep->selection.box.height - 1, NULL, al_map_rgba_f(0, 0, 0, 0), quixel_draw_filled_rectangle);
 }
 
 static void start_selection(QUIXEL_CANVAS_EDITOR * cep)
 {
 	ALLEGRO_STATE old_state;
 
-	if(cep->selection.width > 0 && cep->selection.height > 0)
+	if(cep->selection.box.width > 0 && cep->selection.box.height > 0)
 	{
 		quixel_unfloat_canvas_editor_selection(cep);
 	}
@@ -133,14 +133,6 @@ static void start_selection(QUIXEL_CANVAS_EDITOR * cep)
 
 static void update_cursor(QUIXEL_CANVAS_EDITOR * cep)
 {
-	if(cep->selection.width > 0 && cep->selection.height > 0 && cep->tool_state == QUIXEL_TOOL_STATE_OFF && cep->hover_x >= cep->selection.x && cep->hover_x < cep->selection.x + cep->selection.width && cep->hover_y >= cep->selection.y && cep->hover_y < cep->selection.y + cep->selection.height)
-	{
-		cep->current_cursor = ALLEGRO_SYSTEM_MOUSE_CURSOR_LINK;
-	}
-	else
-	{
-		cep->current_cursor = ALLEGRO_SYSTEM_MOUSE_CURSOR_PRECISION;
-	}
 	if(cep->current_cursor != cep->old_cursor)
 	{
 		al_set_system_mouse_cursor(t3f_display, cep->current_cursor);
@@ -469,10 +461,10 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			{
 				al_draw_rectangle(d->x + (canvas_editor->canvas->frame[i]->x - canvas_editor->view_x) * canvas_editor->view_zoom - 1.0 + 0.5, d->y + (canvas_editor->canvas->frame[i]->y - canvas_editor->view_y) * canvas_editor->view_zoom - 1.0 + 0.5, d->x + (canvas_editor->canvas->frame[i]->x + canvas_editor->canvas->frame[i]->width - canvas_editor->view_x) * canvas_editor->view_zoom + 0.5, d->y + (canvas_editor->canvas->frame[i]->y + canvas_editor->canvas->frame[i]->height - canvas_editor->view_y) * canvas_editor->view_zoom + 0.5, t3f_color_black, 1.0);
 			}
-			if(canvas_editor->selection.width > 0 && canvas_editor->selection.height > 0)
+			if(canvas_editor->selection.box.width > 0 && canvas_editor->selection.box.height > 0)
 			{
-				al_draw_scaled_bitmap(canvas_editor->scratch_bitmap, 0, 0,  canvas_editor->selection.width, canvas_editor->selection.height, d->x + (canvas_editor->selection.x - canvas_editor->view_x) * canvas_editor->view_zoom, d->y + (canvas_editor->selection.y - canvas_editor->view_y) * canvas_editor->view_zoom, canvas_editor->selection.width * canvas_editor->view_zoom, canvas_editor->selection.height * canvas_editor->view_zoom, 0);
-				al_draw_rectangle(d->x + (canvas_editor->selection.x - canvas_editor->view_x) * canvas_editor->view_zoom - 1.0 + 0.5, d->y + (canvas_editor->selection.y - canvas_editor->view_y) * canvas_editor->view_zoom - 1.0 + 0.5, d->x + (canvas_editor->selection.x + canvas_editor->selection.width - canvas_editor->view_x) * canvas_editor->view_zoom + 0.5, d->y + (canvas_editor->selection.y + canvas_editor->selection.height - canvas_editor->view_y) * canvas_editor->view_zoom + 0.5, t3f_color_black, 1.0);
+				al_draw_scaled_bitmap(canvas_editor->scratch_bitmap, 0, 0,  canvas_editor->selection.box.width, canvas_editor->selection.box.height, d->x + (canvas_editor->selection.box.start_x - canvas_editor->view_x) * canvas_editor->view_zoom, d->y + (canvas_editor->selection.box.start_y - canvas_editor->view_y) * canvas_editor->view_zoom, canvas_editor->selection.box.width * canvas_editor->view_zoom, canvas_editor->selection.box.height * canvas_editor->view_zoom, 0);
+				quixel_box_render(&canvas_editor->selection.box, 0, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y);
 			}
 			al_restore_state(&old_state);
 			break;
