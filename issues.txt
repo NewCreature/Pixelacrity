@@ -5,6 +5,20 @@ Quixel 0.1 Issues
 
 [ ]Add controls for resizing selection.
 
+   [ ]Finish box implementation. We need to fix the position of the mid-box
+      handles so they can be positioned in the middle of the pixel when the box
+      with or height is an even number.
+
+      The logic flow should be to update the handle positions each frame that
+      the selection is active. When a handle is being moved, we should update
+      all of the handle positions during the handle move logic as well.
+
+      Handles will probably need some extra data to keep track of where they
+      were clicked, whether they are currently being moved, and where they
+      currently are. We should snap the handles to the pixel grid and require
+      that the handle be moved past the halfway point of the pixel before
+      snapping into the next pixel location.
+
 [ ]Investigate why pixel x-coordinate is offset by -1.
 
    [ ]This might be a bug with Apple high resolution displays. I wasn't able to
