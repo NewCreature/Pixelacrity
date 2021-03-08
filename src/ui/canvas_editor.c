@@ -4,6 +4,18 @@
 #include "canvas_helpers.h"
 #include "primitives.h"
 
+static int get_config_val(ALLEGRO_CONFIG * cp, const char * section, const char * key, int default_val)
+{
+	const char * val;
+
+	val = al_get_config_value(cp, section, key);
+	if(val)
+	{
+		return atoi(val);
+	}
+	return default_val;
+}
+
 QUIXEL_CANVAS_EDITOR * quixel_create_canvas_editor(QUIXEL_CANVAS * cp)
 {
 	QUIXEL_CANVAS_EDITOR * cep;
@@ -30,6 +42,10 @@ QUIXEL_CANVAS_EDITOR * quixel_create_canvas_editor(QUIXEL_CANVAS * cp)
 	}
 	cep->canvas = cp;
 	cep->base_color = al_map_rgba_f(1.0, 0.0, 0.0, 1.0);
+	cep->current_layer = get_config_val(cep->canvas->config, "state", "current_layer", 0);
+	cep->view_x = get_config_val(cep->canvas->config, "state", "view_x", cep->canvas->bitmap_size * 8 + cep->canvas->bitmap_size / 2);
+	cep->view_y = get_config_val(cep->canvas->config, "state", "view_y", cep->canvas->bitmap_size * 8 + cep->canvas->bitmap_size / 2);
+	cep->view_zoom = get_config_val(cep->canvas->config, "state", "view_zoom", 8);
 	return cep;
 
 	fail:

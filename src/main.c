@@ -44,29 +44,16 @@ void app_render(void * data)
 	quixel_render_ui(app->ui);
 }
 
-static int get_config_val(ALLEGRO_CONFIG * cp, const char * section, const char * key, int default_val)
-{
-	const char * val;
-
-	val = al_get_config_value(cp, section, key);
-	if(val)
-	{
-		return atoi(val);
-	}
-	return default_val;
-}
-
 /* initialize our app, load graphics, etc. */
 bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 {
-	char buf[1024];
-
 	/* initialize T3F */
 	if(!t3f_initialize(T3F_APP_TITLE, 640, 480, 60.0, app_logic, app_render, T3F_DEFAULT | T3F_USE_MENU, app))
 	{
 		printf("Error initializing T3F\n");
 		return false;
 	}
+	memset(app, 0, sizeof(APP_INSTANCE));
 
 	app->alpha_shader = quixel_create_pixel_shader("data/shaders/alpha_blend_shader.glsl");
 	if(!app->alpha_shader)
@@ -87,10 +74,6 @@ bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 	{
 		return false;
 	}
-	app->canvas_editor->current_layer = get_config_val(app->canvas->config, "state", "current_layer", 0);
-	app->canvas_editor->view_x = get_config_val(app->canvas->config, "state", "view_x", app->canvas->bitmap_size * 8 + app->canvas->bitmap_size / 2);
-	app->canvas_editor->view_y = get_config_val(app->canvas->config, "state", "view_y", app->canvas->bitmap_size * 8 + app->canvas->bitmap_size / 2);
-	app->canvas_editor->view_zoom = get_config_val(app->canvas->config, "state", "view_zoom", 8);
 
 	app->ui = quixel_create_ui(app->canvas_editor);
 	if(!app->ui)
