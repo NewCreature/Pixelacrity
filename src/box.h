@@ -12,14 +12,21 @@
 #define QUIXEL_BOX_HANDLE_TYPE_RIGHT        8
 #define QUIXEL_BOX_HANDLE_TYPE_MOVE         9
 
+#define QUIXEL_BOX_HANDLE_STATE_IDLE        0
+#define QUIXEL_BOX_HANDLE_STATE_HOVER       1
+#define QUIXEL_BOX_HANDLE_STATE_MOVING      2
+
 typedef struct
 {
 
 	int type;
 	int offset_x, offset_y;
+	int screen_x, screen_y;
 
 	int * link_x;
 	int * link_y;
+
+	int state;
 
 } QUIXEL_BOX_HANDLE;
 
@@ -36,7 +43,8 @@ typedef struct
 
 } QUIXEL_BOX;
 
-void quixel_initialize_box(QUIXEL_BOX * bp, int view_zoom, int x, int y, int width, int height, ALLEGRO_BITMAP * handle_bitmap);
+void quixel_initialize_box(QUIXEL_BOX * bp, int x, int y, int width, int height, ALLEGRO_BITMAP * handle_bitmap);
+void quixel_update_box(QUIXEL_BOX * bp, int view_x, int view_y, int view_zoom);
 void quixel_box_logic(QUIXEL_BOX * bp, int view_x, int view_y, int view_zoom, int offset_x, int offset_y);
 void quixel_box_render(QUIXEL_BOX * bp, int style, int view_x, int view_y, int view_zoom, int offset_x, int offset_y);
 

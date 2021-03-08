@@ -434,6 +434,10 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				canvas_editor->signal = QUIXEL_CANVAS_EDITOR_SIGNAL_DELETE_LAYER;
 				t3f_key[ALLEGRO_KEY_DELETE] = 0;
 			}
+			if(canvas_editor->selection.box.width > 0 && canvas_editor->selection.box.height > 0)
+			{
+				quixel_update_box(&canvas_editor->selection.box, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom);
+			}
 			break;
 		}
 		case MSG_DRAW:
