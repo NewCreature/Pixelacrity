@@ -53,13 +53,28 @@ void quixel_box_logic(QUIXEL_BOX * bp, int view_x, int view_y, int view_zoom, in
 	int peg_size = al_get_bitmap_width(bp->bitmap);
 	int peg_offset = peg_size / 2;
 
+	if(bp->hover_handle >= 0 && bp->handle[bp->hover_handle].state != QUIXEL_BOX_HANDLE_STATE_MOVING)
+	{
+		bp->hover_handle = -1;
+	}
 	for(i = 0; i < 10; i++)
 	{
 		if(bp->handle[i].type != QUIXEL_BOX_HANDLE_TYPE_NONE)
 		{
-			if(t3f_mouse_x >= bp->handle[i].screen_x - peg_offset && t3f_mouse_x <= bp->handle[i].screen_x + peg_offset && t3f_mouse_y >= bp->handle[i].screen_y - peg_offset && t3f_mouse_y <= bp->handle[i].screen_y + peg_offset)
+			if(bp->handle[i].state == QUIXEL_BOX_HANDLE_STATE_MOVING)
 			{
-				printf("peg %d\n", i);
+			}
+			else
+			{
+				if(t3f_mouse_x >= bp->handle[i].screen_x - peg_offset + offset_x && t3f_mouse_x <= bp->handle[i].screen_x + peg_offset + offset_x && t3f_mouse_y >= bp->handle[i].screen_y - peg_offset + offset_y && t3f_mouse_y <= bp->handle[i].screen_y + peg_offset + offset_y)
+				{
+					bp->handle[i].state = QUIXEL_BOX_HANDLE_STATE_HOVER;
+					bp->hover_handle = i;
+				}
+				else if(t3f_mouse_x < bp->handle[i].screen_x - peg_offset + offset_x || t3f_mouse_x > bp->handle[i].screen_x + peg_offset + offset_x || t3f_mouse_y < bp->handle[i].screen_y - peg_offset + offset_y || t3f_mouse_y > bp->handle[i].screen_y + peg_offset + offset_y)
+				{
+					bp->handle[i].state = QUIXEL_BOX_HANDLE_STATE_IDLE;
+				}
 			}
 		}
 	}
@@ -92,7 +107,7 @@ void quixel_box_render(QUIXEL_BOX * bp, int style, int view_x, int view_y, int v
 				{
 					start_x = (*bp->handle[i].link_x - view_x) * view_zoom;
 					start_y = (*bp->handle[i].link_y - view_y) * view_zoom;
-					t3f_draw_bitmap(bp->bitmap, t3f_color_white, offset_x + start_x + bp->handle[i].offset_x - peg_offset, offset_y + start_y + bp->handle[i].offset_y - peg_offset, 0, 0);
+					t3f_draw_bitmap(bp->bitmap, t3f_color_white, bp->handle[i].screen_x + offset_x - peg_offset, bp->handle[i].screen_y + offset_y - peg_offset, 0, 0);
 				}
 			}
 		}

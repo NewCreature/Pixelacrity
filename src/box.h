@@ -40,6 +40,7 @@ typedef struct
 	ALLEGRO_BITMAP * bitmap;
 	QUIXEL_BOX_HANDLE handle[9];
 	int hover_tick; // goes up each tick that the mouse is hovering over this box
+	int hover_handle;
 
 } QUIXEL_BOX;
 
