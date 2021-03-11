@@ -45,7 +45,7 @@ typedef struct
 } QUIXEL_BOX;
 
 void quixel_initialize_box(QUIXEL_BOX * bp, int x, int y, int width, int height, ALLEGRO_BITMAP * handle_bitmap);
-void quixel_update_box(QUIXEL_BOX * bp, int view_x, int view_y, int view_zoom);
+void quixel_update_box_handles(QUIXEL_BOX * bp, int view_x, int view_y, int view_zoom);
 void quixel_box_logic(QUIXEL_BOX * bp, int view_x, int view_y, int view_zoom, int offset_x, int offset_y);
 void quixel_box_render(QUIXEL_BOX * bp, int style, int view_x, int view_y, int view_zoom, int offset_x, int offset_y);
 

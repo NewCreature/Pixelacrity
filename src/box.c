@@ -27,22 +27,34 @@ void quixel_initialize_box(QUIXEL_BOX * bp, int x, int y, int width, int height,
 
 }
 
-/* update boxes each frame before running the logic to modify boxes */
-void quixel_update_box(QUIXEL_BOX * bp, int view_x, int view_y, int view_zoom)
+static void update_box(QUIXEL_BOX * bp)
 {
+	bp->width = bp->end_x - bp->start_x + 1;
+	bp->height = bp->end_y - bp->start_y + 1;
+	bp->middle_x = bp->start_x + bp->width / 2;
+	bp->middle_y = bp->start_y + bp->height / 2;
+}
+
+/* update boxes each frame before running the logic to modify boxes */
+void quixel_update_box_handles(QUIXEL_BOX * bp, int view_x, int view_y, int view_zoom)
+{
+	int offset;
+
 	quixel_initialize_box_handle(&bp->handle[0], view_x, view_y, view_zoom, QUIXEL_BOX_HANDLE_TYPE_TOP_LEFT, -1, -1, &bp->start_x, &bp->start_y);
 	quixel_initialize_box_handle(&bp->handle[1], view_x, view_y, view_zoom, QUIXEL_BOX_HANDLE_TYPE_TOP_RIGHT, view_zoom, -1, &bp->end_x, &bp->start_y);
 	quixel_initialize_box_handle(&bp->handle[2], view_x, view_y, view_zoom, QUIXEL_BOX_HANDLE_TYPE_BOTTOM_LEFT, -1, view_zoom, &bp->start_x, &bp->end_y);
 	quixel_initialize_box_handle(&bp->handle[3], view_x, view_y, view_zoom, QUIXEL_BOX_HANDLE_TYPE_BOTTOM_RIGHT, view_zoom, view_zoom, &bp->end_x, &bp->end_y);
 	if(bp->width > 1)
 	{
-		quixel_initialize_box_handle(&bp->handle[4], view_x, view_y, view_zoom, QUIXEL_BOX_HANDLE_TYPE_TOP, 0, -1, &bp->middle_x, &bp->start_y);
-		quixel_initialize_box_handle(&bp->handle[5], view_x, view_y, view_zoom, QUIXEL_BOX_HANDLE_TYPE_BOTTOM, 0, view_zoom, &bp->middle_x, &bp->end_y);
+		offset = bp->width % 2 == 0 ? 0 : view_zoom / 2;
+		quixel_initialize_box_handle(&bp->handle[4], view_x, view_y, view_zoom, QUIXEL_BOX_HANDLE_TYPE_TOP, offset, -1, &bp->middle_x, &bp->start_y);
+		quixel_initialize_box_handle(&bp->handle[5], view_x, view_y, view_zoom, QUIXEL_BOX_HANDLE_TYPE_BOTTOM, offset, view_zoom, &bp->middle_x, &bp->end_y);
 	}
 	if(bp->height > 1)
 	{
-		quixel_initialize_box_handle(&bp->handle[6], view_x, view_y, view_zoom, QUIXEL_BOX_HANDLE_TYPE_LEFT, -1, 0, &bp->start_x, &bp->middle_y);
-		quixel_initialize_box_handle(&bp->handle[7], view_x, view_y, view_zoom, QUIXEL_BOX_HANDLE_TYPE_RIGHT, view_zoom, 0, &bp->end_x, &bp->middle_y);
+		offset = bp->height % 2 == 0 ? 0 : view_zoom / 2;
+		quixel_initialize_box_handle(&bp->handle[6], view_x, view_y, view_zoom, QUIXEL_BOX_HANDLE_TYPE_LEFT, -1, offset, &bp->start_x, &bp->middle_y);
+		quixel_initialize_box_handle(&bp->handle[7], view_x, view_y, view_zoom, QUIXEL_BOX_HANDLE_TYPE_RIGHT, view_zoom, offset, &bp->end_x, &bp->middle_y);
 	}
 }
 
@@ -63,6 +75,19 @@ void quixel_box_logic(QUIXEL_BOX * bp, int view_x, int view_y, int view_zoom, in
 		{
 			if(bp->handle[i].state == QUIXEL_BOX_HANDLE_STATE_MOVING)
 			{
+				if(bp->handle[i].type == QUIXEL_BOX_HANDLE_TYPE_TOP_LEFT || bp->handle[i].type == QUIXEL_BOX_HANDLE_TYPE_TOP_RIGHT || bp->handle[i].type == QUIXEL_BOX_HANDLE_TYPE_BOTTOM_LEFT || bp->handle[i].type == QUIXEL_BOX_HANDLE_TYPE_BOTTOM_RIGHT || bp->handle[i].type == QUIXEL_BOX_HANDLE_TYPE_LEFT || bp->handle[i].type == QUIXEL_BOX_HANDLE_TYPE_RIGHT)
+				{
+					bp->handle[i].screen_x = t3f_mouse_x - peg_offset - offset_x;
+					*bp->handle[i].link_x = (bp->handle[i].screen_x) / view_zoom + view_x;
+					bp->handle[i].screen_x = (*bp->handle[i].link_x - view_x) * view_zoom + bp->handle[i].offset_x;
+				}
+				if(bp->handle[i].type == QUIXEL_BOX_HANDLE_TYPE_TOP_LEFT || bp->handle[i].type == QUIXEL_BOX_HANDLE_TYPE_TOP_RIGHT || bp->handle[i].type == QUIXEL_BOX_HANDLE_TYPE_BOTTOM_LEFT || bp->handle[i].type == QUIXEL_BOX_HANDLE_TYPE_BOTTOM_RIGHT || bp->handle[i].type == QUIXEL_BOX_HANDLE_TYPE_TOP || bp->handle[i].type == QUIXEL_BOX_HANDLE_TYPE_BOTTOM)
+				{
+					bp->handle[i].screen_y = t3f_mouse_y - peg_offset - offset_y;
+					*bp->handle[i].link_y = (bp->handle[i].screen_y) / view_zoom + view_y;
+					bp->handle[i].screen_y = (*bp->handle[i].link_y - view_y) * view_zoom + bp->handle[i].offset_y;
+				}
+				update_box(bp);
 			}
 			else
 			{
