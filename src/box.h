@@ -41,6 +41,10 @@ typedef struct
 	QUIXEL_BOX_HANDLE handle[9];
 	int hover_tick; // goes up each tick that the mouse is hovering over this box
 	int hover_handle;
+	int hover_x, hover_y;
+	int click_tick;
+	int click_x, click_y;
+	int click_start_x, click_start_y;
 
 } QUIXEL_BOX;
 

@@ -12,9 +12,8 @@ static void quixel_initialize_box_handle(QUIXEL_BOX_HANDLE * hp, int view_x, int
 	hp->screen_y = (*link_y - view_y) * view_zoom + offset_y;
 }
 
-void quixel_initialize_box(QUIXEL_BOX * bp, int x, int y, int width, int height, ALLEGRO_BITMAP * handle_bitmap)
+void quixel_setup_box(QUIXEL_BOX * bp, int x, int y, int width, int height)
 {
-	memset(bp, 0, sizeof(QUIXEL_BOX));
 	bp->start_x = x;
 	bp->start_y = y;
 	bp->width = width;
@@ -23,8 +22,13 @@ void quixel_initialize_box(QUIXEL_BOX * bp, int x, int y, int width, int height,
 	bp->end_y = y + height - 1;
 	bp->middle_x = bp->start_x + bp->width / 2;
 	bp->middle_y = bp->start_y + bp->height / 2;
-	bp->bitmap = handle_bitmap;
+}
 
+void quixel_initialize_box(QUIXEL_BOX * bp, int x, int y, int width, int height, ALLEGRO_BITMAP * handle_bitmap)
+{
+	memset(bp, 0, sizeof(QUIXEL_BOX));
+	bp->bitmap = handle_bitmap;
+	quixel_setup_box(bp, x, y, width, height);
 }
 
 static void update_box(QUIXEL_BOX * bp)
@@ -101,6 +105,35 @@ void quixel_box_logic(QUIXEL_BOX * bp, int view_x, int view_y, int view_zoom, in
 					bp->handle[i].state = QUIXEL_BOX_HANDLE_STATE_IDLE;
 				}
 			}
+		}
+	}
+	if(bp->hover_handle < 0)
+	{
+		if(t3f_mouse_x >= bp->handle[0].screen_x - peg_offset + offset_x && t3f_mouse_x <= bp->handle[1].screen_x + peg_offset + offset_x && t3f_mouse_y >= bp->handle[0].screen_y - peg_offset + offset_y && t3f_mouse_y <= bp->handle[2].screen_y + peg_offset + offset_y)
+		{
+			bp->hover_x = (t3f_mouse_x - offset_x) / view_zoom + view_x;
+			bp->hover_y = (t3f_mouse_y - offset_y) / view_zoom + view_y;
+			if(t3f_mouse_button[0])
+			{
+				if(bp->click_tick == 0)
+				{
+					bp->click_start_x = bp->start_x;
+					bp->click_start_y = bp->start_y;
+					bp->click_x = bp->hover_x;
+					bp->click_y = bp->hover_y;
+				}
+				quixel_setup_box(bp, bp->click_start_x + (bp->hover_x - bp->click_x), bp->click_start_y + (bp->hover_y - bp->click_y), bp->width, bp->height);
+				bp->click_tick++;
+			}
+			else
+			{
+				bp->click_tick = 0;
+			}
+			bp->hover_tick++;
+		}
+		else
+		{
+			bp->hover_tick = 0;
 		}
 	}
 }

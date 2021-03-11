@@ -222,7 +222,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 						canvas_editor->tool_state = QUIXEL_TOOL_STATE_EDITING;
 						canvas_editor->selection.box.handle[canvas_editor->selection.box.hover_handle].state = QUIXEL_BOX_HANDLE_STATE_MOVING;
 					}
-					else
+					else if(canvas_editor->selection.box.hover_tick == 0)
 					{
 						start_selection(canvas_editor);
 						quixel_tool_selection_logic(canvas_editor);
@@ -343,7 +343,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 					if(canvas_editor->selection.box.width > 0 && canvas_editor->selection.box.height > 0 && canvas_editor->selection.box.hover_handle >= 0 && canvas_editor->selection.box.handle[canvas_editor->selection.box.hover_handle].state == QUIXEL_BOX_HANDLE_STATE_MOVING)
 					{
 					}
-					else
+					else if(canvas_editor->selection.box.hover_tick == 0)
 					{
 						quixel_tool_selection_logic(canvas_editor);
 					}
@@ -466,7 +466,10 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			if(canvas_editor->selection.box.width > 0 && canvas_editor->selection.box.height > 0)
 			{
 				quixel_update_box_handles(&canvas_editor->selection.box, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom);
-				quixel_box_logic(&canvas_editor->selection.box, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y);
+//				if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_EDITING)
+				{
+					quixel_box_logic(&canvas_editor->selection.box, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y);
+				}
 //				printf("handle: %d\n", canvas_editor->selection.box.hover_handle);
 			}
 			break;
