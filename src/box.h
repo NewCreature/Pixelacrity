@@ -16,6 +16,11 @@
 #define QUIXEL_BOX_HANDLE_STATE_HOVER       1
 #define QUIXEL_BOX_HANDLE_STATE_MOVING      2
 
+#define QUIXEL_BOX_STATE_IDLE               0
+#define QUIXEL_BOX_STATE_HOVER              1
+#define QUIXEL_BOX_STATE_MOVING             2
+#define QUIXEL_BOX_STATE_RESIZING           3
+
 typedef struct
 {
 
@@ -45,6 +50,7 @@ typedef struct
 	int click_tick;
 	int click_x, click_y;
 	int click_start_x, click_start_y;
+	int state;
 
 } QUIXEL_BOX;
 
