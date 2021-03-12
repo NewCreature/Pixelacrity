@@ -33,10 +33,134 @@ void quixel_initialize_box(QUIXEL_BOX * bp, int x, int y, int width, int height,
 
 static void update_box(QUIXEL_BOX * bp)
 {
-	bp->width = bp->end_x - bp->start_x + 1;
-	bp->height = bp->end_y - bp->start_y + 1;
-	bp->middle_x = bp->start_x + bp->width / 2;
-	bp->middle_y = bp->start_y + bp->height / 2;
+	if(bp->hover_handle >= 0)
+	{
+		bp->width = bp->end_x - bp->start_x + 1;
+		switch(bp->handle[bp->hover_handle].type)
+		{
+			case QUIXEL_BOX_HANDLE_TYPE_TOP_LEFT:
+			{
+				if(*bp->handle[bp->hover_handle].link_x > *bp->handle[1].link_x)
+				{
+					bp->start_x = *bp->handle[bp->hover_handle].link_x;
+					bp->hover_handle = 1;
+				}
+				break;
+			}
+			case QUIXEL_BOX_HANDLE_TYPE_LEFT:
+			{
+				if(*bp->handle[bp->hover_handle].link_x > *bp->handle[7].link_x)
+				{
+					bp->start_x = *bp->handle[bp->hover_handle].link_x;
+					bp->hover_handle = 7;
+				}
+				break;
+			}
+			case QUIXEL_BOX_HANDLE_TYPE_BOTTOM_LEFT:
+			{
+				if(*bp->handle[bp->hover_handle].link_x > *bp->handle[3].link_x)
+				{
+					bp->start_x = *bp->handle[bp->hover_handle].link_x;
+					bp->hover_handle = 3;
+				}
+				break;
+			}
+			case QUIXEL_BOX_HANDLE_TYPE_TOP_RIGHT:
+			{
+				if(*bp->handle[bp->hover_handle].link_x < *bp->handle[0].link_x)
+				{
+					bp->hover_handle = 0;
+					bp->start_x = *bp->handle[bp->hover_handle].link_x;
+				}
+				break;
+			}
+			case QUIXEL_BOX_HANDLE_TYPE_RIGHT:
+			{
+				if(*bp->handle[bp->hover_handle].link_x < *bp->handle[6].link_x)
+				{
+					bp->hover_handle = 6;
+					bp->start_x = *bp->handle[bp->hover_handle].link_x;
+				}
+				break;
+			}
+			case QUIXEL_BOX_HANDLE_TYPE_BOTTOM_RIGHT:
+			{
+				if(*bp->handle[bp->hover_handle].link_x < *bp->handle[2].link_x)
+				{
+					bp->hover_handle = 2;
+					bp->start_x = *bp->handle[bp->hover_handle].link_x;
+				}
+				break;
+			}
+		}
+		if(bp->width < 1)
+		{
+			bp->width = 1;
+		}
+		bp->height = bp->end_y - bp->start_y + 1;
+		switch(bp->handle[bp->hover_handle].type)
+		{
+			case QUIXEL_BOX_HANDLE_TYPE_TOP_LEFT:
+			{
+				if(*bp->handle[bp->hover_handle].link_y > *bp->handle[2].link_y)
+				{
+					bp->start_y = *bp->handle[bp->hover_handle].link_y;
+					bp->hover_handle = 2;
+				}
+				break;
+			}
+			case QUIXEL_BOX_HANDLE_TYPE_TOP:
+			{
+				if(*bp->handle[bp->hover_handle].link_y > *bp->handle[5].link_y)
+				{
+					bp->start_y = *bp->handle[bp->hover_handle].link_y;
+					bp->hover_handle = 5;
+				}
+				break;
+			}
+			case QUIXEL_BOX_HANDLE_TYPE_TOP_RIGHT:
+			{
+				if(*bp->handle[bp->hover_handle].link_y > *bp->handle[3].link_y)
+				{
+					bp->start_y = *bp->handle[bp->hover_handle].link_y;
+					bp->hover_handle = 3;
+				}
+				break;
+			}
+			case QUIXEL_BOX_HANDLE_TYPE_BOTTOM_LEFT:
+			{
+				if(*bp->handle[bp->hover_handle].link_y < *bp->handle[0].link_y)
+				{
+					bp->hover_handle = 0;
+					bp->start_y = *bp->handle[bp->hover_handle].link_y;
+				}
+				break;
+			}
+			case QUIXEL_BOX_HANDLE_TYPE_BOTTOM:
+			{
+				if(*bp->handle[bp->hover_handle].link_y < *bp->handle[4].link_y)
+				{
+					bp->hover_handle = 4;
+					bp->start_y = *bp->handle[bp->hover_handle].link_y;
+				}
+				break;
+			}
+			case QUIXEL_BOX_HANDLE_TYPE_BOTTOM_RIGHT:
+			{
+				if(*bp->handle[bp->hover_handle].link_y < *bp->handle[1].link_y)
+				{
+					bp->hover_handle = 1;
+					bp->start_y = *bp->handle[bp->hover_handle].link_y;
+				}
+				break;
+			}
+		}
+		if(bp->height < 1)
+		{
+			bp->height = 1;
+		}
+	}
+	quixel_setup_box(bp, bp->start_x, bp->start_y, bp->width, bp->height);
 }
 
 /* update boxes each frame before running the logic to modify boxes */
@@ -146,6 +270,7 @@ void quixel_box_logic(QUIXEL_BOX * bp, int view_x, int view_y, int view_zoom, in
 					bp->handle[bp->hover_handle].screen_y = (*bp->handle[bp->hover_handle].link_y - view_y) * view_zoom + bp->handle[bp->hover_handle].offset_y;
 				}
 				update_box(bp);
+				quixel_update_box_handles(bp, view_x, view_y, view_zoom);
 			}
 			else
 			{
