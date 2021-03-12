@@ -9,6 +9,8 @@ Quixel 0.1 Issues
    [ ]Selection box drifts when moving handles back and forth accross each
       other.
 
+   [ ]Can't select handle when hovering over selection.
+
 [ ]Investigate why pixel x-coordinate is offset by -1.
 
    [ ]This might be a bug with Apple high resolution displays. I wasn't able to
