@@ -6,6 +6,9 @@ Quixel 0.1 Issues
    [ ]Contents of selection are erased when releasing the mouse button after
       move.
 
+   [ ]Selection box drifts when moving handles back and forth accross each
+      other.
+
 [ ]Investigate why pixel x-coordinate is offset by -1.
 
    [ ]This might be a bug with Apple high resolution displays. I wasn't able to
