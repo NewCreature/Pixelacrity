@@ -17,6 +17,11 @@ Quixel 0.1 Issues
 
    [ ]Resizing a selection should unfloat and refloat the selection.
 
+   [ ]It might be worth consolidating the initial selection and resize code. We
+      can make the selection a 1x1 box initially and select the upper-left
+      handle. Running the selection resize logic from there should give us the
+      same results as creating the box separately.
+
 [ ]Investigate why pixel x-coordinate is offset by -1.
 
    [ ]This might be a bug with Apple high resolution displays. I wasn't able to
