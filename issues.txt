@@ -13,7 +13,7 @@ Quixel 0.1 Issues
 
    [ ]Export current frame to specified file.
 
-      [ ]We should default to exporting the whole image if no frame is
+      [X]We should default to exporting the whole image if no frame is
          selected.
 
       [ ]Consider saving the export path for each frame in the canvas settings
