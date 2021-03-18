@@ -1,27 +1,6 @@
 Quixel 0.1 Issues
 -----------------
 
-[ ]Allow floating selection to be moved.
-
-   [ ]Contents of selection are erased when releasing the mouse button after
-      move.
-
-   [ ]Selection box drifts when moving handles back and forth accross each
-      other.
-
-   [ ]Can't select handle when hovering over selection.
-
-   [ ]Selection should not stop floating until user action. When moving a
-      selection around, we don't want to pick up background elements when we are
-      trying to get the position of our floating selection correct.
-
-   [ ]Resizing a selection should unfloat and refloat the selection.
-
-   [ ]It might be worth consolidating the initial selection and resize code. We
-      can make the selection a 1x1 box initially and select the upper-left
-      handle. Running the selection resize logic from there should give us the
-      same results as creating the box separately.
-
 [ ]Investigate why pixel x-coordinate is offset by -1.
 
    [ ]This might be a bug with Apple high resolution displays. I wasn't able to
@@ -155,3 +134,24 @@ Closed Issues
       currently are. We should snap the handles to the pixel grid and require
       that the handle be moved past the halfway point of the pixel before
       snapping into the next pixel location.
+
+[X]Allow floating selection to be moved.
+
+   [X]Contents of selection are erased when releasing the mouse button after
+      move.
+
+   [X]Selection box drifts when moving handles back and forth accross each
+      other.
+
+   [X]Can't select handle when hovering over selection.
+
+   [X]Selection should not stop floating until user action. When moving a
+      selection around, we don't want to pick up background elements when we are
+      trying to get the position of our floating selection correct.
+
+   [X]Resizing a selection should unfloat and refloat the selection.
+
+   [X]It might be worth consolidating the initial selection and resize code. We
+      can make the selection a 1x1 box initially and select the upper-left
+      handle. Running the selection resize logic from there should give us the
+      same results as creating the box separately.
