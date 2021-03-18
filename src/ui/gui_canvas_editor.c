@@ -135,6 +135,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 	int cx, cy, w, h;
 	QUIXEL_BOX old_box;
 	T3GUI_THEME * theme;
+	ALLEGRO_COLOR color = t3f_color_black;
 
 	switch(msg)
 	{
@@ -546,11 +547,19 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			theme = t3gui_get_default_theme();
 			for(i = 0; i < canvas_editor->canvas->frame_max; i++)
 			{
+				if(i == canvas_editor->current_frame)
+				{
+					color = t3f_color_black;
+				}
+				else
+				{
+					color = al_map_rgba_f(0.0, 0.0, 0.0, 0.25);
+				}
 				if(theme)
 				{
-					al_draw_text(theme->state[0].font[0], t3f_color_black, d->x + (canvas_editor->canvas->frame[i]->x - canvas_editor->view_x) * canvas_editor->view_zoom, d->y + (canvas_editor->canvas->frame[i]->y - canvas_editor->view_y) * canvas_editor->view_zoom - al_get_font_line_height(theme->state[0].font[0]) - QUIXEL_UI_ELEMENT_SPACE, 0, canvas_editor->canvas->frame[i]->name);
+					al_draw_text(theme->state[0].font[0], color, d->x + (canvas_editor->canvas->frame[i]->x - canvas_editor->view_x) * canvas_editor->view_zoom, d->y + (canvas_editor->canvas->frame[i]->y - canvas_editor->view_y) * canvas_editor->view_zoom - al_get_font_line_height(theme->state[0].font[0]) - QUIXEL_UI_ELEMENT_SPACE, 0, canvas_editor->canvas->frame[i]->name);
 				}
-				al_draw_rectangle(d->x + (canvas_editor->canvas->frame[i]->x - canvas_editor->view_x) * canvas_editor->view_zoom - 1.0 + 0.5, d->y + (canvas_editor->canvas->frame[i]->y - canvas_editor->view_y) * canvas_editor->view_zoom - 1.0 + 0.5, d->x + (canvas_editor->canvas->frame[i]->x + canvas_editor->canvas->frame[i]->width - canvas_editor->view_x) * canvas_editor->view_zoom + 0.5, d->y + (canvas_editor->canvas->frame[i]->y + canvas_editor->canvas->frame[i]->height - canvas_editor->view_y) * canvas_editor->view_zoom + 0.5, t3f_color_black, 1.0);
+				al_draw_rectangle(d->x + (canvas_editor->canvas->frame[i]->x - canvas_editor->view_x) * canvas_editor->view_zoom - 1.0 + 0.5, d->y + (canvas_editor->canvas->frame[i]->y - canvas_editor->view_y) * canvas_editor->view_zoom - 1.0 + 0.5, d->x + (canvas_editor->canvas->frame[i]->x + canvas_editor->canvas->frame[i]->width - canvas_editor->view_x) * canvas_editor->view_zoom + 0.5, d->y + (canvas_editor->canvas->frame[i]->y + canvas_editor->canvas->frame[i]->height - canvas_editor->view_y) * canvas_editor->view_zoom + 0.5, color, 1.0);
 			}
 			if(canvas_editor->selection.box.width > 0 && canvas_editor->selection.box.height > 0)
 			{
