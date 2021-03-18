@@ -239,6 +239,8 @@ int quixel_menu_file_export(int id, void * data)
 	const char * extension;
 	ALLEGRO_PATH * path;
 	ALLEGRO_BITMAP * bp;
+	ALLEGRO_STATE old_state;
+	int x, y, w, h;
 
 	file_chooser = al_create_native_file_dialog(NULL, "Export canvas to image file...", "*.png;*.tga;*.pcx;*.bmp;*.jpg", ALLEGRO_FILECHOOSER_SAVE);
 	if(file_chooser)
@@ -259,11 +261,31 @@ int quixel_menu_file_export(int id, void * data)
 						{
 							al_set_path_extension(path, ".png");
 						}
-						bp = quixel_get_bitmap_from_canvas(app->canvas, 0, app->canvas->layer_max, 0);
+
+						al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);
+						if(app->canvas_editor->current_frame < app->canvas->frame_max)
+						{
+							x = app->canvas->frame[app->canvas_editor->current_frame]->box.start_x;
+							y = app->canvas->frame[app->canvas_editor->current_frame]->box.start_y;
+							w = app->canvas->frame[app->canvas_editor->current_frame]->box.width;
+							h = app->canvas->frame[app->canvas_editor->current_frame]->box.height;
+						}
+						else
+						{
+							quixel_get_canvas_dimensions(app->canvas, &x, &y, &w, &h, 0);
+						}
+						al_set_new_bitmap_flags(ALLEGRO_MEMORY_BITMAP);
+						bp = al_create_bitmap(w, h);
+						al_restore_state(&old_state);
 						if(bp)
 						{
+							quixel_render_canvas_to_bitmap(app->canvas, 0, app->canvas->layer_max, x, y, w, h, 0, bp);
 							al_save_bitmap(al_path_cstr(path, '/'), bp);
 							al_destroy_bitmap(bp);
+						}
+						else
+						{
+							printf("Error exporting bitmap!\n");
 						}
 						al_destroy_path(path);
 					}
