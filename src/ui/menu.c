@@ -47,6 +47,9 @@ bool quixel_setup_menus(QUIXEL_UI * uip)
 	}
 	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FRAME], "Add", 0, NULL, quixel_menu_frame_add, menu_base_update_proc);
 	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FRAME], "Delete", 0, NULL, quixel_menu_frame_delete, menu_base_update_proc);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FRAME], NULL, 0, NULL, NULL, NULL);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FRAME], "Previous", 0, NULL, quixel_menu_frame_previous, menu_base_update_proc);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FRAME], "Next", 0, NULL, quixel_menu_frame_next, menu_base_update_proc);
 
 	uip->menu[QUIXEL_UI_MENU_MAIN] = al_create_menu();
 	if(!uip->menu[QUIXEL_UI_MENU_MAIN])

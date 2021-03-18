@@ -25,3 +25,31 @@ int quixel_menu_frame_delete(int id, void * data)
 	}
 	return 0;
 }
+
+int quixel_menu_frame_previous(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	app->canvas_editor->current_frame--;
+	if(app->canvas_editor->current_frame < 0)
+	{
+		app->canvas_editor->current_frame = app->canvas->frame_max - 1;
+		if(app->canvas_editor->current_frame < 0)
+		{
+			app->canvas_editor->current_frame = 0;
+		}
+	}
+	return 0;
+}
+
+int quixel_menu_frame_next(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	app->canvas_editor->current_frame++;
+	if(app->canvas_editor->current_frame >= app->canvas->frame_max)
+	{
+		app->canvas_editor->current_frame = 0;
+	}
+	return 0;
+}

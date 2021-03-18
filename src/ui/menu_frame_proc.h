@@ -3,5 +3,7 @@
 
 int quixel_menu_frame_add(int id, void * data);
 int quixel_menu_frame_delete(int id, void * data);
+int quixel_menu_frame_previous(int id, void * data);
+int quixel_menu_frame_next(int id, void * data);
 
 #endif
