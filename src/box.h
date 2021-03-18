@@ -18,8 +18,9 @@
 
 #define QUIXEL_BOX_STATE_IDLE               0
 #define QUIXEL_BOX_STATE_HOVER              1
-#define QUIXEL_BOX_STATE_MOVING             2
-#define QUIXEL_BOX_STATE_RESIZING           3
+#define QUIXEL_BOX_STATE_HOVER_HANDLE       2
+#define QUIXEL_BOX_STATE_MOVING             3
+#define QUIXEL_BOX_STATE_RESIZING           4
 
 typedef struct
 {

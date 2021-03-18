@@ -189,9 +189,9 @@ void quixel_update_box_handles(QUIXEL_BOX * bp, int view_x, int view_y, int view
 /* handle user interaction with boxes */
 void quixel_box_logic(QUIXEL_BOX * bp, int view_x, int view_y, int view_zoom, int offset_x, int offset_y)
 {
-	int i;
 	int peg_size = al_get_bitmap_width(bp->bitmap);
 	int peg_offset = peg_size / 2;
+	int i;
 
 	bp->hover_x = (t3f_mouse_x - offset_x) / view_zoom + view_x;
 	bp->hover_y = (t3f_mouse_y - offset_y) / view_zoom + view_y;
@@ -199,7 +199,6 @@ void quixel_box_logic(QUIXEL_BOX * bp, int view_x, int view_y, int view_zoom, in
 	{
 		case QUIXEL_BOX_STATE_IDLE:
 		{
-			/* see if we are hovering over a handle */
 			bp->hover_handle = -1;
 			for(i = 0; i < 10; i++)
 			{
@@ -218,21 +217,28 @@ void quixel_box_logic(QUIXEL_BOX * bp, int view_x, int view_y, int view_zoom, in
 					bp->state = QUIXEL_BOX_STATE_HOVER;
 				}
 			}
-			else if(t3f_mouse_button[0])
+			else
 			{
-				bp->state = QUIXEL_BOX_STATE_RESIZING;
+				bp->state = QUIXEL_BOX_STATE_HOVER_HANDLE;
 			}
 			break;
 		}
 		case QUIXEL_BOX_STATE_HOVER:
 		{
-			if(t3f_mouse_button[0])
+			bp->hover_handle = -1;
+			for(i = 0; i < 10; i++)
 			{
-				bp->click_start_x = bp->start_x;
-				bp->click_start_y = bp->start_y;
-				bp->click_x = bp->hover_x;
-				bp->click_y = bp->hover_y;
-				bp->state = QUIXEL_BOX_STATE_MOVING;
+				if(bp->handle[i].type != QUIXEL_BOX_HANDLE_TYPE_NONE)
+				{
+					if(t3f_mouse_x >= bp->handle[i].screen_x - peg_offset + offset_x && t3f_mouse_x <= bp->handle[i].screen_x + peg_offset + offset_x && t3f_mouse_y >= bp->handle[i].screen_y - peg_offset + offset_y && t3f_mouse_y <= bp->handle[i].screen_y + peg_offset + offset_y)
+					{
+						bp->hover_handle = i;
+					}
+				}
+			}
+			if(bp->hover_handle >= 0)
+			{
+				bp->state = QUIXEL_BOX_STATE_HOVER_HANDLE;
 			}
 			else if(t3f_mouse_x < bp->handle[0].screen_x - peg_offset + offset_x || t3f_mouse_x > bp->handle[1].screen_x + peg_offset + offset_x || t3f_mouse_y < bp->handle[0].screen_y - peg_offset + offset_y || t3f_mouse_y > bp->handle[2].screen_y + peg_offset + offset_y)
 			{
@@ -240,42 +246,37 @@ void quixel_box_logic(QUIXEL_BOX * bp, int view_x, int view_y, int view_zoom, in
 			}
 			break;
 		}
-		case QUIXEL_BOX_STATE_MOVING:
+		case QUIXEL_BOX_STATE_HOVER_HANDLE:
 		{
-			if(!t3f_mouse_button[0])
+			if(t3f_mouse_x < bp->handle[bp->hover_handle].screen_x - peg_offset + offset_x || t3f_mouse_x > bp->handle[bp->hover_handle].screen_x + peg_offset + offset_x || t3f_mouse_y < bp->handle[bp->hover_handle].screen_y - peg_offset + offset_y || t3f_mouse_y > bp->handle[bp->hover_handle].screen_y + peg_offset + offset_y)
 			{
+				bp->hover_handle = -1;
 				bp->state = QUIXEL_BOX_STATE_IDLE;
 			}
-			else
-			{
-				quixel_setup_box(bp, bp->click_start_x + (bp->hover_x - bp->click_x), bp->click_start_y + (bp->hover_y - bp->click_y), bp->width, bp->height);
-				bp->click_tick++;
-			}
+			break;
+		}
+		case QUIXEL_BOX_STATE_MOVING:
+		{
+			quixel_setup_box(bp, bp->click_start_x + (bp->hover_x - bp->click_x), bp->click_start_y + (bp->hover_y - bp->click_y), bp->width, bp->height);
+			bp->click_tick++;
 			break;
 		}
 		case QUIXEL_BOX_STATE_RESIZING:
 		{
-			if(t3f_mouse_button[0] && bp->hover_handle >= 0)
+			if(bp->handle[bp->hover_handle].type == QUIXEL_BOX_HANDLE_TYPE_TOP_LEFT || bp->handle[bp->hover_handle].type == QUIXEL_BOX_HANDLE_TYPE_TOP_RIGHT || bp->handle[bp->hover_handle].type == QUIXEL_BOX_HANDLE_TYPE_BOTTOM_LEFT || bp->handle[bp->hover_handle].type == QUIXEL_BOX_HANDLE_TYPE_BOTTOM_RIGHT || bp->handle[bp->hover_handle].type == QUIXEL_BOX_HANDLE_TYPE_LEFT || bp->handle[bp->hover_handle].type == QUIXEL_BOX_HANDLE_TYPE_RIGHT)
 			{
-				if(bp->handle[bp->hover_handle].type == QUIXEL_BOX_HANDLE_TYPE_TOP_LEFT || bp->handle[bp->hover_handle].type == QUIXEL_BOX_HANDLE_TYPE_TOP_RIGHT || bp->handle[bp->hover_handle].type == QUIXEL_BOX_HANDLE_TYPE_BOTTOM_LEFT || bp->handle[bp->hover_handle].type == QUIXEL_BOX_HANDLE_TYPE_BOTTOM_RIGHT || bp->handle[bp->hover_handle].type == QUIXEL_BOX_HANDLE_TYPE_LEFT || bp->handle[bp->hover_handle].type == QUIXEL_BOX_HANDLE_TYPE_RIGHT)
-				{
-					bp->handle[bp->hover_handle].screen_x = t3f_mouse_x - peg_offset - offset_x;
-					*bp->handle[bp->hover_handle].link_x = (bp->handle[bp->hover_handle].screen_x) / view_zoom + view_x;
-					bp->handle[bp->hover_handle].screen_x = (*bp->handle[bp->hover_handle].link_x - view_x) * view_zoom + bp->handle[bp->hover_handle].offset_x;
-				}
-				if(bp->handle[bp->hover_handle].type == QUIXEL_BOX_HANDLE_TYPE_TOP_LEFT || bp->handle[bp->hover_handle].type == QUIXEL_BOX_HANDLE_TYPE_TOP_RIGHT || bp->handle[bp->hover_handle].type == QUIXEL_BOX_HANDLE_TYPE_BOTTOM_LEFT || bp->handle[bp->hover_handle].type == QUIXEL_BOX_HANDLE_TYPE_BOTTOM_RIGHT || bp->handle[bp->hover_handle].type == QUIXEL_BOX_HANDLE_TYPE_TOP || bp->handle[bp->hover_handle].type == QUIXEL_BOX_HANDLE_TYPE_BOTTOM)
-				{
-					bp->handle[bp->hover_handle].screen_y = t3f_mouse_y - peg_offset - offset_y;
-					*bp->handle[bp->hover_handle].link_y = (bp->handle[bp->hover_handle].screen_y) / view_zoom + view_y;
-					bp->handle[bp->hover_handle].screen_y = (*bp->handle[bp->hover_handle].link_y - view_y) * view_zoom + bp->handle[bp->hover_handle].offset_y;
-				}
-				update_box(bp);
-				quixel_update_box_handles(bp, view_x, view_y, view_zoom);
+				bp->handle[bp->hover_handle].screen_x = t3f_mouse_x - peg_offset - offset_x;
+				*bp->handle[bp->hover_handle].link_x = (bp->handle[bp->hover_handle].screen_x) / view_zoom + view_x;
+				bp->handle[bp->hover_handle].screen_x = (*bp->handle[bp->hover_handle].link_x - view_x) * view_zoom + bp->handle[bp->hover_handle].offset_x;
 			}
-			else
+			if(bp->handle[bp->hover_handle].type == QUIXEL_BOX_HANDLE_TYPE_TOP_LEFT || bp->handle[bp->hover_handle].type == QUIXEL_BOX_HANDLE_TYPE_TOP_RIGHT || bp->handle[bp->hover_handle].type == QUIXEL_BOX_HANDLE_TYPE_BOTTOM_LEFT || bp->handle[bp->hover_handle].type == QUIXEL_BOX_HANDLE_TYPE_BOTTOM_RIGHT || bp->handle[bp->hover_handle].type == QUIXEL_BOX_HANDLE_TYPE_TOP || bp->handle[bp->hover_handle].type == QUIXEL_BOX_HANDLE_TYPE_BOTTOM)
 			{
-				bp->state = QUIXEL_BOX_STATE_IDLE;
+				bp->handle[bp->hover_handle].screen_y = t3f_mouse_y - peg_offset - offset_y;
+				*bp->handle[bp->hover_handle].link_y = (bp->handle[bp->hover_handle].screen_y) / view_zoom + view_y;
+				bp->handle[bp->hover_handle].screen_y = (*bp->handle[bp->hover_handle].link_y - view_y) * view_zoom + bp->handle[bp->hover_handle].offset_y;
 			}
+			update_box(bp);
+			quixel_update_box_handles(bp, view_x, view_y, view_zoom);
 			break;
 		}
 	}
