@@ -88,9 +88,8 @@ void quixel_center_canvas_editor(QUIXEL_CANVAS_EDITOR * cep, int frame)
 	}
 }
 
-void quixel_unfloat_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep)
+void quixel_unfloat_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_BOX * bp)
 {
-	quixel_draw_primitive_to_canvas(cep->canvas, cep->current_layer, cep->selection.box.start_x, cep->selection.box.start_y, cep->selection.box.start_x + cep->selection.box.width, cep->selection.box.start_y + cep->selection.box.height, cep->scratch_bitmap, al_map_rgba_f(0, 0, 0, 0), quixel_draw_quad);
-	cep->selection.box.width = 0;
-	cep->selection.box.height = 0;
+	quixel_draw_primitive_to_canvas(cep->canvas, cep->current_layer, bp->start_x, bp->start_y, bp->start_x + bp->width, bp->start_y + bp->height, cep->scratch_bitmap, al_map_rgba_f(0, 0, 0, 0), QUIXEL_RENDER_COMPOSITE, quixel_draw_quad);
+	cep->selection.floating = false;
 }

@@ -32,6 +32,7 @@ typedef struct
 
 	bool moving;
 	int pin_x, pin_y;
+	bool floating;
 
 } QUIXEL_SELECTION_DATA;
 
@@ -79,6 +80,6 @@ QUIXEL_CANVAS_EDITOR * quixel_create_canvas_editor(QUIXEL_CANVAS * cp);
 void quixel_destroy_canvas_editor(QUIXEL_CANVAS_EDITOR * cep);
 
 void quixel_center_canvas_editor(QUIXEL_CANVAS_EDITOR * cep, int frame);
-void quixel_unfloat_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep);
+void quixel_unfloat_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_BOX * bp);
 
 #endif
