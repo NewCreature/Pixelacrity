@@ -28,10 +28,10 @@ static QUIXEL_CANVAS_FRAME * quixel_create_canvas_frame(const char * name, int x
 	{
 		goto fail;
 	}
-	fp->x = x;
-	fp->y = y;
-	fp->width = width;
-	fp->height = height;
+	fp->box.start_x = x;
+	fp->box.start_y = y;
+	fp->box.width = width;
+	fp->box.height = height;
 
 	return fp;
 

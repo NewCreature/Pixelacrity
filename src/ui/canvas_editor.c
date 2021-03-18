@@ -77,8 +77,8 @@ void quixel_center_canvas_editor(QUIXEL_CANVAS_EDITOR * cep, int frame)
 
 	if(frame < cep->canvas->frame_max)
 	{
-		cep->view_x = cep->canvas->frame[frame]->x + cep->canvas->frame[frame]->width / 2 - (cep->editor_element->w / cep->view_zoom) / 2;
-		cep->view_y = cep->canvas->frame[frame]->y + cep->canvas->frame[frame]->height / 2 - (cep->editor_element->h / cep->view_zoom) / 2;
+		cep->view_x = cep->canvas->frame[frame]->box.start_x + cep->canvas->frame[frame]->box.width / 2 - (cep->editor_element->w / cep->view_zoom) / 2;
+		cep->view_y = cep->canvas->frame[frame]->box.start_y + cep->canvas->frame[frame]->box.height / 2 - (cep->editor_element->h / cep->view_zoom) / 2;
 	}
 	else
 	{

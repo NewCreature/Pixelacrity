@@ -348,10 +348,10 @@ static bool quixel_save_canvas_f(QUIXEL_CANVAS * cp, ALLEGRO_FILE * fp, const ch
 			{
 				goto fail;
 			}
-			al_fwrite32le(fp, cp->frame[i]->x);
-			al_fwrite32le(fp, cp->frame[i]->y);
-			al_fwrite32le(fp, cp->frame[i]->width);
-			al_fwrite32le(fp, cp->frame[i]->height);
+			al_fwrite32le(fp, cp->frame[i]->box.start_x);
+			al_fwrite32le(fp, cp->frame[i]->box.start_y);
+			al_fwrite32le(fp, cp->frame[i]->box.width);
+			al_fwrite32le(fp, cp->frame[i]->box.height);
 		}
 	}
 

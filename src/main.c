@@ -30,9 +30,9 @@ void app_logic(void * data)
 	{
 		sprintf(app->ui->status_left_message, "(%d, %d)", abs(app->canvas_editor->click_x - app->canvas_editor->hover_x) + 1, abs(app->canvas_editor->click_y - app->canvas_editor->hover_y) + 1);
 	}
-	if(app->canvas_editor->current_frame < app->canvas->frame_max)
+	else if(app->canvas_editor->tool_state == QUIXEL_TOOL_STATE_EDITING)
 	{
-		sprintf(app->ui->status_left_message, "Frame: %s (%d, %d)", app->canvas->frame[app->canvas_editor->current_frame]->name, app->canvas->frame[app->canvas_editor->current_frame]->width, app->canvas->frame[app->canvas_editor->current_frame]->height);
+		sprintf(app->ui->status_left_message, "Selection: (%d, %d)", app->canvas_editor->selection.box.width, app->canvas_editor->selection.box.height);
 	}
 }
 

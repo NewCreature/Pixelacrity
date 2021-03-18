@@ -148,7 +148,7 @@ static bool resave_allowed(QUIXEL_CANVAS_EDITOR * cep)
 		if(!strcasecmp(extension, ".png") || !strcasecmp(extension, ".tga"))
 		{
 			quixel_get_canvas_dimensions(cep->canvas, &offset_x, &offset_y, &width, &height, 0);
-			if(offset_x >= cep->canvas->frame[0]->x && offset_x + width <= cep->canvas->frame[0]->x + cep->canvas->frame[0]->width && offset_y >= cep->canvas->frame[0]->y && offset_y + height <= cep->canvas->frame[0]->y + cep->canvas->frame[0]->height)
+			if(offset_x >= cep->canvas->frame[0]->box.start_x && offset_x + width <= cep->canvas->frame[0]->box.start_x + cep->canvas->frame[0]->box.width && offset_y >= cep->canvas->frame[0]->box.start_y && offset_y + height <= cep->canvas->frame[0]->box.start_y + cep->canvas->frame[0]->box.height)
 			{
 				return true;
 			}
