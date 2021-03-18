@@ -35,15 +35,15 @@ static void update_box(QUIXEL_BOX * bp)
 {
 	if(bp->hover_handle >= 0)
 	{
-		bp->width = bp->end_x - bp->start_x + 1;
+		bp->width = abs(bp->end_x - bp->start_x) + 1;
 		switch(bp->handle[bp->hover_handle].type)
 		{
 			case QUIXEL_BOX_HANDLE_TYPE_TOP_LEFT:
 			{
 				if(*bp->handle[bp->hover_handle].link_x > *bp->handle[1].link_x)
 				{
-					bp->start_x = *bp->handle[bp->hover_handle].link_x;
 					bp->hover_handle = 1;
+					bp->start_x = *bp->handle[bp->hover_handle].link_x;
 				}
 				break;
 			}
@@ -51,8 +51,8 @@ static void update_box(QUIXEL_BOX * bp)
 			{
 				if(*bp->handle[bp->hover_handle].link_x > *bp->handle[7].link_x)
 				{
-					bp->start_x = *bp->handle[bp->hover_handle].link_x;
 					bp->hover_handle = 7;
+					bp->start_x = *bp->handle[bp->hover_handle].link_x;
 				}
 				break;
 			}
@@ -60,8 +60,8 @@ static void update_box(QUIXEL_BOX * bp)
 			{
 				if(*bp->handle[bp->hover_handle].link_x > *bp->handle[3].link_x)
 				{
-					bp->start_x = *bp->handle[bp->hover_handle].link_x;
 					bp->hover_handle = 3;
+					bp->start_x = *bp->handle[bp->hover_handle].link_x;
 				}
 				break;
 			}
@@ -69,8 +69,8 @@ static void update_box(QUIXEL_BOX * bp)
 			{
 				if(*bp->handle[bp->hover_handle].link_x < *bp->handle[0].link_x)
 				{
-					bp->hover_handle = 0;
 					bp->start_x = *bp->handle[bp->hover_handle].link_x;
+					bp->hover_handle = 0;
 				}
 				break;
 			}
@@ -78,8 +78,8 @@ static void update_box(QUIXEL_BOX * bp)
 			{
 				if(*bp->handle[bp->hover_handle].link_x < *bp->handle[6].link_x)
 				{
-					bp->hover_handle = 6;
 					bp->start_x = *bp->handle[bp->hover_handle].link_x;
+					bp->hover_handle = 6;
 				}
 				break;
 			}
@@ -87,25 +87,21 @@ static void update_box(QUIXEL_BOX * bp)
 			{
 				if(*bp->handle[bp->hover_handle].link_x < *bp->handle[2].link_x)
 				{
-					bp->hover_handle = 2;
 					bp->start_x = *bp->handle[bp->hover_handle].link_x;
+					bp->hover_handle = 2;
 				}
 				break;
 			}
 		}
-		if(bp->width < 1)
-		{
-			bp->width = 1;
-		}
-		bp->height = bp->end_y - bp->start_y + 1;
+		bp->height = abs(bp->end_y - bp->start_y) + 1;
 		switch(bp->handle[bp->hover_handle].type)
 		{
 			case QUIXEL_BOX_HANDLE_TYPE_TOP_LEFT:
 			{
 				if(*bp->handle[bp->hover_handle].link_y > *bp->handle[2].link_y)
 				{
-					bp->start_y = *bp->handle[bp->hover_handle].link_y;
 					bp->hover_handle = 2;
+					bp->start_y = *bp->handle[bp->hover_handle].link_y;
 				}
 				break;
 			}
@@ -113,8 +109,8 @@ static void update_box(QUIXEL_BOX * bp)
 			{
 				if(*bp->handle[bp->hover_handle].link_y > *bp->handle[5].link_y)
 				{
-					bp->start_y = *bp->handle[bp->hover_handle].link_y;
 					bp->hover_handle = 5;
+					bp->start_y = *bp->handle[bp->hover_handle].link_y;
 				}
 				break;
 			}
@@ -122,8 +118,8 @@ static void update_box(QUIXEL_BOX * bp)
 			{
 				if(*bp->handle[bp->hover_handle].link_y > *bp->handle[3].link_y)
 				{
-					bp->start_y = *bp->handle[bp->hover_handle].link_y;
 					bp->hover_handle = 3;
+					bp->start_y = *bp->handle[bp->hover_handle].link_y;
 				}
 				break;
 			}
@@ -131,8 +127,8 @@ static void update_box(QUIXEL_BOX * bp)
 			{
 				if(*bp->handle[bp->hover_handle].link_y < *bp->handle[0].link_y)
 				{
-					bp->hover_handle = 0;
 					bp->start_y = *bp->handle[bp->hover_handle].link_y;
+					bp->hover_handle = 0;
 				}
 				break;
 			}
@@ -140,8 +136,8 @@ static void update_box(QUIXEL_BOX * bp)
 			{
 				if(*bp->handle[bp->hover_handle].link_y < *bp->handle[4].link_y)
 				{
-					bp->hover_handle = 4;
 					bp->start_y = *bp->handle[bp->hover_handle].link_y;
+					bp->hover_handle = 4;
 				}
 				break;
 			}
@@ -149,15 +145,11 @@ static void update_box(QUIXEL_BOX * bp)
 			{
 				if(*bp->handle[bp->hover_handle].link_y < *bp->handle[1].link_y)
 				{
-					bp->hover_handle = 1;
 					bp->start_y = *bp->handle[bp->hover_handle].link_y;
+					bp->hover_handle = 1;
 				}
 				break;
 			}
-		}
-		if(bp->height < 1)
-		{
-			bp->height = 1;
 		}
 	}
 	quixel_setup_box(bp, bp->start_x, bp->start_y, bp->width, bp->height);
