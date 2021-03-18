@@ -91,5 +91,5 @@ void quixel_draw_quad(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEG
 {
 	quixel_sort_coordinates(&x1, &x2);
 	quixel_sort_coordinates(&y1, &y2);
-	al_draw_bitmap(bp, x1, y1, 0);
+	al_draw_bitmap_region(bp, 0, 0, x2 - x1, y2 - y1, x1, y1, 0);
 }
