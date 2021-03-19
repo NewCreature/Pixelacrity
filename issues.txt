@@ -34,7 +34,13 @@ Quixel 0.1 Issues
 
    [ ]Need controls for adding and removing frames (menu items, etc.).
 
-[ ]Add color palette with all primary and secondary colors.
+[ ]Finish implementing color palette.
+
+   [ ]Use default EGA color palette.
+
+   [ ]Make colors configurable. The default palette should be able to be
+      restored at any time. Custom color palettes should be able to be saved and
+      reloaded.
 
 
 Closed Issues
