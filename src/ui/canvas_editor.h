@@ -24,6 +24,8 @@
 #define QUIXEL_COLOR_PICKER_SHADES 11
 #define QUIXEL_COLOR_PICKER_SCALE   8
 
+#define QUIXEL_COLOR_PALETTE_MAX  128
+
 typedef struct
 {
 
@@ -65,6 +67,7 @@ typedef struct
 	ALLEGRO_COLOR start_color;
 	ALLEGRO_COLOR shade_color;
 	ALLEGRO_COLOR alpha_color;
+	ALLEGRO_COLOR palette[QUIXEL_COLOR_PALETTE_MAX];
 
 	T3GUI_ELEMENT * shade_slider_element;
 	T3GUI_ELEMENT * alpha_slider_element;
