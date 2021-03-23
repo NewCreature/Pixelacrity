@@ -11,6 +11,7 @@
 #include "gui_color.h"
 #include "gui_palette.h"
 #include "gui_canvas_editor.h"
+#include "ega_palette.h"
 
 static ALLEGRO_BITMAP * make_checkerboard_bitmap(ALLEGRO_COLOR c1, ALLEGRO_COLOR c2)
 {
@@ -61,7 +62,7 @@ static bool add_color_picker(QUIXEL_CANVAS_EDITOR * cep, T3GUI_DIALOG * dp, int 
 
 static bool add_color_palette(QUIXEL_CANVAS_EDITOR * cep, T3GUI_DIALOG * dp, int x, int y)
 {
-	int i, pos_x = x;
+	int i, j, pos_x = x;
 	int left_panel_width;
 
 	left_panel_width = QUIXEL_COLOR_PICKER_SHADES * QUIXEL_COLOR_PICKER_SCALE + QUIXEL_COLOR_PICKER_SCALE;
@@ -69,6 +70,17 @@ static bool add_color_palette(QUIXEL_CANVAS_EDITOR * cep, T3GUI_DIALOG * dp, int
 	{
 		t3gui_dialog_add_element(dp, NULL, quixel_gui_color_proc, pos_x, y, QUIXEL_COLOR_PICKER_SCALE, QUIXEL_COLOR_PICKER_SCALE, 0, 0, 0, 0, &cep->palette[i], &cep->base_color, NULL);
 		pos_x += QUIXEL_COLOR_PICKER_SCALE;
+	}
+	y += QUIXEL_COLOR_PICKER_SCALE;
+	for(i = 0; i < 8; i++)
+	{
+		pos_x = x;
+		for(j = 0; j < 8; j++)
+		{
+			t3gui_dialog_add_element(dp, NULL, quixel_gui_color_proc, pos_x, y, QUIXEL_COLOR_PICKER_SCALE, QUIXEL_COLOR_PICKER_SCALE, 0, 0, 0, 0, &cep->palette[i * 8 + j + 9], &cep->base_color, NULL);
+			pos_x += QUIXEL_COLOR_PICKER_SCALE;
+		}
+		y += QUIXEL_COLOR_PICKER_SCALE;
 	}
 
 	return true;
@@ -81,6 +93,7 @@ QUIXEL_UI * quixel_create_ui(QUIXEL_CANVAS_EDITOR * cep)
 	int left_panel_width;
 	int pos_y;
 	int status_height;
+	int i;
 
 	uip = malloc(sizeof(QUIXEL_UI));
 	if(uip)
@@ -102,6 +115,10 @@ QUIXEL_UI * quixel_create_ui(QUIXEL_CANVAS_EDITOR * cep)
 		cep->palette[6] = al_map_rgb_f(1.0, 1.0, 1.0);
 		cep->palette[7] = al_map_rgb_f(0.0, 0.0, 0.0);
 		cep->palette[8] = al_map_rgb_f(0.5, 0.5, 0.5);
+		for(i = 0; i < 64; i++)
+		{
+			cep->palette[9 + i] = quixel_get_ega_palette_color(i);
+		}
 
 		if(!quixel_setup_menus(uip))
 		{
@@ -146,7 +163,7 @@ QUIXEL_UI * quixel_create_ui(QUIXEL_CANVAS_EDITOR * cep)
 		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, quixel_gui_color_proc, QUIXEL_COLOR_PICKER_SHADES * QUIXEL_COLOR_PICKER_SCALE + QUIXEL_COLOR_PICKER_SCALE - QUIXEL_COLOR_PICKER_SCALE, pos_y, QUIXEL_COLOR_PICKER_SCALE, QUIXEL_COLOR_PICKER_SCALE, 0, 0, 0, 0, &cep->alpha_color, &cep->left_color, NULL);
 		pos_y += QUIXEL_COLOR_PICKER_SCALE;
 		add_color_palette(cep, uip->dialog[QUIXEL_UI_DIALOG_MAIN], 0, pos_y);
-		pos_y += QUIXEL_COLOR_PICKER_SCALE;
+		pos_y += QUIXEL_COLOR_PICKER_SCALE * 9;
 		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, quixel_gui_palette_proc, 0, pos_y, left_panel_width, t3f_default_view->height - pos_y, 0, 0, 0, 0, &cep->base_color, NULL, NULL);
 
 		default_theme = t3gui_get_default_theme();
