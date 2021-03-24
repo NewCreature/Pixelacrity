@@ -89,6 +89,9 @@ typedef struct
 	QUIXEL_CANVAS * canvas;
 	char canvas_path[4096];
 
+	int undo_count;
+	int redo_count;
+
 } QUIXEL_CANVAS_EDITOR;
 
 QUIXEL_CANVAS_EDITOR * quixel_create_canvas_editor(QUIXEL_CANVAS * cp);
@@ -96,5 +99,7 @@ void quixel_destroy_canvas_editor(QUIXEL_CANVAS_EDITOR * cep);
 
 void quixel_center_canvas_editor(QUIXEL_CANVAS_EDITOR * cep, int frame);
 void quixel_unfloat_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_BOX * bp);
+bool quixel_make_canvas_editor_undo_state(QUIXEL_CANVAS_EDITOR * cep, int layer, int x, int y, int width, int height, const char * fn);
+bool quixel_apply_canvas_editor_undo_state(QUIXEL_CANVAS_EDITOR * cep, const char * fn);
 
 #endif

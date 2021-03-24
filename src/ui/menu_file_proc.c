@@ -262,7 +262,6 @@ int quixel_menu_file_export(int id, void * data)
 							al_set_path_extension(path, ".png");
 						}
 
-						al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);
 						if(app->canvas_editor->current_frame < app->canvas->frame_max)
 						{
 							x = app->canvas->frame[app->canvas_editor->current_frame]->box.start_x;
@@ -274,6 +273,7 @@ int quixel_menu_file_export(int id, void * data)
 						{
 							quixel_get_canvas_dimensions(app->canvas, &x, &y, &w, &h, 0);
 						}
+						al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);
 						al_set_new_bitmap_flags(ALLEGRO_MEMORY_BITMAP);
 						bp = al_create_bitmap(w, h);
 						al_restore_state(&old_state);
