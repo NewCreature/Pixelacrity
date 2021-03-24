@@ -66,7 +66,9 @@ typedef struct
 	ALLEGRO_COLOR pick_color[QUIXEL_COLOR_PICKER_SHADES];
 	ALLEGRO_COLOR start_color;
 	ALLEGRO_COLOR shade_color;
+	ALLEGRO_COLOR last_shade_color;
 	ALLEGRO_COLOR alpha_color;
+	ALLEGRO_COLOR last_alpha_color;
 	ALLEGRO_COLOR hover_color;
 	ALLEGRO_COLOR palette[QUIXEL_COLOR_PALETTE_MAX];
 
