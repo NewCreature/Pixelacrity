@@ -67,6 +67,7 @@ typedef struct
 	ALLEGRO_COLOR start_color;
 	ALLEGRO_COLOR shade_color;
 	ALLEGRO_COLOR alpha_color;
+	ALLEGRO_COLOR hover_color;
 	ALLEGRO_COLOR palette[QUIXEL_COLOR_PALETTE_MAX];
 
 	T3GUI_ELEMENT * shade_slider_element;

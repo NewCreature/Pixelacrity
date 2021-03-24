@@ -330,3 +330,17 @@ void quixel_draw_primitive_to_canvas(QUIXEL_CANVAS * cp, int layer, int x1, int 
 	}
 	al_restore_state(&old_state);
 }
+
+ALLEGRO_COLOR quixel_get_canvas_pixel(QUIXEL_CANVAS * cp, int layer, int x, int y)
+{
+	int tx, ty;
+
+	tx = x / cp->bitmap_size;
+	ty = y / cp->bitmap_size;
+
+	if(layer < cp->layer_max && cp->layer[layer]->bitmap[ty][tx])
+	{
+		return al_get_pixel(cp->layer[layer]->bitmap[ty][tx], x % cp->bitmap_size, y % cp->bitmap_size);
+	}
+	return al_map_rgba_f(0.0, 0.0, 0.0, 0.0);
+}

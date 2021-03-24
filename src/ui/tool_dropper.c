@@ -1,18 +1,7 @@
 #include "canvas_editor.h"
+#include "canvas_helpers.h"
 
 void quixel_tool_dropper_logic(QUIXEL_CANVAS_EDITOR * cep)
 {
-	int tx, ty;
-
-	tx = cep->hover_x / cep->canvas->bitmap_size;
-	ty = cep->hover_y / cep->canvas->bitmap_size;
-
-	if(cep->current_layer < cep->canvas->layer_max && cep->canvas->layer[cep->current_layer]->bitmap[ty][tx])
-	{
-		cep->base_color = al_get_pixel(cep->canvas->layer[cep->current_layer]->bitmap[ty][tx], cep->hover_x % cep->canvas->bitmap_size, cep->hover_y % cep->canvas->bitmap_size);
-	}
-	else
-	{
-		cep->base_color = al_map_rgba_f(0.0, 0.0, 0.0, 0.0);
-	}
+	cep->base_color = quixel_get_canvas_pixel(cep->canvas, cep->current_layer, cep->hover_x, cep->hover_y);
 }
