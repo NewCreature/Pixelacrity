@@ -6,11 +6,36 @@
 #include "ui/menu_file_proc.h"
 #include "ui/menu_edit_proc.h"
 
+void app_event_handler(ALLEGRO_EVENT * event, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	t3f_event_handler(event);
+	switch(event->type)
+	{
+		case ALLEGRO_EVENT_DISPLAY_RESIZE:
+		{
+			app->restart_ui = true;
+			break;
+		}
+	}
+}
+
 /* main logic routine */
 void app_logic(void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
+	if(app->restart_ui)
+	{
+		if(app->ui)
+		{
+			quixel_destroy_ui(app->ui);
+		}
+		app->ui = quixel_create_ui(app->canvas_editor);
+		t3gui_show_dialog(app->ui->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, T3GUI_PLAYER_NO_ESCAPE, app);
+		app->restart_ui = false;
+	}
 	/* handle signals */
 	if(app->canvas_editor)
 	{
@@ -48,12 +73,13 @@ void app_render(void * data)
 bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 {
 	/* initialize T3F */
-	if(!t3f_initialize(T3F_APP_TITLE, 640, 480, 60.0, app_logic, app_render, T3F_DEFAULT | T3F_USE_MENU, app))
+	if(!t3f_initialize(T3F_APP_TITLE, 640, 480, 60.0, app_logic, app_render, T3F_DEFAULT | T3F_USE_MENU | T3F_RESIZABLE | T3F_NO_SCALE, app))
 	{
 		printf("Error initializing T3F\n");
 		return false;
 	}
 	memset(app, 0, sizeof(APP_INSTANCE));
+	t3f_set_event_handler(app_event_handler);
 
 	app->alpha_shader = quixel_create_pixel_shader("data/shaders/alpha_blend_shader.glsl");
 	if(!app->alpha_shader)
@@ -75,13 +101,7 @@ bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 		return false;
 	}
 
-	app->ui = quixel_create_ui(app->canvas_editor);
-	if(!app->ui)
-	{
-		printf("Unable to create UI!\n");
-		return false;
-	}
-	t3gui_show_dialog(app->ui->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, T3GUI_PLAYER_NO_ESCAPE, app);
+	app->restart_ui = true;
 
 	al_set_blender(ALLEGRO_ADD, ALLEGRO_ALPHA, ALLEGRO_INVERSE_ALPHA);
 
