@@ -141,6 +141,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 	{
 		case MSG_GOTMOUSE:
 		{
+			canvas_editor->hover_color = quixel_get_canvas_pixel(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y);
 			d->flags |= D_TRACKMOUSE;
 			break;
 		}
@@ -148,6 +149,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 		{
 			if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_OFF)
 			{
+				canvas_editor->hover_color = al_map_rgba_f(0.0, 0.0, 0.0, 0.0);
 				d->flags &= ~D_TRACKMOUSE;
 			}
 			break;
@@ -516,6 +518,10 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			{
 				canvas_editor->signal = QUIXEL_CANVAS_EDITOR_SIGNAL_DELETE_LAYER;
 				t3f_key[ALLEGRO_KEY_DELETE] = 0;
+			}
+			if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_OFF)
+			{
+				canvas_editor->hover_color = quixel_get_canvas_pixel(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y);
 			}
 			if(canvas_editor->selection.box.width > 0 && canvas_editor->selection.box.height > 0 && canvas_editor->selection.box.state == QUIXEL_BOX_STATE_IDLE)
 			{
