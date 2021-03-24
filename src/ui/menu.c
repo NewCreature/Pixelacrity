@@ -68,7 +68,7 @@ void quixel_destroy_menus(QUIXEL_UI * uip)
 {
 	int i;
 
-	for(i = 0; i < QUIXEL_UI_MAX_MENUS; i++)
+	for(i = QUIXEL_UI_MAX_MENUS - 1; i >= 0; i--)
 	{
 		if(uip->menu[i])
 		{
