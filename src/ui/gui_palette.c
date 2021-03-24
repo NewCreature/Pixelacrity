@@ -31,7 +31,14 @@ int quixel_gui_palette_proc(int msg, T3GUI_ELEMENT * d, int c)
 			{
 				if(t3f_mouse_x - d->x >= 0 && t3f_mouse_x - d->x < al_get_bitmap_width(_palette_bitmap) && t3f_mouse_y - d->y >= 0 && t3f_mouse_y - d->y < al_get_bitmap_height(_palette_bitmap))
 				{
-					*(ALLEGRO_COLOR *)d->dp = al_get_pixel(_palette_bitmap, t3f_mouse_x - d->x, t3f_mouse_y - d->y);
+					if(t3f_mouse_button[0])
+					{
+						*(ALLEGRO_COLOR *)d->dp = al_get_pixel(_palette_bitmap, t3f_mouse_x - d->x, t3f_mouse_y - d->y);
+					}
+					else
+					{
+						*(ALLEGRO_COLOR *)d->dp2 = al_get_pixel(_palette_bitmap, t3f_mouse_x - d->x, t3f_mouse_y - d->y);
+					}
 				}
 			}
 			break;
@@ -43,7 +50,7 @@ int quixel_gui_palette_proc(int msg, T3GUI_ELEMENT * d, int c)
 		}
 		case MSG_MOUSEMOVE:
 		{
-			if(t3f_mouse_button[0])
+			if(t3f_mouse_button[0] || t3f_mouse_button[1])
 			{
 				quixel_gui_palette_proc(MSG_MOUSEDOWN, d, c);
 			}

@@ -41,7 +41,8 @@ QUIXEL_CANVAS_EDITOR * quixel_create_canvas_editor(QUIXEL_CANVAS * cp)
 		goto fail;
 	}
 	cep->canvas = cp;
-	cep->base_color = al_map_rgba_f(1.0, 0.0, 0.0, 1.0);
+	cep->left_base_color = al_map_rgba_f(1.0, 0.0, 0.0, 1.0);
+	cep->right_base_color = al_map_rgba_f(0.0, 0.0, 0.0, 0.0);
 	cep->current_layer = get_config_val(cep->canvas->config, "state", "current_layer", 0);
 	cep->view_x = get_config_val(cep->canvas->config, "state", "view_x", cep->canvas->bitmap_size * 8 + cep->canvas->bitmap_size / 2);
 	cep->view_y = get_config_val(cep->canvas->config, "state", "view_y", cep->canvas->bitmap_size * 8 + cep->canvas->bitmap_size / 2);

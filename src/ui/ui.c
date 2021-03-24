@@ -46,7 +46,7 @@ static bool add_color_picker(QUIXEL_CANVAS_EDITOR * cep, T3GUI_DIALOG * dp, int 
 	left_panel_width = QUIXEL_COLOR_PICKER_SHADES * QUIXEL_COLOR_PICKER_SCALE + QUIXEL_COLOR_PICKER_SCALE;
 	for(i = 0; i < QUIXEL_COLOR_PICKER_SHADES; i++)
 	{
-		t3gui_dialog_add_element(dp, NULL, quixel_gui_color_proc, pos_x, y, QUIXEL_COLOR_PICKER_SCALE, QUIXEL_COLOR_PICKER_SCALE, 0, 0, 0, 0, &cep->pick_color[i], &cep->left_color, NULL);
+		t3gui_dialog_add_element(dp, NULL, quixel_gui_color_proc, pos_x, y, QUIXEL_COLOR_PICKER_SCALE, QUIXEL_COLOR_PICKER_SCALE, 0, 0, 0, 0, &cep->pick_color[i], &cep->left_color, &cep->right_color);
 		if(i <= 0 || i >= QUIXEL_COLOR_PICKER_SHADES - 2)
 		{
 			pos_x += QUIXEL_COLOR_PICKER_SCALE + QUIXEL_COLOR_PICKER_SCALE / 2;
@@ -68,7 +68,7 @@ static bool add_color_palette(QUIXEL_CANVAS_EDITOR * cep, T3GUI_DIALOG * dp, int
 	left_panel_width = QUIXEL_COLOR_PICKER_SHADES * QUIXEL_COLOR_PICKER_SCALE + QUIXEL_COLOR_PICKER_SCALE;
 	for(i = 0; i < 9; i++)
 	{
-		t3gui_dialog_add_element(dp, NULL, quixel_gui_color_proc, pos_x, y, QUIXEL_COLOR_PICKER_SCALE, QUIXEL_COLOR_PICKER_SCALE, 0, 0, 0, 0, &cep->palette[i], &cep->base_color, NULL);
+		t3gui_dialog_add_element(dp, NULL, quixel_gui_color_proc, pos_x, y, QUIXEL_COLOR_PICKER_SCALE, QUIXEL_COLOR_PICKER_SCALE, 0, 0, 0, 0, &cep->palette[i], &cep->left_base_color, &cep->right_base_color);
 		pos_x += QUIXEL_COLOR_PICKER_SCALE;
 	}
 	y += QUIXEL_COLOR_PICKER_SCALE;
@@ -77,7 +77,7 @@ static bool add_color_palette(QUIXEL_CANVAS_EDITOR * cep, T3GUI_DIALOG * dp, int
 		pos_x = x;
 		for(j = 0; j < 8; j++)
 		{
-			t3gui_dialog_add_element(dp, NULL, quixel_gui_color_proc, pos_x, y, QUIXEL_COLOR_PICKER_SCALE, QUIXEL_COLOR_PICKER_SCALE, 0, 0, 0, 0, &cep->palette[i * 8 + j + 9], &cep->base_color, NULL);
+			t3gui_dialog_add_element(dp, NULL, quixel_gui_color_proc, pos_x, y, QUIXEL_COLOR_PICKER_SCALE, QUIXEL_COLOR_PICKER_SCALE, 0, 0, 0, 0, &cep->palette[i * 8 + j + 9], &cep->left_base_color, &cep->right_base_color);
 			pos_x += QUIXEL_COLOR_PICKER_SCALE;
 		}
 		y += QUIXEL_COLOR_PICKER_SCALE;
@@ -152,22 +152,26 @@ QUIXEL_UI * quixel_create_ui(QUIXEL_CANVAS_EDITOR * cep)
 		left_panel_width = QUIXEL_COLOR_PICKER_SHADES * QUIXEL_COLOR_PICKER_SCALE + QUIXEL_COLOR_PICKER_SCALE;
 		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_box_proc, 0, 0, left_panel_width, t3f_default_view->height, 0, 0, 0, 0, NULL, NULL, NULL);
 		pos_y = 0;
-		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, quixel_gui_color_proc, 0, pos_y, left_panel_width / 2, 24, 0, 0, 0, 0, &cep->left_color, NULL, NULL);
-		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, quixel_gui_color_proc, left_panel_width / 2, 0, left_panel_width / 2, 24, 0, 0, 0, 0, &cep->right_color, NULL, NULL);
-		pos_y += 24;
-		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, quixel_gui_color_proc, 0, pos_y, left_panel_width, 24, 0, 0, 0, 0, &cep->hover_color, NULL, NULL);
-		pos_y += 24;
+		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, quixel_gui_color_proc, 0, pos_y, left_panel_width / 2, 48, 0, 0, 0, 0, &cep->left_color, NULL, NULL);
+		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, quixel_gui_color_proc, left_panel_width / 2, 0, left_panel_width / 2, 48, 0, 0, 0, 0, &cep->right_color, NULL, NULL);
+		pos_y += 48;
+		cep->left_shade_slider_element = t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_slider_proc, 0, pos_y, left_panel_width / 2, QUIXEL_COLOR_PICKER_SCALE, 0, 0, 1000, 0, NULL, NULL, NULL);
+		cep->right_shade_slider_element = t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_slider_proc, left_panel_width / 2, pos_y, left_panel_width / 2, QUIXEL_COLOR_PICKER_SCALE, 0, 0, 1000, 0, NULL, NULL, NULL);
+		pos_y += QUIXEL_COLOR_PICKER_SCALE;
+		cep->left_alpha_slider_element = t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_slider_proc, 0, pos_y, left_panel_width / 2, QUIXEL_COLOR_PICKER_SCALE, 0, 0, 1000, 0, NULL, NULL, NULL);
+		cep->right_alpha_slider_element = t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_slider_proc, left_panel_width / 2, pos_y, left_panel_width / 2, QUIXEL_COLOR_PICKER_SCALE, 0, 0, 1000, 0, NULL, NULL, NULL);
+		pos_y += QUIXEL_COLOR_PICKER_SCALE;
+		pos_y += QUIXEL_UI_ELEMENT_SPACE;
+
 		add_color_picker(cep, uip->dialog[QUIXEL_UI_DIALOG_MAIN], 0, pos_y);
 		pos_y += QUIXEL_COLOR_PICKER_SCALE;
-		cep->shade_slider_element = t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_slider_proc, 0, pos_y, QUIXEL_COLOR_PICKER_SHADES * QUIXEL_COLOR_PICKER_SCALE + QUIXEL_COLOR_PICKER_SCALE - QUIXEL_COLOR_PICKER_SCALE, QUIXEL_COLOR_PICKER_SCALE, 0, 0, 1000, 0, NULL, NULL, NULL);
-		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, quixel_gui_color_proc, QUIXEL_COLOR_PICKER_SHADES * QUIXEL_COLOR_PICKER_SCALE + QUIXEL_COLOR_PICKER_SCALE - QUIXEL_COLOR_PICKER_SCALE, pos_y, QUIXEL_COLOR_PICKER_SCALE, QUIXEL_COLOR_PICKER_SCALE, 0, 0, 0, 0, &cep->shade_color, &cep->left_color, NULL);
-		pos_y += QUIXEL_COLOR_PICKER_SCALE;
-		cep->alpha_slider_element = t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_slider_proc, 0, pos_y, QUIXEL_COLOR_PICKER_SHADES * QUIXEL_COLOR_PICKER_SCALE + QUIXEL_COLOR_PICKER_SCALE - QUIXEL_COLOR_PICKER_SCALE, QUIXEL_COLOR_PICKER_SCALE, 0, 0, 1000, 0, NULL, NULL, NULL);
-		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, quixel_gui_color_proc, QUIXEL_COLOR_PICKER_SHADES * QUIXEL_COLOR_PICKER_SCALE + QUIXEL_COLOR_PICKER_SCALE - QUIXEL_COLOR_PICKER_SCALE, pos_y, QUIXEL_COLOR_PICKER_SCALE, QUIXEL_COLOR_PICKER_SCALE, 0, 0, 0, 0, &cep->alpha_color, &cep->left_color, NULL);
-		pos_y += QUIXEL_COLOR_PICKER_SCALE;
+		pos_y += QUIXEL_UI_ELEMENT_SPACE;
+
 		add_color_palette(cep, uip->dialog[QUIXEL_UI_DIALOG_MAIN], 0, pos_y);
 		pos_y += QUIXEL_COLOR_PICKER_SCALE * 9;
-		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, quixel_gui_palette_proc, 0, pos_y, left_panel_width, t3f_default_view->height - pos_y, 0, 0, 0, 0, &cep->base_color, NULL, NULL);
+		pos_y += QUIXEL_UI_ELEMENT_SPACE;
+
+		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, quixel_gui_palette_proc, 0, pos_y, left_panel_width, t3f_default_view->height - pos_y, 0, 0, 0, 0, &cep->left_base_color, &cep->right_base_color, NULL);
 
 		default_theme = t3gui_get_default_theme();
 		if(!default_theme)

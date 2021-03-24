@@ -47,6 +47,7 @@ typedef struct
 	int view_zoom;
 	int hover_x, hover_y;
 	int click_x, click_y;
+	ALLEGRO_COLOR click_color;
 	int release_x, release_y;
 	int current_layer;
 	int current_frame;
@@ -57,23 +58,31 @@ typedef struct
 	QUIXEL_SELECTION_DATA selection;
 	bool modified;
 	bool update_title;
-	ALLEGRO_COLOR base_color;
-	ALLEGRO_COLOR last_base_color;
+	ALLEGRO_COLOR left_base_color;
+	ALLEGRO_COLOR last_left_base_color;
 	ALLEGRO_COLOR left_color;
 	ALLEGRO_COLOR last_left_color;
+	ALLEGRO_COLOR left_shade_color;
+	ALLEGRO_COLOR last_left_shade_color;
+	ALLEGRO_COLOR left_alpha_color;
+	ALLEGRO_COLOR last_left_alpha_color;
+	ALLEGRO_COLOR right_base_color;
+	ALLEGRO_COLOR last_right_base_color;
 	ALLEGRO_COLOR right_color;
 	ALLEGRO_COLOR last_right_color;
+	ALLEGRO_COLOR right_shade_color;
+	ALLEGRO_COLOR last_right_shade_color;
+	ALLEGRO_COLOR right_alpha_color;
+	ALLEGRO_COLOR last_right_alpha_color;
 	ALLEGRO_COLOR pick_color[QUIXEL_COLOR_PICKER_SHADES];
 	ALLEGRO_COLOR start_color;
-	ALLEGRO_COLOR shade_color;
-	ALLEGRO_COLOR last_shade_color;
-	ALLEGRO_COLOR alpha_color;
-	ALLEGRO_COLOR last_alpha_color;
 	ALLEGRO_COLOR hover_color;
 	ALLEGRO_COLOR palette[QUIXEL_COLOR_PALETTE_MAX];
 
-	T3GUI_ELEMENT * shade_slider_element;
-	T3GUI_ELEMENT * alpha_slider_element;
+	T3GUI_ELEMENT * left_shade_slider_element;
+	T3GUI_ELEMENT * left_alpha_slider_element;
+	T3GUI_ELEMENT * right_shade_slider_element;
+	T3GUI_ELEMENT * right_alpha_slider_element;
 	T3GUI_ELEMENT * editor_element;
 
 	int signal;
