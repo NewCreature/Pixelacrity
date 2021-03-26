@@ -101,21 +101,21 @@ bool quixel_make_canvas_editor_undo_state(QUIXEL_CANVAS_EDITOR * cep, int layer,
 	ALLEGRO_BITMAP * bp = NULL;
 	ALLEGRO_FILE * fp = NULL;
 
-	al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);
-	al_set_new_bitmap_flags(ALLEGRO_MEMORY_BITMAP);
 	if(width <= 0 || height <= 0)
 	{
 		quixel_get_canvas_dimensions(cep->canvas, &x, &y, &width, &height, 0);
 	}
 	if(width > 0 && height > 0)
 	{
+		al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);
+		al_set_new_bitmap_flags(ALLEGRO_MEMORY_BITMAP);
 		bp = al_create_bitmap(width, height);
+		al_restore_state(&old_state);
 		if(!bp)
 		{
 			goto fail;
 		}
 	}
-	al_restore_state(&old_state);
 	if(width > 0 && height > 0)
 	{
 		quixel_render_canvas_to_bitmap(cep->canvas, layer, layer + 1, x, y, width, height, 0, bp);
