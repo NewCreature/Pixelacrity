@@ -163,10 +163,13 @@ static void draw_canvas_layers(QUIXEL_CANVAS * cp, int start_layer, int end_laye
 		{
 			al_set_blender(ALLEGRO_ADD, ALLEGRO_ALPHA, ALLEGRO_INVERSE_ALPHA);
 		}
-		flags = cp->layer[i]->flags & ~flags_filter;
-		if(!(flags & QUIXEL_CANVAS_FLAG_HIDDEN))
+		if(i < cp->layer_max)
 		{
-			draw_canvas_layer(cp, i, flags, bp, offset_x, offset_y, width, height);
+			flags = cp->layer[i]->flags & ~flags_filter;
+			if(!(flags & QUIXEL_CANVAS_FLAG_HIDDEN))
+			{
+				draw_canvas_layer(cp, i, flags, bp, offset_x, offset_y, width, height);
+			}
 		}
 	}
 }
