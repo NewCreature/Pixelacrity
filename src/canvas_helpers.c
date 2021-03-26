@@ -179,7 +179,12 @@ void quixel_render_canvas_to_bitmap(QUIXEL_CANVAS * cp, int start_layer, int end
 	ALLEGRO_STATE old_state;
 
 	al_store_state(&old_state, ALLEGRO_STATE_TRANSFORM | ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_BLENDER);
-	draw_canvas_layers(cp, start_layer, end_layer, flags_filter, bp, x, y, w, h);
+	al_set_target_bitmap(bp);
+	al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
+	if(start_layer < cp->layer_max && end_layer <= cp->layer_max)
+	{
+		draw_canvas_layers(cp, start_layer, end_layer, flags_filter, bp, x, y, w, h);
+	}
 	al_restore_state(&old_state);
 }
 
