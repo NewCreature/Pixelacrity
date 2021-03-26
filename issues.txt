@@ -1,6 +1,28 @@
 Quixel 0.1 Issues
 -----------------
 
+[ ]Crash when resizing on M1 Macbook Air.
+
+[ ]Line tool places start and end pixels too far to the left.
+
+[ ]Make pixel tool work like the other tools by rendering to a scratch bitmap
+   before ultimately rendering to the canvas when the user releases the mouse
+   button. This is primarily to optimize undo state sizes by only saving the
+   area that was edited. For large drawings, the old method would have to save
+   huge amounts of data each time the pixel tool was used.
+
+[ ]Finish undo implementation.
+
+   [ ]Add support for multiple types of undo states.
+
+   [ ]Make selection moving undoable.
+
+   [ ]Make frame editing undoable.
+
+   [ ]Implement applying undo states.
+
+   [ ]Implement saving and applying redo states.
+
 [ ]Investigate why pixel x-coordinate is offset by -1.
 
    [ ]This might be a bug with Apple high resolution displays. I wasn't able to
