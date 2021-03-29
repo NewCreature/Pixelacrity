@@ -3,6 +3,8 @@ Quixel 0.1 Issues
 
 [ ]Crash when resizing on M1 Macbook Air.
 
+[ ]Drawing tools seemingly randomly use incorrect color.
+
 [ ]Line tool places start and end pixels too far to the left.
 
 [ ]Make pixel tool work like the other tools by rendering to a scratch bitmap
