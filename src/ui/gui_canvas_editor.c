@@ -174,6 +174,16 @@ static bool create_primitive_undo(QUIXEL_CANVAS_EDITOR * cep)
 	return create_undo(cep, x1, y1, x2 - x1 + 1, y2 - y1 + 1);
 }
 
+static void clear_bitmap(ALLEGRO_BITMAP * bp)
+{
+	ALLEGRO_STATE old_state;
+
+	al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP);
+	al_set_target_bitmap(bp);
+	al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
+	al_restore_state(&old_state);
+}
+
 int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 {
 	QUIXEL_CANVAS_EDITOR * canvas_editor = (QUIXEL_CANVAS_EDITOR *)d->dp;
@@ -208,20 +218,21 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			{
 				case QUIXEL_TOOL_PIXEL:
 				{
-					if(!create_undo(canvas_editor, canvas_editor->current_layer, 0, 0, 0))
-					{
-						printf("no undo!\n");
-					}
 					click_on_canvas(canvas_editor, canvas_editor->hover_x, canvas_editor->hover_y);
+					canvas_editor->scratch_offset_x = al_get_bitmap_width(canvas_editor->scratch_bitmap) / 2;
+					canvas_editor->scratch_offset_y = al_get_bitmap_height(canvas_editor->scratch_bitmap) / 2;
+					clear_bitmap(canvas_editor->scratch_bitmap);
 					quixel_tool_pixel_logic(canvas_editor);
 					canvas_editor->modified = true;
 					canvas_editor->update_title = true;
-					canvas_editor->tool_state = QUIXEL_TOOL_STATE_EDITING;
+					canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
 					break;
 				}
 				case QUIXEL_TOOL_LINE:
 				{
 					click_on_canvas(canvas_editor, canvas_editor->hover_x, canvas_editor->hover_y);
+					canvas_editor->scratch_offset_x = 0;
+					canvas_editor->scratch_offset_y = 0;
 					quixel_tool_line_logic(canvas_editor);
 					canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
 					break;
@@ -229,6 +240,8 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				case QUIXEL_TOOL_RECTANGLE:
 				{
 					click_on_canvas(canvas_editor, canvas_editor->hover_x, canvas_editor->hover_y);
+					canvas_editor->scratch_offset_x = 0;
+					canvas_editor->scratch_offset_y = 0;
 					quixel_tool_rectangle_logic(canvas_editor);
 					canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
 					break;
@@ -236,6 +249,8 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				case QUIXEL_TOOL_FILLED_RECTANGLE:
 				{
 					click_on_canvas(canvas_editor, canvas_editor->hover_x, canvas_editor->hover_y);
+					canvas_editor->scratch_offset_x = 0;
+					canvas_editor->scratch_offset_y = 0;
 					quixel_tool_filled_rectangle_logic(canvas_editor);
 					canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
 					break;
@@ -243,6 +258,8 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				case QUIXEL_TOOL_OVAL:
 				{
 					click_on_canvas(canvas_editor, canvas_editor->hover_x, canvas_editor->hover_y);
+					canvas_editor->scratch_offset_x = 0;
+					canvas_editor->scratch_offset_y = 0;
 					quixel_tool_oval_logic(canvas_editor);
 					canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
 					break;
@@ -250,6 +267,8 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				case QUIXEL_TOOL_FILLED_OVAL:
 				{
 					click_on_canvas(canvas_editor, canvas_editor->hover_x, canvas_editor->hover_y);
+					canvas_editor->scratch_offset_x = 0;
+					canvas_editor->scratch_offset_y = 0;
 					quixel_tool_filled_oval_logic(canvas_editor);
 					canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
 					break;
@@ -648,7 +667,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				{
 					quixel_render_canvas_layer(canvas_editor->canvas, i, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, d->w, d->h);
 				}
-				al_draw_scaled_bitmap(canvas_editor->scratch_bitmap, 0, 0,  al_get_bitmap_width(canvas_editor->scratch_bitmap), al_get_bitmap_height(canvas_editor->scratch_bitmap), d->x, d->y, al_get_bitmap_width(canvas_editor->scratch_bitmap) * canvas_editor->view_zoom, al_get_bitmap_height(canvas_editor->scratch_bitmap) * canvas_editor->view_zoom, 0);
+				al_draw_scaled_bitmap(canvas_editor->scratch_bitmap, 0, 0,  al_get_bitmap_width(canvas_editor->scratch_bitmap), al_get_bitmap_height(canvas_editor->scratch_bitmap), d->x - canvas_editor->scratch_offset_x * canvas_editor->view_zoom, d->y - canvas_editor->scratch_offset_y * canvas_editor->view_zoom, al_get_bitmap_width(canvas_editor->scratch_bitmap) * canvas_editor->view_zoom, al_get_bitmap_height(canvas_editor->scratch_bitmap) * canvas_editor->view_zoom, 0);
 			}
 			theme = t3gui_get_default_theme();
 			for(i = 0; i < canvas_editor->canvas->frame_max; i++)

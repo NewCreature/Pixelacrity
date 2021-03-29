@@ -8,9 +8,9 @@ static void draw_pixel(QUIXEL_CANVAS_EDITOR * cep, int x, int y, ALLEGRO_COLOR c
 	ALLEGRO_STATE old_state;
 
 	al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_TRANSFORM);
-	al_set_target_bitmap(cep->canvas->layer[cep->current_layer]->bitmap[y / cep->canvas->bitmap_size][x / cep->canvas->bitmap_size]);
+	al_set_target_bitmap(cep->scratch_bitmap);
 	al_identity_transform(&identity);
-	al_put_pixel(x % cep->canvas->bitmap_size, y % cep->canvas->bitmap_size, color);
+	al_put_pixel(cep->scratch_offset_x + x - cep->click_x, cep->scratch_offset_y + y - cep->click_y, color);
 	al_restore_state(&old_state);
 }
 
