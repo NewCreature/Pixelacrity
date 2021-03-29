@@ -5,8 +5,6 @@ Quixel 0.1 Issues
 
 [ ]Drawing tools seemingly randomly use incorrect color.
 
-[ ]Line tool places start and end pixels too far to the left.
-
 [ ]Make pixel tool work like the other tools by rendering to a scratch bitmap
    before ultimately rendering to the canvas when the user releases the mouse
    button. This is primarily to optimize undo state sizes by only saving the
@@ -185,3 +183,5 @@ Closed Issues
       can make the selection a 1x1 box initially and select the upper-left
       handle. Running the selection resize logic from there should give us the
       same results as creating the box separately.
+
+[X]Line tool places start and end pixels too far to the left.
