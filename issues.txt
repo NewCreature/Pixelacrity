@@ -1,6 +1,13 @@
 Quixel 0.1 Issues
 -----------------
 
+[ ]Pixel tool draws to incorrect location.
+
+[ ]Pixel tool doesn't draw to canvas when the user releases the mouse button.
+
+[ ]Pixel tool doesn't draw the canvas correctly while the user is drawing
+   pixels.
+
 [ ]Crash when resizing on M1 Macbook Air.
 
 [ ]Drawing tools seemingly randomly use incorrect color.
