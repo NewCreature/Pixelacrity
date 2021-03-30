@@ -1,9 +1,12 @@
 Quixel 0.1 Issues
 -----------------
 
-[ ]Pixel tool draws to incorrect location.
+[X]Pixel tool draws to incorrect location.
 
 [ ]Pixel tool doesn't draw to canvas when the user releases the mouse button.
+
+   [ ]Finish implementing drawing scratch back to canvas on mouse button
+      release.
 
 [ ]Pixel tool doesn't draw the canvas correctly while the user is drawing
    pixels.
