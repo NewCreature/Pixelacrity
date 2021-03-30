@@ -45,6 +45,9 @@ typedef struct
 	ALLEGRO_BITMAP * peg_bitmap;
 	int scratch_offset_x;
 	int scratch_offset_y;
+	int tool_offset_x;
+	int tool_offset_y;
+	int tool_top, tool_bottom, tool_left, tool_right;
 	int view_x, view_y;
 	int view_zoom;
 	int hover_x, hover_y;

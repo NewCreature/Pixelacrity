@@ -193,6 +193,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 	QUIXEL_BOX old_box;
 	T3GUI_THEME * theme;
 	ALLEGRO_COLOR color = t3f_color_black;
+	ALLEGRO_BITMAP * bp;
 
 	switch(msg)
 	{
@@ -221,6 +222,10 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 					click_on_canvas(canvas_editor, canvas_editor->hover_x, canvas_editor->hover_y);
 					canvas_editor->scratch_offset_x = al_get_bitmap_width(canvas_editor->scratch_bitmap) / 2;
 					canvas_editor->scratch_offset_y = al_get_bitmap_height(canvas_editor->scratch_bitmap) / 2;
+					canvas_editor->tool_top = canvas_editor->hover_y;
+					canvas_editor->tool_bottom = canvas_editor->hover_y;
+					canvas_editor->tool_left = canvas_editor->hover_x;
+					canvas_editor->tool_right = canvas_editor->hover_x;
 					clear_bitmap(canvas_editor->scratch_bitmap);
 					quixel_tool_pixel_logic(canvas_editor);
 					canvas_editor->modified = true;
@@ -331,6 +336,13 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			{
 				case QUIXEL_TOOL_PIXEL:
 				{
+					bp = al_create_sub_bitmap(canvas_editor->scratch_bitmap, canvas_editor->view_x + canvas_editor->scratch_offset_x + canvas_editor->tool_left, canvas_editor->view_y + canvas_editor->scratch_offset_y + canvas_editor->tool_top, canvas_editor->tool_right - canvas_editor->tool_left + 1, canvas_editor->tool_bottom - canvas_editor->tool_top + 1);
+					if(bp)
+					{
+						printf("draw\n");
+						quixel_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->view_x, canvas_editor->view_y, al_get_bitmap_width(bp), al_get_bitmap_height(bp), bp, t3f_color_white, QUIXEL_RENDER_COMPOSITE, quixel_draw_quad);
+						al_destroy_bitmap(bp);
+					}
 					canvas_editor->tool_state = QUIXEL_TOOL_STATE_OFF;
 					break;
 				}
