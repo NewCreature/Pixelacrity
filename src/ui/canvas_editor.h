@@ -43,7 +43,7 @@ typedef struct
 
 	ALLEGRO_BITMAP * scratch_bitmap;
 	ALLEGRO_BITMAP * peg_bitmap;
-	int scratch_offset_x;
+	int scratch_offset_x; // offset of scratch in relation to view
 	int scratch_offset_y;
 	int tool_offset_x;
 	int tool_offset_y;

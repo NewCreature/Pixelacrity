@@ -21,27 +21,26 @@ void quixel_tool_pixel_logic(QUIXEL_CANVAS_EDITOR * cep)
 
 	dx = cep->tool_offset_x - (cep->hover_x - cep->view_x);
 	dy = cep->tool_offset_y - (cep->hover_y - cep->view_y);
-	cep->tool_offset_x = cep->hover_x - cep->view_x;
-	cep->tool_offset_y = cep->hover_y - cep->view_y;
-	x = cep->tool_offset_x + cep->scratch_offset_x;
-	y = cep->tool_offset_y + cep->scratch_offset_y;
-	if(cep->hover_x < cep->tool_left)
+	cep->tool_offset_x = cep->hover_x - cep->scratch_offset_x;
+	cep->tool_offset_y = cep->hover_y - cep->scratch_offset_y;
+	x = cep->tool_offset_x;
+	y = cep->tool_offset_y;
+	if(x < cep->tool_left)
 	{
-		cep->tool_left = cep->hover_x;
+		cep->tool_left = x;
 	}
-	if(cep->hover_x > cep->tool_right)
+	if(x > cep->tool_right)
 	{
-		cep->tool_right = cep->hover_x;
+		cep->tool_right = x;
 	}
-	if(cep->hover_y < cep->tool_top)
+	if(y < cep->tool_top)
 	{
-		cep->tool_top = cep->hover_y;
+		cep->tool_top = y;
 	}
-	if(cep->hover_y > cep->tool_bottom)
+	if(y > cep->tool_bottom)
 	{
-		cep->tool_bottom = cep->hover_y;
+		cep->tool_bottom = y;
 	}
-	printf("(%d, %d)\n", x, y);
 	if(!quixel_expand_canvas(cep->canvas, cep->current_layer, x, y))
 	{
 		printf("Tried to expand canvas but failed!\n");
