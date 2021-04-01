@@ -1,25 +1,13 @@
 Quixel 0.1 Issues
 -----------------
 
-[X]Pixel tool draws to incorrect location.
-
-[ ]Pixel tool doesn't draw to canvas when the user releases the mouse button.
-
-   [ ]Finish implementing drawing scratch back to canvas on mouse button
-      release.
-
-[ ]Pixel tool doesn't draw the canvas correctly while the user is drawing
-   pixels.
-
 [ ]Crash when resizing on M1 Macbook Air.
 
 [ ]Drawing tools seemingly randomly use incorrect color.
 
-[ ]Make pixel tool work like the other tools by rendering to a scratch bitmap
-   before ultimately rendering to the canvas when the user releases the mouse
-   button. This is primarily to optimize undo state sizes by only saving the
-   area that was edited. For large drawings, the old method would have to save
-   huge amounts of data each time the pixel tool was used.
+   [ ]This happens because we are using t3f_mouse_button[] to detect which
+      button was pressed. We need to add a way to differentiate buttons into
+      T3GUI.
 
 [ ]Finish undo implementation.
 
@@ -195,3 +183,19 @@ Closed Issues
       same results as creating the box separately.
 
 [X]Line tool places start and end pixels too far to the left.
+
+[X]Pixel tool draws to incorrect location.
+
+[X]Pixel tool doesn't draw to canvas when the user releases the mouse button.
+
+   [X]Finish implementing drawing scratch back to canvas on mouse button
+      release.
+
+[X]Pixel tool doesn't draw the canvas correctly while the user is drawing
+   pixels.
+
+[X]Make pixel tool work like the other tools by rendering to a scratch bitmap
+   before ultimately rendering to the canvas when the user releases the mouse
+   button. This is primarily to optimize undo state sizes by only saving the
+   area that was edited. For large drawings, the old method would have to save
+   huge amounts of data each time the pixel tool was used.
