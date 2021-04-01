@@ -674,7 +674,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			}
 			else
 			{
-				for(i = 0; i <= canvas_editor->current_layer; i++)
+				for(i = 0; i < canvas_editor->current_layer; i++)
 				{
 					quixel_render_canvas_layer(canvas_editor->canvas, i, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, d->w, d->h);
 				}
