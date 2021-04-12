@@ -3,12 +3,6 @@ Quixel 0.1 Issues
 
 [ ]Crash when resizing on M1 Macbook Air.
 
-[ ]Drawing tools seemingly randomly use incorrect color.
-
-   [ ]This happens because we are using t3f_mouse_button[] to detect which
-      button was pressed. We need to add a way to differentiate buttons into
-      T3GUI.
-
 [ ]Finish undo implementation.
 
    [ ]Add support for multiple types of undo states.
@@ -199,3 +193,9 @@ Closed Issues
    button. This is primarily to optimize undo state sizes by only saving the
    area that was edited. For large drawings, the old method would have to save
    huge amounts of data each time the pixel tool was used.
+
+[X]Drawing tools seemingly randomly use incorrect color.
+
+   [ ]This happens because we are using t3f_mouse_button[] to detect which
+      button was pressed. We need to add a way to differentiate buttons into
+      T3GUI.
