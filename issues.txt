@@ -7,13 +7,18 @@ Quixel 0.1 Issues
 
    [ ]Add support for multiple types of undo states.
 
-   [ ]Make selection moving undoable.
+      [ ]Move undo system into its own module since we will need a lot of
+         functions for the various types of undo states.
 
-   [ ]Make frame editing undoable.
+      [ ]Make selection moving undoable.
 
-   [ ]Implement applying undo states.
+      [ ]Make frame editing undoable.
 
-   [ ]Implement saving and applying redo states.
+      [ ]Implement applying undo states.
+
+      [ ]Implement saving and applying redo states.
+
+   [ ]Implement named undo states.
 
 [ ]Investigate why pixel x-coordinate is offset by -1.
 
