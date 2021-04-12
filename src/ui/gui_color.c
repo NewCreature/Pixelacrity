@@ -15,7 +15,7 @@ int quixel_gui_color_proc(int msg, T3GUI_ELEMENT * d, int c)
 		{
 			if(d->dp2)
 			{
-				if(t3f_mouse_button[0])
+				if(c == 1)
 				{
 					*(ALLEGRO_COLOR *)d->dp2 = *(ALLEGRO_COLOR *)d->dp;
 				}

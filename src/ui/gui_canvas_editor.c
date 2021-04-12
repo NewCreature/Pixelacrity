@@ -127,11 +127,14 @@ static void update_cursor(QUIXEL_CANVAS_EDITOR * cep)
 	cep->old_cursor = cep->current_cursor;
 }
 
-static void click_on_canvas(QUIXEL_CANVAS_EDITOR * cep, int x, int y)
+static int mouse_button = 0;
+
+static void click_on_canvas(QUIXEL_CANVAS_EDITOR * cep, int button, int x, int y)
 {
+	mouse_button = button;
 	cep->click_x = x;
 	cep->click_y = y;
-	if(t3f_mouse_button[0])
+	if(button == 1)
 	{
 		cep->click_color = cep->left_color;
 	}
@@ -234,7 +237,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			{
 				case QUIXEL_TOOL_PIXEL:
 				{
-					click_on_canvas(canvas_editor, canvas_editor->hover_x, canvas_editor->hover_y);
+					click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
 					canvas_editor->scratch_offset_x = canvas_editor->view_x - al_get_bitmap_width(canvas_editor->scratch_bitmap) / 2;
 					canvas_editor->scratch_offset_y = canvas_editor->view_y - al_get_bitmap_height(canvas_editor->scratch_bitmap) / 2;
 					canvas_editor->tool_top = canvas_editor->hover_y - canvas_editor->scratch_offset_y;
@@ -250,7 +253,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				}
 				case QUIXEL_TOOL_LINE:
 				{
-					click_on_canvas(canvas_editor, canvas_editor->hover_x, canvas_editor->hover_y);
+					click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
 					canvas_editor->scratch_offset_x = canvas_editor->view_x;
 					canvas_editor->scratch_offset_y = canvas_editor->view_y;
 					quixel_tool_line_logic(canvas_editor);
@@ -259,7 +262,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				}
 				case QUIXEL_TOOL_RECTANGLE:
 				{
-					click_on_canvas(canvas_editor, canvas_editor->hover_x, canvas_editor->hover_y);
+					click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
 					canvas_editor->scratch_offset_x = canvas_editor->view_x;
 					canvas_editor->scratch_offset_y = canvas_editor->view_y;
 					quixel_tool_rectangle_logic(canvas_editor);
@@ -268,7 +271,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				}
 				case QUIXEL_TOOL_FILLED_RECTANGLE:
 				{
-					click_on_canvas(canvas_editor, canvas_editor->hover_x, canvas_editor->hover_y);
+					click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
 					canvas_editor->scratch_offset_x = canvas_editor->view_x;
 					canvas_editor->scratch_offset_y = canvas_editor->view_y;
 					quixel_tool_filled_rectangle_logic(canvas_editor);
@@ -277,7 +280,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				}
 				case QUIXEL_TOOL_OVAL:
 				{
-					click_on_canvas(canvas_editor, canvas_editor->hover_x, canvas_editor->hover_y);
+					click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
 					canvas_editor->scratch_offset_x = canvas_editor->view_x;
 					canvas_editor->scratch_offset_y = canvas_editor->view_y;
 					quixel_tool_oval_logic(canvas_editor);
@@ -286,7 +289,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				}
 				case QUIXEL_TOOL_FILLED_OVAL:
 				{
-					click_on_canvas(canvas_editor, canvas_editor->hover_x, canvas_editor->hover_y);
+					click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
 					canvas_editor->scratch_offset_x = canvas_editor->view_x;
 					canvas_editor->scratch_offset_y = canvas_editor->view_y;
 					quixel_tool_filled_oval_logic(canvas_editor);
@@ -295,12 +298,12 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				}
 				case QUIXEL_TOOL_DROPPER:
 				{
-					quixel_tool_dropper_logic(canvas_editor);
+					quixel_tool_dropper_logic(canvas_editor, c);
 					break;
 				}
 				case QUIXEL_TOOL_SELECTION:
 				{
-					click_on_canvas(canvas_editor, canvas_editor->hover_x, canvas_editor->hover_y);
+					click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
 					switch(canvas_editor->selection.box.state)
 					{
 						/* start creating a new selection if we are not currently
@@ -455,7 +458,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				{
 					if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING || canvas_editor->tool_state == QUIXEL_TOOL_STATE_EDITING)
 					{
-						quixel_tool_dropper_logic(canvas_editor);
+						quixel_tool_dropper_logic(canvas_editor, mouse_button);
 					}
 					break;
 				}
