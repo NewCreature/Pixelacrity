@@ -14,6 +14,7 @@
 #include "tool_dropper.h"
 #include "tool_selection.h"
 #include "ui.h"
+#include "undo.h"
 
 static ALLEGRO_COLOR shade_color(ALLEGRO_COLOR color, float l)
 {
@@ -155,8 +156,17 @@ static char * get_undo_path(QUIXEL_CANVAS_EDITOR * cep)
 
 static bool create_undo(QUIXEL_CANVAS_EDITOR * cep, int x, int y, int width, int height)
 {
-	if(quixel_make_canvas_editor_undo_state(cep, cep->current_layer, x, y, width, height, get_undo_path(cep)))
+	const char * upath = get_undo_path(cep);
+	const char * uname;
+
+	if(quixel_make_tool_undo(cep, cep->current_layer, x, y, width, height, upath))
 	{
+		uname = quixel_get_undo_name(upath);
+		if(uname)
+		{
+			strcpy(cep->undo_name, uname);
+		}
+		cep->signal = QUIXEL_CANVAS_EDITOR_SIGNAL_UNDO_CHANGE;
 		cep->undo_count++;
 		return true;
 	}

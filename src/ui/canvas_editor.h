@@ -7,6 +7,7 @@
 
 #define QUIXEL_CANVAS_EDITOR_SIGNAL_NONE         0
 #define QUIXEL_CANVAS_EDITOR_SIGNAL_DELETE_LAYER 1
+#define QUIXEL_CANVAS_EDITOR_SIGNAL_UNDO_CHANGE  2
 
 #define QUIXEL_TOOL_PIXEL            0
 #define QUIXEL_TOOL_LINE             1
@@ -95,7 +96,9 @@ typedef struct
 	char canvas_path[4096];
 
 	int undo_count;
+	char undo_name[256];
 	int redo_count;
+	char redo_name[256];
 
 } QUIXEL_CANVAS_EDITOR;
 
@@ -104,7 +107,5 @@ void quixel_destroy_canvas_editor(QUIXEL_CANVAS_EDITOR * cep);
 
 void quixel_center_canvas_editor(QUIXEL_CANVAS_EDITOR * cep, int frame);
 void quixel_unfloat_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_BOX * bp);
-bool quixel_make_canvas_editor_undo_state(QUIXEL_CANVAS_EDITOR * cep, int layer, int x, int y, int width, int height, const char * fn);
-bool quixel_apply_canvas_editor_undo_state(QUIXEL_CANVAS_EDITOR * cep, const char * fn);
 
 #endif

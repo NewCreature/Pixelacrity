@@ -3,6 +3,7 @@
 #include "canvas_file.h"
 #include "pixel_shader.h"
 #include "ui/canvas_editor.h"
+#include "ui/menu.h"
 #include "ui/menu_file_proc.h"
 #include "ui/menu_edit_proc.h"
 
@@ -43,6 +44,12 @@ void app_logic(void * data)
 		{
 			case QUIXEL_CANVAS_EDITOR_SIGNAL_DELETE_LAYER:
 			{
+				app->canvas_editor->signal = QUIXEL_CANVAS_EDITOR_SIGNAL_NONE;
+				break;
+			}
+			case QUIXEL_CANVAS_EDITOR_SIGNAL_UNDO_CHANGE:
+			{
+				quixel_update_undo_menu(app->ui, app->canvas_editor->undo_name, app->canvas_editor->redo_name);
 				app->canvas_editor->signal = QUIXEL_CANVAS_EDITOR_SIGNAL_NONE;
 				break;
 			}

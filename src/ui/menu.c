@@ -77,3 +77,9 @@ void quixel_destroy_menus(QUIXEL_UI * uip)
 		}
 	}
 }
+
+void quixel_update_undo_menu(QUIXEL_UI * uip, const char * undo_name, const char * redo_name)
+{
+	al_set_menu_item_caption(uip->menu[QUIXEL_UI_MENU_EDIT], 0, undo_name);
+	al_set_menu_item_caption(uip->menu[QUIXEL_UI_MENU_EDIT], 1, redo_name);
+}
