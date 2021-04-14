@@ -145,18 +145,9 @@ static void click_on_canvas(QUIXEL_CANVAS_EDITOR * cep, int button, int x, int y
 	}
 }
 
-static char undo_path[4096] = {0};
-static char * get_undo_path(QUIXEL_CANVAS_EDITOR * cep)
-{
-	char buf[256];
-
-	sprintf(buf, "undo.%04d", cep->undo_count);
-	return t3f_get_filename(t3f_data_path, buf, undo_path, 4096);
-}
-
 static bool create_undo(QUIXEL_CANVAS_EDITOR * cep, int x, int y, int width, int height)
 {
-	const char * upath = get_undo_path(cep);
+	const char * upath = quixel_get_undo_path(cep->undo_count);
 	const char * uname;
 
 	if(quixel_make_tool_undo(cep, cep->current_layer, x, y, width, height, upath))

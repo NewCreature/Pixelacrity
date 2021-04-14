@@ -44,7 +44,6 @@ bool quixel_make_tool_undo(QUIXEL_CANVAS_EDITOR * cep, int layer, int x, int y, 
 		goto fail;
 	}
 	write_undo_header(fp, QUIXEL_UNDO_TYPE_TOOL, "Undo Draw");
-	al_fputc(fp, QUIXEL_UNDO_TYPE_TOOL);
 	if(width < 0 || height < 0)
 	{
 		al_fputc(fp, 0);
@@ -52,6 +51,7 @@ bool quixel_make_tool_undo(QUIXEL_CANVAS_EDITOR * cep, int layer, int x, int y, 
 	else
 	{
 		al_fputc(fp, 1);
+		al_fwrite32le(fp, layer);
 		al_fwrite32le(fp, x);
 		al_fwrite32le(fp, y);
 		if(!al_save_bitmap_f(fp, ".png", bp))
@@ -75,6 +75,11 @@ bool quixel_make_tool_undo(QUIXEL_CANVAS_EDITOR * cep, int layer, int x, int y, 
 		}
 		return false;
 	}
+}
+
+bool quixel_make_tool_redo(QUIXEL_CANVAS_EDITOR * cep, int layer, int x, int y, int width, int height, const char * fn)
+{
+	return quixel_make_tool_undo(cep, layer, x, y, width, height, fn);
 }
 
 static char undo_name_buffer[1024] = {0};
@@ -110,7 +115,67 @@ const char * quixel_get_undo_name(const char * fn)
 	}
 }
 
+static char undo_path[4096] = {0};
+const char * quixel_get_undo_path(int count)
+{
+	char buf[256];
+
+	sprintf(buf, "undo.%04d", count);
+	return t3f_get_filename(t3f_data_path, buf, undo_path, 4096);
+}
+
 bool quixel_apply_undo(QUIXEL_CANVAS_EDITOR * cep, const char * fn)
+{
+	ALLEGRO_FILE * fp = NULL;
+	int type;
+	int l;
+	char buf[1024];
+	ALLEGRO_BITMAP * bp;
+	int layer, x, y;
+
+	fp = al_fopen(fn, "rb");
+	if(!fp)
+	{
+		goto fail;
+	}
+	type = al_fgetc(fp);
+	l = al_fread16le(fp);
+	al_fread(fp, buf, l);
+	switch(type)
+	{
+		case QUIXEL_UNDO_TYPE_TOOL:
+		{
+			l = al_fgetc(fp);
+			if(l)
+			{
+				layer = al_fread32le(fp);
+				x = al_fread32le(fp);
+				y = al_fread32le(fp);
+				bp = al_load_bitmap_flags_f(fp, ".png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
+				if(!bp)
+				{
+					goto fail;
+				}
+				quixel_import_bitmap_to_canvas(cep->canvas, bp, layer, x, y);
+				al_destroy_bitmap(bp);
+			}
+			break;
+		}
+	}
+	al_fclose(fp);
+	return false;
+
+	fail:
+	{
+		if(fp)
+		{
+			al_fclose(fp);
+		}
+		return false;
+	}
+}
+
+bool quixel_apply_redo(QUIXEL_CANVAS_EDITOR * cep, const char * fn)
 {
 	return false;
 }

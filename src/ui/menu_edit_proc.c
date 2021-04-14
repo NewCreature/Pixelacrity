@@ -1,8 +1,19 @@
 #include "instance.h"
 #include "canvas.h"
+#include "undo.h"
 
 int quixel_menu_edit_undo(int id, void * data)
 {
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+	const char * undo_path = quixel_get_undo_path(app->canvas_editor->undo_count - 1);
+
+	if(app->canvas_editor->undo_count > 0)
+	{
+		quixel_apply_undo(app->canvas_editor, undo_path);
+		al_remove_filename(undo_path);
+		app->canvas_editor->undo_count--;
+	}
+
 	return 0;
 }
 
