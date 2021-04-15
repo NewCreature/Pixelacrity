@@ -47,12 +47,6 @@ void app_logic(void * data)
 				app->canvas_editor->signal = QUIXEL_CANVAS_EDITOR_SIGNAL_NONE;
 				break;
 			}
-			case QUIXEL_CANVAS_EDITOR_SIGNAL_UNDO_CHANGE:
-			{
-				quixel_update_undo_menu(app->ui, app->canvas_editor->undo_name, app->canvas_editor->redo_name);
-				app->canvas_editor->signal = QUIXEL_CANVAS_EDITOR_SIGNAL_NONE;
-				break;
-			}
 		}
 	}
 

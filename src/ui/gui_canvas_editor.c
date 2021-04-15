@@ -157,8 +157,8 @@ static bool create_undo(QUIXEL_CANVAS_EDITOR * cep, int x, int y, int width, int
 		{
 			strcpy(cep->undo_name, uname);
 		}
-		cep->signal = QUIXEL_CANVAS_EDITOR_SIGNAL_UNDO_CHANGE;
 		cep->undo_count++;
+		t3f_refresh_menus();
 		return true;
 	}
 	return false;

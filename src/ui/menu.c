@@ -3,9 +3,27 @@
 #include "menu_file_proc.h"
 #include "menu_edit_proc.h"
 #include "menu_frame_proc.h"
+#include "instance.h"
 
 static int menu_base_update_proc(ALLEGRO_MENU * mp, int item, void * data)
 {
+	return 0;
+}
+
+static int menu_undo_update_proc(ALLEGRO_MENU * mp, int item, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	if(app->canvas_editor->undo_count > 0)
+	{
+		al_set_menu_item_caption(mp, item, app->canvas_editor->undo_name);
+		t3f_set_menu_item_flags(mp, item, 0);
+	}
+	else
+	{
+		al_set_menu_item_caption(mp, item, "Undo");
+		t3f_set_menu_item_flags(mp, item, ALLEGRO_MENU_ITEM_DISABLED);
+	}
 	return 0;
 }
 
@@ -33,7 +51,7 @@ bool quixel_setup_menus(QUIXEL_UI * uip)
 	{
 		return false;
 	}
-	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_EDIT], "Undo", 0, NULL, quixel_menu_edit_undo, menu_base_update_proc);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_EDIT], "Undo", ALLEGRO_MENU_ITEM_DISABLED, NULL, quixel_menu_edit_undo, menu_undo_update_proc);
 	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_EDIT], "Redo", 0, NULL, quixel_menu_edit_redo, menu_base_update_proc);
 	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_EDIT], NULL, 0, NULL, NULL, NULL);
 	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_EDIT], "Cut", 0, NULL, quixel_menu_edit_cut, menu_base_update_proc);
@@ -80,6 +98,5 @@ void quixel_destroy_menus(QUIXEL_UI * uip)
 
 void quixel_update_undo_menu(QUIXEL_UI * uip, const char * undo_name, const char * redo_name)
 {
-	al_set_menu_item_caption(uip->menu[QUIXEL_UI_MENU_EDIT], 0, undo_name);
 	al_set_menu_item_caption(uip->menu[QUIXEL_UI_MENU_EDIT], 1, redo_name);
 }
