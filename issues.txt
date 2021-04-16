@@ -16,7 +16,7 @@ Quixel 0.1 Issues
 
       [X]Implement applying undo states.
 
-      [ ]Implement saving and applying redo states.
+      [X]Implement saving and applying redo states.
 
    [X]Implement named undo states.
 
