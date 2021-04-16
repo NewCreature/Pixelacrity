@@ -5,11 +5,12 @@
 int quixel_menu_edit_undo(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
-	const char * undo_path = quixel_get_undo_path(app->canvas_editor->undo_count - 1);
+	char undo_path[4096];
 
 	if(app->canvas_editor->undo_count > 0)
 	{
-		quixel_apply_undo(app->canvas_editor, undo_path);
+		strcpy(undo_path, quixel_get_undo_path("undo", app->canvas_editor->undo_count - 1));
+		quixel_apply_undo(app->canvas_editor, undo_path, false);
 		al_remove_filename(undo_path);
 		app->canvas_editor->undo_count--;
 		t3f_refresh_menus();
@@ -20,6 +21,18 @@ int quixel_menu_edit_undo(int id, void * data)
 
 int quixel_menu_edit_redo(int id, void * data)
 {
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+	char redo_path[4096];
+
+	if(app->canvas_editor->redo_count > 0)
+	{
+		strcpy(redo_path, quixel_get_undo_path("redo", app->canvas_editor->redo_count - 1));
+		quixel_apply_redo(app->canvas_editor, redo_path);
+		al_remove_filename(redo_path);
+		app->canvas_editor->redo_count--;
+		t3f_refresh_menus();
+	}
+
 	return 0;
 }
 
