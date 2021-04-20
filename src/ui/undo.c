@@ -82,9 +82,7 @@ bool quixel_make_tool_redo(QUIXEL_CANVAS_EDITOR * cep, int layer, int x, int y, 
 	return quixel_make_tool_undo(cep, layer, x, y, width, height, fn);
 }
 
-static char undo_name_buffer[1024] = {0};
-
-const char * quixel_get_undo_name(const char * fn)
+const char * quixel_get_undo_name(const char * fn, char * out, int out_size)
 {
 	ALLEGRO_FILE * fp = NULL;
 	int l;
@@ -96,14 +94,14 @@ const char * quixel_get_undo_name(const char * fn)
 	}
 	al_fgetc(fp);
 	l = al_fread16le(fp);
-	if(l >= 1024 || l < 1)
+	if(l >= out_size || l < 1)
 	{
 		goto fail;
 	}
-	al_fread(fp, undo_name_buffer, l);
+	al_fread(fp, out, l);
 	al_fclose(fp);
 
-	return undo_name_buffer;
+	return out;
 
 	fail:
 	{
