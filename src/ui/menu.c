@@ -31,7 +31,7 @@ static int menu_redo_update_proc(ALLEGRO_MENU * mp, int item, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	if(app->canvas_editor->redo_count > 0 && app->canvas_editor->redo_name && strlen(app->canvas_editor->redo_name))
+	if(app->canvas_editor->redo_count > 0)
 	{
 		al_set_menu_item_caption(mp, item, app->canvas_editor->redo_name);
 		t3f_set_menu_item_flags(mp, item, 0);
