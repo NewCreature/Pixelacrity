@@ -14,14 +14,13 @@ static int menu_undo_update_proc(ALLEGRO_MENU * mp, int item, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
+	al_set_menu_item_caption(mp, item, app->canvas_editor->undo_name);
 	if(app->canvas_editor->undo_count > 0)
 	{
-		al_set_menu_item_caption(mp, item, app->canvas_editor->undo_name);
 		t3f_set_menu_item_flags(mp, item, 0);
 	}
 	else
 	{
-		al_set_menu_item_caption(mp, item, "Undo");
 		t3f_set_menu_item_flags(mp, item, ALLEGRO_MENU_ITEM_DISABLED);
 	}
 	return 0;
@@ -31,14 +30,13 @@ static int menu_redo_update_proc(ALLEGRO_MENU * mp, int item, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
+	al_set_menu_item_caption(mp, item, app->canvas_editor->redo_name);
 	if(app->canvas_editor->redo_count > 0)
 	{
-		al_set_menu_item_caption(mp, item, app->canvas_editor->redo_name);
 		t3f_set_menu_item_flags(mp, item, 0);
 	}
 	else
 	{
-		al_set_menu_item_caption(mp, item, "Redo");
 		t3f_set_menu_item_flags(mp, item, ALLEGRO_MENU_ITEM_DISABLED);
 	}
 	return 0;

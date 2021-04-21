@@ -169,9 +169,14 @@ void quixel_update_undo_name(QUIXEL_CANVAS_EDITOR * cep)
 	char uname[256];
 
 	quixel_get_undo_path("undo", cep->undo_count - 1, undo_path, 1024);
-	quixel_get_undo_name(undo_path, uname, 256);
-	sprintf(cep->undo_name, "Undo %s", uname);
-	printf("name2 %s\n", cep->undo_name);
+	if(quixel_get_undo_name(undo_path, uname, 256))
+	{
+		sprintf(cep->undo_name, "Undo %s", uname);
+	}
+	else
+	{
+		sprintf(cep->undo_name, "Undo");
+	}
 }
 
 void quixel_update_redo_name(QUIXEL_CANVAS_EDITOR * cep)
@@ -180,8 +185,14 @@ void quixel_update_redo_name(QUIXEL_CANVAS_EDITOR * cep)
 	char rname[256];
 
 	quixel_get_undo_path("redo", cep->redo_count - 1, redo_path, 1024);
-	quixel_get_undo_name(redo_path, rname, 256);
-	sprintf(cep->redo_name, "Redo %s", rname);
+	if(quixel_get_undo_name(redo_path, rname, 256))
+	{
+		sprintf(cep->redo_name, "Redo %s", rname);
+	}
+	else
+	{
+		sprintf(cep->redo_name, "Redo");
+	}
 }
 
 bool quixel_apply_undo(QUIXEL_CANVAS_EDITOR * cep, const char * fn, bool redo)
