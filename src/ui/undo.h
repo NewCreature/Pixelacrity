@@ -14,5 +14,6 @@ void quixel_update_undo_name(QUIXEL_CANVAS_EDITOR * cep);
 void quixel_update_redo_name(QUIXEL_CANVAS_EDITOR * cep);
 bool quixel_apply_undo(QUIXEL_CANVAS_EDITOR * cep, const char * fn, bool redo);
 bool quixel_apply_redo(QUIXEL_CANVAS_EDITOR * cep, const char * fn);
+void quixel_undo_clean_up(QUIXEL_CANVAS_EDITOR * cep);
 
 #endif

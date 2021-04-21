@@ -260,3 +260,18 @@ bool quixel_apply_redo(QUIXEL_CANVAS_EDITOR * cep, const char * fn)
 {
 	return quixel_apply_undo(cep, fn, true);
 }
+
+void quixel_undo_clean_up(QUIXEL_CANVAS_EDITOR * cep)
+{
+	char undo_path[1024];
+	int i;
+
+	for(i = 0; i < cep->undo_count; i++)
+	{
+		al_remove_filename(quixel_get_undo_path("undo", i, undo_path, 1024));
+	}
+	for(i = 0; i < cep->redo_count; i++)
+	{
+		al_remove_filename(quixel_get_undo_path("redo", i, undo_path, 1024));
+	}
+}
