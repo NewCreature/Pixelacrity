@@ -86,46 +86,62 @@ bool quixel_queue_pop(QUIXEL_QUEUE * qp, int * x, int * y)
 	return false;
 }
 
+static void put_pixel(QUIXEL_CANVAS * cp, int layer, int x, int y, ALLEGRO_COLOR color)
+{
+	al_put_pixel(x % cp->bitmap_size, y % cp->bitmap_size, color);
+}
+
 void quixel_flood_fill_canvas(QUIXEL_CANVAS * cp, int layer, int start_x, int start_y, ALLEGRO_COLOR color)
 {
 	QUIXEL_QUEUE * qp;
 	ALLEGRO_COLOR old_color;
 	ALLEGRO_COLOR current_color;
+	ALLEGRO_STATE old_state;
+	ALLEGRO_BITMAP * bp;
 	int x, y;
 
-	qp = quixel_create_queue(65536);
-	if(qp)
+	bp = cp->layer[layer]->bitmap[start_y / cp->bitmap_size][start_x / cp->bitmap_size];
+	if(bp)
 	{
-		old_color = quixel_get_canvas_pixel(cp, layer, start_x, start_y);
-		quixel_draw_primitive_to_canvas(cp, layer, start_x, start_y, start_x, start_y, NULL, color, QUIXEL_RENDER_COPY, quixel_draw_line);
-		quixel_queue_push(qp, start_x, start_y);
-		while(quixel_queue_pop(qp, &x, &y))
+		al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP);
+		al_set_target_bitmap(bp);
+		al_lock_bitmap(bp, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_READWRITE);
+		qp = quixel_create_queue(65536);
+		if(qp)
 		{
-			current_color = quixel_get_canvas_pixel(cp, layer, x - 1, y);
-			if(quixel_color_equal(current_color, old_color))
+			old_color = quixel_get_canvas_pixel(cp, layer, start_x, start_y);
+			put_pixel(cp, layer, start_x, start_y, color);
+			quixel_queue_push(qp, start_x, start_y);
+			while(quixel_queue_pop(qp, &x, &y))
 			{
-				quixel_draw_primitive_to_canvas(cp, layer, x - 1, y, x - 1, y, NULL, color, QUIXEL_RENDER_COPY, quixel_draw_line);
-				quixel_queue_push(qp, x - 1, y);
+				current_color = quixel_get_canvas_pixel(cp, layer, x - 1, y);
+				if(quixel_color_equal(current_color, old_color))
+				{
+					put_pixel(cp, layer, x - 1, y, color);
+					quixel_queue_push(qp, x - 1, y);
+				}
+				current_color = quixel_get_canvas_pixel(cp, layer, x + 1, y);
+				if(quixel_color_equal(current_color, old_color))
+				{
+					put_pixel(cp, layer, x + 1, y, color);
+					quixel_queue_push(qp, x + 1, y);
+				}
+				current_color = quixel_get_canvas_pixel(cp, layer, x, y - 1);
+				if(quixel_color_equal(current_color, old_color))
+				{
+					put_pixel(cp, layer, x, y - 1, color);
+					quixel_queue_push(qp, x, y - 1);
+				}
+				current_color = quixel_get_canvas_pixel(cp, layer, x, y + 1);
+				if(quixel_color_equal(current_color, old_color))
+				{
+					put_pixel(cp, layer, x, y + 1, color);
+					quixel_queue_push(qp, x, y + 1);
+				}
 			}
-			current_color = quixel_get_canvas_pixel(cp, layer, x + 1, y);
-			if(quixel_color_equal(current_color, old_color))
-			{
-				quixel_draw_primitive_to_canvas(cp, layer, x + 1, y, x + 1, y, NULL, color, QUIXEL_RENDER_COPY, quixel_draw_line);
-				quixel_queue_push(qp, x + 1, y);
-			}
-			current_color = quixel_get_canvas_pixel(cp, layer, x, y - 1);
-			if(quixel_color_equal(current_color, old_color))
-			{
-				quixel_draw_primitive_to_canvas(cp, layer, x, y - 1, x, y - 1, NULL, color, QUIXEL_RENDER_COPY, quixel_draw_line);
-				quixel_queue_push(qp, x, y - 1);
-			}
-			current_color = quixel_get_canvas_pixel(cp, layer, x, y + 1);
-			if(quixel_color_equal(current_color, old_color))
-			{
-				quixel_draw_primitive_to_canvas(cp, layer, x, y + 1, x, y + 1, NULL, color, QUIXEL_RENDER_COPY, quixel_draw_line);
-				quixel_queue_push(qp, x, y + 1);
-			}
+			quixel_destroy_queue(qp);
 		}
-		quixel_destroy_queue(qp);
+		al_unlock_bitmap(bp);
+		al_restore_state(&old_state);
 	}
 }
