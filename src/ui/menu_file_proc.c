@@ -337,7 +337,6 @@ int quixel_menu_file_exit(int id, void * data)
 
 	if(close_canvas(app))
 	{
-		quixel_destroy_canvas(app->canvas);
 		t3f_exit();
 	}
 	return 0;
