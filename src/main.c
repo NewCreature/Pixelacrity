@@ -6,6 +6,7 @@
 #include "ui/menu.h"
 #include "ui/menu_file_proc.h"
 #include "ui/menu_edit_proc.h"
+#include "ui/undo.h"
 
 void app_event_handler(ALLEGRO_EVENT * event, void * data)
 {
@@ -121,6 +122,7 @@ void app_exit(APP_INSTANCE * app)
 	al_set_config_value(app->canvas->config, "state", "view_y", buf);
 	sprintf(buf, "%d", app->canvas_editor->view_zoom);
 	al_set_config_value(app->canvas->config, "state", "view_zoom", buf);
+	quixel_undo_clean_up(app->canvas_editor);
 	quixel_destroy_canvas_editor(app->canvas_editor);
 	quixel_destroy_canvas(app->canvas);
 }
