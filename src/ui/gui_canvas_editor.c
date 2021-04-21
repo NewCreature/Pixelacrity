@@ -265,7 +265,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				case QUIXEL_TOOL_FLOOD_FILL:
 				{
 					click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
-					quixel_flood_fill_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y, c == 1 ? canvas_editor->left_color : canvas_editor->right_color);
+					quixel_flood_fill_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y, c == 1 ? canvas_editor->left_color : canvas_editor->right_color, false);
 					break;
 				}
 				case QUIXEL_TOOL_DROPPER:
