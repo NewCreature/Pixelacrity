@@ -12,12 +12,22 @@ void app_event_handler(ALLEGRO_EVENT * event, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	t3f_event_handler(event);
 	switch(event->type)
 	{
 		case ALLEGRO_EVENT_DISPLAY_RESIZE:
 		{
+			t3f_event_handler(event);
 			app->restart_ui = true;
+			break;
+		}
+		case ALLEGRO_EVENT_DISPLAY_CLOSE:
+		{
+			quixel_menu_file_exit(0, data);
+			break;
+		}
+		default:
+		{
+			t3f_event_handler(event);
 			break;
 		}
 	}
@@ -35,7 +45,7 @@ void app_logic(void * data)
 			quixel_destroy_ui(app->ui);
 		}
 		app->ui = quixel_create_ui(app->canvas_editor);
-		t3gui_show_dialog(app->ui->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, T3GUI_PLAYER_NO_ESCAPE, app);
+		t3gui_show_dialog(app->ui->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, T3GUI_PLAYER_NO_ESCAPE | T3GUI_PLAYER_IGNORE_CLOSE, app);
 		app->restart_ui = false;
 	}
 	/* handle signals */
