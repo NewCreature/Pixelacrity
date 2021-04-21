@@ -126,7 +126,6 @@ const char * quixel_get_undo_name(const char * fn, char * out, int out_size)
 	ALLEGRO_FILE * fp = NULL;
 	int l;
 
-	printf("file: %s\n", fn);
 	fp = al_fopen(fn, "rb");
 	if(!fp)
 	{
@@ -140,7 +139,6 @@ const char * quixel_get_undo_name(const char * fn, char * out, int out_size)
 	}
 	al_fread(fp, out, l);
 	out[l] = 0;
-	printf("s: %s\n", out);
 	al_fclose(fp);
 
 	return out;
