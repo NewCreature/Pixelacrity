@@ -8,15 +8,36 @@
 
 static bool close_canvas(APP_INSTANCE * app)
 {
+	int ret = true;
+
 	if(app->canvas)
 	{
 		/* insert code to check for changes and ask to save */
-
-		quixel_destroy_canvas(app->canvas);
-		app->canvas = NULL;
-		return true;
+		if(app->canvas_editor->modified)
+		{
+			al_stop_timer(t3f_timer);
+			ret = al_show_native_message_box(t3f_display, "Unsaved Work", "", "You have unsaved work. What do you want to do?", "Save|Discard|Cancel", ALLEGRO_MESSAGEBOX_QUESTION);
+			switch(ret)
+			{
+				case 1:
+				{
+					quixel_menu_file_save(0, app);
+					break;
+				}
+				case 2:
+				{
+					break;
+				}
+				case 3:
+				{
+					ret = false;
+					break;
+				}
+			}
+			al_start_timer(t3f_timer);
+		}
 	}
-	return true;
+	return ret;
 }
 
 int quixel_menu_file_new(int id, void * data)
@@ -25,7 +46,15 @@ int quixel_menu_file_new(int id, void * data)
 
 	if(close_canvas(app))
 	{
+		if(app->canvas)
+		{
+			quixel_destroy_canvas(app->canvas);
+		}
 		app->canvas = quixel_create_canvas(2048);
+		if(app->canvas_editor)
+		{
+			app->canvas_editor->canvas = app->canvas;
+		}
 	}
 	return 0;
 }
@@ -78,6 +107,7 @@ int quixel_menu_file_load(int id, void * data)
 	const char * file_path;
 	const char * extension;
 	bool import_image = false;
+	QUIXEL_CANVAS * new_canvas = NULL;
 
 	if(close_canvas(app))
 	{
@@ -102,14 +132,19 @@ int quixel_menu_file_load(int id, void * data)
 						}
 						if(import_image)
 						{
-							app->canvas = canvas_from_image(file_path);
+							new_canvas = canvas_from_image(file_path);
 						}
 						else
 						{
-							app->canvas = quixel_load_canvas(file_path, 2048);
+							new_canvas = quixel_load_canvas(file_path, 2048);
 						}
-						if(app->canvas)
+						if(new_canvas)
 						{
+							if(app->canvas)
+							{
+								quixel_destroy_canvas(app->canvas);
+							}
+							app->canvas = new_canvas;
 							app->canvas_editor->canvas = app->canvas;
 							quixel_center_canvas_editor(app->canvas_editor, 0);
 							strcpy(app->canvas_editor->canvas_path, file_path);
@@ -118,11 +153,6 @@ int quixel_menu_file_load(int id, void * data)
 						else
 						{
 							printf("Unable to load!\n");
-							app->canvas = quixel_create_canvas(2048);
-							if(app->canvas)
-							{
-								app->canvas_editor->canvas = app->canvas;
-							}
 						}
 					}
 				}
