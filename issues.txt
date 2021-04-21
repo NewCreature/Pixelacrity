@@ -1,10 +1,9 @@
 Quixel 0.1 Issues
 -----------------
 
-[ ]Crash when resizing on M1 Macbook Air.
+[ ]Ask to save changes when closing a canvas.
 
-[ ]Implement backup system. We should save a timestamped backup every 10 minutes
-   so testers don't lose a lot of work to crashes.
+[ ]Crash when resizing on M1 Macbook Air.
 
 [ ]Investigate why pixel x-coordinate is offset by -1.
 
@@ -206,3 +205,6 @@ Closed Issues
       of the action only and build the final menu item name from that data.
 
    [X]Add support for multiple types of undo states.
+
+[X]Implement backup system. We should save a timestamped backup every 10 minutes
+   so testers don't lose a lot of work to crashes.
