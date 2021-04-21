@@ -54,6 +54,8 @@ int quixel_menu_file_new(int id, void * data)
 		if(app->canvas_editor)
 		{
 			app->canvas_editor->canvas = app->canvas;
+			app->canvas_editor->modified = false;
+			quixel_center_canvas_editor(app->canvas_editor, 0);
 		}
 	}
 	return 0;
@@ -146,6 +148,7 @@ int quixel_menu_file_load(int id, void * data)
 							}
 							app->canvas = new_canvas;
 							app->canvas_editor->canvas = app->canvas;
+							app->canvas_editor->modified = false;
 							quixel_center_canvas_editor(app->canvas_editor, 0);
 							strcpy(app->canvas_editor->canvas_path, file_path);
 							app->canvas_editor->update_title = true;
