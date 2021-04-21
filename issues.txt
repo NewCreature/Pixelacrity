@@ -3,6 +3,9 @@ Quixel 0.1 Issues
 
 [ ]Crash when resizing on M1 Macbook Air.
 
+[ ]Implement backup system. We should save a timestamped backup every 10 minutes
+   so testers don't lose a lot of work to crashes.
+
 [ ]Investigate why pixel x-coordinate is offset by -1.
 
    [ ]This might be a bug with Apple high resolution displays. I wasn't able to
