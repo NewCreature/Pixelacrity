@@ -102,6 +102,7 @@ bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 	{
 		return false;
 	}
+	app->canvas_editor->update_title = true;
 
 	app->restart_ui = true;
 

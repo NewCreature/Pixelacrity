@@ -44,12 +44,12 @@ static void update_window_title(QUIXEL_CANVAS_EDITOR * cep)
 		if(fn)
 		{
 			sprintf(buf, "Quixel - %s%s", fn, cep->modified ? "*" : "");
-			al_set_window_title(t3f_display, buf);
 		}
 		else
 		{
 			sprintf(buf, "Quixel - Untitled%s", cep->modified ? "*" : "");
 		}
+		al_set_window_title(t3f_display, buf);
 		cep->update_title = false;
 	}
 }
