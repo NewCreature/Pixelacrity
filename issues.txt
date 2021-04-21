@@ -3,26 +3,6 @@ Quixel 0.1 Issues
 
 [ ]Crash when resizing on M1 Macbook Air.
 
-[ ]Finish undo implementation.
-
-   [ ]Add support for multiple types of undo states.
-
-      [X]Move undo system into its own module since we will need a lot of
-         functions for the various types of undo states.
-
-      [ ]Make selection moving undoable.
-
-      [ ]Make frame editing undoable.
-
-      [X]Implement applying undo states.
-
-      [X]Implement saving and applying redo states.
-
-   [X]Implement named undo states.
-
-   [ ]Rework undo/redo naming to make it more flexible. We should save the name
-      of the action only and build the final menu item name from that data.
-
 [ ]Investigate why pixel x-coordinate is offset by -1.
 
    [ ]This might be a bug with Apple high resolution displays. I wasn't able to
@@ -207,3 +187,19 @@ Closed Issues
    [ ]This happens because we are using t3f_mouse_button[] to detect which
       button was pressed. We need to add a way to differentiate buttons into
       T3GUI.
+
+[X]Finish undo implementation.
+
+   [X]Move undo system into its own module since we will need a lot of functions
+      for the various types of undo states.
+
+   [X]Implement named undo states.
+
+   [X]Implement applying undo states.
+
+   [X]Implement saving and applying redo states.
+
+   [X]Rework undo/redo naming to make it more flexible. We should save the name
+      of the action only and build the final menu item name from that data.
+
+   [X]Add support for multiple types of undo states.
