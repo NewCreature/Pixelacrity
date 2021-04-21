@@ -387,7 +387,10 @@ static void dialog_thread_event_handler(T3GUI_PLAYER * player, ALLEGRO_EVENT * e
     {
         case ALLEGRO_EVENT_DISPLAY_CLOSE:
         {
-            player->res |= D_CLOSE;
+            if(!(player->flags & T3GUI_PLAYER_IGNORE_CLOSE))
+            {
+                player->res |= D_CLOSE;
+            }
             break;
         }
 
