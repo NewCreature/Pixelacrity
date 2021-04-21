@@ -1,8 +1,6 @@
 Quixel 0.1 Issues
 -----------------
 
-[ ]Ask to save changes when closing a canvas.
-
 [ ]Crash when resizing on M1 Macbook Air.
 
 [ ]Investigate why pixel x-coordinate is offset by -1.
@@ -208,3 +206,5 @@ Closed Issues
 
 [X]Implement backup system. We should save a timestamped backup every 10 minutes
    so testers don't lose a lot of work to crashes.
+
+[X]Ask to save changes when closing a canvas.
