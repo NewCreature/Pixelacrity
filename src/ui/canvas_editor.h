@@ -7,7 +7,8 @@
 
 #define QUIXEL_CANVAS_EDITOR_SIGNAL_NONE         0
 #define QUIXEL_CANVAS_EDITOR_SIGNAL_DELETE_LAYER 1
-#define QUIXEL_CANVAS_EDITOR_SIGNAL_UNDO_CHANGE  2
+
+#define QUIXEL_BACKUP_INTERVAL (10 * 60 * 60) // 10 minutes
 
 #define QUIXEL_TOOL_PIXEL            0
 #define QUIXEL_TOOL_LINE             1
@@ -15,8 +16,9 @@
 #define QUIXEL_TOOL_FILLED_RECTANGLE 3
 #define QUIXEL_TOOL_OVAL             4
 #define QUIXEL_TOOL_FILLED_OVAL      5
-#define QUIXEL_TOOL_DROPPER          6
-#define QUIXEL_TOOL_SELECTION        7
+#define QUIXEL_TOOL_FLOOD_FILL       6
+#define QUIXEL_TOOL_DROPPER          7
+#define QUIXEL_TOOL_SELECTION        8
 
 #define QUIXEL_TOOL_STATE_OFF        0
 #define QUIXEL_TOOL_STATE_DRAWING    1
@@ -99,6 +101,8 @@ typedef struct
 	char undo_name[256];
 	int redo_count;
 	char redo_name[256];
+
+	int backup_tick;
 
 } QUIXEL_CANVAS_EDITOR;
 

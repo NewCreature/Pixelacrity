@@ -47,6 +47,7 @@ QUIXEL_CANVAS_EDITOR * quixel_create_canvas_editor(QUIXEL_CANVAS * cp)
 	cep->view_x = get_config_val(cep->canvas->config, "state", "view_x", cep->canvas->bitmap_size * 8 + cep->canvas->bitmap_size / 2);
 	cep->view_y = get_config_val(cep->canvas->config, "state", "view_y", cep->canvas->bitmap_size * 8 + cep->canvas->bitmap_size / 2);
 	cep->view_zoom = get_config_val(cep->canvas->config, "state", "view_zoom", 8);
+	cep->backup_tick = QUIXEL_BACKUP_INTERVAL;
 	return cep;
 
 	fail:

@@ -1,6 +1,7 @@
 #include "t3f/t3f.h"
 #include "t3f/file_utils.h"
 #include "canvas.h"
+#include "canvas_file.h"
 #include "canvas_helpers.h"
 #include "canvas_editor.h"
 #include "primitives.h"
@@ -15,45 +16,9 @@
 #include "tool_selection.h"
 #include "ui.h"
 #include "undo.h"
-
-static ALLEGRO_COLOR shade_color(ALLEGRO_COLOR color, float l)
-{
-	float h, s, old_l;
-	float r, g, b;
-
-	al_unmap_rgb_f(color, &r, &g, &b);
-	al_color_rgb_to_hsl(r, g, b, &h, &s, &old_l);
-
-	return al_color_hsl(h, s, l);
-}
-
-static ALLEGRO_COLOR alpha_color(ALLEGRO_COLOR color, float alpha)
-{
-	float r, g, b;
-
-	al_unmap_rgb_f(color, &r, &g, &b);
-
-	return al_map_rgba_f(r, g, b, alpha);
-}
-
-static float get_shade(ALLEGRO_COLOR color)
-{
-	float r, g, b, h, s, l;
-
-	al_unmap_rgb_f(color, &r, &g, &b);
-	al_color_rgb_to_hsl(r, g, b, &h, &s, &l);
-
-	return l;
-}
-
-static float get_alpha(ALLEGRO_COLOR color)
-{
-	float r, a;
-
-	al_unmap_rgba_f(color, &r, &r, &r, &a);
-
-	return a;
-}
+#include "date.h"
+#include "color.h"
+#include "flood_fill.h"
 
 void quixel_canvas_editor_update_pick_colors(QUIXEL_CANVAS_EDITOR * cep)
 {
@@ -64,21 +29,8 @@ void quixel_canvas_editor_update_pick_colors(QUIXEL_CANVAS_EDITOR * cep)
 	for(i = 0; i < QUIXEL_COLOR_PICKER_SHADES; i++)
 	{
 		new_l = step * (float)i;
-		cep->pick_color[i] = shade_color(cep->left_base_color, new_l);
+		cep->pick_color[i] = quixel_shade_color(cep->left_base_color, new_l);
 	}
-}
-
-static bool color_equal(ALLEGRO_COLOR c1, ALLEGRO_COLOR c2)
-{
-	unsigned char r[2], g[2], b[2], a[2];
-
-	al_unmap_rgba(c1, &r[0], &g[0], &b[0], &a[0]);
-	al_unmap_rgba(c2, &r[1], &g[1], &b[1], &a[1]);
-	if(r[0] != r[1] || g[0] != g[1] || b[0] != b[1] || a[0] != a[1])
-	{
-		return false;
-	}
-	return true;
 }
 
 static void update_window_title(QUIXEL_CANVAS_EDITOR * cep)
@@ -201,6 +153,21 @@ static void get_scratch_from_canvas(QUIXEL_CANVAS_EDITOR * cep)
 	al_restore_state(&old_state);
 }
 
+static bool save_backup(QUIXEL_CANVAS * cp)
+{
+	char backup_path[1024];
+	char backup_fn[256];
+
+	quixel_get_date_string(backup_fn, 256);
+	strcat(backup_fn, ".qcanvas");
+	t3f_get_filename(t3f_data_path, backup_fn, backup_path, 1024);
+	if(quixel_save_canvas(cp, backup_path, ".png", QUIXEL_CANVAS_SAVE_AUTO))
+	{
+		return true;
+	}
+	return false;
+}
+
 int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 {
 	QUIXEL_CANVAS_EDITOR * canvas_editor = (QUIXEL_CANVAS_EDITOR *)d->dp;
@@ -293,6 +260,12 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 					canvas_editor->scratch_offset_y = canvas_editor->view_y;
 					quixel_tool_filled_oval_logic(canvas_editor);
 					canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
+					break;
+				}
+				case QUIXEL_TOOL_FLOOD_FILL:
+				{
+					click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
+					quixel_flood_fill_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y, c == 1 ? canvas_editor->left_color : canvas_editor->right_color);
 					break;
 				}
 				case QUIXEL_TOOL_DROPPER:
@@ -524,52 +497,61 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 		}
 		case MSG_IDLE:
 		{
+			if(canvas_editor->backup_tick > 0)
+			{
+				canvas_editor->backup_tick--;
+			}
+			if(canvas_editor->backup_tick <= 0 && canvas_editor->tool_state == QUIXEL_TOOL_STATE_OFF)
+			{
+				save_backup(canvas_editor->canvas);
+				canvas_editor->backup_tick = QUIXEL_BACKUP_INTERVAL;
+			}
 			update_window_title(canvas_editor);
 //			update_cursor(canvas_editor);
-			if(!color_equal(canvas_editor->left_base_color, canvas_editor->last_left_base_color))
+			if(!quixel_color_equal(canvas_editor->left_base_color, canvas_editor->last_left_base_color))
 			{
 				canvas_editor->left_color = canvas_editor->left_base_color;
 				canvas_editor->last_left_base_color = canvas_editor->left_base_color;
 				quixel_canvas_editor_update_pick_colors(canvas_editor);
 			}
-			if(!color_equal(canvas_editor->left_color, canvas_editor->last_left_color))
+			if(!quixel_color_equal(canvas_editor->left_color, canvas_editor->last_left_color))
 			{
 				canvas_editor->last_left_color = canvas_editor->left_color;
-				canvas_editor->left_shade_slider_element->d2 = get_shade(canvas_editor->left_color) * 1000.0;
-				canvas_editor->left_alpha_slider_element->d2 = get_alpha(canvas_editor->left_color) * 1000.0;
+				canvas_editor->left_shade_slider_element->d2 = quixel_get_color_shade(canvas_editor->left_color) * 1000.0;
+				canvas_editor->left_alpha_slider_element->d2 = quixel_get_color_alpha(canvas_editor->left_color) * 1000.0;
 			}
-			canvas_editor->left_shade_color = shade_color(canvas_editor->left_base_color, (float)canvas_editor->left_shade_slider_element->d2 / 1000.0);
-			if(!color_equal(canvas_editor->left_shade_color, canvas_editor->last_left_shade_color))
+			canvas_editor->left_shade_color = quixel_shade_color(canvas_editor->left_base_color, (float)canvas_editor->left_shade_slider_element->d2 / 1000.0);
+			if(!quixel_color_equal(canvas_editor->left_shade_color, canvas_editor->last_left_shade_color))
 			{
 				canvas_editor->left_color = canvas_editor->left_shade_color;
 				canvas_editor->last_left_shade_color = canvas_editor->left_shade_color;
 			}
-			canvas_editor->left_alpha_color = alpha_color(canvas_editor->left_shade_color, (float)canvas_editor->left_alpha_slider_element->d2 / 1000.0);
-			if(!color_equal(canvas_editor->left_alpha_color, canvas_editor->last_left_alpha_color))
+			canvas_editor->left_alpha_color = quixel_alpha_color(canvas_editor->left_shade_color, (float)canvas_editor->left_alpha_slider_element->d2 / 1000.0);
+			if(!quixel_color_equal(canvas_editor->left_alpha_color, canvas_editor->last_left_alpha_color))
 			{
 				canvas_editor->left_color = canvas_editor->left_alpha_color;
 				canvas_editor->last_left_alpha_color = canvas_editor->left_alpha_color;
 			}
-			if(!color_equal(canvas_editor->right_base_color, canvas_editor->last_right_base_color))
+			if(!quixel_color_equal(canvas_editor->right_base_color, canvas_editor->last_right_base_color))
 			{
 				canvas_editor->right_color = canvas_editor->right_base_color;
 				canvas_editor->last_right_base_color = canvas_editor->right_base_color;
 				quixel_canvas_editor_update_pick_colors(canvas_editor);
 			}
-			if(!color_equal(canvas_editor->right_color, canvas_editor->last_right_color))
+			if(!quixel_color_equal(canvas_editor->right_color, canvas_editor->last_right_color))
 			{
 				canvas_editor->last_right_color = canvas_editor->right_color;
-				canvas_editor->right_shade_slider_element->d2 = get_shade(canvas_editor->right_color) * 1000.0;
-				canvas_editor->right_alpha_slider_element->d2 = get_alpha(canvas_editor->right_color) * 1000.0;
+				canvas_editor->right_shade_slider_element->d2 = quixel_get_color_shade(canvas_editor->right_color) * 1000.0;
+				canvas_editor->right_alpha_slider_element->d2 = quixel_get_color_alpha(canvas_editor->right_color) * 1000.0;
 			}
-			canvas_editor->right_shade_color = shade_color(canvas_editor->right_base_color, (float)canvas_editor->right_shade_slider_element->d2 / 1000.0);
-			if(!color_equal(canvas_editor->right_shade_color, canvas_editor->last_right_shade_color))
+			canvas_editor->right_shade_color = quixel_shade_color(canvas_editor->right_base_color, (float)canvas_editor->right_shade_slider_element->d2 / 1000.0);
+			if(!quixel_color_equal(canvas_editor->right_shade_color, canvas_editor->last_right_shade_color))
 			{
 				canvas_editor->right_color = canvas_editor->right_shade_color;
 				canvas_editor->last_right_shade_color = canvas_editor->right_shade_color;
 			}
-			canvas_editor->right_alpha_color = alpha_color(canvas_editor->right_shade_color, (float)canvas_editor->right_alpha_slider_element->d2 / 1000.0);
-			if(!color_equal(canvas_editor->right_alpha_color, canvas_editor->last_right_alpha_color))
+			canvas_editor->right_alpha_color = quixel_alpha_color(canvas_editor->right_shade_color, (float)canvas_editor->right_alpha_slider_element->d2 / 1000.0);
+			if(!quixel_color_equal(canvas_editor->right_alpha_color, canvas_editor->last_right_alpha_color))
 			{
 				canvas_editor->right_color = canvas_editor->right_alpha_color;
 				canvas_editor->last_right_alpha_color = canvas_editor->right_alpha_color;

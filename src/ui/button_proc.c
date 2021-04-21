@@ -69,6 +69,15 @@ int quixel_tool_filled_oval_button_proc(T3GUI_ELEMENT * d, void *dp3)
 	return 0;
 }
 
+int quixel_tool_flood_fill_button_proc(T3GUI_ELEMENT * d, void *dp3)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)dp3;
+
+	change_tool(app->canvas_editor, QUIXEL_TOOL_FLOOD_FILL);
+
+	return 0;
+}
+
 int quixel_tool_dropper_button_proc(T3GUI_ELEMENT * d, void *dp3)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)dp3;
