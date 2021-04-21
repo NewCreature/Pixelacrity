@@ -148,14 +148,14 @@ static void click_on_canvas(QUIXEL_CANVAS_EDITOR * cep, int button, int x, int y
 static bool create_undo(QUIXEL_CANVAS_EDITOR * cep, int x, int y, int width, int height)
 {
 	char undo_path[1024];
-	char uname[256];
 
 	quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024);
-	if(quixel_make_tool_undo(cep, cep->current_layer, x, y, width, height, undo_path))
+	if(quixel_make_tool_undo(cep, NULL, cep->current_layer, x, y, width, height, undo_path))
 	{
-		quixel_get_undo_name(undo_path, uname, 256);
-		strcpy(cep->undo_name, uname);
 		cep->undo_count++;
+		cep->redo_count = 0;
+		quixel_update_undo_name(cep);
+		quixel_update_redo_name(cep);
 		t3f_refresh_menus();
 		return true;
 	}

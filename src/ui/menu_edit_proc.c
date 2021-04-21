@@ -13,6 +13,8 @@ int quixel_menu_edit_undo(int id, void * data)
 		quixel_apply_undo(app->canvas_editor, undo_path, false);
 		al_remove_filename(undo_path);
 		app->canvas_editor->undo_count--;
+		quixel_update_undo_name(app->canvas_editor);
+		quixel_update_redo_name(app->canvas_editor);
 		t3f_refresh_menus();
 	}
 
@@ -30,6 +32,8 @@ int quixel_menu_edit_redo(int id, void * data)
 		quixel_apply_redo(app->canvas_editor, redo_path);
 		al_remove_filename(redo_path);
 		app->canvas_editor->redo_count--;
+		quixel_update_undo_name(app->canvas_editor);
+		quixel_update_redo_name(app->canvas_editor);
 		t3f_refresh_menus();
 	}
 

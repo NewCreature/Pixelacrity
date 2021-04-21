@@ -12,11 +12,12 @@ static bool write_undo_header(ALLEGRO_FILE * fp, int type, const char * name)
 	return true;
 }
 
-bool quixel_make_tool_undo(QUIXEL_CANVAS_EDITOR * cep, int layer, int x, int y, int width, int height, const char * fn)
+bool quixel_make_tool_undo(QUIXEL_CANVAS_EDITOR * cep, const char * action, int layer, int x, int y, int width, int height, const char * fn)
 {
 	ALLEGRO_STATE old_state;
 	ALLEGRO_BITMAP * bp = NULL;
 	ALLEGRO_FILE * fp = NULL;
+	const char * action_name;
 
 	if(width <= 0 || height <= 0)
 	{
@@ -43,7 +44,45 @@ bool quixel_make_tool_undo(QUIXEL_CANVAS_EDITOR * cep, int layer, int x, int y, 
 		printf("fail: %s\n", fn);
 		goto fail;
 	}
-	write_undo_header(fp, QUIXEL_UNDO_TYPE_TOOL, "Undo Draw");
+	switch(cep->current_tool)
+	{
+		case QUIXEL_TOOL_PIXEL:
+		{
+			action_name = "Draw Pixel";
+			break;
+		}
+		case QUIXEL_TOOL_LINE:
+		{
+			action_name = "Draw Line";
+			break;
+		}
+		case QUIXEL_TOOL_RECTANGLE:
+		{
+			action_name = "Draw Rectangle";
+			break;
+		}
+		case QUIXEL_TOOL_FILLED_RECTANGLE:
+		{
+			action_name = "Draw Filled Rectangle";
+			break;
+		}
+		case QUIXEL_TOOL_OVAL:
+		{
+			action_name = "Draw Oval";
+			break;
+		}
+		case QUIXEL_TOOL_FILLED_OVAL:
+		{
+			action_name = "Draw Filled Oval";
+			break;
+		}
+		default:
+		{
+			action_name = "Draw";
+			break;
+		}
+	}
+	write_undo_header(fp, QUIXEL_UNDO_TYPE_TOOL, action ? action : action_name);
 	if(width < 0 || height < 0)
 	{
 		al_fputc(fp, 0);
@@ -77,9 +116,9 @@ bool quixel_make_tool_undo(QUIXEL_CANVAS_EDITOR * cep, int layer, int x, int y, 
 	}
 }
 
-bool quixel_make_tool_redo(QUIXEL_CANVAS_EDITOR * cep, int layer, int x, int y, int width, int height, const char * fn)
+bool quixel_make_tool_redo(QUIXEL_CANVAS_EDITOR * cep, const char * action, int layer, int x, int y, int width, int height, const char * fn)
 {
-	return quixel_make_tool_undo(cep, layer, x, y, width, height, fn);
+	return quixel_make_tool_undo(cep, action, layer, x, y, width, height, fn);
 }
 
 const char * quixel_get_undo_name(const char * fn, char * out, int out_size)
@@ -87,6 +126,7 @@ const char * quixel_get_undo_name(const char * fn, char * out, int out_size)
 	ALLEGRO_FILE * fp = NULL;
 	int l;
 
+	printf("file: %s\n", fn);
 	fp = al_fopen(fn, "rb");
 	if(!fp)
 	{
@@ -99,6 +139,8 @@ const char * quixel_get_undo_name(const char * fn, char * out, int out_size)
 		goto fail;
 	}
 	al_fread(fp, out, l);
+	out[l] = 0;
+	printf("s: %s\n", out);
 	al_fclose(fp);
 
 	return out;
@@ -119,6 +161,27 @@ const char * quixel_get_undo_path(const char * base, int count, char * out, int 
 
 	sprintf(fn, "%s.%04d", base, count);
 	return t3f_get_filename(t3f_data_path, fn, out, out_size);
+}
+
+void quixel_update_undo_name(QUIXEL_CANVAS_EDITOR * cep)
+{
+	char undo_path[1024];
+	char uname[256];
+
+	quixel_get_undo_path("undo", cep->undo_count - 1, undo_path, 1024);
+	quixel_get_undo_name(undo_path, uname, 256);
+	sprintf(cep->undo_name, "Undo %s", uname);
+	printf("name2 %s\n", cep->undo_name);
+}
+
+void quixel_update_redo_name(QUIXEL_CANVAS_EDITOR * cep)
+{
+	char redo_path[1024];
+	char rname[256];
+
+	quixel_get_undo_path("redo", cep->redo_count - 1, redo_path, 1024);
+	quixel_get_undo_name(redo_path, rname, 256);
+	sprintf(cep->redo_name, "Redo %s", rname);
 }
 
 bool quixel_apply_undo(QUIXEL_CANVAS_EDITOR * cep, const char * fn, bool redo)
@@ -157,18 +220,12 @@ bool quixel_apply_undo(QUIXEL_CANVAS_EDITOR * cep, const char * fn, bool redo)
 				}
 				if(!redo)
 				{
-					quixel_make_tool_redo(cep, layer, x, y, al_get_bitmap_width(bp), al_get_bitmap_height(bp), quixel_get_undo_path("redo", cep->redo_count, undo_path, 1024));
-					strcpy(cep->redo_name, buf);
-					cep->redo_name[0] = 'R';
-					cep->redo_name[1] = 'e';
+					quixel_make_tool_redo(cep, buf, layer, x, y, al_get_bitmap_width(bp), al_get_bitmap_height(bp), quixel_get_undo_path("redo", cep->redo_count, undo_path, 1024));
 					cep->redo_count++;
 				}
 				else
 				{
-					quixel_make_tool_undo(cep, layer, x, y, al_get_bitmap_width(bp), al_get_bitmap_height(bp), quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024));
-					strcpy(cep->undo_name, buf);
-					cep->undo_name[0] = 'U';
-					cep->undo_name[1] = 'n';
+					quixel_make_tool_undo(cep, buf, layer, x, y, al_get_bitmap_width(bp), al_get_bitmap_height(bp), quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024));
 					cep->undo_count++;
 				}
 				quixel_import_bitmap_to_canvas(cep->canvas, bp, layer, x, y);
