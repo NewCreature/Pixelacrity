@@ -1,6 +1,8 @@
 Quixel 0.1 Issues
 -----------------
 
+[ ]Implement undo for flood fill.
+
 [ ]Crash when resizing on M1 Macbook Air.
 
 [ ]Investigate why pixel x-coordinate is offset by -1.
