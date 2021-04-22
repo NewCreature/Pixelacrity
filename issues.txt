@@ -3,6 +3,11 @@ Quixel 0.1 Issues
 
 [ ]Implement undo for flood fill.
 
+   [ ]I think the algorithm can be modified to clone each bitmap that it
+      reaches instead of editing the canvas bitmaps directly. Then we can mark
+      the rectangle that the flood fill covers and save that using the usual
+      method.
+
 [ ]Crash when resizing on M1 Macbook Air.
 
 [ ]Investigate why pixel x-coordinate is offset by -1.
