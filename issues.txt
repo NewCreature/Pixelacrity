@@ -3,13 +3,9 @@ Quixel 0.1 Issues
 
 [ ]Implement undo for flood fill.
 
-   [ ]We might want to make a second queue that lists all of the changed pixels
-      and build an undo bitmap out of that.
-
-   [ ]We might just keep track of the area the flood fill covers as it runs,
-      then copy that area to a new bitmap and run a flood fill on that to go
-      back to the original color. Then we could save that data as the undo
-      state.
+   [ ]Store the position and color of the pixel the user clicked. To apply the
+      the undo, we can just run a flood fill on that spot with the original
+      color.
 
 [ ]Crash when resizing on M1 Macbook Air.
 
