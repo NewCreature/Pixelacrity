@@ -3,10 +3,13 @@ Quixel 0.1 Issues
 
 [ ]Implement undo for flood fill.
 
-   [ ]I think the algorithm can be modified to clone each bitmap that it
-      reaches instead of editing the canvas bitmaps directly. Then we can mark
-      the rectangle that the flood fill covers and save that using the usual
-      method.
+   [ ]We might want to make a second queue that lists all of the changed pixels
+      and build an undo bitmap out of that.
+
+   [ ]We might just keep track of the area the flood fill covers as it runs,
+      then copy that area to a new bitmap and run a flood fill on that to go
+      back to the original color. Then we could save that data as the undo
+      state.
 
 [ ]Crash when resizing on M1 Macbook Air.
 
