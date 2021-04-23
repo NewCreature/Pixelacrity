@@ -5,9 +5,9 @@ Quixel 0.1 Issues
 
    [ ]Make undoable.
 
-      [ ]We need a way to determine what area will be filled before actually
-         filling it. We won't be able to go back if an edge pixel is the same
-         color as the target color.
+      [ ]Get dimensions of canvas to reduce the search area. We can save this
+         area as an undo state, then flood fill the temp bitmap, and finally
+         overwrite the canvas data if the fill was successful.
 
    [ ]See if we can use a linked list instead of a queue to remove the hard
       limit on how much a flood fill can handle filling.
