@@ -76,6 +76,11 @@ bool quixel_make_tool_undo(QUIXEL_CANVAS_EDITOR * cep, const char * action, int 
 			action_name = "Draw Filled Oval";
 			break;
 		}
+		case QUIXEL_TOOL_FLOOD_FILL:
+		{
+			action_name = "Flood Fill";
+			break;
+		}
 		default:
 		{
 			action_name = "Draw";

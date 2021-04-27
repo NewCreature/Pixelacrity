@@ -91,7 +91,7 @@ static void put_pixel(QUIXEL_CANVAS * cp, int layer, int x, int y, ALLEGRO_COLOR
 	al_put_pixel(x % cp->bitmap_size, y % cp->bitmap_size, color);
 }
 
-void quixel_flood_fill_canvas(QUIXEL_CANVAS * cp, int layer, int start_x, int start_y, ALLEGRO_COLOR color, bool recursed)
+bool quixel_flood_fill_canvas(QUIXEL_CANVAS * cp, int layer, int start_x, int start_y, ALLEGRO_COLOR color, bool recursed)
 {
 	QUIXEL_QUEUE * qp;
 	ALLEGRO_COLOR old_color;
@@ -101,15 +101,16 @@ void quixel_flood_fill_canvas(QUIXEL_CANVAS * cp, int layer, int start_x, int st
 	ALLEGRO_BITMAP * current_bp;
 	int x, y;
 	int i, j;
+	bool ret = true;
 
 	if(layer >= cp->layer_max)
 	{
-		return;
+		return false;
 	}
 	bp = cp->layer[layer]->bitmap[start_y / cp->bitmap_size][start_x / cp->bitmap_size];
 	if(!bp)
 	{
-		return;
+		return false;
 	}
 	al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP);
 	al_set_target_bitmap(bp);
@@ -131,6 +132,7 @@ void quixel_flood_fill_canvas(QUIXEL_CANVAS * cp, int layer, int start_x, int st
 				{
 					quixel_flood_fill_canvas(cp, layer, start_x, start_y, old_color, true);
 				}
+				ret = false;
 				goto cleanup;
 			}
 			if(!al_is_bitmap_locked(current_bp))
@@ -179,4 +181,5 @@ void quixel_flood_fill_canvas(QUIXEL_CANVAS * cp, int layer, int start_x, int st
 		}
 		al_restore_state(&old_state);
 	}
+	return ret;
 }
