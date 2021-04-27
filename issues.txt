@@ -3,17 +3,21 @@ Quixel 0.1 Issues
 
 [ ]Finish flood fill implementation.
 
-   [ ]Make undoable.
+   [X]Make undoable.
 
-      [ ]Get dimensions of canvas to reduce the search area. We can save this
+      [X]Get dimensions of canvas to reduce the search area. We can save this
          area as an undo state, then flood fill the temp bitmap, and finally
          overwrite the canvas data if the fill was successful.
 
    [ ]See if we can use a linked list instead of a queue to remove the hard
       limit on how much a flood fill can handle filling.
 
-   [ ]Fix flood fill failure possibly messing up a drawing if the user attemps
+   [ ]Fix flood fill failure possibly messing up a drawing if the user attempts
       to flood fill and some pixels are the same as the target color.
+
+      [ ]If flood fill fails, we should just return 'false' and restore the
+         original data from the undo state we created before performing the
+         operation.
 
 [ ]Crash when resizing on M1 Macbook Air.
 
