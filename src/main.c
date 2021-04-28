@@ -2,11 +2,11 @@
 #include "instance.h"
 #include "modules/canvas/canvas_file.h"
 #include "modules/pixel_shader.h"
-#include "ui/canvas_editor.h"
+#include "ui/canvas_editor/canvas_editor.h"
+#include "ui/canvas_editor/undo.h"
 #include "ui/menu/menu.h"
 #include "ui/menu/menu_file_proc.h"
 #include "ui/menu/menu_edit_proc.h"
-#include "ui/undo.h"
 
 void app_event_handler(ALLEGRO_EVENT * event, void * data)
 {

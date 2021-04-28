@@ -1,6 +1,6 @@
 #include "t3f/t3f.h"
 #include "modules/canvas/canvas.h"
-#include "ui/canvas_editor.h"
+#include "ui/canvas_editor/canvas_editor.h"
 
 static void draw_pixel(QUIXEL_CANVAS_EDITOR * cep, int x, int y, ALLEGRO_COLOR color)
 {

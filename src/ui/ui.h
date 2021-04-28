@@ -4,7 +4,7 @@
 #include "t3f/t3f.h"
 #include "t3gui/t3gui.h"
 #include "modules/canvas/canvas.h"
-#include "canvas_editor.h"
+#include "canvas_editor/canvas_editor.h"
 
 #define QUIXEL_UI_MAX_BITMAPS 32
 #define QUIXEL_UI_BITMAP_BG    0

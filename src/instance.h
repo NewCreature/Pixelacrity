@@ -4,7 +4,7 @@
 #include "t3f/t3f.h"
 #include "modules/canvas/canvas.h"
 #include "ui/ui.h"
-#include "ui/canvas_editor.h"
+#include "ui/canvas_editor/canvas_editor.h"
 
 /* structure to hold all of our app-specific data */
 typedef struct

@@ -1,9 +1,9 @@
 #include "t3f/t3f.h"
 #include "modules/canvas/canvas.h"
 #include "modules/primitives.h"
-#include "ui/canvas_editor.h"
+#include "ui/canvas_editor/canvas_editor.h"
 
-void quixel_tool_filled_rectangle_logic(QUIXEL_CANVAS_EDITOR * cep)
+void quixel_tool_filled_oval_logic(QUIXEL_CANVAS_EDITOR * cep)
 {
 	ALLEGRO_TRANSFORM identity;
 	ALLEGRO_STATE old_state;
@@ -23,10 +23,10 @@ void quixel_tool_filled_rectangle_logic(QUIXEL_CANVAS_EDITOR * cep)
 	al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
 	al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
 	quixel_render_canvas_layer(cep->canvas, cep->current_layer, cep->view_x, cep->view_y, 1, 0, 0, cep->editor_element->w, cep->editor_element->h);
-	quixel_draw_filled_rectangle(start_x, start_y, end_x, end_y, NULL, cep->click_color);
+	quixel_draw_filled_oval(start_x, start_y, end_x, end_y, NULL, cep->click_color);
 	al_restore_state(&old_state);
 }
 
-void quixel_tool_filled_rectangle_render(QUIXEL_CANVAS_EDITOR * cep)
+void quixel_tool_filled_oval_render(QUIXEL_CANVAS_EDITOR * cep)
 {
 }

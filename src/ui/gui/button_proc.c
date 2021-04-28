@@ -1,6 +1,6 @@
 #include "instance.h"
 #include "t3gui/t3gui.h"
-#include "ui/canvas_editor.h"
+#include "ui/canvas_editor/canvas_editor.h"
 #include "modules/canvas/canvas_helpers.h"
 #include "modules/primitives.h"
 

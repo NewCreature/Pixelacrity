@@ -1,6 +1,6 @@
 #include "instance.h"
 #include "modules/canvas/canvas.h"
-#include "ui/undo.h"
+#include "ui/canvas_editor/undo.h"
 
 int quixel_menu_edit_undo(int id, void * data)
 {

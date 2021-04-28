@@ -23,16 +23,16 @@ APP_MODULE_OBJECTS = modules/box.o\
                      modules/canvas/flood_fill.o
 
 APP_UI_OBJECTS =     ui/ui.o\
-                     ui/canvas_editor.o\
-                     ui/undo.o\
-                     ui/tools/tool_pixel.o\
-                     ui/tools/tool_line.o\
-                     ui/tools/tool_rectangle.o\
-                     ui/tools/tool_filled_rectangle.o\
-                     ui/tools/tool_oval.o\
-                     ui/tools/tool_filled_oval.o\
-                     ui/tools/tool_dropper.o\
-                     ui/tools/tool_selection.o\
+                     ui/canvas_editor/canvas_editor.o\
+                     ui/canvas_editor/undo.o\
+                     ui/canvas_editor/tools/tool_pixel.o\
+                     ui/canvas_editor/tools/tool_line.o\
+                     ui/canvas_editor/tools/tool_rectangle.o\
+                     ui/canvas_editor/tools/tool_filled_rectangle.o\
+                     ui/canvas_editor/tools/tool_oval.o\
+                     ui/canvas_editor/tools/tool_filled_oval.o\
+                     ui/canvas_editor/tools/tool_dropper.o\
+                     ui/canvas_editor/tools/tool_selection.o\
                      ui/menu/menu.o\
                      ui/menu/menu_file_proc.o\
                      ui/menu/menu_edit_proc.o\
