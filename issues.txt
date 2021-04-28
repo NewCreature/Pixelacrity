@@ -1,6 +1,20 @@
 Quixel 0.1 Issues
 -----------------
 
+[ ]Finish layer interface implementation.
+
+   [ ]Decouple adding layers from 'quixel_expand_canvas()'.
+
+   [ ]The user should be able to add/remove layers as needed.
+      'canvas->layer_max' should be changed based on user action. We need the
+      interface to be clear and consistent in how it shows layer information to
+      the user. The current method of having the user select layers that don't
+      exist yet is unintuitive.
+
+   [ ]Add UI elements for adding/removing layers.
+
+   [ ]Add 'Layer' menu for accessing layer related functionality.
+
 [ ]Crash when resizing on M1 Macbook Air.
 
 [ ]Investigate why pixel x-coordinate is offset by -1.
