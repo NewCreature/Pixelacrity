@@ -15,72 +15,80 @@ typedef struct
 typedef struct
 {
 
-	QUIXEL_QUEUE_ITEM * item;
-	int item_size;
-	int item_count;
+	void * previous;
+	int x;
+	int y;
+
+} QUIXEL_QUEUE_NODE;
+
+typedef struct
+{
+
+	QUIXEL_QUEUE_NODE * current;
 
 } QUIXEL_QUEUE;
 
-QUIXEL_QUEUE * quixel_create_queue(int size)
+void queue_insert(QUIXEL_QUEUE * qp, int x, int y)
+{
+	QUIXEL_QUEUE_NODE * node = malloc(sizeof(QUIXEL_QUEUE_NODE));
+	if(node)
+	{
+		memset(node, 0, sizeof(QUIXEL_QUEUE_NODE));
+		node->x = x;
+		node->y = y;
+		node->previous = qp->current;
+		qp->current = node;
+	}
+	else
+	{
+		printf("Error allocating node!\n");
+	}
+}
+
+void queue_delete(QUIXEL_QUEUE * qp)
+{
+	QUIXEL_QUEUE_NODE * temp = NULL;
+	if(qp->current)
+	{
+		temp = qp->current->previous;
+		free(qp->current);
+		qp->current = temp;
+	}
+}
+
+QUIXEL_QUEUE * quixel_create_queue(void)
 {
 	QUIXEL_QUEUE * qp;
 
 	qp = malloc(sizeof(QUIXEL_QUEUE));
-	if(!qp)
+	if(qp)
 	{
-		goto fail;
+		memset(qp, 0, sizeof(QUIXEL_QUEUE));
 	}
-	qp->item = malloc(sizeof(QUIXEL_QUEUE_ITEM) * size);
-	if(!qp->item)
-	{
-		goto fail;
-	}
-	memset(qp->item, 0, sizeof(QUIXEL_QUEUE_ITEM) * size);
-	qp->item_size = size;
-	qp->item_count = 0;
-
 	return qp;
-
-	fail:
-	{
-		if(qp->item)
-		{
-			if(qp)
-			{
-				if(qp->item)
-				{
-					free(qp->item);
-				}
-				free(qp);
-			}
-		}
-		return NULL;
-	}
 }
 
 void quixel_destroy_queue(QUIXEL_QUEUE * qp)
 {
-	free(qp->item);
+	while(qp->current)
+	{
+		queue_delete(qp);
+	}
 	free(qp);
 }
 
 void quixel_queue_push(QUIXEL_QUEUE * qp, int x, int y)
 {
-	if(qp->item_count < qp->item_size)
-	{
-		qp->item[qp->item_count].x = x;
-		qp->item[qp->item_count].y = y;
-		qp->item_count++;
-	}
+	queue_insert(qp, x, y);
 }
 
 bool quixel_queue_pop(QUIXEL_QUEUE * qp, int * x, int * y)
 {
-	if(qp->item_count > 0)
+	if(qp->current)
 	{
-		*x = qp->item[qp->item_count - 1].x;
-		*y = qp->item[qp->item_count - 1].y;
-		qp->item_count--;
+		*x = qp->current->x;
+		*y = qp->current->y;
+		queue_delete(qp);
 		return true;
 	}
 	return false;
@@ -115,7 +123,7 @@ bool quixel_flood_fill_canvas(QUIXEL_CANVAS * cp, int layer, int start_x, int st
 	al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP);
 	al_set_target_bitmap(bp);
 	al_lock_bitmap(bp, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_READWRITE);
-	qp = quixel_create_queue(65536);
+	qp = quixel_create_queue();
 	if(qp)
 	{
 		old_color = quixel_get_canvas_pixel(cp, layer, start_x, start_y);
