@@ -109,6 +109,7 @@ void quixel_destroy_menus(QUIXEL_UI * uip)
 			uip->menu[i] = NULL;
 		}
 	}
+	t3f_reset_menus();
 }
 
 void quixel_update_undo_menu(QUIXEL_UI * uip, const char * undo_name, const char * redo_name)
