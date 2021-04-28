@@ -1,8 +1,8 @@
 #include "instance.h"
 #include "t3gui/t3gui.h"
-#include "canvas_editor.h"
-#include "canvas_helpers.h"
-#include "primitives.h"
+#include "ui/canvas_editor.h"
+#include "modules/canvas/canvas_helpers.h"
+#include "modules/primitives.h"
 
 static void change_tool(QUIXEL_CANVAS_EDITOR * cep, int tool)
 {

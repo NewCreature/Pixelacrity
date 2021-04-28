@@ -1,7 +1,7 @@
 #include "t3f/t3f.h"
-#include "canvas_helpers.h"
-#include "canvas_editor.h"
-#include "undo.h"
+#include "modules/canvas/canvas_helpers.h"
+#include "ui/canvas_editor.h"
+#include "ui/undo.h"
 
 static bool write_undo_header(ALLEGRO_FILE * fp, int type, const char * name)
 {

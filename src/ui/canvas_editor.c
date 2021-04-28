@@ -1,8 +1,8 @@
 #include "t3f/t3f.h"
 #include "t3gui/t3gui.h"
 #include "canvas_editor.h"
-#include "canvas_helpers.h"
-#include "primitives.h"
+#include "modules/canvas/canvas_helpers.h"
+#include "modules/primitives.h"
 
 static int get_config_val(ALLEGRO_CONFIG * cp, const char * section, const char * key, int default_val)
 {

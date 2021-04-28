@@ -2,7 +2,7 @@
 #define QUIXEL_INSTANCE_H
 
 #include "t3f/t3f.h"
-#include "canvas.h"
+#include "modules/canvas/canvas.h"
 #include "ui/ui.h"
 #include "ui/canvas_editor.h"
 

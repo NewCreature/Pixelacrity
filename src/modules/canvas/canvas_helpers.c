@@ -1,7 +1,7 @@
 #include "t3f/t3f.h"
 #include "canvas.h"
-#include "pixel_shader.h"
 #include "canvas_helpers.h"
+#include "modules/pixel_shader.h"
 
 /* assume all canvas bitmaps are already locked */
 static int get_canvas_alpha(QUIXEL_CANVAS * cp, int x, int y, int flags_filter)

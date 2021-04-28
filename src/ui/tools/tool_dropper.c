@@ -1,5 +1,5 @@
-#include "canvas_editor.h"
-#include "canvas_helpers.h"
+#include "ui/canvas_editor.h"
+#include "modules/canvas/canvas_helpers.h"
 
 void quixel_tool_dropper_logic(QUIXEL_CANVAS_EDITOR * cep, int button)
 {

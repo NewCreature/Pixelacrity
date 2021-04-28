@@ -1,11 +1,11 @@
 #include "t3f/t3f.h"
 #include "instance.h"
-#include "canvas_file.h"
-#include "pixel_shader.h"
+#include "modules/canvas/canvas_file.h"
+#include "modules/pixel_shader.h"
 #include "ui/canvas_editor.h"
-#include "ui/menu.h"
-#include "ui/menu_file_proc.h"
-#include "ui/menu_edit_proc.h"
+#include "ui/menu/menu.h"
+#include "ui/menu/menu_file_proc.h"
+#include "ui/menu/menu_edit_proc.h"
 #include "ui/undo.h"
 
 void app_event_handler(ALLEGRO_EVENT * event, void * data)

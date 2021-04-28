@@ -1,7 +1,7 @@
 #include "t3f/t3f.h"
 #include "t3gui/t3gui.h"
 #include "instance.h"
-#include "palette.h"
+#include "ui/palette.h"
 #include "gui_palette.h"
 
 static ALLEGRO_BITMAP * _palette_bitmap = NULL;

@@ -1,9 +1,9 @@
 #include "t3f/t3f.h"
 #include "t3f/file_utils.h"
 #include "instance.h"
-#include "ui.h"
-#include "canvas_file.h"
-#include "canvas_helpers.h"
+#include "ui/ui.h"
+#include "modules/canvas/canvas_file.h"
+#include "modules/canvas/canvas_helpers.h"
 #include "menu_file_proc.h"
 
 static bool close_canvas(APP_INSTANCE * app)

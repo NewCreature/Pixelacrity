@@ -1,5 +1,5 @@
 #include "t3f/t3f.h"
-#include "canvas.h"
+#include "modules/canvas/canvas.h"
 
 static char list_item_name_buffer[64] = {0};
 

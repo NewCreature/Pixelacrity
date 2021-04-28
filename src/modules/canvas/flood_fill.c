@@ -1,8 +1,8 @@
 #include "t3f/t3f.h"
 #include "canvas.h"
 #include "canvas_helpers.h"
-#include "primitives.h"
-#include "color.h"
+#include "modules/primitives.h"
+#include "modules/color.h"
 
 typedef struct
 {

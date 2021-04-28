@@ -1,7 +1,7 @@
 #include "t3f/t3f.h"
-#include "canvas.h"
-#include "primitives.h"
-#include "canvas_editor.h"
+#include "modules/canvas/canvas.h"
+#include "modules/primitives.h"
+#include "ui/canvas_editor.h"
 
 void quixel_tool_oval_logic(QUIXEL_CANVAS_EDITOR * cep)
 {

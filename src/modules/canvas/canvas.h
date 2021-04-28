@@ -2,7 +2,7 @@
 #define QUIXEL_CANVAS_H
 
 #include "t3f/t3f.h"
-#include "box.h"
+#include "modules/box.h"
 
 #define QUIXEL_CANVAS_MAX_WIDTH  32
 #define QUIXEL_CANVAS_MAX_HEIGHT 32

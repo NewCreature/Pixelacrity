@@ -2,8 +2,8 @@
 #define QUIXEL_CANVAS_EDITOR_H
 
 #include "t3gui/t3gui.h"
-#include "canvas.h"
-#include "box.h"
+#include "modules/canvas/canvas.h"
+#include "modules/box.h"
 
 #define QUIXEL_CANVAS_EDITOR_SIGNAL_NONE         0
 #define QUIXEL_CANVAS_EDITOR_SIGNAL_DELETE_LAYER 1

@@ -1,5 +1,5 @@
 #include "instance.h"
-#include "canvas.h"
+#include "modules/canvas/canvas.h"
 
 int quixel_menu_frame_add(int id, void * data)
 {
