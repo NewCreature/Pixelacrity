@@ -132,6 +132,14 @@ static void finalize_undo(QUIXEL_CANVAS_EDITOR * cep)
 	t3f_refresh_menus();
 }
 
+static void revert_undo(QUIXEL_CANVAS_EDITOR * cep)
+{
+	char undo_path[1024];
+
+	quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024);
+	quixel_apply_undo(cep, undo_path, false, true);
+}
+
 static void clear_bitmap(ALLEGRO_BITMAP * bp)
 {
 	ALLEGRO_STATE old_state;
@@ -276,6 +284,13 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 						if(made_undo)
 						{
 							finalize_undo(canvas_editor);
+						}
+					}
+					else
+					{
+						if(made_undo)
+						{
+							revert_undo(canvas_editor);
 						}
 					}
 					break;

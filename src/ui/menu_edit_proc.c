@@ -10,7 +10,7 @@ int quixel_menu_edit_undo(int id, void * data)
 	if(app->canvas_editor->undo_count > 0)
 	{
 		quixel_get_undo_path("undo", app->canvas_editor->undo_count - 1, undo_path, 1024);
-		quixel_apply_undo(app->canvas_editor, undo_path, false);
+		quixel_apply_undo(app->canvas_editor, undo_path, false, false);
 		al_remove_filename(undo_path);
 		app->canvas_editor->undo_count--;
 		quixel_update_undo_name(app->canvas_editor);
