@@ -19,6 +19,8 @@ Quixel 0.1 Issues
          original data from the undo state we created before performing the
          operation.
 
+   [ ]Make flood fill work across multiple bitmaps.
+
 [ ]Crash when resizing on M1 Macbook Air.
 
 [ ]Investigate why pixel x-coordinate is offset by -1.
