@@ -15,6 +15,19 @@ Quixel 0.1 Issues
 
    [ ]Add 'Layer' menu for accessing layer related functionality.
 
+   [ ]Indicate which layers in the layer list contain pixel data.
+
+   [ ]Always highlight the currently selected layer in the layer list.
+
+   [ ]Layer list should not take over keyboard input.
+
+[ ]Optimize 'quixel_get_canvas_dimensions()'.
+
+   [ ]We should be able to track the dimensions as changes are made to the
+      canvas so we don't have to keep doing the pixel scanning algorithm.
+
+[ ]Make scroll speed independent of zoom level.
+
 [ ]Crash when resizing on M1 Macbook Air.
 
 [ ]Investigate why pixel x-coordinate is offset by -1.
