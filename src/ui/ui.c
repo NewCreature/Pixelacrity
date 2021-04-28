@@ -7,7 +7,6 @@
 #include "modules/canvas/canvas.h"
 #include "modules/canvas/canvas_file.h"
 #include "modules/canvas/canvas_helpers.h"
-#include "palette.h"
 #include "gui/gui_color.h"
 #include "gui/gui_palette.h"
 #include "gui/gui_canvas_editor.h"

@@ -24,7 +24,6 @@ APP_MODULE_OBJECTS = modules/box.o\
 
 APP_UI_OBJECTS =     ui/ui.o\
                      ui/canvas_editor.o\
-                     ui/palette.o\
                      ui/undo.o\
                      ui/tools/tool_pixel.o\
                      ui/tools/tool_line.o\
