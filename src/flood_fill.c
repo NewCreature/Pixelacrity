@@ -108,7 +108,7 @@ bool quixel_flood_fill_canvas(QUIXEL_CANVAS * cp, int layer, int start_x, int st
 	ALLEGRO_BITMAP * bp;
 	ALLEGRO_BITMAP * current_bp;
 	int x, y;
-	int bx, by, bwidth, bheight;
+	int bx, by, bwidth, bheight, right, bottom;
 	int i, j;
 	bool ret = true;
 
@@ -122,6 +122,8 @@ bool quixel_flood_fill_canvas(QUIXEL_CANVAS * cp, int layer, int start_x, int st
 		return false;
 	}
 	quixel_get_canvas_dimensions(cp, &bx, &by, &bwidth, &bheight, 0);
+	right = bx + bwidth - 1;
+	bottom = by + bheight - 1;
 	al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP);
 	al_set_target_bitmap(bp);
 	al_lock_bitmap(bp, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_READWRITE);
@@ -135,12 +137,6 @@ bool quixel_flood_fill_canvas(QUIXEL_CANVAS * cp, int layer, int start_x, int st
 		{
 			current_bp = cp->layer[layer]->bitmap[y / cp->bitmap_size][x / cp->bitmap_size];
 
-			/* flood fill shouldn't escape the boundaries of the image */
-			if(x < bx || x > bx + bwidth - 1 || y < by || y > by + bheight - 1)
-			{
-				ret = false;
-				goto cleanup;
-			}
 			if(!al_is_bitmap_locked(current_bp))
 			{
 				al_lock_bitmap(bp, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_READWRITE);
@@ -148,24 +144,44 @@ bool quixel_flood_fill_canvas(QUIXEL_CANVAS * cp, int layer, int start_x, int st
 			current_color = quixel_get_canvas_pixel(cp, layer, x - 1, y);
 			if(quixel_color_equal(current_color, old_color))
 			{
+				if(x - 1 < bx)
+				{
+					ret = false;
+					goto cleanup;
+				}
 				put_pixel(cp, layer, x - 1, y, color);
 				quixel_queue_push(qp, x - 1, y);
 			}
 			current_color = quixel_get_canvas_pixel(cp, layer, x + 1, y);
 			if(quixel_color_equal(current_color, old_color))
 			{
+				if(x + 1 > right)
+				{
+					ret = false;
+					goto cleanup;
+				}
 				put_pixel(cp, layer, x + 1, y, color);
 				quixel_queue_push(qp, x + 1, y);
 			}
 			current_color = quixel_get_canvas_pixel(cp, layer, x, y - 1);
 			if(quixel_color_equal(current_color, old_color))
 			{
+				if(y - 1 < by)
+				{
+					ret = false;
+					goto cleanup;
+				}
 				put_pixel(cp, layer, x, y - 1, color);
 				quixel_queue_push(qp, x, y - 1);
 			}
 			current_color = quixel_get_canvas_pixel(cp, layer, x, y + 1);
 			if(quixel_color_equal(current_color, old_color))
 			{
+				if(y + 1 > bottom)
+				{
+					ret = false;
+					goto cleanup;
+				}
 				put_pixel(cp, layer, x, y + 1, color);
 				quixel_queue_push(qp, x, y + 1);
 			}
