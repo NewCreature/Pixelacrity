@@ -444,6 +444,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 						}
 					}
 					canvas_editor->tool_state = QUIXEL_TOOL_STATE_OFF;
+					t3f_refresh_menus();
 					break;
 				}
 			}
