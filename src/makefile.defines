@@ -10,8 +10,8 @@ include makefile.include
 APP_COMPANY = t3-i
 APP_NAME = quixel
 APP_TITLE = Quixel
-APP_VERSION = 0.1
-APP_RELEASE = 1
+APP_VERSION = 0.1.1
+APP_RELEASE = 2
 APP_PUBLISHER = T³\ Software
 APP_COPYRIGHT = Copyright\ (C)\ 2021\ T\ Cubed\ Software
 APP_ANDROID_PACKAGE = com.t3i.quixel
