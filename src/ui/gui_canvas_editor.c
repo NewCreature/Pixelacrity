@@ -271,7 +271,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				{
 					click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
 					made_undo = create_undo(canvas_editor, 0, 0, 0, 0);
-					if(quixel_flood_fill_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y, c == 1 ? canvas_editor->left_color : canvas_editor->right_color, false))
+					if(quixel_flood_fill_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y, c == 1 ? canvas_editor->left_color : canvas_editor->right_color))
 					{
 						if(made_undo)
 						{
