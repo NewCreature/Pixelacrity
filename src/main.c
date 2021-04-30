@@ -85,7 +85,7 @@ void app_render(void * data)
 bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 {
 	/* initialize T3F */
-	if(!t3f_initialize(T3F_APP_TITLE, 640, 480, 60.0, app_logic, app_render, T3F_DEFAULT | T3F_USE_MENU | T3F_RESIZABLE | T3F_NO_SCALE, app))
+	if(!t3f_initialize(T3F_APP_TITLE, 640, 480, 60.0, app_logic, app_render, T3F_DEFAULT | T3F_USE_MENU | T3F_RESIZABLE | T3F_NO_SCALE | T3F_USE_OPENGL, app))
 	{
 		printf("Error initializing T3F\n");
 		return false;
