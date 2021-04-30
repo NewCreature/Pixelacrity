@@ -1,6 +1,11 @@
 Quixel 0.1 Issues
 -----------------
 
+[ ]Resizing window causes freeze on Windows.
+
+[ ]Status bar is not at the bottom of the window on Windows. I think it might be
+   something to do with the window being implicitly resized when adding a menu.
+
 [ ]Finish layer interface implementation.
 
    [ ]Decouple adding layers from 'quixel_expand_canvas()'.
