@@ -37,6 +37,7 @@ APP_UI_OBJECTS =     ui/ui.o\
                      ui/menu/menu_file_proc.o\
                      ui/menu/menu_edit_proc.o\
                      ui/menu/menu_frame_proc.o\
+                     ui/menu/menu_layer_proc.o\
                      ui/gui/gui_color.o\
                      ui/gui/gui_palette.o\
                      ui/gui/gui_canvas_editor.o\

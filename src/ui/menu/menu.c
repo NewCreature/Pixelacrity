@@ -3,6 +3,7 @@
 #include "menu_file_proc.h"
 #include "menu_edit_proc.h"
 #include "menu_frame_proc.h"
+#include "menu_layer_proc.h"
 #include "instance.h"
 
 static int menu_base_update_proc(ALLEGRO_MENU * mp, int item, void * data)
@@ -72,6 +73,21 @@ static int menu_frame_delete_update_proc(ALLEGRO_MENU * mp, int item, void * dat
 	return 0;
 }
 
+static int menu_layer_delete_update_proc(ALLEGRO_MENU * mp, int item, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	if(app->canvas_editor->canvas->layer_max > 1)
+	{
+		t3f_set_menu_item_flags(mp, item, 0);
+	}
+	else
+	{
+		t3f_set_menu_item_flags(mp, item, ALLEGRO_MENU_ITEM_DISABLED);
+	}
+	return 0;
+}
+
 bool quixel_setup_menus(QUIXEL_UI * uip)
 {
 	uip->menu[QUIXEL_UI_MENU_FILE] = al_create_menu();
@@ -114,6 +130,17 @@ bool quixel_setup_menus(QUIXEL_UI * uip)
 	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FRAME], "Previous", ALLEGRO_MENU_ITEM_DISABLED, NULL, quixel_menu_frame_previous, menu_frame_delete_update_proc);
 	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FRAME], "Next", ALLEGRO_MENU_ITEM_DISABLED, NULL, quixel_menu_frame_next, menu_frame_delete_update_proc);
 
+	uip->menu[QUIXEL_UI_MENU_LAYER] = al_create_menu();
+	if(!uip->menu[QUIXEL_UI_MENU_LAYER])
+	{
+		return false;
+	}
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_LAYER], "Add", 0, NULL, quixel_menu_layer_add, menu_base_update_proc);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_LAYER], "Delete", ALLEGRO_MENU_ITEM_DISABLED, NULL, quixel_menu_layer_delete, menu_layer_delete_update_proc);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_LAYER], NULL, 0, NULL, NULL, NULL);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_LAYER], "Previous", ALLEGRO_MENU_ITEM_DISABLED, NULL, quixel_menu_layer_previous, menu_layer_delete_update_proc);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_LAYER], "Next", ALLEGRO_MENU_ITEM_DISABLED, NULL, quixel_menu_layer_next, menu_layer_delete_update_proc);
+
 	uip->menu[QUIXEL_UI_MENU_MAIN] = al_create_menu();
 	if(!uip->menu[QUIXEL_UI_MENU_MAIN])
 	{
@@ -123,6 +150,7 @@ bool quixel_setup_menus(QUIXEL_UI * uip)
 	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_MAIN], "File", 0, uip->menu[QUIXEL_UI_MENU_FILE], NULL, NULL);
 	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_MAIN], "Edit", 0, uip->menu[QUIXEL_UI_MENU_EDIT], NULL, NULL);
 	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_MAIN], "Frame", 0, uip->menu[QUIXEL_UI_MENU_FRAME], NULL, NULL);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_MAIN], "Layer", 0, uip->menu[QUIXEL_UI_MENU_LAYER], NULL, NULL);
 	t3f_refresh_menus();
 
 	return true;
