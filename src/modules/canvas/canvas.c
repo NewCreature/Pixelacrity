@@ -229,15 +229,10 @@ bool quixel_remove_canvas_frame(QUIXEL_CANVAS * cp, int frame)
 bool quixel_expand_canvas(QUIXEL_CANVAS * cp, int layer, int x, int y)
 {
 	ALLEGRO_STATE old_state;
-	int i;
 
-	for(i = 0; i < layer - (cp->layer_max - 1); i++)
+	if(layer >= cp->layer_max)
 	{
-		if(!quixel_add_canvas_layer(cp))
-		{
-			printf("Failed to add new layer!\n");
-			return false;
-		}
+		return false;
 	}
 
 	if(!cp->layer[layer]->bitmap[y / cp->bitmap_size][x / cp->bitmap_size])

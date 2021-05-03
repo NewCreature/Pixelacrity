@@ -51,6 +51,18 @@ int quixel_menu_file_new(int id, void * data)
 			quixel_destroy_canvas(app->canvas);
 		}
 		app->canvas = quixel_create_canvas(2048);
+		if(!app->canvas)
+		{
+			printf("Error creating new canvas!\n");
+			t3f_exit();
+			return 0;
+		}
+		if(!quixel_add_canvas_layer(app->canvas))
+		{
+			printf("Error adding layer to new canvas!\n");
+			t3f_exit();
+			return 0;
+		}
 		if(app->canvas_editor)
 		{
 			app->canvas_editor->canvas = app->canvas;
@@ -70,6 +82,10 @@ static QUIXEL_CANVAS * canvas_from_image(const char * fn)
 
 	cp = quixel_create_canvas(2048);
 	if(!cp)
+	{
+		goto fail;
+	}
+	if(!quixel_add_canvas_layer(cp))
 	{
 		goto fail;
 	}
