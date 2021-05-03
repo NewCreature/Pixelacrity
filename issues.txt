@@ -10,7 +10,7 @@ Quixel 0.1 Issues
 
 [ ]Finish layer interface implementation.
 
-   [ ]Decouple adding layers from 'quixel_expand_canvas()'.
+   [X]Decouple adding layers from 'quixel_expand_canvas()'.
 
    [ ]The user should be able to add/remove layers as needed.
       'canvas->layer_max' should be changed based on user action. We need the
@@ -20,7 +20,7 @@ Quixel 0.1 Issues
 
    [ ]Add UI elements for adding/removing layers.
 
-   [ ]Add 'Layer' menu for accessing layer related functionality.
+   [X]Add 'Layer' menu for accessing layer related functionality.
 
    [ ]Indicate which layers in the layer list contain pixel data.
 
