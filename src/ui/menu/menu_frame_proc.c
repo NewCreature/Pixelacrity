@@ -1,5 +1,20 @@
 #include "instance.h"
 #include "modules/canvas/canvas.h"
+#include "ui/canvas_editor/undo.h"
+
+static void make_frame_undo(QUIXEL_CANVAS_EDITOR * cep)
+{
+	char undo_path[1024];
+
+	quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024);
+	if(quixel_make_frame_undo(cep, "Add Frame", undo_path))
+	{
+		cep->undo_count++;
+		cep->redo_count = 0;
+		quixel_update_undo_name(cep);
+		quixel_update_redo_name(cep);
+	}
+}
 
 int quixel_menu_frame_add_from_selection(int id, void * data)
 {
@@ -8,6 +23,7 @@ int quixel_menu_frame_add_from_selection(int id, void * data)
 
 	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0)
 	{
+		make_frame_undo(app->canvas_editor);
 		sprintf(buf, "Frame %d", app->canvas->frame_max + 1);
 		quixel_add_canvas_frame(app->canvas, buf, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, app->canvas_editor->selection.box.width, app->canvas_editor->selection.box.height);
 		app->canvas_editor->current_frame = app->canvas->frame_max - 1;
@@ -19,8 +35,9 @@ int quixel_menu_frame_add_from_selection(int id, void * data)
 static bool add_frame(QUIXEL_CANVAS_EDITOR * cep, int width, int height)
 {
 	char buf[256];
-	sprintf(buf, "Frame %d", cep->canvas->frame_max + 1);
 
+	make_frame_undo(cep);
+	sprintf(buf, "Frame %d", cep->canvas->frame_max + 1);
 	quixel_add_canvas_frame(cep->canvas, buf, cep->view_x, cep->view_y, width, height);
 	cep->current_frame = cep->canvas->frame_max - 1;
 	t3f_refresh_menus();
@@ -163,6 +180,7 @@ int quixel_menu_frame_delete(int id, void * data)
 
 	if(app->canvas_editor->current_frame < app->canvas->frame_max)
 	{
+		make_frame_undo(app->canvas_editor);
 		quixel_remove_canvas_frame(app->canvas, app->canvas_editor->current_frame);
 		t3f_refresh_menus();
 	}

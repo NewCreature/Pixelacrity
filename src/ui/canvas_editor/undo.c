@@ -1,4 +1,5 @@
 #include "t3f/t3f.h"
+#include "modules/canvas/canvas.h"
 #include "modules/canvas/canvas_helpers.h"
 #include "canvas_editor.h"
 #include "undo.h"
@@ -126,6 +127,48 @@ bool quixel_make_tool_redo(QUIXEL_CANVAS_EDITOR * cep, const char * action, int 
 	return quixel_make_tool_undo(cep, action, layer, x, y, width, height, fn);
 }
 
+bool quixel_make_frame_undo(QUIXEL_CANVAS_EDITOR * cep, const char * action, const char * fn)
+{
+	ALLEGRO_FILE * fp = NULL;
+	const char * action_name = "Add Frame";
+	int i, l;
+
+	fp = al_fopen(fn, "wb");
+	if(!fp)
+	{
+		printf("fail: %s\n", fn);
+		goto fail;
+	}
+	write_undo_header(fp, QUIXEL_UNDO_TYPE_FRAME, action ? action : action_name);
+	al_fwrite32le(fp, cep->canvas->frame_max);
+	for(i = 0; i < cep->canvas->frame_max; i++)
+	{
+		l = strlen(cep->canvas->frame[i]->name);
+		al_fwrite16le(fp, l);
+		al_fwrite(fp, cep->canvas->frame[i]->name, l);
+		al_fwrite32le(fp, cep->canvas->frame[i]->box.start_x);
+		al_fwrite32le(fp, cep->canvas->frame[i]->box.start_y);
+		al_fwrite32le(fp, cep->canvas->frame[i]->box.width);
+		al_fwrite32le(fp, cep->canvas->frame[i]->box.height);
+	}
+	al_fclose(fp);
+	return true;
+
+	fail:
+	{
+		if(fp)
+		{
+			al_fclose(fp);
+		}
+		return false;
+	}
+}
+
+bool quixel_make_frame_redo(QUIXEL_CANVAS_EDITOR * cep, const char * action, const char * fn)
+{
+	return quixel_make_frame_undo(cep, action, fn);
+}
+
 const char * quixel_get_undo_name(const char * fn, char * out, int out_size)
 {
 	ALLEGRO_FILE * fp = NULL;
@@ -202,11 +245,13 @@ bool quixel_apply_undo(QUIXEL_CANVAS_EDITOR * cep, const char * fn, bool redo, b
 {
 	ALLEGRO_FILE * fp = NULL;
 	int type;
-	int l;
+	int i, l;
 	char buf[1024];
 	char undo_path[1024];
 	ALLEGRO_BITMAP * bp;
-	int layer, x, y;
+	int layer, x, y, width, height;
+	int frame_max;
+	char frame_name[256] = {0};
 
 	fp = al_fopen(fn, "rb");
 	if(!fp)
@@ -247,6 +292,41 @@ bool quixel_apply_undo(QUIXEL_CANVAS_EDITOR * cep, const char * fn, bool redo, b
 				}
 				quixel_import_bitmap_to_canvas(cep->canvas, bp, layer, x, y);
 				al_destroy_bitmap(bp);
+			}
+			break;
+		}
+		case QUIXEL_UNDO_TYPE_FRAME:
+		{
+			if(!redo)
+			{
+				quixel_make_frame_redo(cep, buf, quixel_get_undo_path("redo", cep->redo_count, undo_path, 1024));
+				cep->redo_count++;
+			}
+			else
+			{
+				quixel_make_frame_undo(cep, buf, quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024));
+				cep->undo_count++;
+			}
+			frame_max = cep->canvas->frame_max;
+			for(i = 0; i < frame_max; i++)
+			{
+				quixel_remove_canvas_frame(cep->canvas, 0);
+			}
+			frame_max = al_fread32le(fp);
+			for(i = 0; i < frame_max; i++)
+			{
+				l = al_fread16le(fp);
+				al_fread(fp, frame_name, l);
+				if(l >= 256)
+				{
+					goto fail;
+				}
+				frame_name[l] = 0;
+				x = al_fread32le(fp);
+				y = al_fread32le(fp);
+				width = al_fread32le(fp);
+				height = al_fread32le(fp);
+				quixel_add_canvas_frame(cep->canvas, frame_name, x, y, width, height);
 			}
 			break;
 		}
