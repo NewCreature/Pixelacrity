@@ -71,6 +71,10 @@ void app_logic(void * data)
 	{
 		sprintf(app->ui->status_left_message, "Selection: (%d, %d)", app->canvas_editor->selection.box.width, app->canvas_editor->selection.box.height);
 	}
+	else if(app->canvas_editor->current_frame < app->canvas->frame_max)
+	{
+		sprintf(app->ui->status_left_message, "(%d, %d)", app->canvas_editor->hover_x - app->canvas->frame[app->canvas_editor->current_frame]->box.start_x, app->canvas_editor->hover_y - app->canvas->frame[app->canvas_editor->current_frame]->box.start_y);
+	}
 }
 
 /* main rendering routine */
