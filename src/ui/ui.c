@@ -152,7 +152,7 @@ QUIXEL_UI * quixel_create_ui(QUIXEL_CANVAS_EDITOR * cep)
 		pos_y += 32;
 		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, t3f_default_view->width - 64, pos_y, 64, 32, 0, 0, 0, 0, "Selection", quixel_tool_selection_button_proc, NULL);
 		pos_y += 32;
-		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, quixel_list_proc, t3f_default_view->width - 64, pos_y, 64, 128, 0, 0, 0, 0, quixel_layer_list_proc, NULL, cep);
+		uip->layer_list_element = t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, quixel_list_proc, t3f_default_view->width - 64, pos_y, 64, 128, 0, D_SETFOCUS, 0, 0, quixel_layer_list_proc, NULL, cep);
 
 		left_panel_width = QUIXEL_COLOR_PICKER_SHADES * QUIXEL_COLOR_PICKER_SCALE + QUIXEL_COLOR_PICKER_SCALE;
 		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_box_proc, 0, 0, left_panel_width, t3f_default_view->height, 0, 0, 0, 0, NULL, NULL, NULL);
@@ -190,6 +190,7 @@ QUIXEL_UI * quixel_create_ui(QUIXEL_CANVAS_EDITOR * cep)
 		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_text_proc, QUIXEL_UI_ELEMENT_SPACE, t3f_default_view->height - status_height + QUIXEL_UI_ELEMENT_SPACE, t3f_default_view->width - QUIXEL_UI_ELEMENT_SPACE * 2, status_height - QUIXEL_UI_ELEMENT_SPACE * 2, 0, 0, 0, 0, uip->status_right_message, NULL, NULL);
 
 		cep->editor_element = t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, quixel_gui_canvas_editor_proc, left_panel_width, 0, t3f_default_view->width - left_panel_width - 64, t3f_default_view->height - status_height, 0, 0, 0, 0, cep, NULL, NULL);
+		uip->canvas_editor_element = cep->editor_element;
 	}
 	return uip;
 
@@ -231,7 +232,16 @@ void quixel_destroy_ui(QUIXEL_UI * uip)
 
 void quixel_process_ui(QUIXEL_UI * uip)
 {
+	QUIXEL_CANVAS_EDITOR * cep = (QUIXEL_CANVAS_EDITOR *)uip->canvas_editor_element->dp;
+	int old_layer_d1;
+
+	uip->layer_list_element->d1 = cep->current_layer;
+	old_layer_d1 = uip->layer_list_element->d1;
 	t3gui_logic();
+	if(uip->layer_list_element->d1 != old_layer_d1)
+	{
+		cep->current_layer = uip->layer_list_element->d1;
+	}
 }
 
 void quixel_render_ui(QUIXEL_UI * uip)
