@@ -9,12 +9,15 @@
 #define QUIXEL_UI_MAX_BITMAPS 32
 #define QUIXEL_UI_BITMAP_BG    0
 
-#define QUIXEL_UI_MAX_MENUS   32
-#define QUIXEL_UI_MENU_MAIN    0
-#define QUIXEL_UI_MENU_FILE    1
-#define QUIXEL_UI_MENU_EDIT    2
-#define QUIXEL_UI_MENU_FRAME   3
-#define QUIXEL_UI_MENU_LAYER   4
+#define QUIXEL_UI_MAX_MENUS                       32
+#define QUIXEL_UI_MENU_MAIN                        0
+#define QUIXEL_UI_MENU_FILE                        1
+#define QUIXEL_UI_MENU_EDIT                        2
+#define QUIXEL_UI_MENU_FRAME                       3
+#define QUIXEL_UI_MENU_LAYER                       4
+#define QUIXEL_UI_MENU_FRAME_ADD                   5
+#define QUIXEL_UI_MENU_FRAME_ADD_ICON_TEMPLATE     6
+#define QUIXEL_UI_MENU_FRAME_ADD_DISPLAY_TEMPLATE  7
 
 #define QUIXEL_UI_MAX_DIALOGS 32
 #define QUIXEL_UI_DIALOG_MAIN  0

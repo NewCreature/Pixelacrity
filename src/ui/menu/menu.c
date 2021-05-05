@@ -119,12 +119,50 @@ bool quixel_setup_menus(QUIXEL_UI * uip)
 	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_EDIT], "Copy", 0, NULL, quixel_menu_edit_copy, menu_base_update_proc);
 	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_EDIT], "Paste", 0, NULL, quixel_menu_edit_paste, menu_base_update_proc);
 
+	uip->menu[QUIXEL_UI_MENU_FRAME_ADD_ICON_TEMPLATE] = al_create_menu();
+	if(!uip->menu[QUIXEL_UI_MENU_FRAME_ADD_ICON_TEMPLATE])
+	{
+		return false;
+	}
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FRAME_ADD_ICON_TEMPLATE], "8x8", 0, NULL, quixel_menu_frame_add_8x8, menu_base_update_proc);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FRAME_ADD_ICON_TEMPLATE], "12x12", 0, NULL, quixel_menu_frame_add_12x12, menu_base_update_proc);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FRAME_ADD_ICON_TEMPLATE], "16x16", 0, NULL, quixel_menu_frame_add_16x16, menu_base_update_proc);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FRAME_ADD_ICON_TEMPLATE], "24x24", 0, NULL, quixel_menu_frame_add_24x24, menu_base_update_proc);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FRAME_ADD_ICON_TEMPLATE], "32x32", 0, NULL, quixel_menu_frame_add_32x32, menu_base_update_proc);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FRAME_ADD_ICON_TEMPLATE], "48x48", 0, NULL, quixel_menu_frame_add_48x48, menu_base_update_proc);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FRAME_ADD_ICON_TEMPLATE], "64x64", 0, NULL, quixel_menu_frame_add_64x64, menu_base_update_proc);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FRAME_ADD_ICON_TEMPLATE], "72x72", 0, NULL, quixel_menu_frame_add_72x72, menu_base_update_proc);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FRAME_ADD_ICON_TEMPLATE], "96x96", 0, NULL, quixel_menu_frame_add_96x96, menu_base_update_proc);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FRAME_ADD_ICON_TEMPLATE], "128x128", 0, NULL, quixel_menu_frame_add_128x128, menu_base_update_proc);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FRAME_ADD_ICON_TEMPLATE], "256x256", 0, NULL, quixel_menu_frame_add_256x256, menu_base_update_proc);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FRAME_ADD_ICON_TEMPLATE], "512x512", 0, NULL, quixel_menu_frame_add_512x512, menu_base_update_proc);
+
+	uip->menu[QUIXEL_UI_MENU_FRAME_ADD_DISPLAY_TEMPLATE] = al_create_menu();
+	if(!uip->menu[QUIXEL_UI_MENU_FRAME_ADD_DISPLAY_TEMPLATE])
+	{
+		return false;
+	}
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FRAME_ADD_DISPLAY_TEMPLATE], "256x224", 0, NULL, quixel_menu_frame_add_256x224, menu_base_update_proc);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FRAME_ADD_DISPLAY_TEMPLATE], "320x200", 0, NULL, quixel_menu_frame_add_320x200, menu_base_update_proc);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FRAME_ADD_DISPLAY_TEMPLATE], "320x240", 0, NULL, quixel_menu_frame_add_320x240, menu_base_update_proc);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FRAME_ADD_DISPLAY_TEMPLATE], "640x480", 0, NULL, quixel_menu_frame_add_640x480, menu_base_update_proc);
+
+	uip->menu[QUIXEL_UI_MENU_FRAME_ADD] = al_create_menu();
+	if(!uip->menu[QUIXEL_UI_MENU_FRAME_ADD])
+	{
+		return false;
+	}
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FRAME_ADD], "from Selection", ALLEGRO_MENU_ITEM_DISABLED, NULL, quixel_menu_frame_add_from_selection, menu_frame_add_update_proc);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FRAME_ADD], NULL, 0, NULL, NULL, NULL);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FRAME_ADD], "Icon Template", 0, uip->menu[QUIXEL_UI_MENU_FRAME_ADD_ICON_TEMPLATE], NULL, NULL);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FRAME_ADD], "Display Template", 0, uip->menu[QUIXEL_UI_MENU_FRAME_ADD_DISPLAY_TEMPLATE], NULL, NULL);
+
 	uip->menu[QUIXEL_UI_MENU_FRAME] = al_create_menu();
 	if(!uip->menu[QUIXEL_UI_MENU_FRAME])
 	{
 		return false;
 	}
-	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FRAME], "Add", ALLEGRO_MENU_ITEM_DISABLED, NULL, quixel_menu_frame_add, menu_frame_add_update_proc);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FRAME], "Add", 0, uip->menu[QUIXEL_UI_MENU_FRAME_ADD], NULL, NULL);
 	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FRAME], "Delete", ALLEGRO_MENU_ITEM_DISABLED, NULL, quixel_menu_frame_delete, menu_frame_delete_update_proc);
 	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FRAME], NULL, 0, NULL, NULL, NULL);
 	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_FRAME], "Previous", ALLEGRO_MENU_ITEM_DISABLED, NULL, quixel_menu_frame_previous, menu_frame_delete_update_proc);
