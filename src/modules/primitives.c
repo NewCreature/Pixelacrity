@@ -16,14 +16,14 @@ void quixel_draw_line(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEG
 {
 	al_draw_pixel(x1 + 0.5, y1 + 0.5, color);
 	al_draw_pixel(x2 + 0.5, y2 + 0.5, color);
-	al_draw_line((float)x1 + 0.5, (float)y1 + 0.5, (float)x2 + 0.5, (float)y2 + 0.5, color, 1.0);
+	al_draw_line((float)x1 + 0.5, (float)y1 + 0.5, (float)x2 + 0.5, (float)y2 + 0.5, color, 0.0);
 }
 
 void quixel_draw_rectangle(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_COLOR color)
 {
 	quixel_sort_coordinates(&x1, &x2);
 	quixel_sort_coordinates(&y1, &y2);
-	al_draw_rectangle((float)x1 + 0.5, (float)y1 + 0.5, (float)x2 + 0.5, (float)y2 + 0.5, color, 1.0);
+	al_draw_rectangle((float)x1 + 0.5, (float)y1 + 0.5, (float)x2 + 0.5, (float)y2 + 0.5, color, 0.0);
 }
 
 void quixel_draw_filled_rectangle(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_COLOR color)
@@ -48,15 +48,15 @@ void quixel_draw_oval(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEG
 	{
 		al_draw_pixel(x1, y1, color);
 		al_draw_pixel(x2, y2, color);
-		al_draw_line((float)x1 + 0.5, (float)y1 + 0.5, (float)x2 + 0.5, (float)y2 + 0.5, color, 1.0);
+		al_draw_line((float)x1 + 0.5, (float)y1 + 0.5, (float)x2 + 0.5, (float)y2 + 0.5, color, 0.0);
 	}
 	else if(abs(x1 - x2) < 2 || abs(y1 - y2) < 2)
 	{
-		al_draw_rectangle((float)x1 + 0.5, (float)y1 + 0.5, (float)x2 + 0.5, (float)y2 + 0.5, color, 1.0);
+		al_draw_rectangle((float)x1 + 0.5, (float)y1 + 0.5, (float)x2 + 0.5, (float)y2 + 0.5, color, 0.0);
 	}
 	else
 	{
-		al_draw_ellipse(cx, cy, rx, ry, color, 1.0);
+		al_draw_ellipse(cx, cy, rx, ry, color, 0.0);
 	}
 }
 
@@ -78,7 +78,7 @@ void quixel_draw_filled_oval(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp
 	}
 	else if(abs(x1 - x2) < 2 || abs(y1 - y2) < 2)
 	{
-		al_draw_rectangle((float)x1 + 0.5, (float)y1 + 0.5, (float)x2 + 0.5, (float)y2 + 0.5, color, 1.0);
+		al_draw_rectangle((float)x1 + 0.5, (float)y1 + 0.5, (float)x2 + 0.5, (float)y2 + 0.5, color, 0.0);
 	}
 	else
 	{
