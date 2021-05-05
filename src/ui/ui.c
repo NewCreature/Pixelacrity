@@ -12,6 +12,7 @@
 #include "gui/gui_canvas_editor.h"
 #include "modules/ega_palette.h"
 #include "gui/list_proc.h"
+#include "gui/layer_list_proc.h"
 
 static ALLEGRO_BITMAP * make_checkerboard_bitmap(ALLEGRO_COLOR c1, ALLEGRO_COLOR c2)
 {
@@ -151,7 +152,7 @@ QUIXEL_UI * quixel_create_ui(QUIXEL_CANVAS_EDITOR * cep)
 		pos_y += 32;
 		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, t3f_default_view->width - 64, pos_y, 64, 32, 0, 0, 0, 0, "Selection", quixel_tool_selection_button_proc, NULL);
 		pos_y += 32;
-		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_list_proc, t3f_default_view->width - 64, pos_y, 64, 128, 0, 0, 0, 0, quixel_layer_list_proc, NULL, cep->canvas);
+		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, quixel_list_proc, t3f_default_view->width - 64, pos_y, 64, 128, 0, 0, 0, 0, quixel_layer_list_proc, NULL, cep);
 
 		left_panel_width = QUIXEL_COLOR_PICKER_SHADES * QUIXEL_COLOR_PICKER_SCALE + QUIXEL_COLOR_PICKER_SCALE;
 		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_box_proc, 0, 0, left_panel_width, t3f_default_view->height, 0, 0, 0, 0, NULL, NULL, NULL);

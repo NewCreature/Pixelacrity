@@ -42,7 +42,8 @@ APP_UI_OBJECTS =     ui/ui.o\
                      ui/gui/gui_palette.o\
                      ui/gui/gui_canvas_editor.o\
                      ui/gui/button_proc.o\
-                     ui/gui/list_proc.o
+                     ui/gui/list_proc.o\
+                     ui/gui/layer_list_proc.o
 
 #########################
 # application variables #

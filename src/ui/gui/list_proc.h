@@ -1,6 +1,8 @@
 #ifndef QUIXEL_UI_LIST_PROC_H
 #define QUIXEL_UI_LIST_PROC_H
 
-const char * quixel_layer_list_proc(int index, int *num_elem, void *dp3);
+#include "t3gui/t3gui.h"
+
+int quixel_list_proc(int msg, T3GUI_ELEMENT *d, int c);
 
 #endif
