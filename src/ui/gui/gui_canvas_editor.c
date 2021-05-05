@@ -635,7 +635,9 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				canvas_editor->canvas->layer[canvas_editor->current_layer]->flags ^= QUIXEL_CANVAS_FLAG_HIDDEN;
 				t3f_key[ALLEGRO_KEY_H] = 0;
 			}
+			canvas_editor->last_hover_x = canvas_editor->hover_x;
 			canvas_editor->hover_x = canvas_editor->view_x + (t3f_mouse_x - d->x) / canvas_editor->view_zoom;
+			canvas_editor->last_hover_y = canvas_editor->hover_y;
 			canvas_editor->hover_y = canvas_editor->view_y + (t3f_mouse_y - d->y) / canvas_editor->view_zoom;
 
 			if(t3f_key[ALLEGRO_KEY_PGUP])
