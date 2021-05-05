@@ -38,7 +38,36 @@ Quixel 0.2 Issues
    [ ]The mouse coordinate seems to be correct as interacting with other
       elements of the UI work properly.
 
-[ ]Add ability to export image files.
+[ ]Implement frame editing.
+
+   [ ]There should be handles on the corners of each frame so we can edit them
+      by dragging the handles.
+
+   [ ]There should be a special handle on the top edge to make a frame the
+      current frame.
+
+   [X]Need controls for adding and removing frames (menu items, etc.).
+
+[ ]See about updating pixel shader to produce more accurate color blending.
+
+   [ ]Color should blend toward the color of the pixel being drawn by alpha.
+
+
+Quixel 0.3 Issues
+-----------------
+
+[ ]Optimize 'quixel_get_canvas_dimensions()'.
+
+   [ ]We should be able to track the dimensions as changes are made to the
+      canvas so we don't have to keep doing the pixel scanning algorithm.
+
+[ ]Finish implementing color palette.
+
+   [ ]Make colors configurable. The default palette should be able to be
+      restored at any time. Custom color palettes should be able to be saved and
+      reloaded.
+
+[ ]Improve image export options.
 
    [ ]Export current frame to specified file.
 
@@ -52,33 +81,6 @@ Quixel 0.2 Issues
       [ ]Investigate compositing methods for exporting multi-layered canvases.
          The current method will supposedly result in inaccurate colors where
          alpha is used, but I'm not sure that applies to non-filtered textures.
-
-[ ]Implement frame editing.
-
-   [ ]There should be handles on the corners of each frame so we can edit them
-      by dragging the handles.
-
-   [ ]There should be a special handle on the top edge to make a frame the
-      current frame.
-
-   [X]Need controls for adding and removing frames (menu items, etc.).
-
-[ ]Finish implementing color palette.
-
-   [ ]Use default EGA color palette.
-
-   [ ]Make colors configurable. The default palette should be able to be
-      restored at any time. Custom color palettes should be able to be saved and
-      reloaded.
-
-
-Quixel 0.3 Issues
------------------
-
-[ ]Optimize 'quixel_get_canvas_dimensions()'.
-
-   [ ]We should be able to track the dimensions as changes are made to the
-      canvas so we don't have to keep doing the pixel scanning algorithm.
 
 
 Closed Issues
