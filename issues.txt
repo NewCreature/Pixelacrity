@@ -1,4 +1,4 @@
-Quixel 0.1 Issues
+Quixel 0.2 Issues
 -----------------
 
 [ ]Don't destroy UI and recreate it on resize.
@@ -22,16 +22,9 @@ Quixel 0.1 Issues
 
    [X]Add 'Layer' menu for accessing layer related functionality.
 
-   [ ]Indicate which layers in the layer list contain pixel data.
-
    [X]Always highlight the currently selected layer in the layer list.
 
    [X]Layer list should not take over keyboard input.
-
-[ ]Optimize 'quixel_get_canvas_dimensions()'.
-
-   [ ]We should be able to track the dimensions as changes are made to the
-      canvas so we don't have to keep doing the pixel scanning algorithm.
 
 [ ]Make scroll speed independent of zoom level.
 
@@ -68,7 +61,7 @@ Quixel 0.1 Issues
    [ ]There should be a special handle on the top edge to make a frame the
       current frame.
 
-   [ ]Need controls for adding and removing frames (menu items, etc.).
+   [X]Need controls for adding and removing frames (menu items, etc.).
 
 [ ]Finish implementing color palette.
 
@@ -77,6 +70,15 @@ Quixel 0.1 Issues
    [ ]Make colors configurable. The default palette should be able to be
       restored at any time. Custom color palettes should be able to be saved and
       reloaded.
+
+
+Quixel 0.3 Issues
+-----------------
+
+[ ]Optimize 'quixel_get_canvas_dimensions()'.
+
+   [ ]We should be able to track the dimensions as changes are made to the
+      canvas so we don't have to keep doing the pixel scanning algorithm.
 
 
 Closed Issues
