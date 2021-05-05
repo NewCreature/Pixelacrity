@@ -13,6 +13,7 @@
 #include "modules/ega_palette.h"
 #include "gui/list_proc.h"
 #include "gui/layer_list_proc.h"
+#include "ui/canvas_editor/undo.h"
 
 static ALLEGRO_BITMAP * make_checkerboard_bitmap(ALLEGRO_COLOR c1, ALLEGRO_COLOR c2)
 {
@@ -125,6 +126,8 @@ QUIXEL_UI * quixel_create_ui(QUIXEL_CANVAS_EDITOR * cep)
 		{
 			goto fail;
 		}
+		quixel_update_undo_name(cep);
+		quixel_update_redo_name(cep);
 		t3f_attach_menu(uip->menu[QUIXEL_UI_MENU_MAIN]);
 
 		uip->dialog[QUIXEL_UI_DIALOG_MAIN] = t3gui_create_dialog();
