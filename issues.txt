@@ -12,7 +12,7 @@ Quixel 0.1 Issues
 
    [X]Decouple adding layers from 'quixel_expand_canvas()'.
 
-   [ ]The user should be able to add/remove layers as needed.
+   [X]The user should be able to add/remove layers as needed.
       'canvas->layer_max' should be changed based on user action. We need the
       interface to be clear and consistent in how it shows layer information to
       the user. The current method of having the user select layers that don't
@@ -24,9 +24,9 @@ Quixel 0.1 Issues
 
    [ ]Indicate which layers in the layer list contain pixel data.
 
-   [ ]Always highlight the currently selected layer in the layer list.
+   [X]Always highlight the currently selected layer in the layer list.
 
-   [ ]Layer list should not take over keyboard input.
+   [X]Layer list should not take over keyboard input.
 
 [ ]Optimize 'quixel_get_canvas_dimensions()'.
 
