@@ -11,6 +11,7 @@ static void draw_pixel(QUIXEL_CANVAS_EDITOR * cep, float ox, float oy, float x, 
 	al_set_target_bitmap(cep->scratch_bitmap);
 	al_identity_transform(&identity);
 	al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
+	al_put_pixel(x, y, color);
 	al_draw_line(ox + 0.5, oy + 0.5, x + 0.5, y + 0.5, color, 0.0);
 //	al_put_pixel(x, y, color);
 	al_restore_state(&old_state);
