@@ -127,19 +127,15 @@ bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 
 void app_exit(APP_INSTANCE * app)
 {
-	char buf[1024];
-
-	sprintf(buf, "%d", app->canvas_editor->current_layer);
-	al_set_config_value(app->canvas->config, "state", "current_layer", buf);
-	sprintf(buf, "%d", app->canvas_editor->view_x);
-	al_set_config_value(app->canvas->config, "state", "view_x", buf);
-	sprintf(buf, "%d", app->canvas_editor->view_y);
-	al_set_config_value(app->canvas->config, "state", "view_y", buf);
-	sprintf(buf, "%d", app->canvas_editor->view_zoom);
-	al_set_config_value(app->canvas->config, "state", "view_zoom", buf);
-	quixel_undo_clean_up(app->canvas_editor);
-	quixel_destroy_canvas_editor(app->canvas_editor);
-	quixel_destroy_canvas(app->canvas);
+	if(app->canvas_editor)
+	{
+		quixel_undo_clean_up(app->canvas_editor);
+		quixel_destroy_canvas_editor(app->canvas_editor);
+	}
+	if(app->canvas)
+	{
+		quixel_destroy_canvas(app->canvas);
+	}
 }
 
 int main(int argc, char * argv[])
