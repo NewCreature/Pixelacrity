@@ -120,7 +120,7 @@ bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 
 	app->restart_ui = true;
 
-	al_set_blender(ALLEGRO_ADD, ALLEGRO_ALPHA, ALLEGRO_INVERSE_ALPHA);
+	al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_INVERSE_ALPHA);
 
 	return true;
 }

@@ -161,7 +161,7 @@ static void draw_canvas_layers(QUIXEL_CANVAS * cp, int start_layer, int end_laye
 		}
 		else
 		{
-			al_set_blender(ALLEGRO_ADD, ALLEGRO_ALPHA, ALLEGRO_INVERSE_ALPHA);
+			al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_INVERSE_ALPHA);
 		}
 		if(i < cp->layer_max)
 		{
