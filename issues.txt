@@ -8,24 +8,6 @@ Quixel 0.2 Issues
 [ ]Status bar is not at the bottom of the window on Windows. I think it might be
    something to do with the window being implicitly resized when adding a menu.
 
-[ ]Finish layer interface implementation.
-
-   [X]Decouple adding layers from 'quixel_expand_canvas()'.
-
-   [X]The user should be able to add/remove layers as needed.
-      'canvas->layer_max' should be changed based on user action. We need the
-      interface to be clear and consistent in how it shows layer information to
-      the user. The current method of having the user select layers that don't
-      exist yet is unintuitive.
-
-   [ ]Add UI elements for adding/removing layers.
-
-   [X]Add 'Layer' menu for accessing layer related functionality.
-
-   [X]Always highlight the currently selected layer in the layer list.
-
-   [X]Layer list should not take over keyboard input.
-
 [ ]Make scroll speed independent of zoom level.
 
 [ ]Crash when resizing on M1 Macbook Air.
@@ -266,3 +248,21 @@ Closed Issues
          operation.
 
    [X]Make flood fill work across multiple bitmaps.
+
+[X]Finish layer interface implementation.
+
+   [X]Decouple adding layers from 'quixel_expand_canvas()'.
+
+   [X]The user should be able to add/remove layers as needed.
+      'canvas->layer_max' should be changed based on user action. We need the
+      interface to be clear and consistent in how it shows layer information to
+      the user. The current method of having the user select layers that don't
+      exist yet is unintuitive.
+
+   [X]Add UI elements for adding/removing layers.
+
+   [X]Add 'Layer' menu for accessing layer related functionality.
+
+   [X]Always highlight the currently selected layer in the layer list.
+
+   [X]Layer list should not take over keyboard input.
