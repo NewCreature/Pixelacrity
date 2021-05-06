@@ -30,10 +30,6 @@ Quixel 0.2 Issues
 
    [X]Need controls for adding and removing frames (menu items, etc.).
 
-[ ]See about updating pixel shader to produce more accurate color blending.
-
-   [ ]Color should blend toward the color of the pixel being drawn by alpha.
-
 
 Quixel 0.3 Issues
 -----------------
@@ -266,3 +262,7 @@ Closed Issues
    [X]Always highlight the currently selected layer in the layer list.
 
    [X]Layer list should not take over keyboard input.
+
+[X]See about updating pixel shader to produce more accurate color blending.
+
+   [X]Color should blend toward the color of the pixel being drawn by alpha.
