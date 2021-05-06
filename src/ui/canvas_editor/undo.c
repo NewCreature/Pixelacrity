@@ -245,7 +245,7 @@ bool quixel_apply_undo(QUIXEL_CANVAS_EDITOR * cep, const char * fn, bool redo, b
 {
 	ALLEGRO_FILE * fp = NULL;
 	int type;
-	int i, l;
+	int i, j, l;
 	char buf[1024];
 	char undo_path[1024];
 	ALLEGRO_BITMAP * bp;
@@ -292,6 +292,20 @@ bool quixel_apply_undo(QUIXEL_CANVAS_EDITOR * cep, const char * fn, bool redo, b
 				}
 				quixel_import_bitmap_to_canvas(cep->canvas, bp, layer, x, y);
 				al_destroy_bitmap(bp);
+			}
+			else
+			{
+				for(i = 0; i < QUIXEL_CANVAS_MAX_HEIGHT; i++)
+				{
+					for(j = 0; j < QUIXEL_CANVAS_MAX_WIDTH; j++)
+					{
+						if(cep->canvas->layer[layer]->bitmap[i][j])
+						{
+							al_destroy_bitmap(cep->canvas->layer[layer]->bitmap[i][j]);
+							cep->canvas->layer[layer]->bitmap[i][j] = NULL;
+						}
+					}
+				}
 			}
 			break;
 		}
