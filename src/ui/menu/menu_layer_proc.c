@@ -17,7 +17,7 @@ int quixel_menu_layer_delete(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	if(app->canvas->layer_max > 0 && app->canvas_editor->current_layer < app->canvas->layer_max)
+	if(app->canvas->layer_max > 1 && app->canvas_editor->current_layer < app->canvas->layer_max)
 	{
 		quixel_remove_canvas_layer(app->canvas, app->canvas_editor->current_layer);
 		if(app->canvas_editor->current_layer >= app->canvas->layer_max)

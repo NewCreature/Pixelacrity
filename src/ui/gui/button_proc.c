@@ -3,6 +3,7 @@
 #include "ui/canvas_editor/canvas_editor.h"
 #include "modules/canvas/canvas_helpers.h"
 #include "modules/primitives.h"
+#include "ui/menu/menu_layer_proc.h"
 
 static void change_tool(QUIXEL_CANVAS_EDITOR * cep, int tool)
 {
@@ -92,6 +93,20 @@ int quixel_tool_selection_button_proc(T3GUI_ELEMENT * d, void *dp3)
 	APP_INSTANCE * app = (APP_INSTANCE *)dp3;
 
 	change_tool(app->canvas_editor, QUIXEL_TOOL_SELECTION);
+
+	return 0;
+}
+
+int quixel_layer_add_button_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	quixel_menu_layer_add(0, dp3);
+
+	return 0;
+}
+
+int quixel_layer_remove_button_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	quixel_menu_layer_delete(0, dp3);
 
 	return 0;
 }

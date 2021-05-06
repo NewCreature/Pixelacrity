@@ -156,6 +156,9 @@ QUIXEL_UI * quixel_create_ui(QUIXEL_CANVAS_EDITOR * cep)
 		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, t3f_default_view->width - 64, pos_y, 64, 32, 0, 0, 0, 0, "Selection", quixel_tool_selection_button_proc, NULL);
 		pos_y += 32;
 		uip->layer_list_element = t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, quixel_list_proc, t3f_default_view->width - 64, pos_y, 64, 128, 0, D_SETFOCUS, 0, 0, quixel_layer_list_proc, NULL, cep);
+		pos_y += 128;
+		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, t3f_default_view->width - 64, pos_y, 32, 32, 0, 0, 0, 0, "+", quixel_layer_add_button_proc, NULL);
+		uip->layer_remove_button_element = t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, t3f_default_view->width - 32, pos_y, 32, 32, 0, 0, 0, 0, "-", quixel_layer_remove_button_proc, NULL);
 
 		left_panel_width = QUIXEL_COLOR_PICKER_SHADES * QUIXEL_COLOR_PICKER_SCALE + QUIXEL_COLOR_PICKER_SCALE;
 		t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_box_proc, 0, 0, left_panel_width, t3f_default_view->height, 0, 0, 0, 0, NULL, NULL, NULL);
@@ -240,7 +243,17 @@ void quixel_process_ui(QUIXEL_UI * uip)
 
 	uip->layer_list_element->d1 = cep->current_layer;
 	old_layer_d1 = uip->layer_list_element->d1;
+	if(cep->canvas->layer_max > 1)
+	{
+		uip->layer_remove_button_element->flags = 0;
+	}
+	else
+	{
+		uip->layer_remove_button_element->flags = D_DISABLED;
+	}
+
 	t3gui_logic();
+
 	if(uip->layer_list_element->d1 != old_layer_d1)
 	{
 		cep->current_layer = uip->layer_list_element->d1;

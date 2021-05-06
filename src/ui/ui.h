@@ -34,8 +34,11 @@ typedef struct
 	ALLEGRO_MENU * menu[QUIXEL_UI_MAX_MENUS];
 	T3GUI_DIALOG * dialog[QUIXEL_UI_MAX_DIALOGS];
 	T3GUI_THEME * theme[QUIXEL_UI_MAX_THEMES];
+
 	T3GUI_ELEMENT * canvas_editor_element;
 	T3GUI_ELEMENT * layer_list_element;
+	T3GUI_ELEMENT * layer_remove_button_element;
+
 	char status_left_message[1024];
 	char status_middle_message[1024];
 	char status_right_message[1024];
