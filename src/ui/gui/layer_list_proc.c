@@ -5,7 +5,7 @@ static char list_item_name_buffer[64] = {0};
 
 const char * quixel_layer_list_proc(int index, int * num_elem, void * dp3)
 {
-	QUIXEL_CANVAS_EDITOR * canvas_editor = (QUIXEL_CANVAS *)dp3;
+	QUIXEL_CANVAS_EDITOR * canvas_editor = (QUIXEL_CANVAS_EDITOR *)dp3;
 
 	if(index < 0)
 	{
