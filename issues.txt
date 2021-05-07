@@ -1,8 +1,6 @@
 Quixel 0.2 Issues
 -----------------
 
-[ ]Don't destroy UI and recreate it on resize.
-
 [ ]Resizing window causes freeze on Windows.
 
 [ ]Status bar is not at the bottom of the window on Windows. I think it might be
@@ -266,3 +264,5 @@ Closed Issues
 [X]See about updating pixel shader to produce more accurate color blending.
 
    [X]Color should blend toward the color of the pixel being drawn by alpha.
+
+[X]Don't destroy UI and recreate it on resize.
