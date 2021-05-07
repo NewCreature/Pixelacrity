@@ -40,12 +40,7 @@ void app_logic(void * data)
 
 	if(app->restart_ui)
 	{
-		if(app->ui)
-		{
-			quixel_destroy_ui(app->ui);
-		}
-		app->ui = quixel_create_ui(app->canvas_editor);
-		t3gui_show_dialog(app->ui->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, T3GUI_PLAYER_NO_ESCAPE | T3GUI_PLAYER_IGNORE_CLOSE, app);
+		quixel_resize_ui(app->ui);
 		app->restart_ui = false;
 	}
 	/* handle signals */
@@ -118,8 +113,13 @@ bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 	}
 	app->canvas_editor->update_title = true;
 
-	app->restart_ui = true;
-
+	app->ui = quixel_create_ui(app->canvas_editor);
+	if(!app->ui)
+	{
+		return false;
+	}
+	quixel_resize_ui(app->ui);
+	t3gui_show_dialog(app->ui->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, T3GUI_PLAYER_NO_ESCAPE | T3GUI_PLAYER_IGNORE_CLOSE, app);
 	al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_INVERSE_ALPHA);
 
 	return true;
@@ -127,6 +127,10 @@ bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 
 void app_exit(APP_INSTANCE * app)
 {
+	if(app->ui)
+	{
+		quixel_destroy_ui(app->ui);
+	}
 	if(app->canvas_editor)
 	{
 		quixel_undo_clean_up(app->canvas_editor);
