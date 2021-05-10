@@ -593,21 +593,22 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				canvas_editor->right_color = canvas_editor->right_alpha_color;
 				canvas_editor->last_right_alpha_color = canvas_editor->right_alpha_color;
 			}
+			canvas_editor->view_scroll_speed = 8.0 / (float)canvas_editor->view_zoom;
 			if(t3f_key[ALLEGRO_KEY_LEFT])
 			{
-				canvas_editor->view_x--;
+				canvas_editor->view_fx -= canvas_editor->view_scroll_speed;
 			}
 			if(t3f_key[ALLEGRO_KEY_RIGHT])
 			{
-				canvas_editor->view_x++;
+				canvas_editor->view_fx += canvas_editor->view_scroll_speed;
 			}
 			if(t3f_key[ALLEGRO_KEY_UP])
 			{
-				canvas_editor->view_y--;
+				canvas_editor->view_fy -= canvas_editor->view_scroll_speed;
 			}
 			if(t3f_key[ALLEGRO_KEY_DOWN])
 			{
-				canvas_editor->view_y++;
+				canvas_editor->view_fy += canvas_editor->view_scroll_speed;
 			}
 			if(t3f_key[ALLEGRO_KEY_MINUS])
 			{
@@ -635,6 +636,8 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				canvas_editor->canvas->layer[canvas_editor->current_layer]->flags ^= QUIXEL_CANVAS_FLAG_HIDDEN;
 				t3f_key[ALLEGRO_KEY_H] = 0;
 			}
+			canvas_editor->view_x = canvas_editor->view_fx;
+			canvas_editor->view_y = canvas_editor->view_fy;
 			canvas_editor->last_hover_x = canvas_editor->hover_x;
 			canvas_editor->hover_x = canvas_editor->view_x + (t3f_mouse_x - d->x) / canvas_editor->view_zoom;
 			canvas_editor->last_hover_y = canvas_editor->hover_y;

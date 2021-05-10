@@ -51,6 +51,8 @@ typedef struct
 	int tool_offset_x;
 	int tool_offset_y;
 	int tool_top, tool_bottom, tool_left, tool_right;
+	float view_scroll_speed;
+	float view_fx, view_fy;
 	int view_x, view_y;
 	int view_zoom;
 	int hover_x, hover_y;
