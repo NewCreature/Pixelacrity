@@ -6,8 +6,6 @@ Quixel 0.2 Issues
 [ ]Status bar is not at the bottom of the window on Windows. I think it might be
    something to do with the window being implicitly resized when adding a menu.
 
-[ ]Make scroll speed independent of zoom level.
-
 [ ]Crash when resizing on M1 Macbook Air.
 
 [ ]Investigate why pixel x-coordinate is offset by -1.
@@ -266,3 +264,5 @@ Closed Issues
    [X]Color should blend toward the color of the pixel being drawn by alpha.
 
 [X]Don't destroy UI and recreate it on resize.
+
+[X]Make scroll speed independent of zoom level.
