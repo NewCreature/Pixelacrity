@@ -197,6 +197,7 @@ void quixel_resize_ui(QUIXEL_UI * uip)
 	pos_y += QUIXEL_UI_ELEMENT_SPACE;
 
 	resize_element(uip->element[QUIXEL_UI_ELEMENT_PALETTE], 0, pos_y, left_pane_width, t3f_default_view->height - pos_y);
+	quixel_resize_palette(uip->element[QUIXEL_UI_ELEMENT_PALETTE]->w, uip->element[QUIXEL_UI_ELEMENT_PALETTE]->h);
 
 	default_theme = t3gui_get_default_theme();
 	if(!default_theme)

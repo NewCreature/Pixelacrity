@@ -41,13 +41,22 @@ static ALLEGRO_BITMAP * quixel_create_palette(int width, int height)
 	return NULL;
 }
 
+void quixel_resize_palette(int width, int height)
+{
+	if(_palette_bitmap)
+	{
+		al_destroy_bitmap(_palette_bitmap);
+	}
+	_palette_bitmap = quixel_create_palette(width, height);
+}
+
 int quixel_gui_palette_proc(int msg, T3GUI_ELEMENT * d, int c)
 {
 	switch(msg)
 	{
 		case MSG_START:
 		{
-			_palette_bitmap = quixel_create_palette(d->w, d->h);
+			quixel_resize_palette(d->w, d->h);
 			break;
 		}
 		case MSG_END:
