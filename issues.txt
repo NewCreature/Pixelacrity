@@ -12,6 +12,8 @@ Quixel 0.2 Issues
       [ ]When attempting to expand into negative territory, shift all of the
          canvas bitmaps over to make room.
 
+         [ ]Make sure we shift all layers.
+
 [ ]Adjust view position when zooming to keep what was in the center of the
    display centered.
 
