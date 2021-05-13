@@ -1,7 +1,7 @@
 Quixel 0.2 Issues
 -----------------
 
-[ ]Fix color picker not visible.
+[X]Fix color picker not visible.
 
 [ ]Fix drawing pixels doesn't seem to work across bitmap borders.
 
