@@ -1,6 +1,12 @@
 Quixel 0.2 Issues
 -----------------
 
+[ ]Fix color picker not visible.
+
+[ ]Fix drawing pixels doesn't seem to work across bitmap borders.
+
+[ ]Flood fill faled to completely fill vertical line of pixels.
+
 [ ]Resizing window causes freeze on Windows.
 
 [ ]Status bar is not at the bottom of the window on Windows. I think it might be
