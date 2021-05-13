@@ -46,9 +46,5 @@ void quixel_tool_pixel_logic(QUIXEL_CANVAS_EDITOR * cep)
 	{
 		cep->tool_bottom = y;
 	}
-	if(!quixel_expand_canvas(cep->canvas, cep->current_layer, x, y))
-	{
-		printf("Tried to expand canvas but failed!\n");
-	}
 	draw_pixel(cep, ox, oy, x, y, cep->click_color);
 }
