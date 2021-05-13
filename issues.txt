@@ -5,7 +5,17 @@ Quixel 0.2 Issues
 
 [ ]Fix drawing pixels doesn't seem to work across bitmap borders.
 
-[ ]Flood fill faled to completely fill vertical line of pixels.
+   [ ]Make canvas size truly dynamic.
+
+   [ ]Fix quixel_expand_canvas() to expand the size of the array as needed.
+
+      [ ]When attempting to expand into negative territory, shift all of the
+         canvas bitmaps over to make room.
+
+[ ]Adjust view position when zooming to keep what was in the center of the
+   display centered.
+
+[ ]Flood fill failed to completely fill vertical line of pixels.
 
 [ ]Add erase tool.
 
