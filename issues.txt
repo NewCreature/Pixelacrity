@@ -7,6 +7,8 @@ Quixel 0.2 Issues
 
 [ ]Flood fill faled to completely fill vertical line of pixels.
 
+[ ]Add erase tool.
+
 [ ]Resizing window causes freeze on Windows.
 
 [ ]Status bar is not at the bottom of the window on Windows. I think it might be
