@@ -183,7 +183,7 @@ void quixel_resize_ui(QUIXEL_UI * uip)
 	resize_element(uip->element[QUIXEL_UI_ELEMENT_RIGHT_COLOR], left_pane_width / 2, pos_y, left_pane_width / 2, 48);
 	pos_y += 48;
 	resize_element(uip->element[QUIXEL_UI_ELEMENT_LEFT_SHADE_SLIDER], 0, pos_y, left_pane_width / 2, QUIXEL_COLOR_PICKER_SCALE);
-	resize_element(uip->element[QUIXEL_UI_ELEMENT_RIGHT_SHADE_SLIDER], left_pane_width / 2, pos_y, left_pane_width / 2, 48);
+	resize_element(uip->element[QUIXEL_UI_ELEMENT_RIGHT_SHADE_SLIDER], left_pane_width / 2, pos_y, left_pane_width / 2, QUIXEL_COLOR_PICKER_SCALE);
 	pos_y += QUIXEL_COLOR_PICKER_SCALE;
 	resize_element(uip->element[QUIXEL_UI_ELEMENT_LEFT_ALPHA_SLIDER], 0, pos_y, left_pane_width / 2, QUIXEL_COLOR_PICKER_SCALE);
 	resize_element(uip->element[QUIXEL_UI_ELEMENT_RIGHT_ALPHA_SLIDER], left_pane_width / 2, pos_y, left_pane_width / 2, QUIXEL_COLOR_PICKER_SCALE);
@@ -191,6 +191,8 @@ void quixel_resize_ui(QUIXEL_UI * uip)
 	pos_y += QUIXEL_UI_ELEMENT_SPACE;
 
 	resize_color_picker(uip, 0, pos_y);
+	pos_y += QUIXEL_COLOR_PICKER_SCALE;
+	pos_y += QUIXEL_UI_ELEMENT_SPACE;
 
 	resize_color_palette(uip, 0, pos_y);
 	pos_y += QUIXEL_COLOR_PICKER_SCALE * 9;
