@@ -406,7 +406,7 @@ ALLEGRO_COLOR quixel_get_canvas_pixel(QUIXEL_CANVAS * cp, int layer, int x, int 
 	tx = x / cp->bitmap_size;
 	ty = y / cp->bitmap_size;
 
-	if(layer < cp->layer_max && cp->layer[layer]->bitmap && cp->layer[layer]->bitmap[ty][tx])
+	if(layer < cp->layer_max && tx >= 0 && tx < cp->layer_width && ty >= 0 && ty < cp->layer_height && cp->layer[layer]->bitmap && cp->layer[layer]->bitmap[ty][tx])
 	{
 		return al_get_pixel(cp->layer[layer]->bitmap[ty][tx], x % cp->bitmap_size, y % cp->bitmap_size);
 	}
