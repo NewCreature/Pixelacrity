@@ -295,9 +295,9 @@ bool quixel_apply_undo(QUIXEL_CANVAS_EDITOR * cep, const char * fn, bool redo, b
 			}
 			else
 			{
-				for(i = 0; i < QUIXEL_CANVAS_MAX_HEIGHT; i++)
+				for(i = 0; i < cep->canvas->layer_height; i++)
 				{
-					for(j = 0; j < QUIXEL_CANVAS_MAX_WIDTH; j++)
+					for(j = 0; j < cep->canvas->layer_width; j++)
 					{
 						if(cep->canvas->layer[layer]->bitmap[i][j])
 						{

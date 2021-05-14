@@ -94,8 +94,8 @@ static QUIXEL_CANVAS * canvas_from_image(const char * fn)
 	{
 		goto fail;
 	}
-	cx = (QUIXEL_CANVAS_MAX_WIDTH * 2048) / 2;
-	cy = (QUIXEL_CANVAS_MAX_HEIGHT * 2048) / 2;
+	cx = 2048 / 2;
+	cy = 2048 / 2;
 	x = cx - al_get_bitmap_width(bp) / 2;
 	y = cy - al_get_bitmap_height(bp) / 2;
 	quixel_import_bitmap_to_canvas(cp, bp, 0, x, y);

@@ -218,11 +218,11 @@ static bool save_canvas_full_f(QUIXEL_CANVAS * cp, ALLEGRO_FILE * fp, const char
 {
 	int i, j, k;
 
-	if(!al_fwrite32le(fp, QUIXEL_CANVAS_MAX_WIDTH))
+	if(!al_fwrite32le(fp, cp->layer_width))
 	{
 		goto fail;
 	}
-	if(!al_fwrite32le(fp, QUIXEL_CANVAS_MAX_HEIGHT))
+	if(!al_fwrite32le(fp, cp->layer_height))
 	{
 		goto fail;
 	}
@@ -236,9 +236,9 @@ static bool save_canvas_full_f(QUIXEL_CANVAS * cp, ALLEGRO_FILE * fp, const char
 		{
 			goto fail;
 		}
-		for(j = 0; j < QUIXEL_CANVAS_MAX_HEIGHT; j++)
+		for(j = 0; j < cp->layer_height; j++)
 		{
-			for(k = 0; k < QUIXEL_CANVAS_MAX_WIDTH; k++)
+			for(k = 0; k < cp->layer_width; k++)
 			{
 				if(cp->layer[i]->bitmap[j][k])
 				{

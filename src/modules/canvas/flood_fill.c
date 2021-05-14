@@ -201,9 +201,9 @@ bool quixel_flood_fill_canvas(QUIXEL_CANVAS * cp, int layer, int start_x, int st
 	}
 	cleanup:
 	{
-		for(i = 0; i < QUIXEL_CANVAS_MAX_HEIGHT; i++)
+		for(i = 0; i < cp->layer_height; i++)
 		{
-			for(j = 0; j < QUIXEL_CANVAS_MAX_WIDTH; j++)
+			for(j = 0; j < cp->layer_width; j++)
 			{
 				current_bp = cp->layer[layer]->bitmap[i][j];
 				if(current_bp && al_is_bitmap_locked(current_bp))

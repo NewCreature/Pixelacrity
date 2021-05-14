@@ -4,15 +4,12 @@
 #include "t3f/t3f.h"
 #include "modules/box.h"
 
-#define QUIXEL_CANVAS_MAX_WIDTH  32
-#define QUIXEL_CANVAS_MAX_HEIGHT 32
-
 #define QUIXEL_CANVAS_FLAG_HIDDEN 1
 
 typedef struct
 {
 
-	ALLEGRO_BITMAP * bitmap[QUIXEL_CANVAS_MAX_HEIGHT][QUIXEL_CANVAS_MAX_WIDTH];
+	ALLEGRO_BITMAP *** bitmap;
 	int flags;
 
 } QUIXEL_CANVAS_LAYER;
@@ -29,6 +26,7 @@ typedef struct
 {
 
 	int bitmap_size;
+	int layer_width, layer_height;
 
 	QUIXEL_CANVAS_LAYER ** layer;
 	int layer_max;

@@ -79,7 +79,7 @@ QUIXEL_CANVAS * quixel_create_canvas(int bitmap_max)
 
 void quixel_destroy_canvas(QUIXEL_CANVAS * cp)
 {
-	int i, j, k;
+	int i, j, k, l;
 
 	if(cp)
 	{
@@ -93,14 +93,21 @@ void quixel_destroy_canvas(QUIXEL_CANVAS * cp)
 			{
 				if(cp->layer[i])
 				{
-					for(j = 0; j < QUIXEL_CANVAS_MAX_HEIGHT; j++)
+					for(j = 0; j < cp->layer_height; j++)
 					{
-						for(k = 0; k < QUIXEL_CANVAS_MAX_WIDTH; k++)
+						for(k = 0; k < cp->layer_width; k++)
 						{
 							if(cp->layer[i]->bitmap[j][k])
 							{
 								al_destroy_bitmap(cp->layer[i]->bitmap[j][k]);
 							}
+						}
+					}
+					if(cp->layer[i]->bitmap)
+					{
+						for(l = 0; l < cp->layer_height; l++)
+						{
+							free(cp->layer[i]->bitmap[l]);
 						}
 					}
 					free(cp->layer[i]);
@@ -109,6 +116,52 @@ void quixel_destroy_canvas(QUIXEL_CANVAS * cp)
 			free(cp->layer);
 		}
 		free(cp);
+	}
+}
+
+static void destroy_bitmap_array(ALLEGRO_BITMAP *** bp, int width, int height)
+{
+	int i;
+
+	if(bp)
+	{
+		for(i = 0; i < height; i++)
+		{
+			if(bp[i])
+			{
+				free(bp[i]);
+			}
+		}
+		free(bp);
+	}
+}
+
+static ALLEGRO_BITMAP *** create_bitmap_array(int width, int height)
+{
+	ALLEGRO_BITMAP *** bp;
+	int i;
+
+	bp = malloc(sizeof(ALLEGRO_BITMAP *) * height);
+	if(!bp)
+	{
+		goto fail;
+	}
+	memset(bp, 0, sizeof(ALLEGRO_BITMAP *) * height);
+	for(i = 0; i < height; i++)
+	{
+		bp[i] = malloc(sizeof(ALLEGRO_BITMAP *) * width);
+		if(!bp[i])
+		{
+			goto fail;
+		}
+		memset(bp[i], 0, sizeof(ALLEGRO_BITMAP *) * width);
+	}
+	return bp;
+
+	fail:
+	{
+		destroy_bitmap_array(bp, width, height);
+		return NULL;
 	}
 }
 
@@ -131,6 +184,10 @@ bool quixel_add_canvas_layer(QUIXEL_CANVAS * cp)
 		cp->layer[cp->layer_max] = quixel_create_canvas_layer();
 		if(cp->layer[cp->layer_max])
 		{
+			if(cp->layer_width > 0 && cp->layer_height > 0)
+			{
+				cp->layer[cp->layer_max]->bitmap = create_bitmap_array(cp->layer_width, cp->layer_height);
+			}
 			cp->layer_max++;
 			free(old_layer);
 			return true;
@@ -161,6 +218,11 @@ bool quixel_remove_canvas_layer(QUIXEL_CANVAS * cp, int layer)
 			cp->layer[i] = old_layer[i + 1];
 		}
 		cp->layer_max--;
+		if(cp->layer_max > 0)
+		{
+			destroy_bitmap_array(old_layer[cp->layer_max]->bitmap, cp->layer_width, cp->layer_height);
+			free(old_layer[cp->layer_max]);
+		}
 		free(old_layer);
 		return true;
 	}
@@ -224,7 +286,40 @@ bool quixel_remove_canvas_frame(QUIXEL_CANVAS * cp, int frame)
 	return false;
 }
 
+static bool resize_bitmap_array(QUIXEL_CANVAS * cp, int width, int height)
+{
+	ALLEGRO_BITMAP *** bitmap;
+	int i, j, k;
 
+	if(cp->layer_width != width || cp->layer_height != height)
+	{
+		for(i = 0; i < cp->layer_max; i++)
+		{
+			/* create a new array */
+			bitmap = create_bitmap_array(width, height);
+			if(bitmap)
+			{
+				/* copy old data to new array */
+				for(j = 0; i < cp->layer_height; j++)
+				{
+					for(k = 0; k < cp->layer_width; k++)
+					{
+						bitmap[j][k] = cp->layer[i]->bitmap[j][k];
+					}
+				}
+
+				/* destroy the old array */
+				destroy_bitmap_array(cp->layer[i]->bitmap, cp->layer_width, cp->layer_height);
+
+				/* point to new array */
+				cp->layer[i]->bitmap = bitmap;
+			}
+		}
+		cp->layer_width = width;
+		cp->layer_height = height;
+	}
+	return true;
+}
 
 bool quixel_expand_canvas(QUIXEL_CANVAS * cp, int layer, int x, int y)
 {
@@ -232,6 +327,12 @@ bool quixel_expand_canvas(QUIXEL_CANVAS * cp, int layer, int x, int y)
 
 	if(layer >= cp->layer_max)
 	{
+		return false;
+	}
+
+	if(!resize_bitmap_array(cp, x / cp->bitmap_size + 1, y / cp->bitmap_size + 1))
+	{
+		printf("Failed to resize bitmap array!\n");
 		return false;
 	}
 
@@ -279,9 +380,9 @@ void quixel_render_canvas_layer(QUIXEL_CANVAS * cp, int i, int x, int y, int sca
 {
 	int j, k;
 
-	for(j = 0; j < QUIXEL_CANVAS_MAX_HEIGHT; j++)
+	for(j = 0; j < cp->layer_height; j++)
 	{
-		for(k = 0; k < QUIXEL_CANVAS_MAX_WIDTH; k++)
+		for(k = 0; k < cp->layer_width; k++)
 		{
 			if(i < cp->layer_max)
 			{

@@ -39,16 +39,16 @@ static int get_canvas_alpha(QUIXEL_CANVAS * cp, int x, int y, int flags_filter)
 void quixel_get_canvas_dimensions(QUIXEL_CANVAS * cp, int * offset_x, int * offset_y, int * width, int * height, int flags_filter)
 {
 	int i, j, k, l, m, x, y;
-	int left_x = cp->bitmap_size * QUIXEL_CANVAS_MAX_WIDTH;
+	int left_x = 1000000;
 	int right_x = 0;
-	int top_y = cp->bitmap_size * QUIXEL_CANVAS_MAX_HEIGHT;
+	int top_y = 1000000;
 	int bottom_y = 0;
 	bool need_check;
 	int flags;
 
-	for(j = 0; j < QUIXEL_CANVAS_MAX_HEIGHT; j++)
+	for(j = 0; j < cp->layer_height; j++)
 	{
-		for(k = 0; k < QUIXEL_CANVAS_MAX_WIDTH; k++)
+		for(k = 0; k < cp->layer_width; k++)
 		{
 			need_check = false;
 			for(i = 0; i < cp->layer_max; i++)
@@ -129,9 +129,9 @@ static void draw_canvas_layer(QUIXEL_CANVAS * cp, int layer, int flags, ALLEGRO_
 	int j, k;
 	int x, y;
 
-	for(j = 0; j < QUIXEL_CANVAS_MAX_HEIGHT; j++)
+	for(j = 0; j < cp->layer_height; j++)
 	{
-		for(k = 0; k < QUIXEL_CANVAS_MAX_WIDTH; k++)
+		for(k = 0; k < cp->layer_width; k++)
 		{
 			if(cp->layer[layer]->bitmap[j][k])
 			{
@@ -275,15 +275,66 @@ static bool loop_break_test(int i1, int i2, int dir)
 	return false;
 }
 
+static void free_use_array(bool ** use_bitmap, int layer_width, int layer_height)
+{
+	int i;
+
+	if(use_bitmap)
+	{
+		for(i = 0; i < layer_height; i++)
+		{
+			if(use_bitmap[i])
+			{
+				free(use_bitmap[i]);
+			}
+		}
+		free(use_bitmap);
+	}
+}
+
+static bool ** make_use_array(int layer_width, int layer_height)
+{
+	bool ** use_bitmap;
+	int i;
+
+	if(layer_width < 1 || layer_height < 1)
+	{
+		return NULL;
+	}
+	use_bitmap = malloc(sizeof(bool *) * layer_height);
+	if(!use_bitmap)
+	{
+		goto fail;
+	}
+	memset(use_bitmap, 0, sizeof(bool *) * layer_height);
+	for(i = 0; i < layer_height; i++)
+	{
+		use_bitmap[i] = malloc(sizeof(bool) * layer_width);
+		if(!use_bitmap[i])
+		{
+			goto fail;
+		}
+	}
+
+	return use_bitmap;
+
+	fail:
+	{
+		free_use_array(use_bitmap, layer_width, layer_height);
+		return NULL;
+	}
+}
+
 void quixel_draw_primitive_to_canvas(QUIXEL_CANVAS * cp, int layer, int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_COLOR color, int mode, void (*primitive_proc)(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_COLOR color))
 {
 	ALLEGRO_STATE old_state;
 	ALLEGRO_TRANSFORM identity;
-	bool use_bitmap[QUIXEL_CANVAS_MAX_HEIGHT][QUIXEL_CANVAS_MAX_WIDTH] = {false};
+	bool ** use_bitmap;
 	int start_bitmap_x, start_bitmap_y;
 	int end_bitmap_x, end_bitmap_y;
 	int x_dir, y_dir;
 	int i, j, offset_x, offset_y;
+	int tw, th;
 
 	al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_BLENDER | ALLEGRO_STATE_TRANSFORM);
 	al_identity_transform(&identity);
@@ -307,6 +358,14 @@ void quixel_draw_primitive_to_canvas(QUIXEL_CANVAS * cp, int layer, int x1, int 
 	{
 		y_dir = -1;
 	}
+	tw = abs(start_bitmap_x - end_bitmap_x) + 1;
+	th = abs(start_bitmap_y - end_bitmap_y) + 1;
+	use_bitmap = make_use_array(tw, th);
+	if(!use_bitmap)
+	{
+		printf("can't allocate memory!\n");
+		return;
+	}
 	use_bitmap[start_bitmap_y][start_bitmap_x] = true;
 	use_bitmap[end_bitmap_y][end_bitmap_x] = true;
 	while(!loop_break_test(start_bitmap_y, end_bitmap_y, y_dir))
@@ -317,9 +376,9 @@ void quixel_draw_primitive_to_canvas(QUIXEL_CANVAS * cp, int layer, int x1, int 
 			use_bitmap[start_bitmap_y][start_bitmap_x] = true;
 		}
 	}
-	for(i = 0; i < QUIXEL_CANVAS_MAX_HEIGHT; i++)
+	for(i = 0; i < th; i++)
 	{
-		for(j = 0; j < QUIXEL_CANVAS_MAX_WIDTH; j++)
+		for(j = 0; j < tw; j++)
 		{
 			if(use_bitmap[i][j])
 			{
@@ -336,6 +395,7 @@ void quixel_draw_primitive_to_canvas(QUIXEL_CANVAS * cp, int layer, int x1, int 
 			}
 		}
 	}
+	free_use_array(use_bitmap, tw, th);
 	al_restore_state(&old_state);
 }
 
@@ -346,7 +406,7 @@ ALLEGRO_COLOR quixel_get_canvas_pixel(QUIXEL_CANVAS * cp, int layer, int x, int 
 	tx = x / cp->bitmap_size;
 	ty = y / cp->bitmap_size;
 
-	if(layer < cp->layer_max && cp->layer[layer]->bitmap[ty][tx])
+	if(layer < cp->layer_max && cp->layer[layer]->bitmap && cp->layer[layer]->bitmap[ty][tx])
 	{
 		return al_get_pixel(cp->layer[layer]->bitmap[ty][tx], x % cp->bitmap_size, y % cp->bitmap_size);
 	}
