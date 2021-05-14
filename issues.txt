@@ -14,6 +14,9 @@ Quixel 0.2 Issues
 
          [ ]Make sure we shift all layers.
 
+[ ]Store layer in undo state, even if the layer has no bitmap data. We still
+   need to know which layer the undo state applies to.
+
 [ ]Adjust view position when zooming to keep what was in the center of the
    display centered.
 
