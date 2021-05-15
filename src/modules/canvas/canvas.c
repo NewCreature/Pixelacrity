@@ -308,6 +308,18 @@ static bool resize_bitmap_array(QUIXEL_CANVAS * cp, int width, int height)
 					}
 				}
 
+				/* destroy bitmaps that are no longer part of the new array */
+				for(j = height; j < cp->layer_height; j++)
+				{
+					for(k = width; k < cp->layer_width; k++)
+					{
+						if(cp->layer[i]->bitmap[j][k])
+						{
+							al_destroy_bitmap(cp->layer[i]->bitmap[j][k]);
+						}
+					}
+				}
+
 				/* destroy the old array */
 				destroy_bitmap_array(cp->layer[i]->bitmap, cp->layer_width, cp->layer_height);
 
