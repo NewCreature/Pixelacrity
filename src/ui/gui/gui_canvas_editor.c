@@ -184,12 +184,16 @@ static void shift_canvas_editor_variables(QUIXEL_CANVAS_EDITOR * cep, int ox, in
 {
 	cep->view_x += ox;
 	cep->view_y += oy;
+	cep->view_fx = cep->view_x;
+	cep->view_fy = cep->view_y;
 	cep->click_x += ox;
 	cep->click_y += oy;
 	cep->release_x += ox;
 	cep->release_y += oy;
 	cep->hover_x += ox;
 	cep->hover_y += oy;
+	cep->scratch_offset_x += ox;
+	cep->scratch_offset_y += oy;
 }
 
 static bool handle_canvas_expansion(QUIXEL_CANVAS_EDITOR * cep)

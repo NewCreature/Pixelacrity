@@ -286,6 +286,15 @@ bool quixel_remove_canvas_frame(QUIXEL_CANVAS * cp, int frame)
 	return false;
 }
 
+static ALLEGRO_BITMAP * get_bitmap(QUIXEL_CANVAS * cp, int layer, int x, int y)
+{
+	if(x >= 0 && x < cp->layer_width && y >= 0 && y < cp->layer_height)
+	{
+		return cp->layer[layer]->bitmap[y][x];
+	}
+	return NULL;
+}
+
 void quixel_shift_canvas_bitmap_array(QUIXEL_CANVAS * cp, int shift_x, int shift_y)
 {
 	ALLEGRO_BITMAP *** bitmap;
@@ -303,16 +312,13 @@ void quixel_shift_canvas_bitmap_array(QUIXEL_CANVAS * cp, int shift_x, int shift
 		if(bitmap)
 		{
 			/* copy old data to new array */
-			for(j = 0; j < cp->layer_height; j++)
+			for(j = 0; j < new_height; j++)
 			{
-				for(k = 0; k < cp->layer_width; k++)
+				for(k = 0; k < new_width; k++)
 				{
-					tx = k + shift_x;
-					ty = j + shift_y;
-					if(tx >= 0 && tx < cp->layer_width && ty >= 0 && ty < cp->layer_height)
-					{
-						bitmap[j][k] = cp->layer[i]->bitmap[ty][tx];
-					}
+					tx = k - shift_x;
+					ty = j - shift_y;
+					bitmap[j][k] = get_bitmap(cp, i, tx, ty);
 				}
 			}
 
@@ -335,7 +341,6 @@ void quixel_shift_canvas_bitmap_array(QUIXEL_CANVAS * cp, int shift_x, int shift
 			cp->layer[i]->bitmap = bitmap;
 		}
 	}
-	printf("expand %d %d\n", new_width, new_height);
 	cp->layer_width = new_width;
 	cp->layer_height = new_height;
 }
