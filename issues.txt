@@ -6,7 +6,12 @@ Quixel 0.2 Issues
    [ ]Handle canvas bitmap array expansion in canvas editor module. We need to
       be able to adjust the editor variables when shifts occur.
 
-   [ ]Fix canvas shift making drawing disappear.
+      [ ]Handle expanding to the right and down.
+
+   [X]Fix canvas shift making drawing disappear.
+
+   [ ]Make undo/redo work when an action causes the canvas bitmap array to be
+      shifted.
 
 [ ]Store layer in undo state, even if the layer has no bitmap data. We still
    need to know which layer the undo state applies to.
