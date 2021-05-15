@@ -1,18 +1,12 @@
 Quixel 0.2 Issues
 -----------------
 
-[X]Fix color picker not visible.
+[ ]Finish infinite canvas implementation.
 
-[ ]Fix drawing pixels doesn't seem to work across bitmap borders.
+   [ ]Handle canvas bitmap array expansion in canvas editor module. We need to
+      be able to adjust the editor variables when shifts occur.
 
-   [ ]Make canvas size truly dynamic.
-
-   [ ]Fix quixel_expand_canvas() to expand the size of the array as needed.
-
-      [ ]When attempting to expand into negative territory, shift all of the
-         canvas bitmaps over to make room.
-
-         [ ]Make sure we shift all layers.
+   [ ]Fix canvas shift making drawing disappear.
 
 [ ]Store layer in undo state, even if the layer has no bitmap data. We still
    need to know which layer the undo state applies to.
@@ -291,3 +285,5 @@ Closed Issues
 [X]Don't destroy UI and recreate it on resize.
 
 [X]Make scroll speed independent of zoom level.
+
+[X]Fix color picker not visible.
