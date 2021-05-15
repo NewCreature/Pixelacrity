@@ -50,6 +50,8 @@ bool quixel_remove_canvas_layer(QUIXEL_CANVAS * cp, int layer);
 bool quixel_add_canvas_frame(QUIXEL_CANVAS * cp, const char * name, int x, int y, int width, int height);
 bool quixel_remove_canvas_frame(QUIXEL_CANVAS * cp, int frame);
 
+void quixel_shift_canvas_bitmap_array(QUIXEL_CANVAS * cp, int shift_x, int shift_y);
+bool quixel_resize_canvas_bitmap_array(QUIXEL_CANVAS * cp, int width, int height);
 bool quixel_expand_canvas(QUIXEL_CANVAS * cp, int layer, int x, int y);
 
 void quixel_render_canvas_layer(QUIXEL_CANVAS * cp, int i, int x, int y, int scale, float ox, float oy, int width, int height);

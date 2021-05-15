@@ -180,6 +180,67 @@ static bool save_backup(QUIXEL_CANVAS * cp)
 	return false;
 }
 
+static void shift_canvas_editor_variables(QUIXEL_CANVAS_EDITOR * cep, int ox, int oy)
+{
+	cep->view_x += ox;
+	cep->view_y += oy;
+	cep->click_x += ox;
+	cep->click_y += oy;
+	cep->release_x += ox;
+	cep->release_y += oy;
+	cep->hover_x += ox;
+	cep->hover_y += oy;
+}
+
+static bool handle_canvas_expansion(QUIXEL_CANVAS_EDITOR * cep)
+{
+	int shift_x = 0, shift_y = 0;
+
+	/* create initial array if needed */
+	if(cep->canvas->layer_width < 1 || cep->canvas->layer_height < 0)
+	{
+		quixel_resize_canvas_bitmap_array(cep->canvas, 1, 1);
+	}
+
+	/* calculate shift amount */
+	if(cep->click_x < cep->release_x)
+	{
+		if(cep->click_x < 0)
+		{
+			shift_x = -cep->click_x / cep->canvas->bitmap_size + 1;
+		}
+	}
+	else
+	{
+		if(cep->release_x < 0)
+		{
+			shift_x = -cep->release_x / cep->canvas->bitmap_size + 1;
+		}
+	}
+	if(cep->click_y < cep->release_y)
+	{
+		if(cep->click_y < 0)
+		{
+			shift_y = -cep->click_y / cep->canvas->bitmap_size + 1;
+		}
+	}
+	else
+	{
+		if(cep->release_y < 0)
+		{
+			shift_y = -cep->release_y / cep->canvas->bitmap_size + 1;
+		}
+	}
+
+	/* actually shift the bitmap array and update variables if we need to */
+	if(shift_x || shift_y)
+	{
+		quixel_shift_canvas_bitmap_array(cep->canvas, shift_x, shift_y);
+		shift_canvas_editor_variables(cep, shift_x * cep->canvas->bitmap_size, shift_y * cep->canvas->bitmap_size);
+	}
+	return true;
+}
+
 int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 {
 	QUIXEL_CANVAS_EDITOR * canvas_editor = (QUIXEL_CANVAS_EDITOR *)d->dp;
@@ -357,6 +418,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 					bp = al_create_sub_bitmap(canvas_editor->scratch_bitmap,  canvas_editor->tool_left, canvas_editor->tool_top, canvas_editor->tool_right - canvas_editor->tool_left + 1, canvas_editor->tool_bottom - canvas_editor->tool_top + 1);
 					if(bp)
 					{
+						handle_canvas_expansion(canvas_editor);
 						quixel_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->scratch_offset_x + canvas_editor->tool_left, canvas_editor->scratch_offset_y + canvas_editor->tool_top, canvas_editor->scratch_offset_x + canvas_editor->tool_right + 1, canvas_editor->scratch_offset_y + canvas_editor->tool_bottom + 1, bp, t3f_color_white, QUIXEL_RENDER_COPY, quixel_draw_quad);
 						al_destroy_bitmap(bp);
 						if(made_undo)
@@ -370,6 +432,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				case QUIXEL_TOOL_LINE:
 				{
 					made_undo = create_primitive_undo(canvas_editor);
+					handle_canvas_expansion(canvas_editor);
 					quixel_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, NULL, canvas_editor->click_color, QUIXEL_RENDER_COPY, quixel_draw_line);
 					if(made_undo)
 					{
@@ -383,6 +446,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				case QUIXEL_TOOL_RECTANGLE:
 				{
 					made_undo = create_primitive_undo(canvas_editor);
+					handle_canvas_expansion(canvas_editor);
 					quixel_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, NULL, canvas_editor->click_color, QUIXEL_RENDER_COPY, quixel_draw_rectangle);
 					if(made_undo)
 					{
@@ -396,6 +460,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				case QUIXEL_TOOL_FILLED_RECTANGLE:
 				{
 					made_undo = create_primitive_undo(canvas_editor);
+					handle_canvas_expansion(canvas_editor);
 					quixel_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, NULL, canvas_editor->click_color, QUIXEL_RENDER_COPY, quixel_draw_filled_rectangle);
 					if(made_undo)
 					{
@@ -409,6 +474,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				case QUIXEL_TOOL_OVAL:
 				{
 					made_undo = create_primitive_undo(canvas_editor);
+					handle_canvas_expansion(canvas_editor);
 					quixel_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, NULL, canvas_editor->click_color, QUIXEL_RENDER_COPY, quixel_draw_oval);
 					if(made_undo)
 					{
@@ -422,6 +488,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				case QUIXEL_TOOL_FILLED_OVAL:
 				{
 					made_undo = create_primitive_undo(canvas_editor);
+					handle_canvas_expansion(canvas_editor);
 					quixel_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, NULL, canvas_editor->click_color, QUIXEL_RENDER_COPY, quixel_draw_filled_oval);
 					if(made_undo)
 					{
