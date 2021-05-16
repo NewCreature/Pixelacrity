@@ -314,6 +314,7 @@ static bool ** make_use_array(int layer_width, int layer_height)
 		{
 			goto fail;
 		}
+		memset(use_bitmap[i], 0, sizeof(bool) * layer_width);
 	}
 
 	return use_bitmap;
@@ -334,7 +335,6 @@ void quixel_draw_primitive_to_canvas(QUIXEL_CANVAS * cp, int layer, int x1, int 
 	int end_bitmap_x, end_bitmap_y;
 	int x_dir, y_dir;
 	int i, j, offset_x, offset_y;
-	int tw, th;
 
 	al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_BLENDER | ALLEGRO_STATE_TRANSFORM);
 	al_identity_transform(&identity);
@@ -358,9 +358,7 @@ void quixel_draw_primitive_to_canvas(QUIXEL_CANVAS * cp, int layer, int x1, int 
 	{
 		y_dir = -1;
 	}
-	tw = abs(start_bitmap_x - end_bitmap_x) + 1;
-	th = abs(start_bitmap_y - end_bitmap_y) + 1;
-	use_bitmap = make_use_array(tw, th);
+	use_bitmap = make_use_array(cp->layer_width, cp->layer_height);
 	if(!use_bitmap)
 	{
 		printf("can't allocate memory!\n");
@@ -374,11 +372,13 @@ void quixel_draw_primitive_to_canvas(QUIXEL_CANVAS * cp, int layer, int x1, int 
 		while(!loop_break_test(start_bitmap_x, end_bitmap_x, x_dir))
 		{
 			use_bitmap[start_bitmap_y][start_bitmap_x] = true;
+			start_bitmap_x += cp->bitmap_size * x_dir;
 		}
+		start_bitmap_y += cp->bitmap_size * y_dir;
 	}
-	for(i = 0; i < th; i++)
+	for(i = 0; i < cp->layer_height; i++)
 	{
-		for(j = 0; j < tw; j++)
+		for(j = 0; j < cp->layer_width; j++)
 		{
 			if(use_bitmap[i][j])
 			{
@@ -395,7 +395,7 @@ void quixel_draw_primitive_to_canvas(QUIXEL_CANVAS * cp, int layer, int x1, int 
 			}
 		}
 	}
-	free_use_array(use_bitmap, tw, th);
+	free_use_array(use_bitmap, cp->layer_width, cp->layer_height);
 	al_restore_state(&old_state);
 }
 

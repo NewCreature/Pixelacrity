@@ -199,6 +199,8 @@ static void shift_canvas_editor_variables(QUIXEL_CANVAS_EDITOR * cep, int ox, in
 static bool handle_canvas_expansion(QUIXEL_CANVAS_EDITOR * cep)
 {
 	int shift_x = 0, shift_y = 0;
+	int cx, cy;
+	int new_width, new_height;
 
 	/* create initial array if needed */
 	if(cep->canvas->layer_width < 1 || cep->canvas->layer_height < 0)
@@ -241,6 +243,34 @@ static bool handle_canvas_expansion(QUIXEL_CANVAS_EDITOR * cep)
 	{
 		quixel_shift_canvas_bitmap_array(cep->canvas, shift_x, shift_y);
 		shift_canvas_editor_variables(cep, shift_x * cep->canvas->bitmap_size, shift_y * cep->canvas->bitmap_size);
+	}
+
+	/* expand down and to the right if needed */
+	new_width = cep->canvas->layer_width;
+	cx = cep->click_x / cep->canvas->bitmap_size;
+	if(cx >= cep->canvas->layer_width)
+	{
+		new_width = cx + 1;
+	}
+	cx = cep->release_x / cep->canvas->bitmap_size;
+	if(cx >= new_width)
+	{
+		new_width = cx + 1;
+	}
+	new_height = cep->canvas->layer_height;
+	cy = cep->click_y / cep->canvas->bitmap_size;
+	if(cy >= cep->canvas->layer_height)
+	{
+		new_height = cy + 1;
+	}
+	cy = cep->release_y / cep->canvas->bitmap_size;
+	if(cy >= new_height)
+	{
+		new_height = cy + 1;
+	}
+	if(new_width != cep->canvas->layer_width || new_height != cep->canvas->layer_height)
+	{
+		quixel_resize_canvas_bitmap_array(cep->canvas, new_width, new_height);
 	}
 	return true;
 }
