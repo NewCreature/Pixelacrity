@@ -3,15 +3,25 @@ Quixel 0.2 Issues
 
 [ ]Finish infinite canvas implementation.
 
-   [ ]Handle canvas bitmap array expansion in canvas editor module. We need to
+   [X]Handle canvas bitmap array expansion in canvas editor module. We need to
       be able to adjust the editor variables when shifts occur.
 
-      [ ]Handle expanding to the right and down.
+      [X]Handle expanding to the right and down.
 
    [X]Fix canvas shift making drawing disappear.
 
    [ ]Make undo/redo work when an action causes the canvas bitmap array to be
       shifted.
+
+      [ ]I think we can just store the shift amounts in the undo file and
+         unshift the canvas when applying the undo.
+
+[ ]Copy data to scratch bitmap from multiple bitmaps when using drawing tools.
+
+[ ]Pixel tool sometimes loses some pixels at edge.
+
+[ ]Scratch bitmap is not large enough to cover entire screen when using pixel
+   tool. We should either make it larger, or just position it differently.
 
 [ ]Store layer in undo state, even if the layer has no bitmap data. We still
    need to know which layer the undo state applies to.
