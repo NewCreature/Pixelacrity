@@ -10,6 +10,9 @@ Quixel 0.2 Issues
 
    [ ]It only happens when a floating selection is unfloated.
 
+   [ ]Unfloating uses composite rendering mode. Need to see if copy rendering
+      will work or if we need to make a new mode.ß
+
 [ ]Consider allowing flood fill to be bound by the current frame if the user
    clicks within a frame.
 
