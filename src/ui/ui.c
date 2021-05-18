@@ -207,10 +207,12 @@ void quixel_resize_ui(QUIXEL_UI * uip)
 		return;
 	}
 	status_height = al_get_font_line_height(default_theme->state[0].font[0]) + QUIXEL_UI_ELEMENT_SPACE * 2;
-	resize_element(uip->element[QUIXEL_UI_ELEMENT_STATUS_BAR], 0, t3f_default_view->height - status_height, t3f_default_view->width, status_height);
-	resize_element(uip->element[QUIXEL_UI_ELEMENT_STATUS_LEFT_MESSAGE], QUIXEL_UI_ELEMENT_SPACE, t3f_default_view->height - status_height, t3f_default_view->width - QUIXEL_UI_ELEMENT_SPACE * 2, status_height);
-	resize_element(uip->element[QUIXEL_UI_ELEMENT_STATUS_MIDDLE_MESSAGE], QUIXEL_UI_ELEMENT_SPACE, t3f_default_view->height - status_height, t3f_default_view->width - QUIXEL_UI_ELEMENT_SPACE * 2, status_height);
-	resize_element(uip->element[QUIXEL_UI_ELEMENT_STATUS_RIGHT_MESSAGE], QUIXEL_UI_ELEMENT_SPACE, t3f_default_view->height - status_height, t3f_default_view->width - QUIXEL_UI_ELEMENT_SPACE * 2, status_height);
+	pos_y = t3f_default_view->height - status_height;
+	resize_element(uip->element[QUIXEL_UI_ELEMENT_STATUS_BAR], 0, pos_y, t3f_default_view->width, status_height);
+	pos_y += QUIXEL_UI_ELEMENT_SPACE;
+	resize_element(uip->element[QUIXEL_UI_ELEMENT_STATUS_LEFT_MESSAGE], QUIXEL_UI_ELEMENT_SPACE, pos_y, t3f_default_view->width - QUIXEL_UI_ELEMENT_SPACE * 2, status_height);
+	resize_element(uip->element[QUIXEL_UI_ELEMENT_STATUS_MIDDLE_MESSAGE], QUIXEL_UI_ELEMENT_SPACE, pos_y, t3f_default_view->width - QUIXEL_UI_ELEMENT_SPACE * 2, status_height);
+	resize_element(uip->element[QUIXEL_UI_ELEMENT_STATUS_RIGHT_MESSAGE], QUIXEL_UI_ELEMENT_SPACE, pos_y, t3f_default_view->width - QUIXEL_UI_ELEMENT_SPACE * 2, status_height);
 
 	resize_element(uip->element[QUIXEL_UI_ELEMENT_CANVAS_EDITOR], left_pane_width, 0, t3f_default_view->width - left_pane_width - right_pane_width, t3f_default_view->height - status_height);
 }
