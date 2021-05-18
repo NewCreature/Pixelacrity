@@ -307,135 +307,138 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 		case MSG_MOUSEDOWN:
 		{
 			d->flags |= D_TRACKMOUSE;
-			switch(canvas_editor->current_tool)
+			if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_OFF)
 			{
-				case QUIXEL_TOOL_PIXEL:
+				switch(canvas_editor->current_tool)
 				{
-					click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
-					canvas_editor->scratch_offset_x = canvas_editor->view_x - al_get_bitmap_width(canvas_editor->scratch_bitmap) / 2;
-					canvas_editor->scratch_offset_y = canvas_editor->view_y - al_get_bitmap_height(canvas_editor->scratch_bitmap) / 2;
-					canvas_editor->tool_top = canvas_editor->hover_y - canvas_editor->scratch_offset_y;
-					canvas_editor->tool_bottom = canvas_editor->hover_y - canvas_editor->scratch_offset_y;
-					canvas_editor->tool_left = canvas_editor->hover_x - canvas_editor->scratch_offset_x;
-					canvas_editor->tool_right = canvas_editor->hover_x - canvas_editor->scratch_offset_x;
-					get_scratch_from_canvas(canvas_editor);
-					quixel_tool_pixel_logic(canvas_editor);
-					canvas_editor->modified = true;
-					canvas_editor->update_title = true;
-					canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
-					break;
-				}
-				case QUIXEL_TOOL_LINE:
-				{
-					click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
-					canvas_editor->scratch_offset_x = canvas_editor->view_x;
-					canvas_editor->scratch_offset_y = canvas_editor->view_y;
-					quixel_tool_line_logic(canvas_editor);
-					canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
-					break;
-				}
-				case QUIXEL_TOOL_RECTANGLE:
-				{
-					click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
-					canvas_editor->scratch_offset_x = canvas_editor->view_x;
-					canvas_editor->scratch_offset_y = canvas_editor->view_y;
-					quixel_tool_rectangle_logic(canvas_editor);
-					canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
-					break;
-				}
-				case QUIXEL_TOOL_FILLED_RECTANGLE:
-				{
-					click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
-					canvas_editor->scratch_offset_x = canvas_editor->view_x;
-					canvas_editor->scratch_offset_y = canvas_editor->view_y;
-					quixel_tool_filled_rectangle_logic(canvas_editor);
-					canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
-					break;
-				}
-				case QUIXEL_TOOL_OVAL:
-				{
-					click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
-					canvas_editor->scratch_offset_x = canvas_editor->view_x;
-					canvas_editor->scratch_offset_y = canvas_editor->view_y;
-					quixel_tool_oval_logic(canvas_editor);
-					canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
-					break;
-				}
-				case QUIXEL_TOOL_FILLED_OVAL:
-				{
-					click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
-					canvas_editor->scratch_offset_x = canvas_editor->view_x;
-					canvas_editor->scratch_offset_y = canvas_editor->view_y;
-					quixel_tool_filled_oval_logic(canvas_editor);
-					canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
-					break;
-				}
-				case QUIXEL_TOOL_FLOOD_FILL:
-				{
-					click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
-					made_undo = create_undo(canvas_editor, 0, 0, 0, 0);
-					if(quixel_flood_fill_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y, c == 1 ? canvas_editor->left_color : canvas_editor->right_color))
+					case QUIXEL_TOOL_PIXEL:
 					{
-						if(made_undo)
-						{
-							finalize_undo(canvas_editor);
-						}
+						click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
+						canvas_editor->scratch_offset_x = canvas_editor->view_x - al_get_bitmap_width(canvas_editor->scratch_bitmap) / 2;
+						canvas_editor->scratch_offset_y = canvas_editor->view_y - al_get_bitmap_height(canvas_editor->scratch_bitmap) / 2;
+						canvas_editor->tool_top = canvas_editor->hover_y - canvas_editor->scratch_offset_y;
+						canvas_editor->tool_bottom = canvas_editor->hover_y - canvas_editor->scratch_offset_y;
+						canvas_editor->tool_left = canvas_editor->hover_x - canvas_editor->scratch_offset_x;
+						canvas_editor->tool_right = canvas_editor->hover_x - canvas_editor->scratch_offset_x;
+						get_scratch_from_canvas(canvas_editor);
+						quixel_tool_pixel_logic(canvas_editor);
+						canvas_editor->modified = true;
+						canvas_editor->update_title = true;
+						canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
+						break;
 					}
-					else
+					case QUIXEL_TOOL_LINE:
 					{
-						if(made_undo)
-						{
-							revert_undo(canvas_editor);
-						}
+						click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
+						canvas_editor->scratch_offset_x = canvas_editor->view_x;
+						canvas_editor->scratch_offset_y = canvas_editor->view_y;
+						quixel_tool_line_logic(canvas_editor);
+						canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
+						break;
 					}
-					break;
-				}
-				case QUIXEL_TOOL_DROPPER:
-				{
-					quixel_tool_dropper_logic(canvas_editor, c);
-					break;
-				}
-				case QUIXEL_TOOL_SELECTION:
-				{
-					click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
-					switch(canvas_editor->selection.box.state)
+					case QUIXEL_TOOL_RECTANGLE:
 					{
-						/* start creating a new selection if we are not currently
-						   interacting with an existing selection */
-						case QUIXEL_BOX_STATE_IDLE:
+						click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
+						canvas_editor->scratch_offset_x = canvas_editor->view_x;
+						canvas_editor->scratch_offset_y = canvas_editor->view_y;
+						quixel_tool_rectangle_logic(canvas_editor);
+						canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
+						break;
+					}
+					case QUIXEL_TOOL_FILLED_RECTANGLE:
+					{
+						click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
+						canvas_editor->scratch_offset_x = canvas_editor->view_x;
+						canvas_editor->scratch_offset_y = canvas_editor->view_y;
+						quixel_tool_filled_rectangle_logic(canvas_editor);
+						canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
+						break;
+					}
+					case QUIXEL_TOOL_OVAL:
+					{
+						click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
+						canvas_editor->scratch_offset_x = canvas_editor->view_x;
+						canvas_editor->scratch_offset_y = canvas_editor->view_y;
+						quixel_tool_oval_logic(canvas_editor);
+						canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
+						break;
+					}
+					case QUIXEL_TOOL_FILLED_OVAL:
+					{
+						click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
+						canvas_editor->scratch_offset_x = canvas_editor->view_x;
+						canvas_editor->scratch_offset_y = canvas_editor->view_y;
+						quixel_tool_filled_oval_logic(canvas_editor);
+						canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
+						break;
+					}
+					case QUIXEL_TOOL_FLOOD_FILL:
+					{
+						click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
+						made_undo = create_undo(canvas_editor, 0, 0, 0, 0);
+						if(quixel_flood_fill_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y, c == 1 ? canvas_editor->left_color : canvas_editor->right_color))
 						{
-							if(canvas_editor->selection.floating)
+							if(made_undo)
 							{
-								quixel_unfloat_canvas_editor_selection(canvas_editor, &canvas_editor->selection.box);
+								finalize_undo(canvas_editor);
 							}
-							quixel_initialize_box(&canvas_editor->selection.box, canvas_editor->click_x, canvas_editor->click_y, 1, 1, canvas_editor->peg_bitmap);
-							canvas_editor->selection.box.hover_handle = 0;
-							canvas_editor->selection.box.state = QUIXEL_BOX_STATE_RESIZING;
-							break;
 						}
-						/* set box moving logic in motion */
-						case QUIXEL_BOX_STATE_HOVER:
+						else
 						{
-							canvas_editor->selection.box.click_start_x = canvas_editor->selection.box.start_x;
-							canvas_editor->selection.box.click_start_y = canvas_editor->selection.box.start_y;
-							canvas_editor->selection.box.click_x = canvas_editor->selection.box.hover_x;
-							canvas_editor->selection.box.click_y = canvas_editor->selection.box.hover_y;
-							canvas_editor->selection.box.state = QUIXEL_BOX_STATE_MOVING;
-							break;
-						}
-						/* set box resizing logic in motion */
-						case QUIXEL_BOX_STATE_HOVER_HANDLE:
-						{
-							if(canvas_editor->selection.floating)
+							if(made_undo)
 							{
-								quixel_unfloat_canvas_editor_selection(canvas_editor, &canvas_editor->selection.box);
+								revert_undo(canvas_editor);
 							}
-							canvas_editor->selection.box.state = QUIXEL_BOX_STATE_RESIZING;
-							break;
 						}
+						break;
 					}
-					canvas_editor->tool_state = QUIXEL_TOOL_STATE_EDITING;
-					break;
+					case QUIXEL_TOOL_DROPPER:
+					{
+						quixel_tool_dropper_logic(canvas_editor, c);
+						break;
+					}
+					case QUIXEL_TOOL_SELECTION:
+					{
+						click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
+						switch(canvas_editor->selection.box.state)
+						{
+							/* start creating a new selection if we are not currently
+							   interacting with an existing selection */
+							case QUIXEL_BOX_STATE_IDLE:
+							{
+								if(canvas_editor->selection.floating)
+								{
+									quixel_unfloat_canvas_editor_selection(canvas_editor, &canvas_editor->selection.box);
+								}
+								quixel_initialize_box(&canvas_editor->selection.box, canvas_editor->click_x, canvas_editor->click_y, 1, 1, canvas_editor->peg_bitmap);
+								canvas_editor->selection.box.hover_handle = 0;
+								canvas_editor->selection.box.state = QUIXEL_BOX_STATE_RESIZING;
+								break;
+							}
+							/* set box moving logic in motion */
+							case QUIXEL_BOX_STATE_HOVER:
+							{
+								canvas_editor->selection.box.click_start_x = canvas_editor->selection.box.start_x;
+								canvas_editor->selection.box.click_start_y = canvas_editor->selection.box.start_y;
+								canvas_editor->selection.box.click_x = canvas_editor->selection.box.hover_x;
+								canvas_editor->selection.box.click_y = canvas_editor->selection.box.hover_y;
+								canvas_editor->selection.box.state = QUIXEL_BOX_STATE_MOVING;
+								break;
+							}
+							/* set box resizing logic in motion */
+							case QUIXEL_BOX_STATE_HOVER_HANDLE:
+							{
+								if(canvas_editor->selection.floating)
+								{
+									quixel_unfloat_canvas_editor_selection(canvas_editor, &canvas_editor->selection.box);
+								}
+								canvas_editor->selection.box.state = QUIXEL_BOX_STATE_RESIZING;
+								break;
+							}
+						}
+						canvas_editor->tool_state = QUIXEL_TOOL_STATE_EDITING;
+						break;
+					}
 				}
 			}
 			break;
