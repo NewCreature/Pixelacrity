@@ -1,6 +1,21 @@
 Quixel 0.2 Issues
 -----------------
 
+[ ]Right-clicking while drawing with left mouse button cancels out drawing
+   operation. We should ignore MSG_MOUSEDOWN when other button is already held.
+
+[ ]Moving away from selection tool causes translucent pixels in the layer to
+   have their alpha combined. I think this is being caused by the incorrect
+   blend mode being set when copying the scratch data back to the canvas.
+
+[ ]Consider allowing flood fill to be bound by the current frame if the user
+   clicks within a frame.
+
+[ ]Consider allowing flood fill to be bound by the visible part of the canvas.
+
+[ ]Moving selection is rendered above layers. We should render it in its
+   position in the layer stack.
+
 [ ]Finish infinite canvas implementation.
 
    [X]Handle canvas bitmap array expansion in canvas editor module. We need to
@@ -15,8 +30,6 @@ Quixel 0.2 Issues
 
       [ ]I think we can just store the shift amounts in the undo file and
          unshift the canvas when applying the undo.
-
-[ ]Copy data to scratch bitmap from multiple bitmaps when using drawing tools.
 
 [ ]Pixel tool sometimes loses some pixels at edge.
 
