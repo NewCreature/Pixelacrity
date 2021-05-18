@@ -8,6 +8,8 @@ Quixel 0.2 Issues
    have their alpha combined. I think this is being caused by the incorrect
    blend mode being set when copying the scratch data back to the canvas.
 
+   [ ]It only happens when a floating selection is unfloated.
+
 [ ]Consider allowing flood fill to be bound by the current frame if the user
    clicks within a frame.
 
