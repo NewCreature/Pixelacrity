@@ -3,6 +3,7 @@
 #include "canvas_editor.h"
 #include "modules/canvas/canvas_helpers.h"
 #include "modules/primitives.h"
+#include "undo.h"
 
 static int get_config_val(ALLEGRO_CONFIG * cp, const char * section, const char * key, int default_val)
 {
@@ -90,8 +91,24 @@ void quixel_center_canvas_editor(QUIXEL_CANVAS_EDITOR * cep, int frame)
 	}
 }
 
+static bool create_unfloat_undo(QUIXEL_CANVAS_EDITOR * cep)
+{
+	char undo_path[1024];
+
+	quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024);
+	if(quixel_make_unfloat_selection_undo(cep, undo_path))
+	{
+		return true;
+	}
+	return false;
+}
+
 void quixel_unfloat_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_BOX * bp)
 {
+	if(create_unfloat_undo(cep))
+	{
+		quixel_finalize_undo(cep);
+	}
 	quixel_draw_primitive_to_canvas(cep->canvas, cep->current_layer, bp->start_x, bp->start_y, bp->start_x + bp->width, bp->start_y + bp->height, cep->scratch_bitmap, al_map_rgba_f(0, 0, 0, 0), QUIXEL_RENDER_COMPOSITE, quixel_draw_quad);
 	cep->selection.floating = false;
 }

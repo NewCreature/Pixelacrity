@@ -97,12 +97,12 @@ static void click_on_canvas(QUIXEL_CANVAS_EDITOR * cep, int button, int x, int y
 	}
 }
 
-static bool create_undo(QUIXEL_CANVAS_EDITOR * cep, int x, int y, int width, int height)
+static bool create_undo(QUIXEL_CANVAS_EDITOR * cep, const char * action, int x, int y, int width, int height)
 {
 	char undo_path[1024];
 
 	quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024);
-	if(quixel_make_tool_undo(cep, NULL, cep->current_layer, x, y, width, height, undo_path))
+	if(quixel_make_tool_undo(cep, action, cep->current_layer, x, y, width, height, undo_path))
 	{
 		return true;
 	}
@@ -120,16 +120,7 @@ static bool create_primitive_undo(QUIXEL_CANVAS_EDITOR * cep)
 	y2 = cep->release_y;
 	quixel_sort_coordinates(&y1, &y2);
 
-	return create_undo(cep, x1, y1, x2 - x1 + 1, y2 - y1 + 1);
-}
-
-static void finalize_undo(QUIXEL_CANVAS_EDITOR * cep)
-{
-	cep->undo_count++;
-	cep->redo_count = 0;
-	quixel_update_undo_name(cep);
-	quixel_update_redo_name(cep);
-	t3f_refresh_menus();
+	return create_undo(cep, NULL, x1, y1, x2 - x1 + 1, y2 - y1 + 1);
 }
 
 static void revert_undo(QUIXEL_CANVAS_EDITOR * cep)
@@ -375,12 +366,12 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 					case QUIXEL_TOOL_FLOOD_FILL:
 					{
 						click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
-						made_undo = create_undo(canvas_editor, 0, 0, 0, 0);
+						made_undo = create_undo(canvas_editor, NULL, 0, 0, 0, 0);
 						if(quixel_flood_fill_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y, c == 1 ? canvas_editor->left_color : canvas_editor->right_color))
 						{
 							if(made_undo)
 							{
-								finalize_undo(canvas_editor);
+								quixel_finalize_undo(canvas_editor);
 							}
 						}
 						else
@@ -451,7 +442,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			{
 				case QUIXEL_TOOL_PIXEL:
 				{
-					made_undo = create_undo(canvas_editor, canvas_editor->scratch_offset_x + canvas_editor->tool_left, canvas_editor->scratch_offset_y + canvas_editor->tool_top, canvas_editor->tool_right - canvas_editor->tool_left + 1, canvas_editor->tool_bottom - canvas_editor->tool_top + 1);
+					made_undo = create_undo(canvas_editor, NULL, canvas_editor->scratch_offset_x + canvas_editor->tool_left, canvas_editor->scratch_offset_y + canvas_editor->tool_top, canvas_editor->tool_right - canvas_editor->tool_left + 1, canvas_editor->tool_bottom - canvas_editor->tool_top + 1);
 					bp = al_create_sub_bitmap(canvas_editor->scratch_bitmap,  canvas_editor->tool_left, canvas_editor->tool_top, canvas_editor->tool_right - canvas_editor->tool_left + 1, canvas_editor->tool_bottom - canvas_editor->tool_top + 1);
 					if(bp)
 					{
@@ -460,7 +451,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 						al_destroy_bitmap(bp);
 						if(made_undo)
 						{
-							finalize_undo(canvas_editor);
+							quixel_finalize_undo(canvas_editor);
 						}
 					}
 					canvas_editor->tool_state = QUIXEL_TOOL_STATE_OFF;
@@ -473,7 +464,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 					quixel_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, NULL, canvas_editor->click_color, QUIXEL_RENDER_COPY, quixel_draw_line);
 					if(made_undo)
 					{
-						finalize_undo(canvas_editor);
+						quixel_finalize_undo(canvas_editor);
 					}
 					canvas_editor->modified = true;
 					canvas_editor->update_title = true;
@@ -487,7 +478,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 					quixel_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, NULL, canvas_editor->click_color, QUIXEL_RENDER_COPY, quixel_draw_rectangle);
 					if(made_undo)
 					{
-						finalize_undo(canvas_editor);
+						quixel_finalize_undo(canvas_editor);
 					}
 					canvas_editor->modified = true;
 					canvas_editor->update_title = true;
@@ -501,7 +492,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 					quixel_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, NULL, canvas_editor->click_color, QUIXEL_RENDER_COPY, quixel_draw_filled_rectangle);
 					if(made_undo)
 					{
-						finalize_undo(canvas_editor);
+						quixel_finalize_undo(canvas_editor);
 					}
 					canvas_editor->modified = true;
 					canvas_editor->update_title = true;
@@ -515,7 +506,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 					quixel_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, NULL, canvas_editor->click_color, QUIXEL_RENDER_COPY, quixel_draw_oval);
 					if(made_undo)
 					{
-						finalize_undo(canvas_editor);
+						quixel_finalize_undo(canvas_editor);
 					}
 					canvas_editor->modified = true;
 					canvas_editor->update_title = true;
@@ -529,7 +520,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 					quixel_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, NULL, canvas_editor->click_color, QUIXEL_RENDER_COPY, quixel_draw_filled_oval);
 					if(made_undo)
 					{
-						finalize_undo(canvas_editor);
+						quixel_finalize_undo(canvas_editor);
 					}
 					canvas_editor->modified = true;
 					canvas_editor->update_title = true;
