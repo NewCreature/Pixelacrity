@@ -105,6 +105,10 @@ bool quixel_make_tool_undo(QUIXEL_CANVAS_EDITOR * cep, const char * action, int 
 			goto fail;
 		}
 	}
+	if(bp)
+	{
+		al_destroy_bitmap(bp);
+	}
 	al_fclose(fp);
 	return true;
 
