@@ -1,8 +1,10 @@
 Quixel 0.2 Issues
 -----------------
 
-[ ]Right-clicking while drawing with left mouse button cancels out drawing
+[X]Right-clicking while drawing with left mouse button cancels out drawing
    operation. We should ignore MSG_MOUSEDOWN when other button is already held.
+
+[ ]Make float/unfloat selection undoable.
 
 [ ]Moving away from selection tool causes translucent pixels in the layer to
    have their alpha combined. I think this is being caused by the incorrect
