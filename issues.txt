@@ -20,7 +20,14 @@ Quixel 0.2 Issues
 [ ]Consider allowing flood fill to be bound by the current frame if the user
    clicks within a frame.
 
+   [ ]Use a modifier key to enable this mode. I'm thinking Ctrl+Click to make
+      the flood fill tool restrict itself to filling inside the current frame.
+
 [ ]Consider allowing flood fill to be bound by the visible part of the canvas.
+
+   [ ]Use a modifier key to enable this mode. I'm thinking Ctrl+Click to make
+      the flood fill tool restrict itself to filling inside the visible part of
+      the canvas.
 
 [ ]Moving selection is rendered above layers. We should render it in its
    position in the layer stack.
