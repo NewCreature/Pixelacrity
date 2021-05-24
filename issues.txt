@@ -6,7 +6,7 @@ Quixel 0.2 Issues
 
 [ ]Implement unfloat selection redo.
 
-[ ]Implement float selection undo/redo.
+[ ]Implement float selection redo.
 
 [ ]Moving away from selection tool causes translucent pixels in the layer to
    have their alpha combined. I think this is being caused by the incorrect
