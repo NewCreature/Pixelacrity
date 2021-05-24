@@ -502,12 +502,12 @@ bool quixel_apply_undo(QUIXEL_CANVAS_EDITOR * cep, const char * fn, bool redo, b
 		{
 			if(!redo)
 			{
-//				quixel_make_unfloat_selection_redo(cep, quixel_get_undo_path("redo", cep->redo_count, undo_path, 1024));
+//				quixel_make_float_selection_redo(cep, quixel_get_undo_path("redo", cep->redo_count, undo_path, 1024));
 				cep->redo_count++;
 			}
 			else
 			{
-				quixel_make_unfloat_selection_undo(cep, quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024));
+				quixel_make_float_selection_undo(cep, quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024));
 				cep->undo_count++;
 			}
 			layer = al_fread32le(fp);
@@ -522,7 +522,17 @@ bool quixel_apply_undo(QUIXEL_CANVAS_EDITOR * cep, const char * fn, bool redo, b
 			{
 				goto fail;
 			}
-			quixel_import_bitmap_to_canvas(cep->canvas, bp, layer, cep->selection.box.start_x, cep->selection.box.start_y);
+			if(redo)
+			{
+				copy_bitmap_to_target(bp, cep->scratch_bitmap);
+				al_destroy_bitmap(bp);
+				cep->selection.floating = true;
+			}
+			else
+			{
+				quixel_import_bitmap_to_canvas(cep->canvas, bp, layer, cep->selection.box.start_x, cep->selection.box.start_y);
+				cep->selection.floating = false;
+			}
 			al_destroy_bitmap(bp);
 			cep->selection.floating = false;
 			break;
