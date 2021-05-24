@@ -54,11 +54,25 @@ static void update_window_title(QUIXEL_CANVAS_EDITOR * cep)
 	}
 }
 
+static bool create_float_undo(QUIXEL_CANVAS_EDITOR * cep)
+{
+	char undo_path[1024];
+
+	quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024);
+	if(quixel_make_float_selection_undo(cep, undo_path))
+	{
+		return true;
+	}
+	return false;
+}
+
 static void float_selection(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_BOX * bp)
 {
 	ALLEGRO_STATE old_state;
 	ALLEGRO_TRANSFORM identity;
 
+	create_float_undo(cep);
+	quixel_finalize_undo(cep);
 	al_store_state(&old_state, ALLEGRO_STATE_BLENDER | ALLEGRO_STATE_TRANSFORM | ALLEGRO_STATE_TARGET_BITMAP);
 	al_set_target_bitmap(cep->scratch_bitmap);
 	al_identity_transform(&identity);

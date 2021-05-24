@@ -6,6 +6,8 @@
 #define QUIXEL_UNDO_TYPE_FLOAT_SELECTION   2
 #define QUIXEL_UNDO_TYPE_UNFLOAT_SELECTION 3
 
+bool quixel_make_float_selection_undo(QUIXEL_CANVAS_EDITOR * cep, const char * fn);
+bool quixel_make_float_selection_redo(QUIXEL_CANVAS_EDITOR * cep, const char * fn);
 bool quixel_make_unfloat_selection_undo(QUIXEL_CANVAS_EDITOR * cep, const char * fn);
 bool quixel_make_unfloat_selection_redo(QUIXEL_CANVAS_EDITOR * cep, const char * fn);
 bool quixel_make_tool_undo(QUIXEL_CANVAS_EDITOR * cep, const char * action, int layer, int x, int y, int width, int height, const char * fn);
