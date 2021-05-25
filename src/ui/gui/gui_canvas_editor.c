@@ -54,37 +54,6 @@ static void update_window_title(QUIXEL_CANVAS_EDITOR * cep)
 	}
 }
 
-static bool create_float_undo(QUIXEL_CANVAS_EDITOR * cep)
-{
-	char undo_path[1024];
-
-	quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024);
-	if(quixel_make_float_selection_undo(cep, undo_path))
-	{
-		return true;
-	}
-	return false;
-}
-
-static void float_selection(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_BOX * bp)
-{
-	ALLEGRO_STATE old_state;
-	ALLEGRO_TRANSFORM identity;
-
-	create_float_undo(cep);
-	quixel_finalize_undo(cep);
-	al_store_state(&old_state, ALLEGRO_STATE_BLENDER | ALLEGRO_STATE_TRANSFORM | ALLEGRO_STATE_TARGET_BITMAP);
-	al_set_target_bitmap(cep->scratch_bitmap);
-	al_identity_transform(&identity);
-	al_use_transform(&identity);
-	al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
-	al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
-	quixel_render_canvas_layer(cep->canvas, cep->current_layer, bp->start_x, bp->start_y, 1, 0, 0, bp->width, bp->height);
-	al_restore_state(&old_state);
-	quixel_draw_primitive_to_canvas(cep->canvas, cep->current_layer, bp->start_x, bp->start_y, bp->start_x + bp->width - 1, bp->start_y + bp->height - 1, NULL, al_map_rgba_f(0, 0, 0, 0), QUIXEL_RENDER_COPY, quixel_draw_filled_rectangle);
-	cep->selection.floating = true;
-}
-
 static void update_cursor(QUIXEL_CANVAS_EDITOR * cep)
 {
 	if(cep->current_cursor != cep->old_cursor)
@@ -632,7 +601,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 						{
 							if(canvas_editor->selection.box.state == QUIXEL_BOX_STATE_MOVING)
 							{
-								float_selection(canvas_editor, &old_box);
+								quixel_float_canvas_editor_selection(canvas_editor, &old_box);
 							}
 						}
 					}
