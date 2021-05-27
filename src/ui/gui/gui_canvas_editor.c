@@ -111,7 +111,7 @@ static void revert_undo(QUIXEL_CANVAS_EDITOR * cep)
 	char undo_path[1024];
 
 	quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024);
-	quixel_apply_undo(cep, undo_path, false, true);
+	quixel_apply_undo(cep, undo_path, true);
 }
 
 static void clear_bitmap(ALLEGRO_BITMAP * bp)

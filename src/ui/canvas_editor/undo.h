@@ -5,6 +5,8 @@
 #define QUIXEL_UNDO_TYPE_FRAME             1
 #define QUIXEL_UNDO_TYPE_FLOAT_SELECTION   2
 #define QUIXEL_UNDO_TYPE_UNFLOAT_SELECTION 3
+#define QUIXEL_REDO_TYPE_FLOAT_SELECTION   4
+#define QUIXEL_REDO_TYPE_UNFLOAT_SELECTION 5
 
 bool quixel_make_float_selection_undo(QUIXEL_CANVAS_EDITOR * cep, const char * fn);
 bool quixel_make_float_selection_redo(QUIXEL_CANVAS_EDITOR * cep, const char * fn);
@@ -22,7 +24,7 @@ void quixel_update_redo_name(QUIXEL_CANVAS_EDITOR * cep);
 
 void quixel_finalize_undo(QUIXEL_CANVAS_EDITOR * cep);
 
-bool quixel_apply_undo(QUIXEL_CANVAS_EDITOR * cep, const char * fn, bool redo, bool revert);
+bool quixel_apply_undo(QUIXEL_CANVAS_EDITOR * cep, const char * fn, bool revert);
 bool quixel_apply_redo(QUIXEL_CANVAS_EDITOR * cep, const char * fn);
 void quixel_undo_clean_up(QUIXEL_CANVAS_EDITOR * cep);
 

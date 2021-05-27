@@ -396,11 +396,11 @@ void quixel_finalize_undo(QUIXEL_CANVAS_EDITOR * cep)
 	t3f_refresh_menus();
 }
 
-static bool apply_undo_type(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, int type, const char * action, bool revert, bool redo)
+static bool apply_undo_type(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, int type, const char * action, bool revert)
 {
 	int i, j, l;
 	char undo_path[1024];
-	ALLEGRO_BITMAP * bp;
+	ALLEGRO_BITMAP * bp = NULL;
 	int layer, x, y, width, height;
 	int frame_max;
 	char frame_name[256] = {0};
@@ -422,16 +422,8 @@ static bool apply_undo_type(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, int t
 				}
 				if(!revert)
 				{
-					if(!redo)
-					{
-						quixel_make_tool_redo(cep, action, layer, x, y, al_get_bitmap_width(bp), al_get_bitmap_height(bp), quixel_get_undo_path("redo", cep->redo_count, undo_path, 1024));
-						cep->redo_count++;
-					}
-					else
-					{
-						quixel_make_tool_undo(cep, action, layer, x, y, al_get_bitmap_width(bp), al_get_bitmap_height(bp), quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024));
-						cep->undo_count++;
-					}
+					quixel_make_tool_redo(cep, action, layer, x, y, al_get_bitmap_width(bp), al_get_bitmap_height(bp), quixel_get_undo_path("redo", cep->redo_count, undo_path, 1024));
+					cep->redo_count++;
 				}
 				quixel_import_bitmap_to_canvas(cep->canvas, bp, layer, x, y);
 				al_destroy_bitmap(bp);
@@ -454,16 +446,8 @@ static bool apply_undo_type(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, int t
 		}
 		case QUIXEL_UNDO_TYPE_UNFLOAT_SELECTION:
 		{
-			if(!redo)
-			{
-//				quixel_make_unfloat_selection_redo(cep, quixel_get_undo_path("redo", cep->redo_count, undo_path, 1024));
-				cep->redo_count++;
-			}
-			else
-			{
-				quixel_make_unfloat_selection_undo(cep, quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024));
-				cep->undo_count++;
-			}
+			quixel_make_unfloat_selection_redo(cep, quixel_get_undo_path("redo", cep->redo_count, undo_path, 1024));
+			cep->redo_count++;
 			layer = al_fread32le(fp);
 			cep->selection.box.start_x = al_fread32le(fp);
 			cep->selection.box.start_y = al_fread32le(fp);
@@ -488,16 +472,8 @@ static bool apply_undo_type(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, int t
 		}
 		case QUIXEL_UNDO_TYPE_FLOAT_SELECTION:
 		{
-			if(!redo)
-			{
-				quixel_make_float_selection_redo(cep, quixel_get_undo_path("redo", cep->redo_count, undo_path, 1024));
-				cep->redo_count++;
-			}
-			else
-			{
-				quixel_make_float_selection_undo(cep, quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024));
-				cep->undo_count++;
-			}
+			quixel_make_float_selection_redo(cep, quixel_get_undo_path("redo", cep->redo_count, undo_path, 1024));
+			cep->redo_count++;
 			layer = al_fread32le(fp);
 			cep->selection.box.start_x = al_fread32le(fp);
 			cep->selection.box.start_y = al_fread32le(fp);
@@ -510,33 +486,16 @@ static bool apply_undo_type(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, int t
 			{
 				goto fail;
 			}
-			if(redo)
-			{
-				copy_bitmap_to_target(bp, cep->scratch_bitmap);
-				al_destroy_bitmap(bp);
-				cep->selection.floating = true;
-			}
-			else
-			{
-				quixel_import_bitmap_to_canvas(cep->canvas, bp, layer, cep->selection.box.start_x, cep->selection.box.start_y);
-				cep->selection.floating = false;
-			}
+			quixel_import_bitmap_to_canvas(cep->canvas, bp, layer, cep->selection.box.start_x, cep->selection.box.start_y);
+			cep->selection.floating = false;
 			al_destroy_bitmap(bp);
 			cep->selection.floating = false;
 			break;
 		}
 		case QUIXEL_UNDO_TYPE_FRAME:
 		{
-			if(!redo)
-			{
-				quixel_make_frame_redo(cep, action, quixel_get_undo_path("redo", cep->redo_count, undo_path, 1024));
-				cep->redo_count++;
-			}
-			else
-			{
-				quixel_make_frame_undo(cep, action, quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024));
-				cep->undo_count++;
-			}
+			quixel_make_frame_redo(cep, action, quixel_get_undo_path("redo", cep->redo_count, undo_path, 1024));
+			cep->redo_count++;
 			frame_max = cep->canvas->frame_max;
 			for(i = 0; i < frame_max; i++)
 			{
@@ -573,28 +532,139 @@ static bool apply_undo_type(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, int t
 	}
 }
 
-static bool apply_redo_type(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, int type, const char * action, bool revert)
+static bool apply_redo_type(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, int type, const char * action)
 {
+	int i, j, l;
+	char undo_path[1024];
+	ALLEGRO_BITMAP * bp = NULL;
+	int layer, x, y, width, height;
+	int frame_max;
+	char frame_name[256] = {0};
+
 	switch(type)
 	{
 		case QUIXEL_UNDO_TYPE_TOOL:
-		case QUIXEL_UNDO_TYPE_FRAME:
 		{
-			return apply_undo_type(cep, fp, type, action, false, true);
-		}
-		case QUIXEL_UNDO_TYPE_FLOAT_SELECTION:
-		{
+			l = al_fgetc(fp);
+			if(l)
+			{
+				layer = al_fread32le(fp);
+				x = al_fread32le(fp);
+				y = al_fread32le(fp);
+				bp = al_load_bitmap_flags_f(fp, ".png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
+				if(!bp)
+				{
+					goto fail;
+				}
+				quixel_make_tool_undo(cep, action, layer, x, y, al_get_bitmap_width(bp), al_get_bitmap_height(bp), quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024));
+				cep->undo_count++;
+				quixel_import_bitmap_to_canvas(cep->canvas, bp, layer, x, y);
+				al_destroy_bitmap(bp);
+			}
+			else
+			{
+				for(i = 0; i < cep->canvas->layer_height; i++)
+				{
+					for(j = 0; j < cep->canvas->layer_width; j++)
+					{
+						if(cep->canvas->layer[layer]->bitmap[i][j])
+						{
+							al_destroy_bitmap(cep->canvas->layer[layer]->bitmap[i][j]);
+							cep->canvas->layer[layer]->bitmap[i][j] = NULL;
+						}
+					}
+				}
+			}
 			break;
 		}
-		case QUIXEL_UNDO_TYPE_UNFLOAT_SELECTION:
+		case QUIXEL_REDO_TYPE_UNFLOAT_SELECTION:
 		{
+			quixel_make_unfloat_selection_undo(cep, quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024));
+			cep->undo_count++;
+			layer = al_fread32le(fp);
+			cep->selection.box.start_x = al_fread32le(fp);
+			cep->selection.box.start_y = al_fread32le(fp);
+			cep->selection.box.width = al_fread32le(fp);
+			cep->selection.box.height = al_fread32le(fp);
+			bp = al_load_bitmap_flags_f(fp, ".png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
+			if(!bp)
+			{
+				goto fail;
+			}
+			quixel_import_bitmap_to_canvas(cep->canvas, bp, layer, cep->selection.box.start_x, cep->selection.box.start_y);
+			al_destroy_bitmap(bp);
+			bp = al_load_bitmap_flags_f(fp, ".png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
+			if(!bp)
+			{
+				goto fail;
+			}
+			copy_bitmap_to_target(bp, cep->scratch_bitmap);
+			al_destroy_bitmap(bp);
+			cep->selection.floating = true;
+			break;
+		}
+		case QUIXEL_REDO_TYPE_FLOAT_SELECTION:
+		{
+			quixel_make_float_selection_undo(cep, quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024));
+			cep->undo_count++;
+			layer = al_fread32le(fp);
+			cep->selection.box.start_x = al_fread32le(fp);
+			cep->selection.box.start_y = al_fread32le(fp);
+			cep->selection.box.width = al_fread32le(fp);
+			cep->selection.box.height = al_fread32le(fp);
+			quixel_initialize_box(&cep->selection.box, cep->selection.box.start_x, cep->selection.box.start_y, cep->selection.box.width, cep->selection.box.height, cep->selection.box.bitmap);
+			quixel_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom);
+			bp = al_load_bitmap_flags_f(fp, ".png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
+			if(!bp)
+			{
+				goto fail;
+			}
+			copy_bitmap_to_target(bp, cep->scratch_bitmap);
+			al_destroy_bitmap(bp);
+			cep->selection.floating = true;
+			break;
+		}
+		case QUIXEL_UNDO_TYPE_FRAME:
+		{
+			quixel_make_frame_undo(cep, action, quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024));
+			cep->undo_count++;
+			frame_max = cep->canvas->frame_max;
+			for(i = 0; i < frame_max; i++)
+			{
+				quixel_remove_canvas_frame(cep->canvas, 0);
+			}
+			frame_max = al_fread32le(fp);
+			for(i = 0; i < frame_max; i++)
+			{
+				l = al_fread16le(fp);
+				al_fread(fp, frame_name, l);
+				if(l >= 256)
+				{
+					goto fail;
+				}
+				frame_name[l] = 0;
+				x = al_fread32le(fp);
+				y = al_fread32le(fp);
+				width = al_fread32le(fp);
+				height = al_fread32le(fp);
+				quixel_add_canvas_frame(cep->canvas, frame_name, x, y, width, height);
+			}
 			break;
 		}
 	}
 	return false;
+
+	fail:
+	{
+		if(bp)
+		{
+			al_destroy_bitmap(bp);
+		}
+		return false;
+	}
 }
 
-bool quixel_apply_undo(QUIXEL_CANVAS_EDITOR * cep, const char * fn, bool redo, bool revert)
+bool quixel_apply_undo(QUIXEL_CANVAS_EDITOR * cep, const char * fn, bool revert)
 {
 	ALLEGRO_FILE * fp = NULL;
 	int type;
@@ -611,14 +681,31 @@ bool quixel_apply_undo(QUIXEL_CANVAS_EDITOR * cep, const char * fn, bool redo, b
 	l = al_fread16le(fp);
 	al_fread(fp, buf, l);
 	buf[l] = 0;
-	ret = apply_undo_type(cep, fp, type, buf, revert, redo);
+	ret = apply_undo_type(cep, fp, type, buf, revert);
 	al_fclose(fp);
 	return true;
 }
 
 bool quixel_apply_redo(QUIXEL_CANVAS_EDITOR * cep, const char * fn)
 {
-	return quixel_apply_undo(cep, fn, true, false);
+	ALLEGRO_FILE * fp = NULL;
+	int type;
+	int l;
+	char buf[1024];
+	bool ret;
+
+	fp = al_fopen(fn, "rb");
+	if(!fp)
+	{
+		return false;
+	}
+	type = al_fgetc(fp);
+	l = al_fread16le(fp);
+	al_fread(fp, buf, l);
+	buf[l] = 0;
+	ret = apply_redo_type(cep, fp, type, buf);
+	al_fclose(fp);
+	return true;
 }
 
 void quixel_undo_clean_up(QUIXEL_CANVAS_EDITOR * cep)
