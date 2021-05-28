@@ -83,6 +83,7 @@ bool quixel_make_tool_undo(QUIXEL_CANVAS_EDITOR * cep, const char * action, int 
 	if(width < 0 || height < 0)
 	{
 		al_fputc(fp, 0);
+		al_fwrite32le(fp, layer);
 	}
 	else
 	{
@@ -150,6 +151,7 @@ bool quixel_apply_tool_undo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, const
 	}
 	else
 	{
+		layer = al_fread32le(fp);
 		for(i = 0; i < cep->canvas->layer_height; i++)
 		{
 			for(j = 0; j < cep->canvas->layer_width; j++)
