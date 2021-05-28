@@ -4,6 +4,7 @@
 #include "modules/canvas/canvas_helpers.h"
 #include "modules/primitives.h"
 #include "undo.h"
+#include "undo_selection.h"
 
 static int get_config_val(ALLEGRO_CONFIG * cp, const char * section, const char * key, int default_val)
 {

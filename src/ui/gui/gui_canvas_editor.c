@@ -5,6 +5,7 @@
 #include "modules/canvas/canvas_helpers.h"
 #include "ui/canvas_editor/canvas_editor.h"
 #include "ui/canvas_editor/undo.h"
+#include "ui/canvas_editor/undo_tool.h"
 #include "modules/primitives.h"
 #include "ui/gui/gui_canvas_editor.h"
 #include "ui/canvas_editor/tools/tool_pixel.h"

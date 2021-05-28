@@ -8,20 +8,12 @@
 #define QUIXEL_REDO_TYPE_FLOAT_SELECTION   4
 #define QUIXEL_REDO_TYPE_UNFLOAT_SELECTION 5
 
-bool quixel_make_float_selection_undo(QUIXEL_CANVAS_EDITOR * cep, const char * fn);
-bool quixel_make_float_selection_redo(QUIXEL_CANVAS_EDITOR * cep, const char * fn);
-bool quixel_make_unfloat_selection_undo(QUIXEL_CANVAS_EDITOR * cep, const char * fn);
-bool quixel_make_unfloat_selection_redo(QUIXEL_CANVAS_EDITOR * cep, const char * fn);
-bool quixel_make_tool_undo(QUIXEL_CANVAS_EDITOR * cep, const char * action, int layer, int x, int y, int width, int height, const char * fn);
-bool quixel_make_tool_redo(QUIXEL_CANVAS_EDITOR * cep, const char * action, int layer, int x, int y, int width, int height, const char * fn);
-bool quixel_make_frame_undo(QUIXEL_CANVAS_EDITOR * cep, const char * action, const char * fn);
-bool quixel_make_frame_redo(QUIXEL_CANVAS_EDITOR * cep, const char * action, const char * fn);
-
 const char * quixel_get_undo_name(const char * fn, char * out, int out_size);
 const char * quixel_get_undo_path(const char * base, int count, char * out, int out_size);
 void quixel_update_undo_name(QUIXEL_CANVAS_EDITOR * cep);
 void quixel_update_redo_name(QUIXEL_CANVAS_EDITOR * cep);
 
+bool quixel_write_undo_header(ALLEGRO_FILE * fp, int type, const char * name);
 void quixel_finalize_undo(QUIXEL_CANVAS_EDITOR * cep);
 
 bool quixel_apply_undo(QUIXEL_CANVAS_EDITOR * cep, const char * fn, bool revert);

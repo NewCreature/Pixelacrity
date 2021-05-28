@@ -1,6 +1,7 @@
 #include "instance.h"
 #include "modules/canvas/canvas.h"
 #include "ui/canvas_editor/undo.h"
+#include "ui/canvas_editor/undo_frame.h"
 
 static void make_frame_undo(QUIXEL_CANVAS_EDITOR * cep)
 {
