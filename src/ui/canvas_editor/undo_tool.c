@@ -80,15 +80,14 @@ bool quixel_make_tool_undo(QUIXEL_CANVAS_EDITOR * cep, const char * action, int 
 		}
 	}
 	quixel_write_undo_header(fp, QUIXEL_UNDO_TYPE_TOOL, action ? action : action_name);
+	al_fwrite32le(fp, layer);
 	if(width < 0 || height < 0)
 	{
 		al_fputc(fp, 0);
-		al_fwrite32le(fp, layer);
 	}
 	else
 	{
 		al_fputc(fp, 1);
-		al_fwrite32le(fp, layer);
 		al_fwrite32le(fp, x);
 		al_fwrite32le(fp, y);
 		if(!al_save_bitmap_f(fp, ".png", bp))
@@ -130,10 +129,10 @@ bool quixel_apply_tool_undo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, const
 	ALLEGRO_BITMAP * bp = NULL;
 	int layer, x, y;
 
+	layer = al_fread32le(fp);
 	l = al_fgetc(fp);
 	if(l)
 	{
-		layer = al_fread32le(fp);
 		x = al_fread32le(fp);
 		y = al_fread32le(fp);
 		bp = al_load_bitmap_flags_f(fp, ".png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
@@ -151,7 +150,6 @@ bool quixel_apply_tool_undo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, const
 	}
 	else
 	{
-		layer = al_fread32le(fp);
 		for(i = 0; i < cep->canvas->layer_height; i++)
 		{
 			for(j = 0; j < cep->canvas->layer_width; j++)
@@ -183,10 +181,10 @@ bool quixel_apply_tool_redo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, const
 	ALLEGRO_BITMAP * bp = NULL;
 	int layer, x, y;
 
+	layer = al_fread32le(fp);
 	l = al_fgetc(fp);
 	if(l)
 	{
-		layer = al_fread32le(fp);
 		x = al_fread32le(fp);
 		y = al_fread32le(fp);
 		bp = al_load_bitmap_flags_f(fp, ".png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
