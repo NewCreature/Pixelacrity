@@ -7,6 +7,10 @@
 #define QUIXEL_UNDO_TYPE_UNFLOAT_SELECTION 3
 #define QUIXEL_REDO_TYPE_FLOAT_SELECTION   4
 #define QUIXEL_REDO_TYPE_UNFLOAT_SELECTION 5
+#define QUIXEL_UNDO_TYPE_ADD_LAYER         6
+#define QUIXEL_REDO_TYPE_ADD_LAYER         7
+#define QUIXEL_UNDO_TYPE_REMOVE_LAYER      8
+#define QUIXEL_REDO_TYPE_REMOVE_LAYER      9
 
 const char * quixel_get_undo_name(const char * fn, char * out, int out_size);
 const char * quixel_get_undo_path(const char * base, int count, char * out, int out_size);
