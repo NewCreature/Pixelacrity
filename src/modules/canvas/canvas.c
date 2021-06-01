@@ -187,7 +187,7 @@ bool quixel_add_canvas_layer(QUIXEL_CANVAS * cp, int layer_index)
 		}
 		for(i = layer_index + 1; i < cp->layer_max + 1; i++)
 		{
-			cp->layer[i] = old_layer[i];
+			cp->layer[i] = old_layer[i - 1];
 		}
 		cp->layer[layer_index] = quixel_create_canvas_layer();
 		if(cp->layer[layer_index])
