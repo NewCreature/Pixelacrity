@@ -15,7 +15,7 @@ static bool load_canvas_full_f(QUIXEL_CANVAS * cp, ALLEGRO_FILE * fp, const char
 	max_layers = al_fread32le(fp);
 	for(i = 0; i < max_layers; i++)
 	{
-		if(!quixel_add_canvas_layer(cp))
+		if(!quixel_add_canvas_layer(cp, -1))
 		{
 			goto fail;
 		}
@@ -53,7 +53,7 @@ static bool load_canvas_minimal_f(QUIXEL_CANVAS * cp, ALLEGRO_FILE * fp, const c
 	max_layers = al_fread32le(fp);
 	for(i = 0; i < max_layers; i++)
 	{
-		if(!quixel_add_canvas_layer(cp))
+		if(!quixel_add_canvas_layer(cp, -1))
 		{
 			goto fail;
 		}

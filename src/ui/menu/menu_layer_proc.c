@@ -16,7 +16,7 @@ int quixel_menu_layer_add(int id, void * data)
 		quixel_update_undo_name(app->canvas_editor);
 		quixel_update_redo_name(app->canvas_editor);
 	}
-	if(quixel_add_canvas_layer(app->canvas))
+	if(quixel_add_canvas_layer(app->canvas, -1))
 	{
 		app->canvas_editor->current_layer = app->canvas->layer_max - 1;
 		t3f_refresh_menus();

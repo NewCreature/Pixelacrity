@@ -165,28 +165,36 @@ static ALLEGRO_BITMAP *** create_bitmap_array(int width, int height)
 	}
 }
 
-bool quixel_add_canvas_layer(QUIXEL_CANVAS * cp)
+bool quixel_add_canvas_layer(QUIXEL_CANVAS * cp, int layer_index)
 {
 	QUIXEL_CANVAS_LAYER ** old_layer;
 	int layer_size;
 	int i;
 
+	if(layer_index < 0)
+	{
+		layer_index = cp->layer_max;
+	}
 	old_layer = cp->layer;
 	layer_size = sizeof(QUIXEL_CANVAS_LAYER *) * cp->layer_max + 1;
 	cp->layer = malloc(layer_size);
 	if(cp->layer)
 	{
 		memset(cp->layer, 0, layer_size);
-		for(i = 0; i < cp->layer_max; i++)
+		for(i = 0; i < layer_index; i++)
 		{
 			cp->layer[i] = old_layer[i];
 		}
-		cp->layer[cp->layer_max] = quixel_create_canvas_layer();
-		if(cp->layer[cp->layer_max])
+		for(i = layer_index + 1; i < cp->layer_max + 1; i++)
+		{
+			cp->layer[i] = old_layer[i];
+		}
+		cp->layer[layer_index] = quixel_create_canvas_layer();
+		if(cp->layer[layer_index])
 		{
 			if(cp->layer_width > 0 && cp->layer_height > 0)
 			{
-				cp->layer[cp->layer_max]->bitmap = create_bitmap_array(cp->layer_width, cp->layer_height);
+				cp->layer[layer_index]->bitmap = create_bitmap_array(cp->layer_width, cp->layer_height);
 			}
 			cp->layer_max++;
 			free(old_layer);

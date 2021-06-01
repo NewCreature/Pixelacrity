@@ -44,7 +44,7 @@ typedef struct
 QUIXEL_CANVAS * quixel_create_canvas(int bitmap_max);
 void quixel_destroy_canvas(QUIXEL_CANVAS * cp);
 
-bool quixel_add_canvas_layer(QUIXEL_CANVAS * cp);
+bool quixel_add_canvas_layer(QUIXEL_CANVAS * cp, int layer);
 bool quixel_remove_canvas_layer(QUIXEL_CANVAS * cp, int layer);
 
 bool quixel_add_canvas_frame(QUIXEL_CANVAS * cp, const char * name, int x, int y, int width, int height);

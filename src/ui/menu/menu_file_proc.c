@@ -57,7 +57,7 @@ int quixel_menu_file_new(int id, void * data)
 			t3f_exit();
 			return 0;
 		}
-		if(!quixel_add_canvas_layer(app->canvas))
+		if(!quixel_add_canvas_layer(app->canvas, -1))
 		{
 			printf("Error adding layer to new canvas!\n");
 			t3f_exit();
@@ -85,7 +85,7 @@ static QUIXEL_CANVAS * canvas_from_image(const char * fn)
 	{
 		goto fail;
 	}
-	if(!quixel_add_canvas_layer(cp))
+	if(!quixel_add_canvas_layer(cp, -1))
 	{
 		goto fail;
 	}
