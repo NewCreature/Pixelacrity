@@ -188,6 +188,7 @@ bool quixel_apply_remove_layer_undo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * f
 		quixel_import_bitmap_to_canvas(cep->canvas, bp, layer, x, y);
 		al_destroy_bitmap(bp);
 	}
+	cep->current_layer = layer;
 	return true;
 
 	fail:
@@ -209,6 +210,10 @@ bool quixel_apply_remove_layer_redo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * f
 	quixel_make_remove_layer_undo(cep, layer, quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024));
 	cep->undo_count++;
 	quixel_remove_canvas_layer(cep->canvas, layer);
+	if(cep->current_layer >= cep->canvas->layer_max)
+	{
+		cep->current_layer = cep->canvas->layer_max - 1;
+	}
 
 	return true;
 }
