@@ -137,18 +137,29 @@ bool quixel_make_remove_layer_redo(QUIXEL_CANVAS_EDITOR * cep, int layer, const 
 
 bool quixel_apply_add_layer_undo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 {
-	fail:
+	char undo_path[1024];
+
+	quixel_make_add_layer_redo(cep, quixel_get_undo_path("redo", cep->redo_count, undo_path, 1024));
+	cep->redo_count++;
+	quixel_remove_canvas_layer(cep->canvas, cep->canvas->layer_max - 1);
+	if(cep->current_layer >= cep->canvas->layer_max)
 	{
-		return false;
+		cep->current_layer = cep->canvas->layer_max - 1;
 	}
+
+	return true;
 }
 
 bool quixel_apply_add_layer_redo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 {
-	fail:
-	{
-		return false;
-	}
+	char undo_path[1024];
+
+	quixel_make_add_layer_undo(cep, quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024));
+	cep->undo_count++;
+	quixel_add_canvas_layer(cep->canvas);
+	cep->current_layer = cep->canvas->layer_max - 1;
+
+	return true;
 }
 
 bool quixel_apply_remove_layer_undo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
