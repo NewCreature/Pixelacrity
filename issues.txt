@@ -1,12 +1,7 @@
 Quixel 0.2 Issues
 -----------------
 
-[X]Right-clicking while drawing with left mouse button cancels out drawing
-   operation. We should ignore MSG_MOUSEDOWN when other button is already held.
-
-[ ]Implement unfloat selection redo.
-
-[ ]Implement float selection redo.
+[ ]Adding and removing layers should mark the canvas as modified.
 
 [ ]Moving away from selection tool causes translucent pixels in the layer to
    have their alpha combined. I think this is being caused by the incorrect
@@ -51,6 +46,9 @@ Quixel 0.2 Issues
 
 [ ]Scratch bitmap is not large enough to cover entire screen when using pixel
    tool. We should either make it larger, or just position it differently.
+
+   [ ]I think the tool should be reimplemented using a linked list of points.
+      We can just redraw all the lines each frame, just like the other tools.
 
 [ ]Store layer in undo state, even if the layer has no bitmap data. We still
    need to know which layer the undo state applies to.
@@ -331,3 +329,10 @@ Closed Issues
 [X]Make scroll speed independent of zoom level.
 
 [X]Fix color picker not visible.
+
+[X]Right-clicking while drawing with left mouse button cancels out drawing
+   operation. We should ignore MSG_MOUSEDOWN when other button is already held.
+
+[X]Implement unfloat selection redo.
+
+[X]Implement float selection redo.
