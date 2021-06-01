@@ -123,6 +123,9 @@ bool quixel_make_remove_layer_redo(QUIXEL_CANVAS_EDITOR * cep, int layer, const 
 		goto fail;
 	}
 	quixel_write_undo_header(fp, QUIXEL_REDO_TYPE_REMOVE_LAYER, "Remove Layer");
+	al_fwrite16le(fp, layer);
+	al_fclose(fp);
+
 	return true;
 
 	fail:
@@ -156,7 +159,7 @@ bool quixel_apply_add_layer_redo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 
 	quixel_make_add_layer_undo(cep, quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024));
 	cep->undo_count++;
-	quixel_add_canvas_layer(cep->canvas);
+	quixel_add_canvas_layer(cep->canvas, -1);
 	cep->current_layer = cep->canvas->layer_max - 1;
 
 	return true;
@@ -164,16 +167,48 @@ bool quixel_apply_add_layer_redo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 
 bool quixel_apply_remove_layer_undo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 {
+	int x, y, layer, l;
+	ALLEGRO_BITMAP * bp = NULL;
+	char undo_path[1024];
+
+	layer = al_fread16le(fp);
+	quixel_make_remove_layer_redo(cep, layer, quixel_get_undo_path("redo", cep->redo_count, undo_path, 1024));
+	cep->redo_count++;
+	quixel_add_canvas_layer(cep->canvas, layer);
+	l = al_fgetc(fp);
+	if(l)
+	{
+		x = al_fread32le(fp);
+		y = al_fread32le(fp);
+		bp = al_load_bitmap_flags_f(fp, ".png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
+		if(!bp)
+		{
+			goto fail;
+		}
+		quixel_import_bitmap_to_canvas(cep->canvas, bp, layer, x, y);
+		al_destroy_bitmap(bp);
+	}
+	return true;
+
 	fail:
 	{
+		if(bp)
+		{
+			al_destroy_bitmap(bp);
+		}
 		return false;
 	}
 }
 
 bool quixel_apply_remove_layer_redo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 {
-	fail:
-	{
-		return false;
-	}
+	int layer;
+	char undo_path[1024];
+
+	layer = al_fread16le(fp);
+	quixel_make_remove_layer_undo(cep, layer, quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024));
+	cep->undo_count++;
+	quixel_remove_canvas_layer(cep->canvas, layer);
+
+	return true;
 }
