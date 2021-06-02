@@ -289,16 +289,13 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 					case QUIXEL_TOOL_PIXEL:
 					{
 						click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
-						canvas_editor->scratch_offset_x = canvas_editor->view_x - al_get_bitmap_width(canvas_editor->scratch_bitmap) / 2;
-						canvas_editor->scratch_offset_y = canvas_editor->view_y - al_get_bitmap_height(canvas_editor->scratch_bitmap) / 2;
+						canvas_editor->scratch_offset_x = canvas_editor->view_x;
+						canvas_editor->scratch_offset_y = canvas_editor->view_y;
 						canvas_editor->tool_top = canvas_editor->hover_y - canvas_editor->scratch_offset_y;
 						canvas_editor->tool_bottom = canvas_editor->hover_y - canvas_editor->scratch_offset_y;
 						canvas_editor->tool_left = canvas_editor->hover_x - canvas_editor->scratch_offset_x;
 						canvas_editor->tool_right = canvas_editor->hover_x - canvas_editor->scratch_offset_x;
-						get_scratch_from_canvas(canvas_editor);
-						quixel_tool_pixel_logic(canvas_editor);
-						canvas_editor->modified++;
-						canvas_editor->update_title = true;
+						quixel_tool_pixel_start(canvas_editor);
 						canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
 						break;
 					}
@@ -427,17 +424,14 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				case QUIXEL_TOOL_PIXEL:
 				{
 					made_undo = create_undo(canvas_editor, NULL, canvas_editor->scratch_offset_x + canvas_editor->tool_left, canvas_editor->scratch_offset_y + canvas_editor->tool_top, canvas_editor->tool_right - canvas_editor->tool_left + 1, canvas_editor->tool_bottom - canvas_editor->tool_top + 1);
-					bp = al_create_sub_bitmap(canvas_editor->scratch_bitmap,  canvas_editor->tool_left, canvas_editor->tool_top, canvas_editor->tool_right - canvas_editor->tool_left + 1, canvas_editor->tool_bottom - canvas_editor->tool_top + 1);
-					if(bp)
+					handle_canvas_expansion(canvas_editor);
+					quixel_tool_pixel_finish(canvas_editor);
+					if(made_undo)
 					{
-						handle_canvas_expansion(canvas_editor);
-						quixel_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->scratch_offset_x + canvas_editor->tool_left, canvas_editor->scratch_offset_y + canvas_editor->tool_top, canvas_editor->scratch_offset_x + canvas_editor->tool_right + 1, canvas_editor->scratch_offset_y + canvas_editor->tool_bottom + 1, bp, t3f_color_white, QUIXEL_RENDER_COPY, quixel_draw_quad);
-						al_destroy_bitmap(bp);
-						if(made_undo)
-						{
-							quixel_finalize_undo(canvas_editor);
-						}
+						quixel_finalize_undo(canvas_editor);
 					}
+					canvas_editor->modified++;
+					canvas_editor->update_title = true;
 					canvas_editor->tool_state = QUIXEL_TOOL_STATE_OFF;
 					break;
 				}
@@ -538,8 +532,6 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 					if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING || canvas_editor->tool_state == QUIXEL_TOOL_STATE_EDITING)
 					{
 						quixel_tool_pixel_logic(canvas_editor);
-						canvas_editor->modified++;
-						canvas_editor->update_title = true;
 					}
 					break;
 				}
