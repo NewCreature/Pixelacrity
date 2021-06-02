@@ -1,8 +1,6 @@
 Quixel 0.2 Issues
 -----------------
 
-[ ]Adding and removing layers should mark the canvas as modified.
-
 [ ]Moving away from selection tool causes translucent pixels in the layer to
    have their alpha combined. I think this is being caused by the incorrect
    blend mode being set when copying the scratch data back to the canvas.
@@ -336,3 +334,5 @@ Closed Issues
 
 [X]Store layer in undo state, even if the layer has no bitmap data. We still
    need to know which layer the undo state applies to.
+
+[X]Adding and removing layers should mark the canvas as modified.
