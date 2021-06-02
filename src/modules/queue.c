@@ -1,6 +1,6 @@
 #include "queue.h"
 
-void queue_insert(QUIXEL_QUEUE * qp, int x, int y)
+bool queue_insert(QUIXEL_QUEUE * qp, int x, int y)
 {
 	QUIXEL_QUEUE_NODE * node = malloc(sizeof(QUIXEL_QUEUE_NODE));
 	if(node)
@@ -10,10 +10,12 @@ void queue_insert(QUIXEL_QUEUE * qp, int x, int y)
 		node->y = y;
 		node->previous = qp->current;
 		qp->current = node;
+		return true;
 	}
 	else
 	{
 		printf("Error allocating node!\n");
+		return false;
 	}
 }
 
@@ -49,9 +51,9 @@ void quixel_destroy_queue(QUIXEL_QUEUE * qp)
 	free(qp);
 }
 
-void quixel_queue_push(QUIXEL_QUEUE * qp, int x, int y)
+bool quixel_queue_push(QUIXEL_QUEUE * qp, int x, int y)
 {
-	queue_insert(qp, x, y);
+	return queue_insert(qp, x, y);
 }
 
 bool quixel_queue_pop(QUIXEL_QUEUE * qp, int * x, int * y)

@@ -29,7 +29,7 @@ typedef struct
 
 QUIXEL_QUEUE * quixel_create_queue(void);
 void quixel_destroy_queue(QUIXEL_QUEUE * qp);
-void quixel_queue_push(QUIXEL_QUEUE * qp, int x, int y);
+bool quixel_queue_push(QUIXEL_QUEUE * qp, int x, int y);
 bool quixel_queue_pop(QUIXEL_QUEUE * qp, int * x, int * y);
 
 #endif
