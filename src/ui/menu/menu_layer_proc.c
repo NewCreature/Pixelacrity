@@ -19,6 +19,8 @@ int quixel_menu_layer_add(int id, void * data)
 	if(quixel_add_canvas_layer(app->canvas, -1))
 	{
 		app->canvas_editor->current_layer = app->canvas->layer_max - 1;
+		app->canvas_editor->modified++;
+		app->canvas_editor->update_title = true;
 		t3f_refresh_menus();
 	}
 	return 0;
@@ -48,6 +50,8 @@ int quixel_menu_layer_delete(int id, void * data)
 				app->canvas_editor->current_layer = 0;
 			}
 		}
+		app->canvas_editor->modified++;
+		app->canvas_editor->update_title = true;
 		t3f_refresh_menus();
 	}
 	return 0;
