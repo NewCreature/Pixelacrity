@@ -67,7 +67,7 @@ typedef struct
 	ALLEGRO_SYSTEM_MOUSE_CURSOR current_cursor;
 	int tool_state;
 	QUIXEL_SELECTION_DATA selection;
-	bool modified;
+	int modified;
 	bool update_title;
 	ALLEGRO_COLOR left_base_color;
 	ALLEGRO_COLOR last_left_base_color;

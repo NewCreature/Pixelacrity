@@ -180,6 +180,11 @@ bool quixel_apply_undo(QUIXEL_CANVAS_EDITOR * cep, const char * fn, bool revert)
 	al_fread(fp, buf, l);
 	buf[l] = 0;
 	ret = apply_undo_type(cep, fp, type, buf, revert);
+	if(ret)
+	{
+		cep->modified--;
+		cep->update_title = true;
+	}
 	al_fclose(fp);
 	return true;
 }
@@ -202,6 +207,11 @@ bool quixel_apply_redo(QUIXEL_CANVAS_EDITOR * cep, const char * fn)
 	al_fread(fp, buf, l);
 	buf[l] = 0;
 	ret = apply_redo_type(cep, fp, type, buf);
+	if(ret)
+	{
+		cep->modified++;
+		cep->update_title = true;
+	}
 	al_fclose(fp);
 	return true;
 }

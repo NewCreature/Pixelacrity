@@ -297,7 +297,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 						canvas_editor->tool_right = canvas_editor->hover_x - canvas_editor->scratch_offset_x;
 						get_scratch_from_canvas(canvas_editor);
 						quixel_tool_pixel_logic(canvas_editor);
-						canvas_editor->modified = true;
+						canvas_editor->modified++;
 						canvas_editor->update_title = true;
 						canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
 						break;
@@ -450,7 +450,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 					{
 						quixel_finalize_undo(canvas_editor);
 					}
-					canvas_editor->modified = true;
+					canvas_editor->modified++;
 					canvas_editor->update_title = true;
 					canvas_editor->tool_state = QUIXEL_TOOL_STATE_OFF;
 					break;
@@ -464,7 +464,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 					{
 						quixel_finalize_undo(canvas_editor);
 					}
-					canvas_editor->modified = true;
+					canvas_editor->modified++;
 					canvas_editor->update_title = true;
 					canvas_editor->tool_state = QUIXEL_TOOL_STATE_OFF;
 					break;
@@ -478,7 +478,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 					{
 						quixel_finalize_undo(canvas_editor);
 					}
-					canvas_editor->modified = true;
+					canvas_editor->modified++;
 					canvas_editor->update_title = true;
 					canvas_editor->tool_state = QUIXEL_TOOL_STATE_OFF;
 					break;
@@ -492,7 +492,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 					{
 						quixel_finalize_undo(canvas_editor);
 					}
-					canvas_editor->modified = true;
+					canvas_editor->modified++;
 					canvas_editor->update_title = true;
 					canvas_editor->tool_state = QUIXEL_TOOL_STATE_OFF;
 					break;
@@ -506,7 +506,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 					{
 						quixel_finalize_undo(canvas_editor);
 					}
-					canvas_editor->modified = true;
+					canvas_editor->modified++;
 					canvas_editor->update_title = true;
 					canvas_editor->tool_state = QUIXEL_TOOL_STATE_OFF;
 					break;
@@ -538,7 +538,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 					if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING || canvas_editor->tool_state == QUIXEL_TOOL_STATE_EDITING)
 					{
 						quixel_tool_pixel_logic(canvas_editor);
-						canvas_editor->modified = true;
+						canvas_editor->modified++;
 						canvas_editor->update_title = true;
 					}
 					break;
