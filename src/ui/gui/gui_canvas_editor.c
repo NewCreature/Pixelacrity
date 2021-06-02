@@ -261,6 +261,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 	ALLEGRO_COLOR color = t3f_color_black;
 	ALLEGRO_BITMAP * bp;
 	bool made_undo = false;
+	bool simulate_mouse_move = false;
 
 	switch(msg)
 	{
@@ -668,18 +669,22 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			if(t3f_key[ALLEGRO_KEY_LEFT])
 			{
 				canvas_editor->view_fx -= canvas_editor->view_scroll_speed;
+				simulate_mouse_move = true;
 			}
 			if(t3f_key[ALLEGRO_KEY_RIGHT])
 			{
 				canvas_editor->view_fx += canvas_editor->view_scroll_speed;
+				simulate_mouse_move = true;
 			}
 			if(t3f_key[ALLEGRO_KEY_UP])
 			{
 				canvas_editor->view_fy -= canvas_editor->view_scroll_speed;
+				simulate_mouse_move = true;
 			}
 			if(t3f_key[ALLEGRO_KEY_DOWN])
 			{
 				canvas_editor->view_fy += canvas_editor->view_scroll_speed;
+				simulate_mouse_move = true;
 			}
 			if(t3f_key[ALLEGRO_KEY_MINUS])
 			{
@@ -690,6 +695,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 					canvas_editor->view_zoom--;
 					canvas_editor->view_x = cx - (d->w / canvas_editor->view_zoom) / 2;
 					canvas_editor->view_y = cy - (d->h / canvas_editor->view_zoom) / 2;
+					simulate_mouse_move = true;
 				}
 				t3f_key[ALLEGRO_KEY_MINUS] = 0;
 			}
@@ -700,6 +706,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				canvas_editor->view_zoom++;
 				canvas_editor->view_x = cx - (d->w / canvas_editor->view_zoom) / 2;
 				canvas_editor->view_y = cy - (d->h / canvas_editor->view_zoom) / 2;
+				simulate_mouse_move = true;
 				t3f_key[ALLEGRO_KEY_EQUALS] = 0;
 			}
 			if(t3f_key[ALLEGRO_KEY_H])
@@ -713,6 +720,10 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			canvas_editor->hover_x = canvas_editor->view_x + (t3f_mouse_x - d->x) / canvas_editor->view_zoom;
 			canvas_editor->last_hover_y = canvas_editor->hover_y;
 			canvas_editor->hover_y = canvas_editor->view_y + (t3f_mouse_y - d->y) / canvas_editor->view_zoom;
+			if(simulate_mouse_move)
+			{
+				t3gui_object_message(d, MSG_MOUSEMOVE, 0);
+			}
 
 			if(t3f_key[ALLEGRO_KEY_PGUP])
 			{
