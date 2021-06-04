@@ -127,16 +127,7 @@ static bool create_undo(QUIXEL_CANVAS_EDITOR * cep, const char * action, int x, 
 
 static bool create_primitive_undo(QUIXEL_CANVAS_EDITOR * cep)
 {
-	int x1, x2, y1, y2;
-
-	x1 = cep->click_x;
-	x2 = cep->release_x;
-	quixel_sort_coordinates(&x1, &x2);
-	y1 = cep->click_y;
-	y2 = cep->release_y;
-	quixel_sort_coordinates(&y1, &y2);
-
-	return create_undo(cep, NULL, x1, y1, x2 - x1 + 1, y2 - y1 + 1);
+	return create_undo(cep, NULL, cep->tool_left, cep->tool_top, cep->tool_right - cep->tool_left + 1, cep->tool_bottom - cep->tool_top + 1);
 }
 
 static void revert_undo(QUIXEL_CANVAS_EDITOR * cep)
@@ -411,7 +402,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			{
 				case QUIXEL_TOOL_PIXEL:
 				{
-					made_undo = create_undo(canvas_editor, NULL, canvas_editor->scratch_offset_x + canvas_editor->tool_left, canvas_editor->scratch_offset_y + canvas_editor->tool_top, canvas_editor->tool_right - canvas_editor->tool_left + 1, canvas_editor->tool_bottom - canvas_editor->tool_top + 1);
+					made_undo = create_primitive_undo(canvas_editor);
 					handle_canvas_expansion(canvas_editor);
 					quixel_tool_pixel_finish(canvas_editor);
 					if(made_undo)
