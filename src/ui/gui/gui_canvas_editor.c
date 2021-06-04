@@ -148,21 +148,6 @@ static void clear_bitmap(ALLEGRO_BITMAP * bp)
 	al_restore_state(&old_state);
 }
 
-static void get_scratch_from_canvas(QUIXEL_CANVAS_EDITOR * cep)
-{
-	ALLEGRO_STATE old_state;
-	ALLEGRO_TRANSFORM identity;
-
-	al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_TRANSFORM | ALLEGRO_STATE_BLENDER);
-	al_set_target_bitmap(cep->scratch_bitmap);
-	al_identity_transform(&identity);
-	al_use_transform(&identity);
-	al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
-	al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
-	quixel_render_canvas_layer(cep->canvas, cep->current_layer, cep->scratch_offset_x, cep->scratch_offset_y, 1, 0, 0, al_get_bitmap_width(cep->scratch_bitmap), al_get_bitmap_height(cep->scratch_bitmap));
-	al_restore_state(&old_state);
-}
-
 static bool save_backup(QUIXEL_CANVAS * cp)
 {
 	char backup_path[1024];
@@ -254,7 +239,6 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 	QUIXEL_BOX old_box;
 	T3GUI_THEME * theme;
 	ALLEGRO_COLOR color = t3f_color_black;
-	ALLEGRO_BITMAP * bp;
 	bool made_undo = false;
 	bool simulate_mouse_move = false;
 
