@@ -220,7 +220,14 @@ void quixel_import_bitmap_to_canvas(QUIXEL_CANVAS * cp, ALLEGRO_BITMAP * bp, int
 	int offset_x, offset_y;
 	int x_remaining, y_remaining;
 	int x_use, y_use;
+	int shift_x, shift_y;
 
+	quixel_get_canvas_shift(cp, x, y, &shift_x, &shift_y);
+	if(shift_x || shift_y)
+	{
+		printf("ishift %d %d\n", shift_x, shift_y);
+		quixel_shift_canvas_bitmap_array(cp, shift_x, shift_y);
+	}
 	al_identity_transform(&identity);
 	al_store_state(&old_state, ALLEGRO_STATE_TRANSFORM | ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_BLENDER);
 	y_remaining = al_get_bitmap_height(bp);
@@ -413,13 +420,26 @@ ALLEGRO_COLOR quixel_get_canvas_pixel(QUIXEL_CANVAS * cp, int layer, int x, int 
 	return al_map_rgba_f(0.0, 0.0, 0.0, 0.0);
 }
 
+void quixel_get_canvas_shift(QUIXEL_CANVAS * cp, int x, int y, int * shift_x, int * shift_y)
+{
+	*shift_x = 0;
+	*shift_y = 0;
+
+	/* calculate shift amount */
+	if(x < 0)
+	{
+		*shift_x = -x / cp->bitmap_size + 1;
+	}
+	if(y < 0)
+	{
+		*shift_y = -y / cp->bitmap_size + 1;
+	}
+}
+
 bool quixel_handle_canvas_expansion(QUIXEL_CANVAS * cp, int left, int top, int right, int bottom, int * shift_x, int * shift_y)
 {
 	int cx, cy;
 	int new_width, new_height;
-
-	*shift_x = 0;
-	*shift_y = 0;
 
 	/* create initial array if needed */
 	if(cp->layer_width < 1 || cp->layer_height < 1)
@@ -427,15 +447,7 @@ bool quixel_handle_canvas_expansion(QUIXEL_CANVAS * cp, int left, int top, int r
 		quixel_resize_canvas_bitmap_array(cp, 1, 1);
 	}
 
-	/* calculate shift amount */
-	if(left < 0)
-	{
-		*shift_x = -left / cp->bitmap_size + 1;
-	}
-	if(top < 0)
-	{
-		*shift_y = -top / cp->bitmap_size + 1;
-	}
+	quixel_get_canvas_shift(cp, left, top, shift_x, shift_y);
 
 	/* actually shift the bitmap array and update variables if we need to */
 	if(*shift_x || *shift_y)
