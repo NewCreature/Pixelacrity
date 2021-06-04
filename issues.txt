@@ -3,6 +3,9 @@ Quixel 0.2 Issues
 
 [ ]Handle canvas expansion for unfloat selection.
 
+[ ]Adjust the canvas editor view position to keep its center in the center of
+   the display when resizing.
+
 [ ]Moving away from selection tool causes translucent pixels in the layer to
    have their alpha combined. I think this is being caused by the incorrect
    blend mode being set when copying the scratch data back to the canvas.
