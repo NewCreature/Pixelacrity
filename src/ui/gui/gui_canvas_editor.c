@@ -178,7 +178,7 @@ static bool handle_canvas_expansion(QUIXEL_CANVAS_EDITOR * cep)
 	int new_width, new_height;
 
 	/* create initial array if needed */
-	if(cep->canvas->layer_width < 1 || cep->canvas->layer_height < 0)
+	if(cep->canvas->layer_width < 1 || cep->canvas->layer_height < 1)
 	{
 		quixel_resize_canvas_bitmap_array(cep->canvas, 1, 1);
 	}
