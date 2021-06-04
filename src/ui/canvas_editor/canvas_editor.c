@@ -142,9 +142,14 @@ void quixel_float_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_BOX
 
 void quixel_handle_unfloat_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_BOX * bp)
 {
+	if(quixel_handle_canvas_expansion(cep->canvas, cep->selection.box.start_x, cep->selection.box.start_y, cep->selection.box.end_x, cep->selection.box.end_y, &cep->shift_x, &cep->shift_y))
+	{
+		quixel_shift_canvas_editor_variables(cep, cep->shift_x * cep->canvas->bitmap_size, cep->shift_y * cep->canvas->bitmap_size);
+	}
 	quixel_draw_primitive_to_canvas(cep->canvas, cep->current_layer, bp->start_x, bp->start_y, bp->start_x + bp->width, bp->start_y + bp->height, cep->scratch_bitmap, al_map_rgba_f(0, 0, 0, 0), QUIXEL_RENDER_COMPOSITE, quixel_draw_quad);
 	cep->selection.floating = false;
 }
+
 void quixel_unfloat_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_BOX * bp)
 {
 	if(create_unfloat_undo(cep))
@@ -168,4 +173,10 @@ void quixel_shift_canvas_editor_variables(QUIXEL_CANVAS_EDITOR * cep, int ox, in
 	cep->hover_y += oy;
 	cep->scratch_offset_x += ox;
 	cep->scratch_offset_y += oy;
+	cep->selection.box.start_x += ox;
+	cep->selection.box.start_y += oy;
+	cep->selection.box.middle_x += ox;
+	cep->selection.box.middle_y += oy;
+	cep->selection.box.end_x += ox;
+	cep->selection.box.end_y += oy;
 }
