@@ -412,3 +412,53 @@ ALLEGRO_COLOR quixel_get_canvas_pixel(QUIXEL_CANVAS * cp, int layer, int x, int 
 	}
 	return al_map_rgba_f(0.0, 0.0, 0.0, 0.0);
 }
+
+bool quixel_handle_canvas_expansion(QUIXEL_CANVAS * cp, int left, int top, int right, int bottom, int * shift_x, int * shift_y)
+{
+	int cx, cy;
+	int new_width, new_height;
+
+	*shift_x = 0;
+	*shift_y = 0;
+
+	/* create initial array if needed */
+	if(cp->layer_width < 1 || cp->layer_height < 1)
+	{
+		quixel_resize_canvas_bitmap_array(cp, 1, 1);
+	}
+
+	/* calculate shift amount */
+	if(left < 0)
+	{
+		*shift_x = -left / cp->bitmap_size + 1;
+	}
+	if(top < 0)
+	{
+		*shift_y = -top / cp->bitmap_size + 1;
+	}
+
+	/* actually shift the bitmap array and update variables if we need to */
+	if(*shift_x || *shift_y)
+	{
+		quixel_shift_canvas_bitmap_array(cp, *shift_x, *shift_y);
+	}
+
+	/* expand down and to the right if needed */
+	new_width = cp->layer_width;
+	cx = right / cp->bitmap_size;
+	if(cx >= cp->layer_width)
+	{
+		new_width = cx + 1;
+	}
+	new_height = cp->layer_height;
+	cy = bottom / cp->bitmap_size;
+	if(cy >= cp->layer_height)
+	{
+		new_height = cy + 1;
+	}
+	if(new_width != cp->layer_width || new_height != cp->layer_height)
+	{
+		quixel_resize_canvas_bitmap_array(cp, new_width, new_height);
+	}
+	return true;
+}

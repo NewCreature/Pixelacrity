@@ -118,5 +118,6 @@ void quixel_handle_float_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep, QUI
 void quixel_float_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_BOX * bp);
 void quixel_handle_unfloat_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_BOX * bp);
 void quixel_unfloat_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_BOX * bp);
+void quixel_shift_canvas_editor_variables(QUIXEL_CANVAS_EDITOR * cep, int ox, int oy);
 
 #endif
