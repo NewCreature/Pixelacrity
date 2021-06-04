@@ -81,6 +81,38 @@ static void click_on_canvas(QUIXEL_CANVAS_EDITOR * cep, int button, int x, int y
 	}
 }
 
+static void set_up_tool_variables(QUIXEL_CANVAS_EDITOR * cep)
+{
+	cep->scratch_offset_x = cep->view_x;
+	cep->scratch_offset_y = cep->view_y;
+	cep->tool_top = cep->hover_y;
+	cep->tool_bottom = cep->hover_y;
+	cep->tool_left = cep->hover_x;
+	cep->tool_right = cep->hover_x;
+}
+
+static void update_tool_variables(QUIXEL_CANVAS_EDITOR * cep)
+{
+	cep->scratch_offset_x = cep->view_x;
+	cep->scratch_offset_y = cep->view_y;
+	if(cep->hover_x < cep->tool_left)
+	{
+		cep->tool_left = cep->hover_x;
+	}
+	if(cep->hover_x > cep->tool_right)
+	{
+		cep->tool_right = cep->hover_x;
+	}
+	if(cep->hover_y < cep->tool_top)
+	{
+		cep->tool_top = cep->hover_y;
+	}
+	if(cep->hover_y > cep->tool_bottom)
+	{
+		cep->tool_bottom = cep->hover_y;
+	}
+}
+
 static bool create_undo(QUIXEL_CANVAS_EDITOR * cep, const char * action, int x, int y, int width, int height)
 {
 	char undo_path[1024];
@@ -173,9 +205,11 @@ static void shift_canvas_editor_variables(QUIXEL_CANVAS_EDITOR * cep, int ox, in
 
 static bool handle_canvas_expansion(QUIXEL_CANVAS_EDITOR * cep)
 {
-	int shift_x = 0, shift_y = 0;
 	int cx, cy;
 	int new_width, new_height;
+
+	cep->shift_x = 0;
+	cep->shift_y = 0;
 
 	/* create initial array if needed */
 	if(cep->canvas->layer_width < 1 || cep->canvas->layer_height < 1)
@@ -184,62 +218,32 @@ static bool handle_canvas_expansion(QUIXEL_CANVAS_EDITOR * cep)
 	}
 
 	/* calculate shift amount */
-	if(cep->click_x < cep->release_x)
+	if(cep->tool_left < 0)
 	{
-		if(cep->click_x < 0)
-		{
-			shift_x = -cep->click_x / cep->canvas->bitmap_size + 1;
-		}
+		cep->shift_x = -cep->tool_left / cep->canvas->bitmap_size + 1;
 	}
-	else
+	if(cep->tool_top < 0)
 	{
-		if(cep->release_x < 0)
-		{
-			shift_x = -cep->release_x / cep->canvas->bitmap_size + 1;
-		}
-	}
-	if(cep->click_y < cep->release_y)
-	{
-		if(cep->click_y < 0)
-		{
-			shift_y = -cep->click_y / cep->canvas->bitmap_size + 1;
-		}
-	}
-	else
-	{
-		if(cep->release_y < 0)
-		{
-			shift_y = -cep->release_y / cep->canvas->bitmap_size + 1;
-		}
+		cep->shift_y = -cep->tool_top / cep->canvas->bitmap_size + 1;
 	}
 
 	/* actually shift the bitmap array and update variables if we need to */
-	if(shift_x || shift_y)
+	if(cep->shift_x || cep->shift_y)
 	{
-		quixel_shift_canvas_bitmap_array(cep->canvas, shift_x, shift_y);
-		shift_canvas_editor_variables(cep, shift_x * cep->canvas->bitmap_size, shift_y * cep->canvas->bitmap_size);
+		quixel_shift_canvas_bitmap_array(cep->canvas, cep->shift_x, cep->shift_y);
+		shift_canvas_editor_variables(cep, cep->shift_x * cep->canvas->bitmap_size, cep->shift_y * cep->canvas->bitmap_size);
 	}
 
 	/* expand down and to the right if needed */
 	new_width = cep->canvas->layer_width;
-	cx = cep->click_x / cep->canvas->bitmap_size;
+	cx = cep->tool_right / cep->canvas->bitmap_size;
 	if(cx >= cep->canvas->layer_width)
 	{
 		new_width = cx + 1;
 	}
-	cx = cep->release_x / cep->canvas->bitmap_size;
-	if(cx >= new_width)
-	{
-		new_width = cx + 1;
-	}
 	new_height = cep->canvas->layer_height;
-	cy = cep->click_y / cep->canvas->bitmap_size;
+	cy = cep->tool_bottom / cep->canvas->bitmap_size;
 	if(cy >= cep->canvas->layer_height)
-	{
-		new_height = cy + 1;
-	}
-	cy = cep->release_y / cep->canvas->bitmap_size;
-	if(cy >= new_height)
 	{
 		new_height = cy + 1;
 	}
@@ -285,69 +289,53 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			d->flags |= D_TRACKMOUSE;
 			if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_OFF)
 			{
+				click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
 				switch(canvas_editor->current_tool)
 				{
 					case QUIXEL_TOOL_PIXEL:
 					{
-						click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
-						canvas_editor->scratch_offset_x = canvas_editor->view_x;
-						canvas_editor->scratch_offset_y = canvas_editor->view_y;
-						canvas_editor->tool_top = canvas_editor->hover_y - canvas_editor->scratch_offset_y;
-						canvas_editor->tool_bottom = canvas_editor->hover_y - canvas_editor->scratch_offset_y;
-						canvas_editor->tool_left = canvas_editor->hover_x - canvas_editor->scratch_offset_x;
-						canvas_editor->tool_right = canvas_editor->hover_x - canvas_editor->scratch_offset_x;
+						set_up_tool_variables(canvas_editor);
 						quixel_tool_pixel_start(canvas_editor);
 						canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
 						break;
 					}
 					case QUIXEL_TOOL_LINE:
 					{
-						click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
-						canvas_editor->scratch_offset_x = canvas_editor->view_x;
-						canvas_editor->scratch_offset_y = canvas_editor->view_y;
+						set_up_tool_variables(canvas_editor);
 						quixel_tool_line_logic(canvas_editor);
 						canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
 						break;
 					}
 					case QUIXEL_TOOL_RECTANGLE:
 					{
-						click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
-						canvas_editor->scratch_offset_x = canvas_editor->view_x;
-						canvas_editor->scratch_offset_y = canvas_editor->view_y;
+						set_up_tool_variables(canvas_editor);
 						quixel_tool_rectangle_logic(canvas_editor);
 						canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
 						break;
 					}
 					case QUIXEL_TOOL_FILLED_RECTANGLE:
 					{
-						click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
-						canvas_editor->scratch_offset_x = canvas_editor->view_x;
-						canvas_editor->scratch_offset_y = canvas_editor->view_y;
+						set_up_tool_variables(canvas_editor);
 						quixel_tool_filled_rectangle_logic(canvas_editor);
 						canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
 						break;
 					}
 					case QUIXEL_TOOL_OVAL:
 					{
-						click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
-						canvas_editor->scratch_offset_x = canvas_editor->view_x;
-						canvas_editor->scratch_offset_y = canvas_editor->view_y;
+						set_up_tool_variables(canvas_editor);
 						quixel_tool_oval_logic(canvas_editor);
 						canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
 						break;
 					}
 					case QUIXEL_TOOL_FILLED_OVAL:
 					{
-						click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
-						canvas_editor->scratch_offset_x = canvas_editor->view_x;
-						canvas_editor->scratch_offset_y = canvas_editor->view_y;
+						set_up_tool_variables(canvas_editor);
 						quixel_tool_filled_oval_logic(canvas_editor);
 						canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
 						break;
 					}
 					case QUIXEL_TOOL_FLOOD_FILL:
 					{
-						click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
 						made_undo = create_undo(canvas_editor, NULL, 0, 0, 0, 0);
 						if(quixel_flood_fill_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y, c == 1 ? canvas_editor->left_color : canvas_editor->right_color))
 						{
@@ -372,7 +360,6 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 					}
 					case QUIXEL_TOOL_SELECTION:
 					{
-						click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
 						switch(canvas_editor->selection.box.state)
 						{
 							/* start creating a new selection if we are not currently
@@ -526,6 +513,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 		}
 		case MSG_MOUSEMOVE:
 		{
+			update_tool_variables(canvas_editor);
 			switch(canvas_editor->current_tool)
 			{
 				case QUIXEL_TOOL_PIXEL:

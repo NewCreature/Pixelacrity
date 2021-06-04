@@ -60,6 +60,7 @@ typedef struct
 	int click_x, click_y;
 	ALLEGRO_COLOR click_color;
 	int release_x, release_y;
+	int shift_x, shift_y;
 	int current_layer;
 	int current_frame;
 	int current_tool;
