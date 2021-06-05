@@ -1,8 +1,6 @@
 Quixel 0.2 Issues
 -----------------
 
-[ ]Handle canvas expansion for unfloat selection.
-
 [ ]Adjust the canvas editor view position to keep its center in the center of
    the display when resizing.
 
@@ -27,11 +25,11 @@ Quixel 0.2 Issues
 
    [X]Fix canvas shift making drawing disappear.
 
-   [ ]Make undo/redo work when an action causes the canvas bitmap array to be
+   [X]Make undo/redo work when an action causes the canvas bitmap array to be
       shifted.
 
-      [ ]I think we can just store the shift amounts in the undo file and
-         unshift the canvas when applying the undo.
+   [ ]Make selection undo/redo work even if changes happen that cause the canvas
+      to be shifted.
 
 [ ]Adjust view position when zooming to keep what was in the center of the
    display centered.
@@ -341,3 +339,5 @@ Closed Issues
    need to know which layer the undo state applies to.
 
 [X]Adding and removing layers should mark the canvas as modified.
+
+[X]Handle canvas expansion for unfloat selection.
