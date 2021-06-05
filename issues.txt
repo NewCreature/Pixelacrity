@@ -1,6 +1,11 @@
 Quixel 0.2 Issues
 -----------------
 
+[ ]Fix drawing primitives not rendering to all affected canvas bitmaps.
+
+   [ ]Drawing a rectangle that should render to 4 canvas bitmaps only actually
+      renders to the two where the start and end points reside.
+
 [ ]Adjust the canvas editor view position to keep its center in the center of
    the display when resizing.
 
