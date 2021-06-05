@@ -86,6 +86,7 @@ void app_logic(void * data)
 	{
 		sprintf(app->ui->status_left_message, "(%d, %d)", app->canvas_editor->hover_x - app->canvas->frame[app->canvas_editor->current_frame]->box.start_x, app->canvas_editor->hover_y - app->canvas->frame[app->canvas_editor->current_frame]->box.start_y);
 	}
+	sprintf(app->ui->status_left_message, "(%d, %d)", app->canvas_editor->view_x, app->canvas_editor->view_y);
 }
 
 /* main rendering routine */
