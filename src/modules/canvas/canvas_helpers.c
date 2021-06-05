@@ -225,9 +225,10 @@ void quixel_import_bitmap_to_canvas(QUIXEL_CANVAS * cp, ALLEGRO_BITMAP * bp, int
 	quixel_get_canvas_shift(cp, x, y, &shift_x, &shift_y);
 	if(shift_x || shift_y)
 	{
-		printf("ishift %d %d\n", shift_x, shift_y);
 		quixel_shift_canvas_bitmap_array(cp, shift_x, shift_y);
 	}
+	x += shift_x * cp->bitmap_size;
+	y += shift_y * cp->bitmap_size;
 	al_identity_transform(&identity);
 	al_store_state(&old_state, ALLEGRO_STATE_TRANSFORM | ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_BLENDER);
 	y_remaining = al_get_bitmap_height(bp);
