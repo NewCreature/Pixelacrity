@@ -1,6 +1,12 @@
 Quixel 0.2 Issues
 -----------------
 
+[ ]Crash when loading canvas.
+
+[ ]Crash when loading image as canvas.
+
+[ ]Crash when switching away from program.
+
 [ ]Fix drawing primitives not rendering to all affected canvas bitmaps.
 
    [ ]Drawing a rectangle that should render to 4 canvas bitmaps only actually
