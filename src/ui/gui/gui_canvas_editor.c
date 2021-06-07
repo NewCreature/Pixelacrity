@@ -601,6 +601,8 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 					canvas_editor->view_zoom--;
 					canvas_editor->view_x = cx - (d->w / canvas_editor->view_zoom) / 2;
 					canvas_editor->view_y = cy - (d->h / canvas_editor->view_zoom) / 2;
+					canvas_editor->view_fx = canvas_editor->view_x;
+					canvas_editor->view_fy = canvas_editor->view_y;
 					simulate_mouse_move = true;
 				}
 				t3f_key[ALLEGRO_KEY_MINUS] = 0;
@@ -612,6 +614,8 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				canvas_editor->view_zoom++;
 				canvas_editor->view_x = cx - (d->w / canvas_editor->view_zoom) / 2;
 				canvas_editor->view_y = cy - (d->h / canvas_editor->view_zoom) / 2;
+				canvas_editor->view_fx = canvas_editor->view_x;
+				canvas_editor->view_fy = canvas_editor->view_y;
 				simulate_mouse_move = true;
 				t3f_key[ALLEGRO_KEY_EQUALS] = 0;
 			}
