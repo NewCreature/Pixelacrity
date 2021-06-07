@@ -90,6 +90,8 @@ void quixel_center_canvas_editor(QUIXEL_CANVAS_EDITOR * cep, int frame)
 		cep->view_x = x + w / 2 - (cep->editor_element->w / cep->view_zoom) / 2;
 		cep->view_y = y + h / 2 - (cep->editor_element->h / cep->view_zoom) / 2;
 	}
+	cep->view_fx = cep->view_x;
+	cep->view_fy = cep->view_y;
 }
 
 static bool create_unfloat_undo(QUIXEL_CANVAS_EDITOR * cep)
