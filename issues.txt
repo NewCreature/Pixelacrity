@@ -13,11 +13,6 @@ Quixel 0.2 Issues
 
 [ ]Crash when switching away from program.
 
-[ ]Fix drawing primitives not rendering to all affected canvas bitmaps.
-
-   [ ]Drawing a rectangle that should render to 4 canvas bitmaps only actually
-      renders to the two where the start and end points reside.
-
 [ ]Adjust the canvas editor view position to keep its center in the center of
    the display when resizing.
 
@@ -358,3 +353,8 @@ Closed Issues
 [X]Adding and removing layers should mark the canvas as modified.
 
 [X]Handle canvas expansion for unfloat selection.
+
+[X]Fix drawing primitives not rendering to all affected canvas bitmaps.
+
+   [X]Drawing a rectangle that should render to 4 canvas bitmaps only actually
+      renders to the two where the start and end points reside.
