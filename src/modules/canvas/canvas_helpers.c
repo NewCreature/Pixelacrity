@@ -374,15 +374,15 @@ void quixel_draw_primitive_to_canvas(QUIXEL_CANVAS * cp, int layer, int x1, int 
 	}
 	use_bitmap[start_bitmap_y][start_bitmap_x] = true;
 	use_bitmap[end_bitmap_y][end_bitmap_x] = true;
-	while(!loop_break_test(start_bitmap_y, end_bitmap_y, y_dir))
+	while(loop_break_test(start_bitmap_y, end_bitmap_y, y_dir))
 	{
 		start_bitmap_x = x1 / cp->bitmap_size;
-		while(!loop_break_test(start_bitmap_x, end_bitmap_x, x_dir))
+		while(loop_break_test(start_bitmap_x, end_bitmap_x, x_dir))
 		{
 			use_bitmap[start_bitmap_y][start_bitmap_x] = true;
-			start_bitmap_x += cp->bitmap_size * x_dir;
+			start_bitmap_x += x_dir;
 		}
-		start_bitmap_y += cp->bitmap_size * y_dir;
+		start_bitmap_y += y_dir;
 	}
 	for(i = 0; i < cp->layer_height; i++)
 	{
