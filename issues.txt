@@ -7,10 +7,6 @@ Quixel 0.2 Issues
 [ ]Implement image import. The image will be imported into a floating selection
    at the center of the view so the user has control over the final placement.
 
-[ ]Crash when loading canvas.
-
-[ ]Crash when loading image as canvas.
-
 [ ]Crash when switching away from program.
 
 [ ]Moving away from selection tool causes translucent pixels in the layer to
@@ -355,3 +351,7 @@ Closed Issues
 
 [X]Adjust the canvas editor view position to keep its center in the center of
    the display when resizing.
+
+[X]Crash when loading canvas.
+
+[X]Crash when loading image as canvas.
