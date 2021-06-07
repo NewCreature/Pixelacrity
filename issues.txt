@@ -40,9 +40,6 @@ Quixel 0.2 Issues
    [ ]Make selection undo/redo work even if changes happen that cause the canvas
       to be shifted.
 
-[ ]Adjust view position when zooming to keep what was in the center of the
-   display centered.
-
 [ ]Flood fill failed to completely fill vertical line of pixels.
 
 [ ]Add erase tool.
