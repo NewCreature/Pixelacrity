@@ -2,6 +2,7 @@
 #include "canvas.h"
 #include "canvas_helpers.h"
 #include "modules/pixel_shader.h"
+#include "modules/primitives.h"
 
 /* assume all canvas bitmaps are already locked */
 static int get_canvas_alpha(QUIXEL_CANVAS * cp, int x, int y, int flags_filter)
@@ -214,14 +215,9 @@ ALLEGRO_BITMAP * quixel_get_bitmap_from_canvas(QUIXEL_CANVAS * cp, int start_lay
 
 void quixel_import_bitmap_to_canvas(QUIXEL_CANVAS * cp, ALLEGRO_BITMAP * bp, int layer, int x, int y)
 {
-	ALLEGRO_TRANSFORM identity;
-	ALLEGRO_STATE old_state;
-	int tile_x, tile_y;
-	int offset_x, offset_y;
-	int x_remaining, y_remaining;
-	int x_use, y_use;
 	int shift_x, shift_y;
 
+	quixel_handle_canvas_expansion(cp, x, y, x + al_get_bitmap_width(bp), y + al_get_bitmap_height(bp), &shift_x, &shift_y);
 	quixel_get_canvas_shift(cp, x, y, &shift_x, &shift_y);
 	if(shift_x || shift_y)
 	{
@@ -229,39 +225,7 @@ void quixel_import_bitmap_to_canvas(QUIXEL_CANVAS * cp, ALLEGRO_BITMAP * bp, int
 	}
 	x += shift_x * cp->bitmap_size;
 	y += shift_y * cp->bitmap_size;
-	al_identity_transform(&identity);
-	al_store_state(&old_state, ALLEGRO_STATE_TRANSFORM | ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_BLENDER);
-	y_remaining = al_get_bitmap_height(bp);
-	y_use = cp->bitmap_size - y % cp->bitmap_size;
-	tile_y = y / cp->bitmap_size;
-	offset_y = y % cp->bitmap_size;
-	while(y_remaining > 0)
-	{
-		tile_x = x / cp->bitmap_size;
-		offset_x = x % cp->bitmap_size;
-		x_remaining = al_get_bitmap_width(bp);
-		x_use = cp->bitmap_size - x % cp->bitmap_size;
-		while(x_remaining > 0)
-		{
-			quixel_expand_canvas(cp, layer, tile_x * cp->bitmap_size, tile_y * cp->bitmap_size);
-			if(cp->layer[layer]->bitmap[tile_y][tile_x])
-			{
-				al_set_target_bitmap(cp->layer[layer]->bitmap[tile_y][tile_x]);
-				al_use_transform(&identity);
-				al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
-				al_draw_bitmap(bp, offset_x, offset_y, 0);
-			}
-			offset_x -= cp->bitmap_size;
-			x_remaining -= x_use;
-			x_use = cp->bitmap_size;
-			tile_x++;
-		}
-		offset_y -= cp->bitmap_size;
-		y_remaining -= y_use;
-		y_use = cp->bitmap_size;
-		tile_y++;
-	}
-	al_restore_state(&old_state);
+	quixel_draw_primitive_to_canvas(cp, layer, x, y, x + al_get_bitmap_width(bp), y + al_get_bitmap_height(bp), bp, t3f_color_white, QUIXEL_RENDER_COPY, quixel_draw_quad);
 }
 
 static bool loop_break_test(int i1, int i2, int dir)
