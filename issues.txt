@@ -13,9 +13,6 @@ Quixel 0.2 Issues
 
 [ ]Crash when switching away from program.
 
-[ ]Adjust the canvas editor view position to keep its center in the center of
-   the display when resizing.
-
 [ ]Moving away from selection tool causes translucent pixels in the layer to
    have their alpha combined. I think this is being caused by the incorrect
    blend mode being set when copying the scratch data back to the canvas.
@@ -358,3 +355,6 @@ Closed Issues
 
    [X]Drawing a rectangle that should render to 4 canvas bitmaps only actually
       renders to the two where the start and end points reside.
+
+[X]Adjust the canvas editor view position to keep its center in the center of
+   the display when resizing.
