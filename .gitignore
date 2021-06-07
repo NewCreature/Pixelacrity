@@ -39,4 +39,4 @@ Thumbs.db
 *.app
 docs/changelog
 src/makefile.config
-bin/quixel
+bin/pixelacrity
