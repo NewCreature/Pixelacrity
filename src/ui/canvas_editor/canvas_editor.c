@@ -118,13 +118,19 @@ static bool create_float_undo(QUIXEL_CANVAS_EDITOR * cep)
 	return false;
 }
 
-void quixel_handle_float_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_BOX * bp)
+bool quixel_handle_float_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_BOX * bp)
 {
 	ALLEGRO_STATE old_state;
 	ALLEGRO_TRANSFORM identity;
 
 	al_store_state(&old_state, ALLEGRO_STATE_BLENDER | ALLEGRO_STATE_TRANSFORM | ALLEGRO_STATE_TARGET_BITMAP);
-	al_set_target_bitmap(cep->scratch_bitmap);
+	al_set_new_bitmap_flags(0);
+	cep->selection.bitmap = al_create_bitmap(bp->width, bp->height);
+	if(!cep->selection.bitmap)
+	{
+		goto fail;
+	}
+	al_set_target_bitmap(cep->selection.bitmap);
 	al_identity_transform(&identity);
 	al_use_transform(&identity);
 	al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
@@ -132,7 +138,14 @@ void quixel_handle_float_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep, QUI
 	quixel_render_canvas_layer(cep->canvas, cep->current_layer, bp->start_x, bp->start_y, 1, 0, 0, bp->width, bp->height);
 	al_restore_state(&old_state);
 	quixel_draw_primitive_to_canvas(cep->canvas, cep->current_layer, bp->start_x, bp->start_y, bp->start_x + bp->width - 1, bp->start_y + bp->height - 1, NULL, al_map_rgba_f(0, 0, 0, 0), QUIXEL_RENDER_COPY, quixel_draw_filled_rectangle);
-	cep->selection.floating = true;
+
+	return true;
+
+	fail:
+	{
+		al_restore_state(&old_state);
+		return false;
+	}
 }
 
 void quixel_float_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_BOX * bp)
@@ -148,8 +161,9 @@ void quixel_handle_unfloat_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep, Q
 	{
 		quixel_shift_canvas_editor_variables(cep, cep->shift_x * cep->canvas->bitmap_size, cep->shift_y * cep->canvas->bitmap_size);
 	}
-	quixel_draw_primitive_to_canvas(cep->canvas, cep->current_layer, bp->start_x, bp->start_y, bp->start_x + bp->width, bp->start_y + bp->height, cep->scratch_bitmap, al_map_rgba_f(0, 0, 0, 0), QUIXEL_RENDER_COMPOSITE, quixel_draw_quad);
-	cep->selection.floating = false;
+	quixel_draw_primitive_to_canvas(cep->canvas, cep->current_layer, bp->start_x, bp->start_y, bp->start_x + bp->width, bp->start_y + bp->height, cep->selection.bitmap, al_map_rgba_f(0, 0, 0, 0), QUIXEL_RENDER_COMPOSITE, quixel_draw_quad);
+	al_destroy_bitmap(cep->selection.bitmap);
+	cep->selection.bitmap = NULL;
 }
 
 void quixel_unfloat_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_BOX * bp)

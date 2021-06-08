@@ -248,21 +248,19 @@ bool quixel_apply_unfloat_selection_undo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FIL
 	}
 	quixel_import_bitmap_to_canvas(cep->canvas, bp, layer, cep->selection.box.start_x, cep->selection.box.start_y);
 	al_destroy_bitmap(bp);
+	bp = NULL;
 	quixel_shift_canvas_bitmap_array(cep->canvas, -cep->shift_x, -cep->shift_y);
 	cep->view_x += -cep->shift_x * cep->canvas->bitmap_size;
 	cep->view_y += -cep->shift_y * cep->canvas->bitmap_size;
 	cep->view_fx = cep->view_x;
 	cep->view_fy = cep->view_y;
-	bp = al_load_bitmap_flags_f(fp, ".png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
-	if(!bp)
+	cep->selection.bitmap = al_load_bitmap_flags_f(fp, ".png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
+	if(!cep->selection.bitmap)
 	{
 		goto fail;
 	}
-	copy_bitmap_to_target(bp, cep->scratch_bitmap);
-	al_destroy_bitmap(bp);
 	quixel_initialize_box(&cep->selection.box, cep->selection.box.start_x, cep->selection.box.start_y, cep->selection.box.width, cep->selection.box.height, cep->selection.box.bitmap);
 	quixel_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom);
-	cep->selection.floating = true;
 	cep->current_tool = QUIXEL_TOOL_SELECTION;
 	return true;
 
@@ -299,7 +297,12 @@ bool quixel_apply_float_selection_undo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE 
 	}
 	quixel_import_bitmap_to_canvas(cep->canvas, bp, layer, cep->selection.box.start_x, cep->selection.box.start_y);
 	al_destroy_bitmap(bp);
-	cep->selection.floating = false;
+	if(cep->selection.bitmap)
+	{
+		printf("selection undo error 2\n");
+		al_destroy_bitmap(cep->selection.bitmap);
+		cep->selection.bitmap = NULL;
+	}
 	cep->view_x += cep->shift_x * cep->canvas->bitmap_size;
 	cep->view_y += cep->shift_y * cep->canvas->bitmap_size;
 	cep->view_fx = cep->view_x;
@@ -342,7 +345,12 @@ bool quixel_apply_unfloat_selection_redo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FIL
 	al_destroy_bitmap(bp);
 	cep->selection.box.width = 0;
 	cep->selection.box.height = 0;
-	cep->selection.floating = false;
+	if(cep->selection.bitmap)
+	{
+		printf("selection undo error 1\n");
+		al_destroy_bitmap(cep->selection.bitmap);
+		cep->selection.bitmap = NULL;
+	}
 	return true;
 
 	fail:
@@ -373,7 +381,6 @@ bool quixel_apply_float_selection_redo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE 
 	quixel_handle_float_canvas_editor_selection(cep, &cep->selection.box);
 	quixel_initialize_box(&cep->selection.box, new_x, new_y, cep->selection.box.width, cep->selection.box.height, cep->selection.box.bitmap);
 	quixel_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom);
-	cep->selection.floating = true;
 
 	return true;
 }

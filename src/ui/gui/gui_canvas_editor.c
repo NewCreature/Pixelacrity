@@ -284,7 +284,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 							   interacting with an existing selection */
 							case QUIXEL_BOX_STATE_IDLE:
 							{
-								if(canvas_editor->selection.floating)
+								if(canvas_editor->selection.bitmap)
 								{
 									quixel_unfloat_canvas_editor_selection(canvas_editor, &canvas_editor->selection.box);
 								}
@@ -306,7 +306,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 							/* set box resizing logic in motion */
 							case QUIXEL_BOX_STATE_HOVER_HANDLE:
 							{
-								if(canvas_editor->selection.floating)
+								if(canvas_editor->selection.bitmap)
 								{
 									quixel_unfloat_canvas_editor_selection(canvas_editor, &canvas_editor->selection.box);
 								}
@@ -497,7 +497,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 						memcpy(&old_box, &canvas_editor->selection.box, sizeof(QUIXEL_BOX));
 						quixel_update_box_handles(&canvas_editor->selection.box, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom);
 						quixel_box_logic(&canvas_editor->selection.box, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y);
-						if(!canvas_editor->selection.floating && (canvas_editor->selection.box.start_x != old_box.start_x || canvas_editor->selection.box.start_y != old_box.start_y))
+						if(!canvas_editor->selection.bitmap && (canvas_editor->selection.box.start_x != old_box.start_x || canvas_editor->selection.box.start_y != old_box.start_y))
 						{
 							if(canvas_editor->selection.box.state == QUIXEL_BOX_STATE_MOVING)
 							{
@@ -737,9 +737,9 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			}
 			if(canvas_editor->selection.box.width > 0 && canvas_editor->selection.box.height > 0)
 			{
-				if(canvas_editor->selection.floating)
+				if(canvas_editor->selection.bitmap)
 				{
-					al_draw_scaled_bitmap(canvas_editor->scratch_bitmap, 0, 0,  canvas_editor->selection.box.width, canvas_editor->selection.box.height, d->x + (canvas_editor->selection.box.start_x - canvas_editor->view_x) * canvas_editor->view_zoom, d->y + (canvas_editor->selection.box.start_y - canvas_editor->view_y) * canvas_editor->view_zoom, canvas_editor->selection.box.width * canvas_editor->view_zoom, canvas_editor->selection.box.height * canvas_editor->view_zoom, 0);
+					al_draw_scaled_bitmap(canvas_editor->selection.bitmap, 0, 0,  canvas_editor->selection.box.width, canvas_editor->selection.box.height, d->x + (canvas_editor->selection.box.start_x - canvas_editor->view_x) * canvas_editor->view_zoom, d->y + (canvas_editor->selection.box.start_y - canvas_editor->view_y) * canvas_editor->view_zoom, canvas_editor->selection.box.width * canvas_editor->view_zoom, canvas_editor->selection.box.height * canvas_editor->view_zoom, 0);
 				}
 				quixel_box_render(&canvas_editor->selection.box, 0, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y);
 			}
