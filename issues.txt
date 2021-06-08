@@ -37,6 +37,10 @@ Quixel 0.2 Issues
 
 [ ]Flood fill failed to completely fill vertical line of pixels.
 
+   [ ]Flood fill leaves traces when it fails to complete. Maybe we should just
+      add another list that keeps track of changed pixels so we can revert more
+      easily.
+
 [ ]Add erase tool.
 
 [ ]Resizing window causes freeze on Windows.
