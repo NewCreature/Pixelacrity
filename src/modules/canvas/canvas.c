@@ -319,6 +319,24 @@ void quixel_shift_canvas_bitmap_array(QUIXEL_CANVAS * cp, int shift_x, int shift
 		bitmap = create_bitmap_array(new_width, new_height);
 		if(bitmap)
 		{
+			/* destroy bitmaps that are outside the new array */
+			for(j = 0; j < cp->layer_height; j++)
+			{
+				for(k = 0; k < cp->layer_width; k++)
+				{
+					tx = k + shift_x;
+					ty = j + shift_y;
+					if(tx < 0 || ty < 0)
+					{
+						if(cp->layer[i]->bitmap[j][k])
+						{
+							al_destroy_bitmap(cp->layer[i]->bitmap[j][k]);
+							cp->layer[i]->bitmap[j][k] = NULL;
+						}
+					}
+				}
+			}
+
 			/* copy old data to new array */
 			for(j = 0; j < new_height; j++)
 			{
@@ -327,18 +345,6 @@ void quixel_shift_canvas_bitmap_array(QUIXEL_CANVAS * cp, int shift_x, int shift
 					tx = k - shift_x;
 					ty = j - shift_y;
 					bitmap[j][k] = get_bitmap(cp, i, tx, ty);
-				}
-			}
-
-			/* destroy bitmaps that are no longer part of the new array */
-			for(j = new_height; j < cp->layer_height; j++)
-			{
-				for(k = new_width; k < cp->layer_width; k++)
-				{
-					if(cp->layer[i]->bitmap[j][k])
-					{
-						al_destroy_bitmap(cp->layer[i]->bitmap[j][k]);
-					}
 				}
 			}
 
