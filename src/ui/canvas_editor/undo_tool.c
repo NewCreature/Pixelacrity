@@ -237,7 +237,7 @@ bool quixel_apply_tool_undo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, const
 			quixel_make_tool_redo(cep, action, layer, x, y, al_get_bitmap_width(bp), al_get_bitmap_height(bp), quixel_get_undo_path("redo", cep->redo_count, undo_path, 1024));
 			cep->redo_count++;
 		}
-		quixel_import_bitmap_to_canvas(cep->canvas, bp, layer, x, y);
+		quixel_import_bitmap_to_canvas(cep->canvas, bp, layer, x + shift_x * cep->canvas->bitmap_size, y + shift_y * cep->canvas->bitmap_size);
 		al_destroy_bitmap(bp);
 	}
 	else
