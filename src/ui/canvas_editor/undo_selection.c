@@ -52,6 +52,11 @@ bool quixel_make_unfloat_selection_undo(QUIXEL_CANVAS_EDITOR * cep, const char *
 		printf("fail: %s\n", fn);
 		goto fail;
 	}
+	if(!al_save_bitmap_f(fp, ".png", cep->selection.bitmap))
+	{
+		printf("float fail\n");
+		goto fail;
+	}
 	al_destroy_bitmap(bp);
 	al_fclose(fp);
 	return true;
@@ -215,12 +220,6 @@ bool quixel_apply_unfloat_selection_undo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FIL
 	cep->selection.box.width = al_fread32le(fp);
 	cep->selection.box.height = al_fread32le(fp);
 	quixel_get_canvas_shift(cep->canvas, cep->selection.box.start_x, cep->selection.box.start_y, &shift_x, &shift_y);
-	cep->selection.bitmap = al_create_bitmap(cep->selection.box.width, cep->selection.box.height);
-	if(!cep->selection.bitmap)
-	{
-		goto fail;
-	}
-	printf("u box %d %d %d %d\n", cep->selection.box.start_x, cep->selection.box.start_y, shift_x, shift_y);
 	quixel_make_unfloat_selection_redo(cep, quixel_get_undo_path("redo", cep->redo_count, undo_path, 1024));
 	cep->redo_count++;
 	bp = al_load_bitmap_flags_f(fp, ".png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
@@ -228,22 +227,23 @@ bool quixel_apply_unfloat_selection_undo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FIL
 	{
 		goto fail;
 	}
-	quixel_render_canvas_to_bitmap(cep->canvas, cep->current_layer, cep->current_layer + 1, cep->selection.box.start_x, cep->selection.box.start_y, cep->selection.box.width, cep->selection.box.height, 0, cep->selection.bitmap);
+	cep->selection.bitmap = al_load_bitmap_flags_f(fp, ".png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
+	if(!cep->selection.bitmap)
+	{
+		goto fail;
+	}
 
-	quixel_import_bitmap_to_canvas(cep->canvas, bp, layer, cep->selection.box.start_x, cep->selection.box.start_y);
+	quixel_import_bitmap_to_canvas(cep->canvas, bp, layer, cep->selection.box.start_x + shift_x * cep->canvas->bitmap_size, cep->selection.box.start_y + shift_y * cep->canvas->bitmap_size);
 	al_destroy_bitmap(bp);
 	bp = NULL;
-	printf("v1 %d %d\n", cep->view_x, cep->view_y);
+	quixel_initialize_box(&cep->selection.box, cep->selection.box.start_x + shift_x * cep->canvas->bitmap_size, cep->selection.box.start_y + shift_y * cep->canvas->bitmap_size, cep->selection.box.width, cep->selection.box.height, cep->selection.box.bitmap);
 	if(shift_x || shift_y)
 	{
 		quixel_shift_canvas_bitmap_array(cep->canvas, -shift_x, -shift_y);
 		quixel_shift_canvas_editor_variables(cep, -shift_x * cep->canvas->bitmap_size, -shift_y * cep->canvas->bitmap_size);
 	}
-	printf("v2 %d %d\n", cep->view_x, cep->view_y);
-	quixel_initialize_box(&cep->selection.box, cep->selection.box.start_x, cep->selection.box.start_y, cep->selection.box.width, cep->selection.box.height, cep->selection.box.bitmap);
 	quixel_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom);
 	cep->current_tool = QUIXEL_TOOL_SELECTION;
-	printf("break\n");
 	return true;
 
 	fail:
