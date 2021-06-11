@@ -49,76 +49,6 @@ static QUIXEL_CANVAS_FRAME * quixel_create_canvas_frame(const char * name, int x
 	return NULL;
 }
 
-QUIXEL_CANVAS * quixel_create_canvas(int bitmap_max)
-{
-	QUIXEL_CANVAS * cp;
-
-	cp = malloc(sizeof(QUIXEL_CANVAS));
-	if(cp)
-	{
-		memset(cp, 0, sizeof(QUIXEL_CANVAS));
-		cp->bitmap_size = al_get_display_option(t3f_display, ALLEGRO_MAX_BITMAP_SIZE) / 2;
-		if(cp->bitmap_size > bitmap_max)
-		{
-			cp->bitmap_size = bitmap_max;
-		}
-		cp->config = al_create_config();
-		if(!cp->config)
-		{
-			goto fail;
-		}
-	}
-	return cp;
-
-	fail:
-	{
-		quixel_destroy_canvas(cp);
-		return NULL;
-	}
-}
-
-void quixel_destroy_canvas(QUIXEL_CANVAS * cp)
-{
-	int i, j, k, l;
-
-	if(cp)
-	{
-		if(cp->config)
-		{
-			al_destroy_config(cp->config);
-		}
-		if(cp->layer)
-		{
-			for(i = 0; i < cp->layer_max; i++)
-			{
-				if(cp->layer[i])
-				{
-					for(j = 0; j < cp->layer_height; j++)
-					{
-						for(k = 0; k < cp->layer_width; k++)
-						{
-							if(cp->layer[i]->bitmap[j][k])
-							{
-								al_destroy_bitmap(cp->layer[i]->bitmap[j][k]);
-							}
-						}
-					}
-					if(cp->layer[i]->bitmap)
-					{
-						for(l = 0; l < cp->layer_height; l++)
-						{
-							free(cp->layer[i]->bitmap[l]);
-						}
-					}
-					free(cp->layer[i]);
-				}
-			}
-			free(cp->layer);
-		}
-		free(cp);
-	}
-}
-
 static void destroy_bitmap_array(ALLEGRO_BITMAP *** bp, int width, int height)
 {
 	int i;
@@ -162,6 +92,76 @@ static ALLEGRO_BITMAP *** create_bitmap_array(int width, int height)
 	{
 		destroy_bitmap_array(bp, width, height);
 		return NULL;
+	}
+}
+
+QUIXEL_CANVAS * quixel_create_canvas(int bitmap_max)
+{
+	QUIXEL_CANVAS * cp;
+
+	cp = malloc(sizeof(QUIXEL_CANVAS));
+	if(cp)
+	{
+		memset(cp, 0, sizeof(QUIXEL_CANVAS));
+		cp->bitmap_size = al_get_display_option(t3f_display, ALLEGRO_MAX_BITMAP_SIZE) / 2;
+		if(cp->bitmap_size > bitmap_max)
+		{
+			cp->bitmap_size = bitmap_max;
+		}
+		cp->config = al_create_config();
+		if(!cp->config)
+		{
+			goto fail;
+		}
+	}
+	return cp;
+
+	fail:
+	{
+		quixel_destroy_canvas(cp);
+		return NULL;
+	}
+}
+
+void quixel_destroy_canvas(QUIXEL_CANVAS * cp)
+{
+	int i, j, k;
+
+	if(cp)
+	{
+		if(cp->config)
+		{
+			al_destroy_config(cp->config);
+		}
+		if(cp->layer)
+		{
+			for(i = 0; i < cp->layer_max; i++)
+			{
+				if(cp->layer[i])
+				{
+					if(cp->layer[i]->bitmap)
+					{
+						for(j = 0; j < cp->layer_height; j++)
+						{
+							if(cp->layer[i]->bitmap[j])
+							{
+								for(k = 0; k < cp->layer_width; k++)
+								{
+									if(cp->layer[i]->bitmap[j][k])
+									{
+										al_destroy_bitmap(cp->layer[i]->bitmap[j][k]);
+									}
+								}
+							}
+						}
+						destroy_bitmap_array(cp->layer[i]->bitmap, cp->layer_width, cp->layer_height);
+					}
+					free(cp->layer[i]);
+				}
+			}
+			free(cp->layer);
+		}
+		free(cp);
 	}
 }
 
