@@ -1,6 +1,10 @@
 Quixel 0.2 Issues
 -----------------
 
+[ ]Undo counter desyncs when applying an unfloat selection undo. Duplicate by
+   drawing some pixels, selecting them, floating them, unfloating them, then
+   undoing the unfloat.
+
 [ ]Crash when attempting to flood fill brand new blank canvas.
 
 [ ]Implement image import. The image will be imported into a floating selection
