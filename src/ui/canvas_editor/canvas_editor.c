@@ -64,6 +64,10 @@ QUIXEL_CANVAS_EDITOR * quixel_create_canvas_editor(QUIXEL_CANVAS * cp)
 
 void quixel_destroy_canvas_editor(QUIXEL_CANVAS_EDITOR * cep)
 {
+	if(cep->selection.bitmap)
+	{
+		al_destroy_bitmap(cep->selection.bitmap);
+	}
 	if(cep->peg_bitmap)
 	{
 		al_destroy_bitmap(cep->peg_bitmap);
