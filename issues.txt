@@ -26,21 +26,6 @@ Quixel 0.2 Issues
 [ ]Moving selection is rendered above layers. We should render it in its
    position in the layer stack.
 
-[ ]Finish infinite canvas implementation.
-
-   [X]Handle canvas bitmap array expansion in canvas editor module. We need to
-      be able to adjust the editor variables when shifts occur.
-
-      [X]Handle expanding to the right and down.
-
-   [X]Fix canvas shift making drawing disappear.
-
-   [X]Make undo/redo work when an action causes the canvas bitmap array to be
-      shifted.
-
-   [ ]Make selection undo/redo work even if changes happen that cause the canvas
-      to be shifted.
-
 [ ]Flood fill failed to completely fill vertical line of pixels.
 
    [ ]Flood fill leaves traces when it fails to complete. Maybe we should just
@@ -367,3 +352,18 @@ Closed Issues
 
 [X]Use separate bitmap for floating selection. The scratch bitmap may not be big
    enough.
+
+[X]Finish infinite canvas implementation.
+
+   [X]Handle canvas bitmap array expansion in canvas editor module. We need to
+      be able to adjust the editor variables when shifts occur.
+
+      [X]Handle expanding to the right and down.
+
+   [X]Fix canvas shift making drawing disappear.
+
+   [X]Make undo/redo work when an action causes the canvas bitmap array to be
+      shifted.
+
+   [X]Make selection undo/redo work even if changes happen that cause the canvas
+      to be shifted.
