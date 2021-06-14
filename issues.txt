@@ -13,6 +13,10 @@ Quixel 0.2 Issues
    [ ]Unfloating uses composite rendering mode. Need to see if copy rendering
       will work or if we need to make a new mode.
 
+   [ ]Looks like we'll need to implement a new rendering mode that only copies
+      pixels with alpha > 0. This will have to be manually done by copying the
+      individual pixels to the destination bitmaps.
+
 [ ]Moving selection is rendered above layers. We should render it in its
    position in the layer stack.
 
