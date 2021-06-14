@@ -178,7 +178,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 	QUIXEL_CANVAS_EDITOR * canvas_editor = (QUIXEL_CANVAS_EDITOR *)d->dp;
 	char frame_name[256];
 	int frame_x, frame_y, frame_width, frame_height;
-	int cx, cy;
+	int cx, cy, tx, ty;
 	QUIXEL_BOX old_box;
 	T3GUI_THEME * theme;
 	ALLEGRO_COLOR color = t3f_color_black;
@@ -254,19 +254,24 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 					}
 					case QUIXEL_TOOL_FLOOD_FILL:
 					{
-						made_undo = create_undo(canvas_editor, NULL, 0, 0, 0, 0);
-						if(quixel_flood_fill_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y, c == 1 ? canvas_editor->left_color : canvas_editor->right_color))
+						tx = canvas_editor->hover_x / canvas_editor->canvas->bitmap_size;
+						ty = canvas_editor->hover_y / canvas_editor->canvas->bitmap_size;
+						if(tx >= 0 && tx < canvas_editor->canvas->layer_width && ty >= 0 && ty < canvas_editor->canvas->layer_height && canvas_editor->canvas->layer[canvas_editor->current_layer]->bitmap[ty][tx])
 						{
-							if(made_undo)
+							made_undo = create_undo(canvas_editor, NULL, 0, 0, 0, 0);
+							if(quixel_flood_fill_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y, c == 1 ? canvas_editor->left_color : canvas_editor->right_color))
 							{
-								quixel_finalize_undo(canvas_editor);
+								if(made_undo)
+								{
+									quixel_finalize_undo(canvas_editor);
+								}
 							}
-						}
-						else
-						{
-							if(made_undo)
+							else
 							{
-								revert_undo(canvas_editor);
+								if(made_undo)
+								{
+									revert_undo(canvas_editor);
+								}
 							}
 						}
 						break;
