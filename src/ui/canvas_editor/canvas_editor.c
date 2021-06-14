@@ -142,6 +142,7 @@ bool quixel_handle_float_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep, QUI
 	quixel_render_canvas_layer(cep->canvas, cep->current_layer, bp->start_x, bp->start_y, 1, 0, 0, bp->width, bp->height);
 	al_restore_state(&old_state);
 	quixel_draw_primitive_to_canvas(cep->canvas, cep->current_layer, bp->start_x, bp->start_y, bp->start_x + bp->width - 1, bp->start_y + bp->height - 1, NULL, al_map_rgba_f(0, 0, 0, 0), QUIXEL_RENDER_COPY, quixel_draw_filled_rectangle);
+	cep->modified++;
 
 	return true;
 
@@ -168,6 +169,7 @@ void quixel_handle_unfloat_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep, Q
 	quixel_draw_primitive_to_canvas(cep->canvas, cep->current_layer, bp->start_x, bp->start_y, bp->start_x + bp->width, bp->start_y + bp->height, cep->selection.bitmap, al_map_rgba_f(0, 0, 0, 0), QUIXEL_RENDER_COMPOSITE, quixel_draw_quad);
 	al_destroy_bitmap(cep->selection.bitmap);
 	cep->selection.bitmap = NULL;
+	cep->modified++;
 }
 
 void quixel_unfloat_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_BOX * bp)
