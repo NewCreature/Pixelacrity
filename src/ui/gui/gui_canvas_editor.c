@@ -265,6 +265,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 								{
 									quixel_finalize_undo(canvas_editor);
 								}
+								canvas_editor->modified++;
 							}
 							else
 							{
