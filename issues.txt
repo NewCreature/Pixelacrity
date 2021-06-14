@@ -37,14 +37,6 @@ Quixel 0.2 Issues
 
    [ ]UNSUPPORTED (log once): setPrimitiveRestartEnabled:index: unsupported!
 
-[ ]Investigate why pixel x-coordinate is offset by -1.
-
-   [ ]This might be a bug with Apple high resolution displays. I wasn't able to
-      replicate the issue on a normal 1080p monitor.
-
-   [ ]The mouse coordinate seems to be correct as interacting with other
-      elements of the UI work properly.
-
 [ ]Implement frame editing.
 
    [ ]There should be handles on the corners of each frame so we can edit them
@@ -58,6 +50,14 @@ Quixel 0.2 Issues
 
 Quixel 0.3 Issues
 -----------------
+
+[ ]Investigate why pixel x-coordinate is offset by -1.
+
+   [ ]This might be a bug with Apple high resolution displays. I wasn't able to
+      replicate the issue on a normal 1080p monitor.
+
+   [ ]The mouse coordinate seems to be correct as interacting with other
+      elements of the UI work properly.
 
 [ ]Consider allowing flood fill to be bound by the current frame if the user
    clicks within a frame.
