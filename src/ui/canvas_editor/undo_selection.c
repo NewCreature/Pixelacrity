@@ -1,6 +1,7 @@
 #include "t3f/t3f.h"
 #include "modules/canvas/canvas.h"
 #include "modules/canvas/canvas_helpers.h"
+#include "modules/primitives.h"
 #include "canvas_editor.h"
 #include "undo.h"
 
@@ -169,7 +170,7 @@ bool quixel_make_float_selection_undo(QUIXEL_CANVAS_EDITOR * cep, const char * f
 	}
 }
 
-bool quixel_make_float_selection_redo(QUIXEL_CANVAS_EDITOR * cep, int new_x, int new_y, const char * fn)
+bool quixel_make_float_selection_redo(QUIXEL_CANVAS_EDITOR * cep, int new_x, int new_y, ALLEGRO_BITMAP * bp, const char * fn)
 {
 	ALLEGRO_STATE old_state;
 	ALLEGRO_FILE * fp = NULL;
@@ -186,10 +187,13 @@ bool quixel_make_float_selection_redo(QUIXEL_CANVAS_EDITOR * cep, int new_x, int
 	al_fwrite32le(fp, cep->current_layer);
 	al_fwrite32le(fp, new_x);
 	al_fwrite32le(fp, new_y);
-	al_fwrite32le(fp, cep->selection.box.width);
-	al_fwrite32le(fp, cep->selection.box.height);
 	al_fwrite32le(fp, cep->selection.box.start_x);
 	al_fwrite32le(fp, cep->selection.box.start_y);
+	if(!al_save_bitmap_f(fp, ".png", bp))
+	{
+		printf("fail: %s\n", fn);
+		goto fail;
+	}
 	al_fclose(fp);
 
 	return true;
@@ -273,7 +277,7 @@ bool quixel_apply_float_selection_undo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE 
 	new_width = al_get_bitmap_width(bp);
 	new_height = al_get_bitmap_height(bp);
 	quixel_get_canvas_shift(cep->canvas, new_x, new_y, &shift_x, &shift_y);
-	quixel_make_float_selection_redo(cep, new_x, new_y, quixel_get_undo_path("redo", cep->redo_count, undo_path, 1024));
+	quixel_make_float_selection_redo(cep, new_x, new_y, bp,  quixel_get_undo_path("redo", cep->redo_count, undo_path, 1024));
 	cep->redo_count++;
 	quixel_import_bitmap_to_canvas(cep->canvas, bp, layer, new_x, new_y);
 	al_destroy_bitmap(bp);
@@ -307,21 +311,19 @@ bool quixel_apply_unfloat_selection_redo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FIL
 	int layer;
 
 	layer = al_fread32le(fp);
-	cep->shift_x = al_fread32le(fp);
-	cep->shift_y = al_fread32le(fp);
 	cep->selection.box.start_x = al_fread32le(fp);
 	cep->selection.box.start_y = al_fread32le(fp);
+	cep->selection.bitmap = al_load_bitmap_flags_f(fp, ".png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
+	if(!cep->selection.bitmap)
+	{
+		goto fail;
+	}
 	cep->selection.box.width = al_fread32le(fp);
 	cep->selection.box.height = al_fread32le(fp);
 	printf("r box %d %d\n", cep->selection.box.start_x, cep->selection.box.start_y);
 	quixel_make_unfloat_selection_undo(cep, quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024));
 	cep->undo_count++;
 	quixel_shift_canvas_editor_variables(cep, cep->shift_x * cep->canvas->bitmap_size, cep->shift_y * cep->canvas->bitmap_size);
-	bp = al_load_bitmap_flags_f(fp, ".png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
-	if(!bp)
-	{
-		goto fail;
-	}
 	quixel_import_bitmap_to_canvas(cep->canvas, bp, layer, cep->selection.box.start_x, cep->selection.box.start_y);
 	al_destroy_bitmap(bp);
 	cep->selection.box.width = 0;
@@ -353,15 +355,23 @@ bool quixel_apply_float_selection_redo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE 
 	quixel_make_float_selection_undo(cep, quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024));
 	cep->undo_count++;
 	layer = al_fread32le(fp);
-	cep->selection.box.start_x = al_fread32le(fp);
-	cep->selection.box.start_y = al_fread32le(fp);
-	cep->selection.box.width = al_fread32le(fp);
-	cep->selection.box.height = al_fread32le(fp);
 	new_x = al_fread32le(fp);
 	new_y = al_fread32le(fp);
-	quixel_handle_float_canvas_editor_selection(cep, &cep->selection.box);
-	quixel_initialize_box(&cep->selection.box, new_x, new_y, cep->selection.box.width, cep->selection.box.height, cep->selection.box.bitmap);
+	cep->selection.box.start_x = al_fread32le(fp);
+	cep->selection.box.start_y = al_fread32le(fp);
+	cep->selection.bitmap = al_load_bitmap_flags_f(fp, ".png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
+	if(!cep->selection.bitmap)
+	{
+		goto fail;
+	}
+	quixel_initialize_box(&cep->selection.box, cep->selection.box.start_x, cep->selection.box.start_y, cep->selection.box.width, cep->selection.box.height, cep->selection.box.bitmap);
+	quixel_draw_primitive_to_canvas(cep->canvas, layer, new_x, new_y, new_x + cep->selection.box.width - 1, new_y + cep->selection.box.height - 1, NULL, al_map_rgba_f(0.0, 0.0, 0.0, 0.0), QUIXEL_RENDER_COPY, quixel_draw_filled_rectangle);
 	quixel_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom);
 
 	return true;
+
+	fail:
+	{
+		return false;
+	}
 }
