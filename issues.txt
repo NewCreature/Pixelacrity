@@ -1,10 +1,6 @@
 Quixel 0.2 Issues
 -----------------
 
-[ ]Undo counter desyncs when applying an unfloat selection undo. Duplicate by
-   drawing some pixels, selecting them, floating them, unfloating them, then
-   undoing the unfloat.
-
 [ ]Undoing float selection can cause pixels at the bottom edge to disappear.
 
 [ ]Crash when attempting to flood fill brand new blank canvas.
@@ -367,3 +363,9 @@ Closed Issues
 
    [X]Make selection undo/redo work even if changes happen that cause the canvas
       to be shifted.
+
+[X]Undo counter desyncs when applying an unfloat selection undo. Duplicate by
+   drawing some pixels, selecting them, floating them, unfloating them, then
+   undoing the unfloat.
+
+   [X]Was actually the modified counter that was not being updated. Fixed.
