@@ -4,8 +4,6 @@ Quixel 0.2 Issues
 [ ]Implement image import. The image will be imported into a floating selection
    at the center of the view so the user has control over the final placement.
 
-[ ]Crash when switching away from program.
-
 [ ]Moving away from selection tool causes translucent pixels in the layer to
    have their alpha combined. I think this is being caused by the incorrect
    blend mode being set when copying the scratch data back to the canvas.
