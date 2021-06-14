@@ -320,7 +320,6 @@ bool quixel_apply_unfloat_selection_redo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FIL
 	}
 	cep->selection.box.width = al_fread32le(fp);
 	cep->selection.box.height = al_fread32le(fp);
-	printf("r box %d %d\n", cep->selection.box.start_x, cep->selection.box.start_y);
 	quixel_make_unfloat_selection_undo(cep, quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024));
 	cep->undo_count++;
 	quixel_shift_canvas_editor_variables(cep, cep->shift_x * cep->canvas->bitmap_size, cep->shift_y * cep->canvas->bitmap_size);
