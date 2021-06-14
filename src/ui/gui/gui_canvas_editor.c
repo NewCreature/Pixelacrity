@@ -335,86 +335,104 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			{
 				case QUIXEL_TOOL_PIXEL:
 				{
-					made_undo = create_primitive_undo(canvas_editor);
-					handle_canvas_expansion(canvas_editor);
-					quixel_tool_pixel_finish(canvas_editor);
-					if(made_undo)
+					if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING)
 					{
-						quixel_finalize_undo(canvas_editor);
+						made_undo = create_primitive_undo(canvas_editor);
+						handle_canvas_expansion(canvas_editor);
+						quixel_tool_pixel_finish(canvas_editor);
+						if(made_undo)
+						{
+							quixel_finalize_undo(canvas_editor);
+						}
+						canvas_editor->modified++;
+						canvas_editor->update_title = true;
+						canvas_editor->tool_state = QUIXEL_TOOL_STATE_OFF;
 					}
-					canvas_editor->modified++;
-					canvas_editor->update_title = true;
-					canvas_editor->tool_state = QUIXEL_TOOL_STATE_OFF;
 					break;
 				}
 				case QUIXEL_TOOL_LINE:
 				{
-					made_undo = create_primitive_undo(canvas_editor);
-					handle_canvas_expansion(canvas_editor);
-					quixel_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, NULL, canvas_editor->click_color, QUIXEL_RENDER_COPY, quixel_draw_line);
-					if(made_undo)
+					if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING)
 					{
-						quixel_finalize_undo(canvas_editor);
+						made_undo = create_primitive_undo(canvas_editor);
+						handle_canvas_expansion(canvas_editor);
+						quixel_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, NULL, canvas_editor->click_color, QUIXEL_RENDER_COPY, quixel_draw_line);
+						if(made_undo)
+						{
+							quixel_finalize_undo(canvas_editor);
+						}
+						canvas_editor->modified++;
+						canvas_editor->update_title = true;
+						canvas_editor->tool_state = QUIXEL_TOOL_STATE_OFF;
 					}
-					canvas_editor->modified++;
-					canvas_editor->update_title = true;
-					canvas_editor->tool_state = QUIXEL_TOOL_STATE_OFF;
 					break;
 				}
 				case QUIXEL_TOOL_RECTANGLE:
 				{
-					made_undo = create_primitive_undo(canvas_editor);
-					handle_canvas_expansion(canvas_editor);
-					quixel_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, NULL, canvas_editor->click_color, QUIXEL_RENDER_COPY, quixel_draw_rectangle);
-					if(made_undo)
+					if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING)
 					{
-						quixel_finalize_undo(canvas_editor);
+						made_undo = create_primitive_undo(canvas_editor);
+						handle_canvas_expansion(canvas_editor);
+						quixel_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, NULL, canvas_editor->click_color, QUIXEL_RENDER_COPY, quixel_draw_rectangle);
+						if(made_undo)
+						{
+							quixel_finalize_undo(canvas_editor);
+						}
+						canvas_editor->modified++;
+						canvas_editor->update_title = true;
+						canvas_editor->tool_state = QUIXEL_TOOL_STATE_OFF;
 					}
-					canvas_editor->modified++;
-					canvas_editor->update_title = true;
-					canvas_editor->tool_state = QUIXEL_TOOL_STATE_OFF;
 					break;
 				}
 				case QUIXEL_TOOL_FILLED_RECTANGLE:
 				{
-					made_undo = create_primitive_undo(canvas_editor);
-					handle_canvas_expansion(canvas_editor);
-					quixel_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, NULL, canvas_editor->click_color, QUIXEL_RENDER_COPY, quixel_draw_filled_rectangle);
-					if(made_undo)
+					if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING)
 					{
-						quixel_finalize_undo(canvas_editor);
+						made_undo = create_primitive_undo(canvas_editor);
+						handle_canvas_expansion(canvas_editor);
+						quixel_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, NULL, canvas_editor->click_color, QUIXEL_RENDER_COPY, quixel_draw_filled_rectangle);
+						if(made_undo)
+						{
+							quixel_finalize_undo(canvas_editor);
+						}
+						canvas_editor->modified++;
+						canvas_editor->update_title = true;
+						canvas_editor->tool_state = QUIXEL_TOOL_STATE_OFF;
 					}
-					canvas_editor->modified++;
-					canvas_editor->update_title = true;
-					canvas_editor->tool_state = QUIXEL_TOOL_STATE_OFF;
 					break;
 				}
 				case QUIXEL_TOOL_OVAL:
 				{
-					made_undo = create_primitive_undo(canvas_editor);
-					handle_canvas_expansion(canvas_editor);
-					quixel_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, NULL, canvas_editor->click_color, QUIXEL_RENDER_COPY, quixel_draw_oval);
-					if(made_undo)
+					if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING)
 					{
-						quixel_finalize_undo(canvas_editor);
+						made_undo = create_primitive_undo(canvas_editor);
+						handle_canvas_expansion(canvas_editor);
+						quixel_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, NULL, canvas_editor->click_color, QUIXEL_RENDER_COPY, quixel_draw_oval);
+						if(made_undo)
+						{
+							quixel_finalize_undo(canvas_editor);
+						}
+						canvas_editor->modified++;
+						canvas_editor->update_title = true;
+						canvas_editor->tool_state = QUIXEL_TOOL_STATE_OFF;
 					}
-					canvas_editor->modified++;
-					canvas_editor->update_title = true;
-					canvas_editor->tool_state = QUIXEL_TOOL_STATE_OFF;
 					break;
 				}
 				case QUIXEL_TOOL_FILLED_OVAL:
 				{
-					made_undo = create_primitive_undo(canvas_editor);
-					handle_canvas_expansion(canvas_editor);
-					quixel_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, NULL, canvas_editor->click_color, QUIXEL_RENDER_COPY, quixel_draw_filled_oval);
-					if(made_undo)
+					if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING)
 					{
-						quixel_finalize_undo(canvas_editor);
+						made_undo = create_primitive_undo(canvas_editor);
+						handle_canvas_expansion(canvas_editor);
+						quixel_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, NULL, canvas_editor->click_color, QUIXEL_RENDER_COPY, quixel_draw_filled_oval);
+						if(made_undo)
+						{
+							quixel_finalize_undo(canvas_editor);
+						}
+						canvas_editor->modified++;
+						canvas_editor->update_title = true;
+						canvas_editor->tool_state = QUIXEL_TOOL_STATE_OFF;
 					}
-					canvas_editor->modified++;
-					canvas_editor->update_title = true;
-					canvas_editor->tool_state = QUIXEL_TOOL_STATE_OFF;
 					break;
 				}
 				case QUIXEL_TOOL_SELECTION:
