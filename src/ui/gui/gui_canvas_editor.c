@@ -71,6 +71,7 @@ static void click_on_canvas(QUIXEL_CANVAS_EDITOR * cep, int button, int x, int y
 	mouse_button = button;
 	cep->click_x = x;
 	cep->click_y = y;
+	cep->click_button = button;
 	if(button == 1)
 	{
 		cep->click_color = cep->left_color;
@@ -335,7 +336,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			{
 				case QUIXEL_TOOL_PIXEL:
 				{
-					if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING)
+					if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING && c == canvas_editor->click_button)
 					{
 						made_undo = create_primitive_undo(canvas_editor);
 						handle_canvas_expansion(canvas_editor);
@@ -352,7 +353,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				}
 				case QUIXEL_TOOL_LINE:
 				{
-					if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING)
+					if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING && c == canvas_editor->click_button)
 					{
 						made_undo = create_primitive_undo(canvas_editor);
 						handle_canvas_expansion(canvas_editor);
@@ -369,7 +370,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				}
 				case QUIXEL_TOOL_RECTANGLE:
 				{
-					if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING)
+					if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING && c == canvas_editor->click_button)
 					{
 						made_undo = create_primitive_undo(canvas_editor);
 						handle_canvas_expansion(canvas_editor);
@@ -386,7 +387,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				}
 				case QUIXEL_TOOL_FILLED_RECTANGLE:
 				{
-					if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING)
+					if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING && c == canvas_editor->click_button)
 					{
 						made_undo = create_primitive_undo(canvas_editor);
 						handle_canvas_expansion(canvas_editor);
@@ -403,7 +404,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				}
 				case QUIXEL_TOOL_OVAL:
 				{
-					if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING)
+					if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING && c == canvas_editor->click_button)
 					{
 						made_undo = create_primitive_undo(canvas_editor);
 						handle_canvas_expansion(canvas_editor);
@@ -420,7 +421,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				}
 				case QUIXEL_TOOL_FILLED_OVAL:
 				{
-					if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING)
+					if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING && c == canvas_editor->click_button)
 					{
 						made_undo = create_primitive_undo(canvas_editor);
 						handle_canvas_expansion(canvas_editor);

@@ -57,7 +57,7 @@ typedef struct
 	int view_zoom;
 	int hover_x, hover_y;
 	int last_hover_x, last_hover_y;
-	int click_x, click_y;
+	int click_x, click_y, click_button;
 	ALLEGRO_COLOR click_color;
 	int release_x, release_y;
 	int shift_x, shift_y;
