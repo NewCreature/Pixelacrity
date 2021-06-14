@@ -122,7 +122,7 @@ bool quixel_make_unfloat_selection_redo(QUIXEL_CANVAS_EDITOR * cep, const char *
 	}
 }
 
-bool quixel_make_float_selection_undo(QUIXEL_CANVAS_EDITOR * cep, const char * fn)
+bool quixel_make_float_selection_undo(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_BOX * box, const char * fn)
 {
 	ALLEGRO_STATE old_state;
 	ALLEGRO_BITMAP * bp = NULL;
@@ -130,13 +130,13 @@ bool quixel_make_float_selection_undo(QUIXEL_CANVAS_EDITOR * cep, const char * f
 
 	al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);
 	al_set_new_bitmap_flags(ALLEGRO_MEMORY_BITMAP);
-	bp = al_create_bitmap(cep->selection.box.width, cep->selection.box.height);
+	bp = al_create_bitmap(box->width, box->height);
 	al_restore_state(&old_state);
 	if(!bp)
 	{
 		goto fail;
 	}
-	quixel_render_canvas_to_bitmap(cep->canvas, cep->current_layer, cep->current_layer + 1, cep->selection.box.start_x, cep->selection.box.start_y, cep->selection.box.width, cep->selection.box.height, 0, bp);
+	quixel_render_canvas_to_bitmap(cep->canvas, cep->current_layer, cep->current_layer + 1, box->start_x, box->start_y, box->width, box->height, 0, bp);
 	fp = al_fopen(fn, "wb");
 	if(!fp)
 	{
@@ -145,8 +145,8 @@ bool quixel_make_float_selection_undo(QUIXEL_CANVAS_EDITOR * cep, const char * f
 	}
 	quixel_write_undo_header(fp, QUIXEL_UNDO_TYPE_FLOAT_SELECTION, "Float Selection");
 	al_fwrite32le(fp, cep->current_layer);
-	al_fwrite32le(fp, cep->selection.box.start_x);
-	al_fwrite32le(fp, cep->selection.box.start_y);
+	al_fwrite32le(fp, box->start_x);
+	al_fwrite32le(fp, box->start_y);
 	if(!al_save_bitmap_f(fp, ".png", bp))
 	{
 		printf("fail: %s\n", fn);
@@ -352,7 +352,7 @@ bool quixel_apply_float_selection_redo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE 
 	int layer;
 	int new_x, new_y;
 
-	quixel_make_float_selection_undo(cep, quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024));
+	quixel_make_float_selection_undo(cep, &cep->selection.box, quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024));
 	cep->undo_count++;
 	layer = al_fread32le(fp);
 	new_x = al_fread32le(fp);

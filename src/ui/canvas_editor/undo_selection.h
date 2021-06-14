@@ -1,7 +1,7 @@
 #ifndef QUIXEL_UNDO_SELECTION_H
 #define QUIXEL_UNDO_SELECTION_H
 
-bool quixel_make_float_selection_undo(QUIXEL_CANVAS_EDITOR * cep, const char * fn);
+bool quixel_make_float_selection_undo(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_BOX * box, const char * fn);
 bool quixel_make_float_selection_redo(QUIXEL_CANVAS_EDITOR * cep, int new_x, int new_y, ALLEGRO_BITMAP * bp, const char * fn);
 bool quixel_make_unfloat_selection_undo(QUIXEL_CANVAS_EDITOR * cep, const char * fn);
 bool quixel_make_unfloat_selection_redo(QUIXEL_CANVAS_EDITOR * cep, const char * fn);

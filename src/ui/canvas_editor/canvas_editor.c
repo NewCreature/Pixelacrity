@@ -110,12 +110,12 @@ static bool create_unfloat_undo(QUIXEL_CANVAS_EDITOR * cep)
 	return false;
 }
 
-static bool create_float_undo(QUIXEL_CANVAS_EDITOR * cep)
+static bool create_float_undo(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_BOX * bp)
 {
 	char undo_path[1024];
 
 	quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024);
-	if(quixel_make_float_selection_undo(cep, undo_path))
+	if(quixel_make_float_selection_undo(cep, bp, undo_path))
 	{
 		return true;
 	}
@@ -155,7 +155,7 @@ bool quixel_handle_float_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep, QUI
 
 void quixel_float_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_BOX * bp)
 {
-	create_float_undo(cep);
+	create_float_undo(cep, bp);
 	quixel_finalize_undo(cep);
 	quixel_handle_float_canvas_editor_selection(cep, bp);
 }
