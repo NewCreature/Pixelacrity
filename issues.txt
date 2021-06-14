@@ -1,8 +1,6 @@
 Quixel 0.2 Issues
 -----------------
 
-[ ]Undoing float selection can cause pixels at the bottom edge to disappear.
-
 [ ]Crash when attempting to flood fill brand new blank canvas.
 
 [ ]Implement image import. The image will be imported into a floating selection
@@ -369,3 +367,5 @@ Closed Issues
    undoing the unfloat.
 
    [X]Was actually the modified counter that was not being updated. Fixed.
+
+[X]Undoing float selection can cause pixels at the bottom edge to disappear.
