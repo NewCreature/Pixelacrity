@@ -1,8 +1,6 @@
 Quixel 0.2 Issues
 -----------------
 
-[ ]Crash when attempting to flood fill brand new blank canvas.
-
 [ ]Implement image import. The image will be imported into a floating selection
    at the center of the view so the user has control over the final placement.
 
@@ -369,3 +367,5 @@ Closed Issues
    [X]Was actually the modified counter that was not being updated. Fixed.
 
 [X]Undoing float selection can cause pixels at the bottom edge to disappear.
+
+[X]Crash when attempting to flood fill brand new blank canvas.
