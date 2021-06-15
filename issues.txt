@@ -19,6 +19,10 @@ Quixel 0.2 Issues
       pixels with alpha > 0. This will have to be manually done by copying the
       individual pixels to the destination bitmaps.
 
+      [ ]Modify how floating selection rendering works. We should render the
+         visible part of the current layer to the scratch bitmap and copy the combined bitmap from the selection data onto it and render the scratch
+         bitmap to the screen. This is the same way the other tools work.
+
 [ ]Moving selection is rendered above layers. We should render it in its
    position in the layer stack.
 
