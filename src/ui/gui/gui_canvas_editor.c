@@ -20,6 +20,7 @@
 #include "modules/date.h"
 #include "modules/color.h"
 #include "modules/canvas/flood_fill.h"
+#include "modules/combine_bitmap.h"
 
 void quixel_canvas_editor_update_pick_colors(QUIXEL_CANVAS_EDITOR * cep)
 {
@@ -724,7 +725,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			ALLEGRO_TRANSFORM identity;
 			int i;
 
-			al_store_state(&old_state, ALLEGRO_STATE_TRANSFORM);
+			al_store_state(&old_state, ALLEGRO_STATE_TRANSFORM | ALLEGRO_STATE_BLENDER);
 			al_identity_transform(&identity);
 			al_use_transform(&identity);
 			if(canvas_editor->tool_state != QUIXEL_TOOL_STATE_DRAWING)
@@ -764,8 +765,13 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			{
 				if(canvas_editor->selection.bitmap)
 				{
-					al_draw_scaled_bitmap(canvas_editor->selection.bitmap, 0, 0,  canvas_editor->selection.box.width, canvas_editor->selection.box.height, d->x + (canvas_editor->selection.box.start_x - canvas_editor->view_x) * canvas_editor->view_zoom, d->y + (canvas_editor->selection.box.start_y - canvas_editor->view_y) * canvas_editor->view_zoom, canvas_editor->selection.box.width * canvas_editor->view_zoom, canvas_editor->selection.box.height * canvas_editor->view_zoom, 0);
+					quixel_render_canvas_to_bitmap(canvas_editor->canvas, 0, canvas_editor->current_layer + 1, canvas_editor->selection.box.start_x, canvas_editor->selection.box.start_y, canvas_editor->selection.box.width, canvas_editor->selection.box.height, 0, canvas_editor->selection.combined_bitmap);
+					pa_combine_bitmap(canvas_editor->selection.bitmap, canvas_editor->selection.combined_bitmap);
+//					al_draw_scaled_bitmap(canvas_editor->selection.combined_bitmap, 0, 0, al_get_bitmap_width(canvas_editor->selection.combined_bitmap), al_get_bitmap_height(canvas_editor->selection.combined_bitmap), 200, 200, 200, 200, 0);
+					al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
+					al_draw_scaled_bitmap(canvas_editor->selection.combined_bitmap, 0, 0,  canvas_editor->selection.box.width, canvas_editor->selection.box.height, d->x + (canvas_editor->selection.box.start_x - canvas_editor->view_x) * canvas_editor->view_zoom, d->y + (canvas_editor->selection.box.start_y - canvas_editor->view_y) * canvas_editor->view_zoom, canvas_editor->selection.box.width * canvas_editor->view_zoom, canvas_editor->selection.box.height * canvas_editor->view_zoom, 0);
 				}
+				al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_INVERSE_ALPHA);
 				quixel_box_render(&canvas_editor->selection.box, 0, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y);
 			}
 			al_restore_state(&old_state);

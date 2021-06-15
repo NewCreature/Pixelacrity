@@ -134,6 +134,11 @@ bool quixel_handle_float_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep, QUI
 	{
 		goto fail;
 	}
+	cep->selection.combined_bitmap = al_create_bitmap(bp->width, bp->height);
+	if(!cep->selection.combined_bitmap)
+	{
+		goto fail;
+	}
 	al_set_target_bitmap(cep->selection.bitmap);
 	al_identity_transform(&identity);
 	al_use_transform(&identity);
@@ -148,6 +153,16 @@ bool quixel_handle_float_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep, QUI
 
 	fail:
 	{
+		if(cep->selection.bitmap)
+		{
+			al_destroy_bitmap(cep->selection.bitmap);
+			cep->selection.bitmap = NULL;
+		}
+		if(cep->selection.combined_bitmap)
+		{
+			al_destroy_bitmap(cep->selection.combined_bitmap);
+			cep->selection.combined_bitmap = NULL;
+		}
 		al_restore_state(&old_state);
 		return false;
 	}

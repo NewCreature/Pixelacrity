@@ -33,6 +33,7 @@ typedef struct
 {
 
 	ALLEGRO_BITMAP * bitmap;
+	ALLEGRO_BITMAP * combined_bitmap;
 	int layer;
 	QUIXEL_BOX box;
 
