@@ -181,7 +181,7 @@ void quixel_handle_unfloat_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep, Q
 	{
 		quixel_shift_canvas_editor_variables(cep, cep->shift_x * cep->canvas->bitmap_size, cep->shift_y * cep->canvas->bitmap_size);
 	}
-	quixel_draw_primitive_to_canvas(cep->canvas, cep->current_layer, bp->start_x, bp->start_y, bp->start_x + bp->width, bp->start_y + bp->height, cep->selection.bitmap, al_map_rgba_f(0, 0, 0, 0), QUIXEL_RENDER_COMPOSITE, quixel_draw_quad);
+	quixel_draw_primitive_to_canvas(cep->canvas, cep->current_layer, bp->start_x, bp->start_y, bp->start_x + bp->width, bp->start_y + bp->height, cep->selection.combined_bitmap, al_map_rgba_f(0, 0, 0, 0), QUIXEL_RENDER_COPY, quixel_draw_quad);
 	al_destroy_bitmap(cep->selection.bitmap);
 	cep->selection.bitmap = NULL;
 	cep->modified++;
