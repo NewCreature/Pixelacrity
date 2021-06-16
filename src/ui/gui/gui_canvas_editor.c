@@ -728,22 +728,33 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			al_store_state(&old_state, ALLEGRO_STATE_TRANSFORM | ALLEGRO_STATE_BLENDER);
 			al_identity_transform(&identity);
 			al_use_transform(&identity);
-			if(canvas_editor->tool_state != QUIXEL_TOOL_STATE_DRAWING)
+
+			/* render background layers */
+			for(i = 0; i < canvas_editor->current_layer; i++)
 			{
-				quixel_render_canvas(canvas_editor->canvas, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, d->w, d->h);
+				quixel_render_canvas_layer(canvas_editor->canvas, i, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, d->w, d->h);
+			}
+
+			if(canvas_editor->selection.bitmap)
+			{
+				quixel_tool_selection_logic(canvas_editor);
+			}
+			if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING || canvas_editor->selection.bitmap)
+			{
+				al_draw_scaled_bitmap(canvas_editor->scratch_bitmap, 0, 0,  al_get_bitmap_width(canvas_editor->scratch_bitmap), al_get_bitmap_height(canvas_editor->scratch_bitmap), d->x - (canvas_editor->view_x - canvas_editor->scratch_offset_x) * canvas_editor->view_zoom, d->y - (canvas_editor->view_y - canvas_editor->scratch_offset_y) * canvas_editor->view_zoom, al_get_bitmap_width(canvas_editor->scratch_bitmap) * canvas_editor->view_zoom, al_get_bitmap_height(canvas_editor->scratch_bitmap) * canvas_editor->view_zoom, 0);
 			}
 			else
 			{
-				for(i = 0; i < canvas_editor->current_layer; i++)
-				{
-					quixel_render_canvas_layer(canvas_editor->canvas, i, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, d->w, d->h);
-				}
-				al_draw_scaled_bitmap(canvas_editor->scratch_bitmap, 0, 0,  al_get_bitmap_width(canvas_editor->scratch_bitmap), al_get_bitmap_height(canvas_editor->scratch_bitmap), d->x - (canvas_editor->view_x - canvas_editor->scratch_offset_x) * canvas_editor->view_zoom, d->y - (canvas_editor->view_y - canvas_editor->scratch_offset_y) * canvas_editor->view_zoom, al_get_bitmap_width(canvas_editor->scratch_bitmap) * canvas_editor->view_zoom, al_get_bitmap_height(canvas_editor->scratch_bitmap) * canvas_editor->view_zoom, 0);
-				for(i = canvas_editor->current_layer + 1; i < canvas_editor->canvas->layer_max; i++)
-				{
-					quixel_render_canvas_layer(canvas_editor->canvas, i, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, d->w, d->h);
-				}
+				quixel_render_canvas_layer(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, d->w, d->h);
 			}
+
+			/* draw foreground layers */
+			for(i = canvas_editor->current_layer + 1; i < canvas_editor->canvas->layer_max; i++)
+			{
+				quixel_render_canvas_layer(canvas_editor->canvas, i, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, d->w, d->h);
+			}
+
+			/* render frames */
 			theme = t3gui_get_default_theme();
 			for(i = 0; i < canvas_editor->canvas->frame_max; i++)
 			{
@@ -761,17 +772,10 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				}
 				al_draw_rectangle(d->x + (canvas_editor->canvas->frame[i]->box.start_x - canvas_editor->view_x) * canvas_editor->view_zoom - 1.0 + 0.5, d->y + (canvas_editor->canvas->frame[i]->box.start_y - canvas_editor->view_y) * canvas_editor->view_zoom - 1.0 + 0.5, d->x + (canvas_editor->canvas->frame[i]->box.start_x + canvas_editor->canvas->frame[i]->box.width - canvas_editor->view_x) * canvas_editor->view_zoom + 0.5, d->y + (canvas_editor->canvas->frame[i]->box.start_y + canvas_editor->canvas->frame[i]->box.height - canvas_editor->view_y) * canvas_editor->view_zoom + 0.5, color, 1.0);
 			}
+
+			/* render selection box */
 			if(canvas_editor->selection.box.width > 0 && canvas_editor->selection.box.height > 0)
 			{
-				if(canvas_editor->selection.bitmap)
-				{
-					quixel_render_canvas_to_bitmap(canvas_editor->canvas, 0, canvas_editor->current_layer + 1, canvas_editor->selection.box.start_x, canvas_editor->selection.box.start_y, canvas_editor->selection.box.width, canvas_editor->selection.box.height, 0, canvas_editor->selection.combined_bitmap);
-					pa_combine_bitmap(canvas_editor->selection.bitmap, canvas_editor->selection.combined_bitmap);
-//					al_draw_scaled_bitmap(canvas_editor->selection.combined_bitmap, 0, 0, al_get_bitmap_width(canvas_editor->selection.combined_bitmap), al_get_bitmap_height(canvas_editor->selection.combined_bitmap), 200, 200, 200, 200, 0);
-					al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
-					al_draw_scaled_bitmap(canvas_editor->selection.combined_bitmap, 0, 0,  canvas_editor->selection.box.width, canvas_editor->selection.box.height, d->x + (canvas_editor->selection.box.start_x - canvas_editor->view_x) * canvas_editor->view_zoom, d->y + (canvas_editor->selection.box.start_y - canvas_editor->view_y) * canvas_editor->view_zoom, canvas_editor->selection.box.width * canvas_editor->view_zoom, canvas_editor->selection.box.height * canvas_editor->view_zoom, 0);
-				}
-				al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_INVERSE_ALPHA);
 				quixel_box_render(&canvas_editor->selection.box, 0, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y);
 			}
 			al_restore_state(&old_state);
