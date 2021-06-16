@@ -9,8 +9,8 @@ void pa_combine_bitmap(ALLEGRO_BITMAP * src, ALLEGRO_BITMAP * dest)
 	unsigned char r, a;
 
 	al_store_state(&old_state, ALLEGRO_STATE_TRANSFORM | ALLEGRO_STATE_TARGET_BITMAP);
-//	al_lock_bitmap(src, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_READONLY);
-//	al_lock_bitmap(dest, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_WRITEONLY);
+	al_lock_bitmap(src, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_READONLY);
+	al_lock_bitmap(dest, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_READWRITE);
 	al_set_target_bitmap(dest);
 	al_identity_transform(&identity);
 	al_use_transform(&identity);
@@ -26,7 +26,7 @@ void pa_combine_bitmap(ALLEGRO_BITMAP * src, ALLEGRO_BITMAP * dest)
 			}
 		}
 	}
-//	al_unlock_bitmap(src);
-//	al_unlock_bitmap(dest);
+	al_unlock_bitmap(src);
+	al_unlock_bitmap(dest);
 	al_restore_state(&old_state);
 }
