@@ -6,26 +6,6 @@ Quixel 0.2 Issues
 [ ]Implement image import. The image will be imported into a floating selection
    at the center of the view so the user has control over the final placement.
 
-[ ]Moving away from selection tool causes translucent pixels in the layer to
-   have their alpha combined. I think this is being caused by the incorrect
-   blend mode being set when copying the scratch data back to the canvas.
-
-   [ ]It only happens when a floating selection is unfloated.
-
-   [ ]Unfloating uses composite rendering mode. Need to see if copy rendering
-      will work or if we need to make a new mode.
-
-   [ ]Looks like we'll need to implement a new rendering mode that only copies
-      pixels with alpha > 0. This will have to be manually done by copying the
-      individual pixels to the destination bitmaps.
-
-      [ ]Modify how floating selection rendering works. We should render the
-         visible part of the current layer to the scratch bitmap and copy the combined bitmap from the selection data onto it and render the scratch
-         bitmap to the screen. This is the same way the other tools work.
-
-[ ]Moving selection is rendered above layers. We should render it in its
-   position in the layer stack.
-
 [ ]Flood fill failed to completely fill vertical line of pixels.
 
    [ ]Flood fill leaves traces when it fails to complete. Maybe we should just
@@ -377,3 +357,23 @@ Closed Issues
 [X]Undoing float selection can cause pixels at the bottom edge to disappear.
 
 [X]Crash when attempting to flood fill brand new blank canvas.
+
+[X]Moving away from selection tool causes translucent pixels in the layer to
+   have their alpha combined. I think this is being caused by the incorrect
+   blend mode being set when copying the scratch data back to the canvas.
+
+   [X]It only happens when a floating selection is unfloated.
+
+   [X]Unfloating uses composite rendering mode. Need to see if copy rendering
+      will work or if we need to make a new mode.
+
+   [X]Looks like we'll need to implement a new rendering mode that only copies
+      pixels with alpha > 0. This will have to be manually done by copying the
+      individual pixels to the destination bitmaps.
+
+      [X]Modify how floating selection rendering works. We should render the
+         visible part of the current layer to the scratch bitmap and copy the combined bitmap from the selection data onto it and render the scratch
+         bitmap to the screen. This is the same way the other tools work.
+
+[X]Moving selection is rendered above layers. We should render it in its
+   position in the layer stack.
