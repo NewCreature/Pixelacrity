@@ -31,6 +31,7 @@ APP_UI_OBJECTS =     ui/ui.o\
                      ui/canvas_editor/undo_frame.o\
                      ui/canvas_editor/undo_selection.o\
                      ui/canvas_editor/undo_layer.o\
+                     ui/canvas_editor/undo_flood_fill.o\
                      ui/canvas_editor/tools/tool_pixel.o\
                      ui/canvas_editor/tools/tool_line.o\
                      ui/canvas_editor/tools/tool_rectangle.o\

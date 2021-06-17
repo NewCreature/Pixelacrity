@@ -31,5 +31,6 @@ QUIXEL_QUEUE * quixel_create_queue(void);
 void quixel_destroy_queue(QUIXEL_QUEUE * qp);
 bool quixel_queue_push(QUIXEL_QUEUE * qp, int x, int y);
 bool quixel_queue_pop(QUIXEL_QUEUE * qp, int * x, int * y);
+int quixel_get_queue_size(QUIXEL_QUEUE * qp);
 
 #endif

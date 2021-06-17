@@ -6,6 +6,7 @@
 #include "ui/canvas_editor/canvas_editor.h"
 #include "ui/canvas_editor/undo.h"
 #include "ui/canvas_editor/undo_tool.h"
+#include "ui/canvas_editor/undo_flood_fill.h"
 #include "modules/primitives.h"
 #include "ui/gui/gui_canvas_editor.h"
 #include "ui/canvas_editor/tools/tool_pixel.h"
@@ -140,6 +141,18 @@ static void revert_undo(QUIXEL_CANVAS_EDITOR * cep)
 	quixel_apply_undo(cep, undo_path, true);
 }
 
+static bool create_flood_fill_undo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_COLOR color, QUIXEL_QUEUE * qp)
+{
+	char undo_path[1024];
+
+	quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024);
+	if(quixel_make_flood_fill_undo(cep, cep->current_layer, color, qp, undo_path))
+	{
+		return true;
+	}
+	return false;
+}
+
 static void clear_bitmap(ALLEGRO_BITMAP * bp)
 {
 	ALLEGRO_STATE old_state;
@@ -186,6 +199,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 	ALLEGRO_COLOR color = t3f_color_black;
 	bool made_undo = false;
 	bool simulate_mouse_move = false;
+	QUIXEL_QUEUE * flood_fill_queue = NULL;
 
 	switch(msg)
 	{
@@ -260,21 +274,19 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 						ty = canvas_editor->hover_y / canvas_editor->canvas->bitmap_size;
 						if(tx >= 0 && tx < canvas_editor->canvas->layer_width && ty >= 0 && ty < canvas_editor->canvas->layer_height && canvas_editor->canvas->layer[canvas_editor->current_layer]->bitmap[ty][tx])
 						{
-							made_undo = create_undo(canvas_editor, NULL, 0, 0, 0, 0);
-							if(quixel_flood_fill_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y, c == 1 ? canvas_editor->left_color : canvas_editor->right_color))
+							flood_fill_queue = quixel_create_queue();
+							if(flood_fill_queue)
 							{
-								if(made_undo)
+								if(quixel_flood_fill_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y, c == 1 ? canvas_editor->left_color : canvas_editor->right_color, flood_fill_queue))
 								{
-									quixel_finalize_undo(canvas_editor);
+									made_undo = create_flood_fill_undo(canvas_editor, color, flood_fill_queue);
+									if(made_undo)
+									{
+										quixel_finalize_undo(canvas_editor);
+									}
+									canvas_editor->modified++;
 								}
-								canvas_editor->modified++;
-							}
-							else
-							{
-								if(made_undo)
-								{
-									revert_undo(canvas_editor);
-								}
+								quixel_destroy_queue(flood_fill_queue);
 							}
 						}
 						break;

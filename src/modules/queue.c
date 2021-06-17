@@ -67,3 +67,17 @@ bool quixel_queue_pop(QUIXEL_QUEUE * qp, int * x, int * y)
 	}
 	return false;
 }
+
+int quixel_get_queue_size(QUIXEL_QUEUE * qp)
+{
+	QUIXEL_QUEUE_NODE * current_node;
+	int size = 0;
+
+	current_node = qp->current;
+	while(current_node)
+	{
+		size++;
+		current_node = current_node->previous;
+	}
+	return size;
+}

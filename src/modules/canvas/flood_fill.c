@@ -24,7 +24,7 @@ static void put_pixel(QUIXEL_CANVAS * cp, int layer, int ox, int oy, ALLEGRO_COL
 	al_put_pixel(ox, oy, color);
 }
 
-bool quixel_flood_fill_canvas(QUIXEL_CANVAS * cp, int layer, int start_x, int start_y, ALLEGRO_COLOR color)
+bool quixel_flood_fill_canvas(QUIXEL_CANVAS * cp, int layer, int start_x, int start_y, ALLEGRO_COLOR color, QUIXEL_QUEUE * out_qp)
 {
 	QUIXEL_QUEUE * qp;
 	ALLEGRO_COLOR old_color;
