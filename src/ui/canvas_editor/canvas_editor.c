@@ -217,3 +217,17 @@ void quixel_shift_canvas_editor_variables(QUIXEL_CANVAS_EDITOR * cep, int ox, in
 	cep->selection.box.end_x += ox;
 	cep->selection.box.end_y += oy;
 }
+
+void quixel_select_canvas_editor_tool(QUIXEL_CANVAS_EDITOR * cep, int tool)
+{
+	if(cep->current_tool == QUIXEL_TOOL_SELECTION && tool != QUIXEL_TOOL_SELECTION)
+	{
+		if(cep->selection.bitmap)
+		{
+			quixel_unfloat_canvas_editor_selection(cep, &cep->selection.box);
+		}
+		cep->selection.box.width = 0;
+		cep->selection.box.height = 0;
+	}
+	cep->current_tool = tool;
+}
