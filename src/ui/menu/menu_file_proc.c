@@ -5,6 +5,8 @@
 #include "modules/canvas/canvas_file.h"
 #include "modules/canvas/canvas_helpers.h"
 #include "menu_file_proc.h"
+#include "ui/canvas_editor/undo.h"
+#include "ui/canvas_editor/undo_import.h"
 
 static bool close_canvas(APP_INSTANCE * app)
 {
@@ -277,6 +279,18 @@ int quixel_menu_file_save_as(int id, void * data)
 	return 0;
 }
 
+static bool make_import_undo(QUIXEL_CANVAS_EDITOR * cep, const char * fn)
+{
+	char undo_path[1024];
+
+	quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024);
+	if(quixel_make_import_undo(cep, cep->current_layer, fn, undo_path))
+	{
+		return true;
+	}
+	return false;
+}
+
 int quixel_menu_file_import(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
@@ -296,17 +310,12 @@ int quixel_menu_file_import(int id, void * data)
 					file_path = al_get_native_file_dialog_path(file_chooser, 0);
 					if(file_path)
 					{
-						app->canvas_editor->selection.bitmap = al_load_bitmap_flags(file_path, ALLEGRO_NO_PREMULTIPLIED_ALPHA);
-						if(app->canvas_editor->selection.bitmap)
+						if(quixel_import_image(app->canvas_editor, file_path))
 						{
-							app->canvas_editor->selection.combined_bitmap = al_create_bitmap(al_get_bitmap_width(app->canvas_editor->selection.bitmap), al_get_bitmap_height(app->canvas_editor->selection.bitmap));
-							if(!app->canvas_editor->selection.combined_bitmap)
+							if(make_import_undo(app->canvas_editor, file_path))
 							{
-								goto fail;
+								quixel_finalize_undo(app->canvas_editor);
 							}
-							quixel_select_canvas_editor_tool(app->canvas_editor, QUIXEL_TOOL_SELECTION);
-							quixel_initialize_box(&app->canvas_editor->selection.box, 0, 0, al_get_bitmap_width(app->canvas_editor->selection.bitmap), al_get_bitmap_height(app->canvas_editor->selection.bitmap), app->canvas_editor->peg_bitmap);
-							quixel_update_box_handles(&app->canvas_editor->selection.box, app->canvas_editor->view_x, app->canvas_editor->view_y, app->canvas_editor->view_zoom);
 						}
 					}
 				}
@@ -316,26 +325,6 @@ int quixel_menu_file_import(int id, void * data)
 		}
 	}
 	return 0;
-
-	fail:
-	{
-		if(file_chooser)
-		{
-			al_destroy_native_file_dialog(file_chooser);
-		}
-		if(app->canvas_editor->selection.bitmap)
-		{
-			al_destroy_bitmap(app->canvas_editor->selection.bitmap);
-			app->canvas_editor->selection.bitmap = NULL;
-		}
-		if(app->canvas_editor->selection.combined_bitmap)
-		{
-			al_destroy_bitmap(app->canvas_editor->selection.combined_bitmap);
-			app->canvas_editor->selection.combined_bitmap = NULL;
-		}
-		al_start_timer(t3f_timer);
-		return 0;
-	}
 }
 
 int quixel_menu_file_export(int id, void * data)

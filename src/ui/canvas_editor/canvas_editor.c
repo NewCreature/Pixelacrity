@@ -231,3 +231,35 @@ void quixel_select_canvas_editor_tool(QUIXEL_CANVAS_EDITOR * cep, int tool)
 	}
 	cep->current_tool = tool;
 }
+
+bool quixel_import_image(QUIXEL_CANVAS_EDITOR * cep, const char * fn)
+{
+	cep->selection.bitmap = al_load_bitmap_flags(fn, ALLEGRO_NO_PREMULTIPLIED_ALPHA);
+	if(cep->selection.bitmap)
+	{
+		cep->selection.combined_bitmap = al_create_bitmap(al_get_bitmap_width(cep->selection.bitmap), al_get_bitmap_height(cep->selection.bitmap));
+		if(!cep->selection.combined_bitmap)
+		{
+			goto fail;
+		}
+		quixel_select_canvas_editor_tool(cep, QUIXEL_TOOL_SELECTION);
+		quixel_initialize_box(&cep->selection.box, 0, 0, al_get_bitmap_width(cep->selection.bitmap), al_get_bitmap_height(cep->selection.bitmap), cep->peg_bitmap);
+		quixel_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom);
+	}
+	return true;
+
+	fail:
+	{
+		if(cep->selection.bitmap)
+		{
+			al_destroy_bitmap(cep->selection.bitmap);
+			cep->selection.bitmap = NULL;
+		}
+		if(cep->selection.combined_bitmap)
+		{
+			al_destroy_bitmap(cep->selection.combined_bitmap);
+			cep->selection.combined_bitmap = NULL;
+		}
+		return false;
+	}
+}
