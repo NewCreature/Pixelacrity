@@ -1,8 +1,6 @@
 Quixel 0.2 Issues
 -----------------
 
-[ ]Only allow selection to remain as long as the selection tool is active.
-
 [ ]Implement image import. The image will be imported into a floating selection
    at the center of the view so the user has control over the final placement.
 
@@ -377,3 +375,5 @@ Closed Issues
 
 [X]Moving selection is rendered above layers. We should render it in its
    position in the layer stack.
+
+[X]Only allow selection to remain as long as the selection tool is active.
