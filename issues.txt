@@ -4,12 +4,6 @@ Quixel 0.2 Issues
 [ ]Implement image import. The image will be imported into a floating selection
    at the center of the view so the user has control over the final placement.
 
-[ ]Flood fill failed to completely fill vertical line of pixels.
-
-   [ ]Flood fill leaves traces when it fails to complete. Maybe we should just
-      add another list that keeps track of changed pixels so we can revert more
-      easily.
-
 [ ]Add erase tool.
 
 [ ]Resizing window causes freeze on Windows.
@@ -377,3 +371,9 @@ Closed Issues
    position in the layer stack.
 
 [X]Only allow selection to remain as long as the selection tool is active.
+
+[X]Flood fill failed to completely fill vertical line of pixels.
+
+   [X]Flood fill leaves traces when it fails to complete. Maybe we should just
+      add another list that keeps track of changed pixels so we can revert more
+      easily.
