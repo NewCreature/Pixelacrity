@@ -316,6 +316,8 @@ int quixel_menu_file_import(int id, void * data)
 							{
 								quixel_finalize_undo(app->canvas_editor);
 							}
+							app->canvas_editor->modified++;
+							app->canvas_editor->update_title = true;
 						}
 					}
 				}
