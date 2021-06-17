@@ -1,9 +1,6 @@
 Quixel 0.2 Issues
 -----------------
 
-[ ]Implement image import. The image will be imported into a floating selection
-   at the center of the view so the user has control over the final placement.
-
 [ ]Implement clipboard.
 
 [ ]Resizing window causes freeze on Windows.
@@ -379,3 +376,6 @@ Closed Issues
       easily.
 
 [X]Add erase tool.
+
+[X]Implement image import. The image will be imported into a floating selection
+   at the center of the view so the user has control over the final placement.
