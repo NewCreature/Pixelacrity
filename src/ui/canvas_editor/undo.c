@@ -7,6 +7,7 @@
 #include "undo_frame.h"
 #include "undo_selection.h"
 #include "undo_layer.h"
+#include "undo_flood_fill.h"
 
 bool quixel_write_undo_header(ALLEGRO_FILE * fp, int type, const char * name)
 {
@@ -126,6 +127,10 @@ static bool apply_undo_type(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, int t
 		{
 			return quixel_apply_remove_layer_undo(cep, fp);
 		}
+		case QUIXEL_UNDO_TYPE_FLOOD_FILL:
+		{
+			return quixel_apply_flood_fill_undo(cep, fp);
+		}
 	}
 	return false;
 }
@@ -157,6 +162,10 @@ static bool apply_redo_type(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, int t
 		case QUIXEL_REDO_TYPE_REMOVE_LAYER:
 		{
 			return quixel_apply_remove_layer_redo(cep, fp);
+		}
+		case QUIXEL_UNDO_TYPE_FLOOD_FILL:
+		{
+			return quixel_apply_flood_fill_redo(cep, fp);
 		}
 	}
 	return false;

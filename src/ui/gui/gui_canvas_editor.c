@@ -277,6 +277,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 							flood_fill_queue = quixel_create_queue();
 							if(flood_fill_queue)
 							{
+								color = quixel_get_canvas_pixel(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y);
 								if(quixel_flood_fill_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y, c == 1 ? canvas_editor->left_color : canvas_editor->right_color, flood_fill_queue))
 								{
 									made_undo = create_flood_fill_undo(canvas_editor, color, flood_fill_queue);
