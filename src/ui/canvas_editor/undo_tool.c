@@ -73,6 +73,11 @@ bool quixel_make_tool_undo(QUIXEL_CANVAS_EDITOR * cep, const char * action, int 
 			action_name = "Flood Fill";
 			break;
 		}
+		case QUIXEL_TOOL_ERASER:
+		{
+			action_name = "Erase";
+			break;
+		}
 		default:
 		{
 			action_name = "Draw";
@@ -178,6 +183,11 @@ bool quixel_make_tool_redo(QUIXEL_CANVAS_EDITOR * cep, const char * action, int 
 		case QUIXEL_TOOL_FLOOD_FILL:
 		{
 			action_name = "Flood Fill";
+			break;
+		}
+		case QUIXEL_TOOL_ERASER:
+		{
+			action_name = "Erase";
 			break;
 		}
 		default:

@@ -77,6 +77,15 @@ int quixel_tool_dropper_button_proc(T3GUI_ELEMENT * d, void *dp3)
 	return 0;
 }
 
+int quixel_tool_eraser_button_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)dp3;
+
+	quixel_select_canvas_editor_tool(app->canvas_editor, QUIXEL_TOOL_ERASER);
+
+	return 0;
+}
+
 int quixel_tool_selection_button_proc(T3GUI_ELEMENT * d, void *dp3)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)dp3;

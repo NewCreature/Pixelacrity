@@ -167,6 +167,8 @@ void quixel_resize_ui(QUIXEL_UI * uip)
 	pos_y += 32;
 	resize_element(uip->element[QUIXEL_UI_ELEMENT_BUTTON_FLOOD_FILL], t3f_default_view->width - right_pane_width, pos_y, right_pane_width, 32);
 	pos_y += 32;
+	resize_element(uip->element[QUIXEL_UI_ELEMENT_BUTTON_ERASER], t3f_default_view->width - right_pane_width, pos_y, right_pane_width, 32);
+	pos_y += 32;
 	resize_element(uip->element[QUIXEL_UI_ELEMENT_BUTTON_DROPPER], t3f_default_view->width - right_pane_width, pos_y, right_pane_width, 32);
 	pos_y += 32;
 	resize_element(uip->element[QUIXEL_UI_ELEMENT_BUTTON_SELECTION], t3f_default_view->width - right_pane_width, pos_y, right_pane_width, 32);
@@ -268,6 +270,7 @@ QUIXEL_UI * quixel_create_ui(QUIXEL_CANVAS_EDITOR * cep)
 		uip->element[QUIXEL_UI_ELEMENT_BUTTON_OVAL] = t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 0, 0, "Oval", quixel_tool_oval_button_proc, NULL);
 		uip->element[QUIXEL_UI_ELEMENT_BUTTON_FILLED_OVAL] = t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 0, 0, "FOval", quixel_tool_filled_oval_button_proc, NULL);
 		uip->element[QUIXEL_UI_ELEMENT_BUTTON_FLOOD_FILL] = t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 0, 0, "Flood", quixel_tool_flood_fill_button_proc, NULL);
+		uip->element[QUIXEL_UI_ELEMENT_BUTTON_ERASER] = t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 0, 0, "Eraser", quixel_tool_eraser_button_proc, NULL);
 		uip->element[QUIXEL_UI_ELEMENT_BUTTON_DROPPER] = t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 0, 0, "Dropper", quixel_tool_dropper_button_proc, NULL);
 		uip->element[QUIXEL_UI_ELEMENT_BUTTON_SELECTION] = t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 0, 0, "Selection", quixel_tool_selection_button_proc, NULL);
 		uip->element[QUIXEL_UI_ELEMENT_LAYER_LIST] = t3gui_dialog_add_element(uip->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, quixel_list_proc, 0, 0, 0, 0, 0, D_SETFOCUS, 0, 0, quixel_layer_list_proc, NULL, cep);

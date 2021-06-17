@@ -297,6 +297,14 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 						quixel_tool_dropper_logic(canvas_editor, c);
 						break;
 					}
+					case QUIXEL_TOOL_ERASER:
+					{
+						canvas_editor->click_color = al_map_rgba_f(0.0, 0.0, 0.0, 0.0);
+						set_up_tool_variables(canvas_editor);
+						quixel_tool_pixel_start(canvas_editor);
+						canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
+						break;
+					}
 					case QUIXEL_TOOL_SELECTION:
 					{
 						switch(canvas_editor->selection.box.state)
@@ -349,6 +357,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			switch(canvas_editor->current_tool)
 			{
 				case QUIXEL_TOOL_PIXEL:
+				case QUIXEL_TOOL_ERASER:
 				{
 					if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING && c == canvas_editor->click_button)
 					{
@@ -474,6 +483,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			switch(canvas_editor->current_tool)
 			{
 				case QUIXEL_TOOL_PIXEL:
+				case QUIXEL_TOOL_ERASER:
 				{
 					if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING || canvas_editor->tool_state == QUIXEL_TOOL_STATE_EDITING)
 					{

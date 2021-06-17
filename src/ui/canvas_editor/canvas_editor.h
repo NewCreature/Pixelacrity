@@ -19,6 +19,7 @@
 #define QUIXEL_TOOL_FLOOD_FILL       6
 #define QUIXEL_TOOL_DROPPER          7
 #define QUIXEL_TOOL_SELECTION        8
+#define QUIXEL_TOOL_ERASER           9
 
 #define QUIXEL_TOOL_STATE_OFF        0
 #define QUIXEL_TOOL_STATE_DRAWING    1
