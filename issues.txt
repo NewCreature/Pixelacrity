@@ -6,6 +6,8 @@ Quixel 0.2 Issues
 
 [ ]Add erase tool.
 
+[ ]Implement clipboard.
+
 [ ]Resizing window causes freeze on Windows.
 
 [ ]Status bar is not at the bottom of the window on Windows. I think it might be
