@@ -250,7 +250,7 @@ bool quixel_apply_unfloat_selection_undo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FIL
 		quixel_shift_canvas_editor_variables(cep, -shift_x * cep->canvas->bitmap_size, -shift_y * cep->canvas->bitmap_size);
 	}
 	quixel_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom);
-	cep->current_tool = QUIXEL_TOOL_SELECTION;
+	quixel_select_canvas_editor_tool(cep, QUIXEL_TOOL_SELECTION);
 	return true;
 
 	fail:
