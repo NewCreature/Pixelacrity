@@ -22,6 +22,11 @@ void pa_handle_shortcuts(APP_INSTANCE * app)
 		quixel_menu_edit_paste(0, app);
 		t3f_key[ALLEGRO_KEY_V] = 0;
 	}
+	else if(t3f_key[ALLEGRO_KEY_DELETE])
+	{
+		quixel_menu_edit_delete(0, app);
+		t3f_key[ALLEGRO_KEY_DELETE] = 0;
+	}
 	else if(t3f_key[ALLEGRO_KEY_C])
 	{
 		quixel_get_canvas_dimensions(app->canvas_editor->canvas, &x, &y, &width, &height, 0);

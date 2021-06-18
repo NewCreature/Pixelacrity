@@ -174,3 +174,45 @@ int quixel_menu_edit_delete_layer(int id, void * data)
 	}
 	return 0;
 }
+
+int quixel_menu_edit_delete(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+	char undo_path[1024];
+
+	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0)
+	{
+		if(!app->canvas_editor->selection.bitmap)
+		{
+			quixel_get_undo_path("undo", app->canvas_editor->undo_count - 1, undo_path, 1024);
+/*			if(quixel_make_tool_undo(app->canvas_editor, "Cut Selection", app->canvas_editor->current_layer, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, app->canvas_editor->selection.box.width, app->canvas_editor->selection.box.height, undo_path))
+			{
+				quixel_finalize_undo(app->canvas_editor);
+				quixel_update_undo_name(app->canvas_editor);
+				quixel_update_redo_name(app->canvas_editor);
+				t3f_refresh_menus();
+			} */
+			quixel_draw_primitive_to_canvas(app->canvas_editor->canvas, app->canvas_editor->current_layer, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, app->canvas_editor->selection.box.end_x, app->canvas_editor->selection.box.end_y, NULL, al_map_rgba_f(0.0, 0.0, 0.0, 0.0), QUIXEL_RENDER_COPY, quixel_draw_filled_rectangle);
+			app->canvas_editor->selection.box.width = 0;
+			app->canvas_editor->selection.box.height = 0;
+		}
+		else
+		{
+			if(app->canvas_editor->selection.bitmap)
+			{
+				al_destroy_bitmap(app->canvas_editor->selection.bitmap);
+				app->canvas_editor->selection.bitmap = NULL;
+			}
+			if(app->canvas_editor->selection.combined_bitmap)
+			{
+				al_destroy_bitmap(app->canvas_editor->selection.combined_bitmap);
+				app->canvas_editor->selection.combined_bitmap = NULL;
+			}
+			app->canvas_editor->selection.box.width = 0;
+			app->canvas_editor->selection.box.height = 0;
+		}
+		t3f_refresh_menus();
+	}
+
+	return 0;
+}

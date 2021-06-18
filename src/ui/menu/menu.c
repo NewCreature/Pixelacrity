@@ -148,6 +148,8 @@ bool quixel_setup_menus(QUIXEL_UI * uip)
 	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_EDIT], "Cut", 0, NULL, quixel_menu_edit_cut, menu_edit_copy_update_proc);
 	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_EDIT], "Copy", 0, NULL, quixel_menu_edit_copy, menu_edit_copy_update_proc);
 	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_EDIT], "Paste", 0, NULL, quixel_menu_edit_paste, menu_edit_paste_update_proc);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_EDIT], NULL, 0, NULL, NULL, NULL);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_EDIT], "Delete", 0, NULL, quixel_menu_edit_delete, menu_edit_copy_update_proc);
 
 	uip->menu[QUIXEL_UI_MENU_FRAME_ADD_ICON_TEMPLATE] = al_create_menu();
 	if(!uip->menu[QUIXEL_UI_MENU_FRAME_ADD_ICON_TEMPLATE])
