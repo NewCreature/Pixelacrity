@@ -721,7 +721,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				}
 				t3f_key[ALLEGRO_KEY_G] = 0;
 			}
-			if(t3f_key[ALLEGRO_KEY_C])
+			if(t3f_key[ALLEGRO_KEY_C] && !(t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]))
 			{
 				quixel_get_canvas_dimensions(canvas_editor->canvas, &frame_x, &frame_y, &frame_width, &frame_height, 0);
 				canvas_editor->view_x = frame_x + frame_width / 2 - (d->w / 2) / canvas_editor->view_zoom;

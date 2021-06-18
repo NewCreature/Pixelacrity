@@ -7,6 +7,7 @@
 #include "ui/menu/menu.h"
 #include "ui/menu/menu_file_proc.h"
 #include "ui/menu/menu_edit_proc.h"
+#include "shortcuts.h"
 
 void app_event_handler(ALLEGRO_EVENT * event, void * data)
 {
@@ -86,6 +87,7 @@ void app_logic(void * data)
 	{
 		sprintf(app->ui->status_left_message, "(%d, %d)", app->canvas_editor->hover_x - app->canvas->frame[app->canvas_editor->current_frame]->box.start_x, app->canvas_editor->hover_y - app->canvas->frame[app->canvas_editor->current_frame]->box.start_y);
 	}
+	pa_handle_shortcuts(app);
 }
 
 /* main rendering routine */
