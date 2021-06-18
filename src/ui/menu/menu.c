@@ -88,6 +88,36 @@ static int menu_layer_delete_update_proc(ALLEGRO_MENU * mp, int item, void * dat
 	return 0;
 }
 
+static int menu_edit_copy_update_proc(ALLEGRO_MENU * mp, int item, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0)
+	{
+		t3f_set_menu_item_flags(mp, item, 0);
+	}
+	else
+	{
+		t3f_set_menu_item_flags(mp, item, ALLEGRO_MENU_ITEM_DISABLED);
+	}
+	return 0;
+}
+
+static int menu_edit_paste_update_proc(ALLEGRO_MENU * mp, int item, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	if(app->canvas_editor->clipboard.bitmap)
+	{
+		t3f_set_menu_item_flags(mp, item, 0);
+	}
+	else
+	{
+		t3f_set_menu_item_flags(mp, item, ALLEGRO_MENU_ITEM_DISABLED);
+	}
+	return 0;
+}
+
 bool quixel_setup_menus(QUIXEL_UI * uip)
 {
 	uip->menu[QUIXEL_UI_MENU_FILE] = al_create_menu();
@@ -115,9 +145,9 @@ bool quixel_setup_menus(QUIXEL_UI * uip)
 	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_EDIT], "Undo", ALLEGRO_MENU_ITEM_DISABLED, NULL, quixel_menu_edit_undo, menu_undo_update_proc);
 	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_EDIT], "Redo", ALLEGRO_MENU_ITEM_DISABLED, NULL, quixel_menu_edit_redo, menu_redo_update_proc);
 	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_EDIT], NULL, 0, NULL, NULL, NULL);
-	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_EDIT], "Cut", 0, NULL, quixel_menu_edit_cut, menu_base_update_proc);
-	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_EDIT], "Copy", 0, NULL, quixel_menu_edit_copy, menu_base_update_proc);
-	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_EDIT], "Paste", 0, NULL, quixel_menu_edit_paste, menu_base_update_proc);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_EDIT], "Cut", 0, NULL, quixel_menu_edit_cut, menu_edit_copy_update_proc);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_EDIT], "Copy", 0, NULL, quixel_menu_edit_copy, menu_edit_copy_update_proc);
+	t3f_add_menu_item(uip->menu[QUIXEL_UI_MENU_EDIT], "Paste", 0, NULL, quixel_menu_edit_paste, menu_edit_paste_update_proc);
 
 	uip->menu[QUIXEL_UI_MENU_FRAME_ADD_ICON_TEMPLATE] = al_create_menu();
 	if(!uip->menu[QUIXEL_UI_MENU_FRAME_ADD_ICON_TEMPLATE])

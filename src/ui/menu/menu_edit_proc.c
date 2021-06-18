@@ -82,6 +82,7 @@ int quixel_menu_edit_cut(int id, void * data)
 			app->canvas_editor->selection.box.height = 0;
 		}
 	}
+	t3f_refresh_menus();
 
 	return 0;
 }
@@ -109,6 +110,7 @@ int quixel_menu_edit_copy(int id, void * data)
 		{
 		}
 	}
+	t3f_refresh_menus();
 
 	return 0;
 }
@@ -140,6 +142,7 @@ int quixel_menu_edit_paste(int id, void * data)
 		}
 	}
 	al_restore_state(&old_state);
+	t3f_refresh_menus();
 
 	return 0;
 }
