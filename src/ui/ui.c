@@ -341,6 +341,20 @@ void quixel_destroy_ui(QUIXEL_UI * uip)
 	free(uip);
 }
 
+static void select_button(QUIXEL_UI * uip, int button)
+{
+	uip->element[QUIXEL_UI_ELEMENT_BUTTON_PIXEL]->flags &= ~D_SELECTED;
+	uip->element[QUIXEL_UI_ELEMENT_BUTTON_LINE]->flags &= ~D_SELECTED;
+	uip->element[QUIXEL_UI_ELEMENT_BUTTON_RECTANGLE]->flags &= ~D_SELECTED;
+	uip->element[QUIXEL_UI_ELEMENT_BUTTON_FILLED_RECTANGLE]->flags &= ~D_SELECTED;
+	uip->element[QUIXEL_UI_ELEMENT_BUTTON_OVAL]->flags &= ~D_SELECTED;
+	uip->element[QUIXEL_UI_ELEMENT_BUTTON_FILLED_OVAL]->flags &= ~D_SELECTED;
+	uip->element[QUIXEL_UI_ELEMENT_BUTTON_ERASER]->flags &= ~D_SELECTED;
+	uip->element[QUIXEL_UI_ELEMENT_BUTTON_DROPPER]->flags &= ~D_SELECTED;
+	uip->element[QUIXEL_UI_ELEMENT_BUTTON_SELECTION]->flags &= ~D_SELECTED;
+	uip->element[button]->flags |= D_SELECTED;
+}
+
 void quixel_process_ui(QUIXEL_UI * uip)
 {
 	QUIXEL_CANVAS_EDITOR * cep = (QUIXEL_CANVAS_EDITOR *)uip->element[QUIXEL_UI_ELEMENT_CANVAS_EDITOR]->dp;
@@ -358,6 +372,56 @@ void quixel_process_ui(QUIXEL_UI * uip)
 	}
 
 	t3gui_logic();
+
+	/* update button selection */
+	switch(cep->current_tool)
+	{
+		case QUIXEL_TOOL_PIXEL:
+		{
+			select_button(uip, QUIXEL_UI_ELEMENT_BUTTON_PIXEL);
+			break;
+		}
+		case QUIXEL_TOOL_LINE:
+		{
+			select_button(uip, QUIXEL_UI_ELEMENT_BUTTON_LINE);
+			break;
+		}
+		case QUIXEL_TOOL_RECTANGLE:
+		{
+			select_button(uip, QUIXEL_UI_ELEMENT_BUTTON_RECTANGLE);
+			break;
+		}
+		case QUIXEL_TOOL_FILLED_RECTANGLE:
+		{
+			select_button(uip, QUIXEL_UI_ELEMENT_BUTTON_FILLED_RECTANGLE);
+			break;
+		}
+		case QUIXEL_TOOL_OVAL:
+		{
+			select_button(uip, QUIXEL_UI_ELEMENT_BUTTON_OVAL);
+			break;
+		}
+		case QUIXEL_TOOL_FILLED_OVAL:
+		{
+			select_button(uip, QUIXEL_UI_ELEMENT_BUTTON_FILLED_OVAL);
+			break;
+		}
+		case QUIXEL_TOOL_ERASER:
+		{
+			select_button(uip, QUIXEL_UI_ELEMENT_BUTTON_ERASER);
+			break;
+		}
+		case QUIXEL_TOOL_DROPPER:
+		{
+			select_button(uip, QUIXEL_UI_ELEMENT_BUTTON_DROPPER);
+			break;
+		}
+		case QUIXEL_TOOL_SELECTION:
+		{
+			select_button(uip, QUIXEL_UI_ELEMENT_BUTTON_SELECTION);
+			break;
+		}
+	}
 
 	if(uip->element[QUIXEL_UI_ELEMENT_LAYER_LIST]->d1 != old_layer_d1)
 	{
