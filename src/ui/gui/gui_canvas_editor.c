@@ -730,11 +730,6 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				canvas_editor->view_fy = canvas_editor->view_y;
 				t3f_key[ALLEGRO_KEY_C] = 0;
 			}
-			if(t3f_key[ALLEGRO_KEY_DELETE])
-			{
-				canvas_editor->signal = QUIXEL_CANVAS_EDITOR_SIGNAL_DELETE_LAYER;
-				t3f_key[ALLEGRO_KEY_DELETE] = 0;
-			}
 			if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_OFF)
 			{
 				canvas_editor->hover_color = quixel_get_canvas_pixel(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y);
