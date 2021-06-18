@@ -4,6 +4,7 @@
 #include "modules/primitives.h"
 #include "ui/canvas_editor/undo.h"
 #include "ui/canvas_editor/undo_tool.h"
+#include "ui/canvas_editor/undo_selection.h"
 #include "ui/canvas_editor/clipboard.h"
 
 int quixel_menu_edit_undo(int id, void * data)
@@ -182,19 +183,17 @@ int quixel_menu_edit_delete(int id, void * data)
 
 	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0)
 	{
+		quixel_get_undo_path("undo", app->canvas_editor->undo_count, undo_path, 1024);
 		if(!app->canvas_editor->selection.bitmap)
 		{
-			quixel_get_undo_path("undo", app->canvas_editor->undo_count - 1, undo_path, 1024);
-/*			if(quixel_make_tool_undo(app->canvas_editor, "Cut Selection", app->canvas_editor->current_layer, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, app->canvas_editor->selection.box.width, app->canvas_editor->selection.box.height, undo_path))
+			if(quixel_make_tool_undo(app->canvas_editor, "Delete Selection", app->canvas_editor->current_layer, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, app->canvas_editor->selection.box.width, app->canvas_editor->selection.box.height, undo_path))
 			{
 				quixel_finalize_undo(app->canvas_editor);
-				quixel_update_undo_name(app->canvas_editor);
-				quixel_update_redo_name(app->canvas_editor);
-				t3f_refresh_menus();
-			} */
+			}
 			quixel_draw_primitive_to_canvas(app->canvas_editor->canvas, app->canvas_editor->current_layer, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, app->canvas_editor->selection.box.end_x, app->canvas_editor->selection.box.end_y, NULL, al_map_rgba_f(0.0, 0.0, 0.0, 0.0), QUIXEL_RENDER_COPY, quixel_draw_filled_rectangle);
 			app->canvas_editor->selection.box.width = 0;
 			app->canvas_editor->selection.box.height = 0;
+			app->canvas_editor->modified++;
 		}
 		else
 		{
