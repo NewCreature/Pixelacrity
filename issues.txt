@@ -1,7 +1,7 @@
 Quixel 0.2 Issues
 -----------------
 
-[ ]Highlight currently selected tool.
+[ ]Crash when deleting layer.
 
 [ ]Resizing window causes freeze on Windows.
 
@@ -381,3 +381,5 @@ Closed Issues
    at the center of the view so the user has control over the final placement.
 
 [X]Implement clipboard.
+
+[X]Highlight currently selected tool.
