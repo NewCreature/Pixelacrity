@@ -8,6 +8,7 @@ bool quixel_make_add_layer_undo(QUIXEL_CANVAS_EDITOR * cep, const char * fn)
 {
 	ALLEGRO_FILE * fp = NULL;
 
+	t3f_debug_message("Enter quixel_make_add_layer_undo()\n");
 	fp = al_fopen(fn, "wb");
 	if(!fp)
 	{
@@ -15,10 +16,12 @@ bool quixel_make_add_layer_undo(QUIXEL_CANVAS_EDITOR * cep, const char * fn)
 	}
 	quixel_write_undo_header(fp, QUIXEL_UNDO_TYPE_ADD_LAYER, "Add Layer");
 	al_fclose(fp);
+	t3f_debug_message("Exit quixel_make_add_layer_undo()\n");
 	return true;
 
 	fail:
 	{
+		t3f_debug_message("Fail quixel_make_add_layer_undo()\n");
 		if(fp)
 		{
 			al_fclose(fp);
@@ -31,6 +34,7 @@ bool quixel_make_add_layer_redo(QUIXEL_CANVAS_EDITOR * cep, const char * fn)
 {
 	ALLEGRO_FILE * fp = NULL;
 
+	t3f_debug_message("Enter quixel_make_add_layer_redo()\n");
 	fp = al_fopen(fn, "wb");
 	if(!fp)
 	{
@@ -38,10 +42,12 @@ bool quixel_make_add_layer_redo(QUIXEL_CANVAS_EDITOR * cep, const char * fn)
 	}
 	quixel_write_undo_header(fp, QUIXEL_REDO_TYPE_ADD_LAYER, "Add Layer");
 	al_fclose(fp);
+	t3f_debug_message("Exit quixel_make_add_layer_redo()\n");
 	return true;
 
 	fail:
 	{
+		t3f_debug_message("Fail quixel_make_add_layer_redo()\n");
 		if(fp)
 		{
 			al_fclose(fp);
@@ -57,6 +63,7 @@ bool quixel_make_remove_layer_undo(QUIXEL_CANVAS_EDITOR * cep, int layer, const 
 	ALLEGRO_BITMAP * bp = NULL;
 	ALLEGRO_STATE old_state;
 
+	t3f_debug_message("Enter quixel_make_remove_layer_undo()\n");
 	quixel_get_canvas_dimensions(cep->canvas, &x, &y, &width, &height, 0);
 	if(width > 0 && height > 0)
 	{
@@ -97,10 +104,12 @@ bool quixel_make_remove_layer_undo(QUIXEL_CANVAS_EDITOR * cep, int layer, const 
 		al_destroy_bitmap(bp);
 	}
 	al_fclose(fp);
+	t3f_debug_message("Exit quixel_make_remove_layer_undo()\n");
 	return true;
 
 	fail:
 	{
+		t3f_debug_message("Fail quixel_make_remove_layer_undo()\n");
 		if(bp)
 		{
 			al_destroy_bitmap(bp);
@@ -117,6 +126,7 @@ bool quixel_make_remove_layer_redo(QUIXEL_CANVAS_EDITOR * cep, int layer, const 
 {
 	ALLEGRO_FILE * fp = NULL;
 
+	t3f_debug_message("Enter quixel_make_remove_layer_redo()\n");
 	fp = al_fopen(fn, "wb");
 	if(!fp)
 	{
@@ -126,10 +136,12 @@ bool quixel_make_remove_layer_redo(QUIXEL_CANVAS_EDITOR * cep, int layer, const 
 	al_fwrite16le(fp, layer);
 	al_fclose(fp);
 
+	t3f_debug_message("Exit quixel_make_remove_layer_redo()\n");
 	return true;
 
 	fail:
 	{
+		t3f_debug_message("Fail quixel_make_remove_layer_redo()\n");
 		if(fp)
 		{
 			al_fclose(fp);
@@ -142,6 +154,7 @@ bool quixel_apply_add_layer_undo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 {
 	char undo_path[1024];
 
+	t3f_debug_message("Enter quixel_apply_add_layer_undo()\n");
 	quixel_make_add_layer_redo(cep, quixel_get_undo_path("redo", cep->redo_count, undo_path, 1024));
 	cep->redo_count++;
 	quixel_remove_canvas_layer(cep->canvas, cep->canvas->layer_max - 1);
@@ -149,6 +162,7 @@ bool quixel_apply_add_layer_undo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 	{
 		cep->current_layer = cep->canvas->layer_max - 1;
 	}
+	t3f_debug_message("Exit quixel_apply_add_layer_undo()\n");
 
 	return true;
 }
@@ -157,10 +171,12 @@ bool quixel_apply_add_layer_redo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 {
 	char undo_path[1024];
 
+	t3f_debug_message("Enter quixel_apply_add_layer_redo()\n");
 	quixel_make_add_layer_undo(cep, quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024));
 	cep->undo_count++;
 	quixel_add_canvas_layer(cep->canvas, -1);
 	cep->current_layer = cep->canvas->layer_max - 1;
+	t3f_debug_message("Exit quixel_apply_add_layer_redo()\n");
 
 	return true;
 }
@@ -171,6 +187,7 @@ bool quixel_apply_remove_layer_undo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * f
 	ALLEGRO_BITMAP * bp = NULL;
 	char undo_path[1024];
 
+	t3f_debug_message("Enter quixel_apply_remove_layer_undo()\n");
 	layer = al_fread16le(fp);
 	quixel_make_remove_layer_redo(cep, layer, quixel_get_undo_path("redo", cep->redo_count, undo_path, 1024));
 	cep->redo_count++;
@@ -189,10 +206,12 @@ bool quixel_apply_remove_layer_undo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * f
 		al_destroy_bitmap(bp);
 	}
 	cep->current_layer = layer;
+	t3f_debug_message("Exit quixel_apply_remove_layer_undo()\n");
 	return true;
 
 	fail:
 	{
+		t3f_debug_message("Fail quixel_apply_remove_layer_undo()\n");
 		if(bp)
 		{
 			al_destroy_bitmap(bp);
@@ -206,6 +225,7 @@ bool quixel_apply_remove_layer_redo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * f
 	int layer;
 	char undo_path[1024];
 
+	t3f_debug_message("Enter quixel_apply_remove_layer_redo()\n");
 	layer = al_fread16le(fp);
 	quixel_make_remove_layer_undo(cep, layer, quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024));
 	cep->undo_count++;
@@ -215,5 +235,6 @@ bool quixel_apply_remove_layer_redo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * f
 		cep->current_layer = cep->canvas->layer_max - 1;
 	}
 
+	t3f_debug_message("Exit quixel_apply_remove_layer_redo()\n");
 	return true;
 }

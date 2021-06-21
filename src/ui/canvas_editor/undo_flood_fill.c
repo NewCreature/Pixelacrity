@@ -23,6 +23,7 @@ bool quixel_make_flood_fill_undo(QUIXEL_CANVAS_EDITOR * cep, int layer, ALLEGRO_
 	ALLEGRO_FILE * fp = NULL;
 	QUIXEL_QUEUE_NODE * current_node;
 
+	t3f_debug_message("Enter quixel_make_flood_fill_undo()\n");
 	fp = al_fopen(fn, "wb");
 	if(!fp)
 	{
@@ -42,10 +43,12 @@ bool quixel_make_flood_fill_undo(QUIXEL_CANVAS_EDITOR * cep, int layer, ALLEGRO_
 		current_node = current_node->previous;
 	}
 	al_fclose(fp);
+	t3f_debug_message("Exit quixel_make_flood_fill_undo()\n");
 	return true;
 
 	fail:
 	{
+		t3f_debug_message("Fail quixel_make_flood_fill_undo()\n");
 		if(fp)
 		{
 			al_fclose(fp);
@@ -83,6 +86,7 @@ bool quixel_apply_flood_fill_undo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 	int layer;
 	int tool;
 
+	t3f_debug_message("Enter quixel_apply_flood_fill_undo()\n");
 	tool = al_fread16le(fp);
 	layer = al_fread32le(fp);
 	read_color(fp, &color);
@@ -107,10 +111,12 @@ bool quixel_apply_flood_fill_undo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 		quixel_destroy_queue(qp);
 	}
 	quixel_select_canvas_editor_tool(cep, QUIXEL_TOOL_FLOOD_FILL);
+	t3f_debug_message("Exit quixel_apply_flood_fill_undo()\n");
 	return true;
 
 	fail:
 	{
+		t3f_debug_message("Fail quixel_apply_flood_fill_undo()\n");
 		if(qp)
 		{
 			quixel_destroy_queue(qp);
@@ -130,6 +136,7 @@ bool quixel_apply_flood_fill_redo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 	int layer;
 	int tool;
 
+	t3f_debug_message("Enter quixel_apply_flood_fill_redo()\n");
 	tool = al_fread16le(fp);
 	layer = al_fread32le(fp);
 	read_color(fp, &color);
@@ -154,10 +161,12 @@ bool quixel_apply_flood_fill_redo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 		quixel_destroy_queue(qp);
 	}
 	quixel_select_canvas_editor_tool(cep, QUIXEL_TOOL_FLOOD_FILL);
+	t3f_debug_message("Exit quixel_apply_flood_fill_redo()\n");
 	return true;
 
 	fail:
 	{
+		t3f_debug_message("Fail quixel_apply_flood_fill_redo()\n");
 		if(qp)
 		{
 			quixel_destroy_queue(qp);

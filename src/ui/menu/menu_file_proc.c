@@ -12,6 +12,7 @@ static bool close_canvas(APP_INSTANCE * app)
 {
 	int ret = true;
 
+	t3f_debug_message("Enter close_canvas()\n");
 	if(app->canvas)
 	{
 		/* insert code to check for changes and ask to save */
@@ -39,6 +40,7 @@ static bool close_canvas(APP_INSTANCE * app)
 			al_start_timer(t3f_timer);
 		}
 	}
+	t3f_debug_message("Exit close_canvas()\n");
 	return ret;
 }
 
@@ -46,6 +48,7 @@ int quixel_menu_file_new(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
+	t3f_debug_message("Enter quixel_menu_file_new()\n");
 	if(close_canvas(app))
 	{
 		if(app->canvas)
@@ -55,13 +58,13 @@ int quixel_menu_file_new(int id, void * data)
 		app->canvas = quixel_create_canvas(2048);
 		if(!app->canvas)
 		{
-			printf("Error creating new canvas!\n");
+			t3f_debug_message("Error creating new canvas!\n");
 			t3f_exit();
 			return 0;
 		}
 		if(!quixel_add_canvas_layer(app->canvas, -1))
 		{
-			printf("Error adding layer to new canvas!\n");
+			t3f_debug_message("Error adding layer to new canvas!\n");
 			t3f_exit();
 			return 0;
 		}
@@ -73,6 +76,7 @@ int quixel_menu_file_new(int id, void * data)
 			quixel_center_canvas_editor(app->canvas_editor, 0);
 		}
 	}
+	t3f_debug_message("Exit quixel_menu_file_new()\n");
 	return 0;
 }
 
@@ -83,6 +87,7 @@ static QUIXEL_CANVAS * canvas_from_image(const char * fn)
 	int cx, cy;
 	int x, y;
 
+	t3f_debug_message("Enter canvas_from_image()\n");
 	cp = quixel_create_canvas(2048);
 	if(!cp)
 	{
@@ -105,10 +110,12 @@ static QUIXEL_CANVAS * canvas_from_image(const char * fn)
 	quixel_add_canvas_frame(cp, "Frame 1", x, y, al_get_bitmap_width(bp), al_get_bitmap_height(bp));
 	al_destroy_bitmap(bp);
 
+	t3f_debug_message("Exit canvas_from_image()\n");
 	return cp;
 
 	fail:
 	{
+		t3f_debug_message("Failed to load canvas from image\n");
 		if(bp)
 		{
 			al_destroy_bitmap(bp);
@@ -130,6 +137,7 @@ int quixel_menu_file_load(int id, void * data)
 	bool import_image = false;
 	QUIXEL_CANVAS * new_canvas = NULL;
 
+	t3f_debug_message("Enter quixel_menu_file_load()\n");
 	if(close_canvas(app))
 	{
 		file_chooser = al_create_native_file_dialog(NULL, "Choose canvas or image file...", "*.qcanvas;*.png;*.tga;*.pcx;*.bmp;*.jpg", ALLEGRO_FILECHOOSER_FILE_MUST_EXIST);
@@ -184,6 +192,7 @@ int quixel_menu_file_load(int id, void * data)
 			al_start_timer(t3f_timer);
 		}
 	}
+	t3f_debug_message("Exit quixel_menu_file_load()\n");
 	return 0;
 }
 
@@ -215,6 +224,7 @@ int quixel_menu_file_save(int id, void * data)
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 	ALLEGRO_BITMAP * bp;
 
+	t3f_debug_message("Enter quixel_menu_file_save()\n");
 	if(resave_allowed(app->canvas_editor))
 	{
 		bp = quixel_get_bitmap_from_canvas(app->canvas, 0, app->canvas->layer_max, 0);
@@ -241,6 +251,7 @@ int quixel_menu_file_save(int id, void * data)
 			}
 		}
 	}
+	t3f_debug_message("Exit quixel_menu_file_save()\n");
 	return 0;
 }
 
@@ -251,6 +262,7 @@ int quixel_menu_file_save_as(int id, void * data)
 	const char * file_path;
 	ALLEGRO_PATH * path;
 
+	t3f_debug_message("Enter quixel_menu_file_save_as()\n");
 	file_chooser = al_create_native_file_dialog(NULL, "Save canvas as...", "*.qcanvas", ALLEGRO_FILECHOOSER_SAVE);
 	if(file_chooser)
 	{
@@ -276,6 +288,7 @@ int quixel_menu_file_save_as(int id, void * data)
 		al_destroy_native_file_dialog(file_chooser);
 		al_start_timer(t3f_timer);
 	}
+	t3f_debug_message("Exit quixel_menu_file_save_as()\n");
 	return 0;
 }
 
@@ -297,6 +310,7 @@ int quixel_menu_file_import(int id, void * data)
 	ALLEGRO_FILECHOOSER * file_chooser = NULL;
 	const char * file_path;
 
+	t3f_debug_message("Enter quixel_menu_file_import()\n");
 	if(close_canvas(app))
 	{
 		file_chooser = al_create_native_file_dialog(NULL, "Choose image file...", "*.png;*.tga;*.pcx;*.bmp;*.jpg", ALLEGRO_FILECHOOSER_FILE_MUST_EXIST);
@@ -326,6 +340,7 @@ int quixel_menu_file_import(int id, void * data)
 			al_start_timer(t3f_timer);
 		}
 	}
+	t3f_debug_message("Exit quixel_menu_file_import()\n");
 	return 0;
 }
 
@@ -340,6 +355,7 @@ int quixel_menu_file_export(int id, void * data)
 	ALLEGRO_STATE old_state;
 	int x, y, w, h;
 
+	t3f_debug_message("Enter quixel_menu_file_export()\n");
 	file_chooser = al_create_native_file_dialog(NULL, "Export canvas to image file...", "*.png;*.tga;*.pcx;*.bmp;*.jpg", ALLEGRO_FILECHOOSER_SAVE);
 	if(file_chooser)
 	{
@@ -393,6 +409,7 @@ int quixel_menu_file_export(int id, void * data)
 		al_destroy_native_file_dialog(file_chooser);
 		al_start_timer(t3f_timer);
 	}
+	t3f_debug_message("Exit quixel_menu_file_export()\n");
 	return 0;
 }
 
@@ -400,9 +417,11 @@ int quixel_menu_file_exit(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
+	t3f_debug_message("Enter quixel_menu_file_exit()\n");
 	if(close_canvas(app))
 	{
 		t3f_exit();
 	}
+	t3f_debug_message("Exit quixel_menu_file_exit()\n");
 	return 0;
 }

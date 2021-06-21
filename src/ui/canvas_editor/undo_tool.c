@@ -11,6 +11,7 @@ bool quixel_make_tool_undo(QUIXEL_CANVAS_EDITOR * cep, const char * action, int 
 	ALLEGRO_FILE * fp = NULL;
 	const char * action_name;
 
+	t3f_debug_message("Enter quixel_make_tool_undo()\n");
 	if(width <= 0 || height <= 0)
 	{
 		quixel_get_canvas_dimensions(cep->canvas, &x, &y, &width, &height, 0);
@@ -107,10 +108,12 @@ bool quixel_make_tool_undo(QUIXEL_CANVAS_EDITOR * cep, const char * action, int 
 		al_destroy_bitmap(bp);
 	}
 	al_fclose(fp);
+	t3f_debug_message("Exit quixel_make_tool_undo()\n");
 	return true;
 
 	fail:
 	{
+		t3f_debug_message("Fail quixel_make_tool_undo()\n");
 		if(fp)
 		{
 			al_fclose(fp);
@@ -131,6 +134,7 @@ bool quixel_make_tool_redo(QUIXEL_CANVAS_EDITOR * cep, const char * action, int 
 	const char * action_name;
 	int shift_x, shift_y;
 
+	t3f_debug_message("Enter quixel_make_tool_redo()\n");
 	quixel_get_canvas_shift(cep->canvas, x, y, &shift_x, &shift_y);
 	al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);
 	al_set_new_bitmap_flags(ALLEGRO_MEMORY_BITMAP);
@@ -207,10 +211,12 @@ bool quixel_make_tool_redo(QUIXEL_CANVAS_EDITOR * cep, const char * action, int 
 		goto fail;
 	}
 	al_fclose(fp);
+	t3f_debug_message("Exit quixel_make_tool_redo()\n");
 	return true;
 
 	fail:
 	{
+		t3f_debug_message("Fail quixel_make_tool_redo()\n");
 		if(fp)
 		{
 			al_fclose(fp);
@@ -233,6 +239,7 @@ bool quixel_apply_tool_undo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, const
 	int shift_x = 0, shift_y = 0;
 	int tool;
 
+	t3f_debug_message("Enter quixel_apply_tool_undo()\n");
 	tool = al_fread16le(fp);
 	layer = al_fread32le(fp);
 	l = al_fgetc(fp);
@@ -285,10 +292,12 @@ bool quixel_apply_tool_undo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, const
 		quixel_shift_canvas_editor_variables(cep, -shift_x * cep->canvas->bitmap_size, -shift_y * cep->canvas->bitmap_size);
 	}
 	quixel_select_canvas_editor_tool(cep, tool);
+	t3f_debug_message("Exit quixel_apply_tool_undo()\n");
 	return true;
 
 	fail:
 	{
+		t3f_debug_message("Fail quixel_apply_tool_undo()\n");
 		if(bp)
 		{
 			al_destroy_bitmap(bp);
@@ -306,6 +315,7 @@ bool quixel_apply_tool_redo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, const
 	int shift_x, shift_y;
 	int tool;
 
+	t3f_debug_message("Enter quixel_apply_tool_redo()\n");
 	tool = al_fread16le(fp);
 	layer = al_fread32le(fp);
 	x = al_fread32le(fp);
@@ -322,11 +332,13 @@ bool quixel_apply_tool_redo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, const
 	quixel_shift_canvas_editor_variables(cep, shift_x * cep->canvas->bitmap_size, shift_y * cep->canvas->bitmap_size);
 	al_destroy_bitmap(bp);
 	quixel_select_canvas_editor_tool(cep, tool);
+	t3f_debug_message("Exit quixel_apply_tool_redo()\n");
 
 	return true;
 
 	fail:
 	{
+		t3f_debug_message("Fail quixel_apply_tool_redo()\n");
 		if(bp)
 		{
 			al_destroy_bitmap(bp);

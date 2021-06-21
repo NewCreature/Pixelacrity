@@ -10,6 +10,7 @@ static bool load_canvas_full_f(QUIXEL_CANVAS * cp, ALLEGRO_FILE * fp, const char
 	int i, j, k;
 	char load;
 
+	t3f_debug_message("Enter load_canvas_fill_f()\n");
 	max_width = al_fread32le(fp);
 	max_height = al_fread32le(fp);
 	max_layers = al_fread32le(fp);
@@ -36,10 +37,12 @@ static bool load_canvas_full_f(QUIXEL_CANVAS * cp, ALLEGRO_FILE * fp, const char
 			}
 		}
 	}
+	t3f_debug_message("Exit load_canvas_fill_f()\n");
 	return true;
 
 	fail:
 	{
+		t3f_debug_message("Fail load_canvas_fill_f()\n");
 		return false;
 	}
 }
@@ -50,6 +53,7 @@ static bool load_canvas_minimal_f(QUIXEL_CANVAS * cp, ALLEGRO_FILE * fp, const c
 	int max_layers;
 	int i;
 
+	t3f_debug_message("Enter load_canvas_minimal_f()\n");
 	max_layers = al_fread32le(fp);
 	for(i = 0; i < max_layers; i++)
 	{
@@ -68,10 +72,12 @@ static bool load_canvas_minimal_f(QUIXEL_CANVAS * cp, ALLEGRO_FILE * fp, const c
 		quixel_import_bitmap_to_canvas(cp, bp, i, cp->export_offset_x, cp->export_offset_y);
 		al_destroy_bitmap(bp);
 	}
+	t3f_debug_message("Exit load_canvas_minimal_f()\n");
 	return true;
 
 	fail:
 	{
+		t3f_debug_message("Fail load_canvas_minimal_f()\n");
 		return false;
 	}
 }
@@ -87,6 +93,7 @@ static QUIXEL_CANVAS * quixel_load_canvas_f(ALLEGRO_FILE * fp, int bitmap_max)
 	char * frame_name_buf = NULL;
 	int i, l, x, y, w, h;
 
+	t3f_debug_message("Enter load_canvas_f()\n");
 	al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);
 	al_set_new_bitmap_flags(0);
 
@@ -151,10 +158,12 @@ static QUIXEL_CANVAS * quixel_load_canvas_f(ALLEGRO_FILE * fp, int bitmap_max)
 		}
 	}
 	al_restore_state(&old_state);
+	t3f_debug_message("Exit load_canvas_f()\n");
 	return cp;
 
 	fail:
 	{
+		t3f_debug_message("Fail load_canvas_f()\n");
 		quixel_destroy_canvas(cp);
 		al_restore_state(&old_state);
 		return NULL;
@@ -218,6 +227,7 @@ static bool save_canvas_full_f(QUIXEL_CANVAS * cp, ALLEGRO_FILE * fp, const char
 {
 	int i, j, k;
 
+	t3f_debug_message("Enter save_canvas_full_f()\n");
 	if(!al_fwrite32le(fp, cp->layer_width))
 	{
 		goto fail;
@@ -261,10 +271,12 @@ static bool save_canvas_full_f(QUIXEL_CANVAS * cp, ALLEGRO_FILE * fp, const char
 			}
 		}
 	}
+	t3f_debug_message("Exit save_canvas_full_f()\n");
 	return true;
 
 	fail:
 	{
+		t3f_debug_message("Fail save_canvas_full_f()\n");
 		return false;
 	}
 }
@@ -274,6 +286,7 @@ static bool save_canvas_minimal_f(QUIXEL_CANVAS * cp, ALLEGRO_FILE * fp, const c
 	ALLEGRO_BITMAP * bp;
 	int i;
 
+	t3f_debug_message("Enter save_canvas_minimal_f()\n");
 	if(!al_fwrite32le(fp, cp->layer_max))
 	{
 		goto fail;
@@ -303,10 +316,12 @@ static bool save_canvas_minimal_f(QUIXEL_CANVAS * cp, ALLEGRO_FILE * fp, const c
 		}
 		al_destroy_bitmap(bp);
 	}
+	t3f_debug_message("Exit save_canvas_minimal_f()\n");
 	return true;
 
 	fail:
 	{
+		t3f_debug_message("Fail save_canvas_minimal_f()\n");
 		return false;
 	}
 }
@@ -316,6 +331,7 @@ static bool quixel_save_canvas_f(QUIXEL_CANVAS * cp, ALLEGRO_FILE * fp, const ch
 	char format_string[16] = {0};
 	int i, l;
 
+	t3f_debug_message("Enter save_canvas_f()\n");
 	if(strlen(format) < 16)
 	{
 		strcpy(format_string, format);
@@ -381,10 +397,12 @@ static bool quixel_save_canvas_f(QUIXEL_CANVAS * cp, ALLEGRO_FILE * fp, const ch
 			goto fail;
 		}
 	}
+	t3f_debug_message("Exit save_canvas_f()\n");
 	return true;
 
 	fail:
 	{
+		t3f_debug_message("Fail save_canvas_f()\n");
 		return false;
 	}
 }

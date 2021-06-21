@@ -22,6 +22,7 @@ int quixel_menu_frame_add_from_selection(int id, void * data)
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 	char buf[256];
 
+	t3f_debug_message("Enter quixel_menu_frame_add_from_selection()\n");
 	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0)
 	{
 		make_frame_undo(app->canvas_editor);
@@ -30,6 +31,7 @@ int quixel_menu_frame_add_from_selection(int id, void * data)
 		app->canvas_editor->current_frame = app->canvas->frame_max - 1;
 		t3f_refresh_menus();
 	}
+	t3f_debug_message("Exit quixel_menu_frame_add_from_selection()\n");
 	return 0;
 }
 
@@ -37,11 +39,13 @@ static bool add_frame(QUIXEL_CANVAS_EDITOR * cep, int width, int height)
 {
 	char buf[256];
 
+	t3f_debug_message("Enter add_frame(cep, %d, %d)\n", width, height);
 	make_frame_undo(cep);
 	sprintf(buf, "Frame %d", cep->canvas->frame_max + 1);
 	quixel_add_canvas_frame(cep->canvas, buf, cep->view_x, cep->view_y, width, height);
 	cep->current_frame = cep->canvas->frame_max - 1;
 	t3f_refresh_menus();
+	t3f_debug_message("Exit add_frame()\n");
 	return true;
 }
 
@@ -179,12 +183,14 @@ int quixel_menu_frame_delete(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
+	t3f_debug_message("Enter quixel_menu_frame_delete()\n");
 	if(app->canvas_editor->current_frame < app->canvas->frame_max)
 	{
 		make_frame_undo(app->canvas_editor);
 		quixel_remove_canvas_frame(app->canvas, app->canvas_editor->current_frame);
 		t3f_refresh_menus();
 	}
+	t3f_debug_message("Exit quixel_menu_frame_delete()\n");
 	return 0;
 }
 
@@ -192,6 +198,7 @@ int quixel_menu_frame_previous(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
+	t3f_debug_message("Enter quixel_menu_frame_previous()\n");
 	app->canvas_editor->current_frame--;
 	if(app->canvas_editor->current_frame < 0)
 	{
@@ -201,6 +208,7 @@ int quixel_menu_frame_previous(int id, void * data)
 			app->canvas_editor->current_frame = 0;
 		}
 	}
+	t3f_debug_message("Exit quixel_menu_frame_previous()\n");
 	return 0;
 }
 
@@ -208,10 +216,12 @@ int quixel_menu_frame_next(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
+	t3f_debug_message("Enter quixel_menu_frame_next()\n");
 	app->canvas_editor->current_frame++;
 	if(app->canvas_editor->current_frame >= app->canvas->frame_max)
 	{
 		app->canvas_editor->current_frame = 0;
 	}
+	t3f_debug_message("Exit quixel_menu_frame_next()\n");
 	return 0;
 }

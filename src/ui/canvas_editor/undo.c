@@ -12,6 +12,7 @@
 
 bool quixel_write_undo_header(ALLEGRO_FILE * fp, int type, const char * name)
 {
+	t3f_debug_message("Write undo (%d): %s\n", type, name);
 	al_fputc(fp, type);
 	al_fwrite16le(fp, strlen(name));
 	al_fwrite(fp, name, strlen(name));
@@ -93,15 +94,18 @@ void quixel_update_redo_name(QUIXEL_CANVAS_EDITOR * cep)
 
 void quixel_finalize_undo(QUIXEL_CANVAS_EDITOR * cep)
 {
+	t3f_debug_message("Enter quixel_finalize_undo()\n");
 	cep->undo_count++;
 	cep->redo_count = 0;
 	quixel_update_undo_name(cep);
 	quixel_update_redo_name(cep);
 	t3f_refresh_menus();
+	t3f_debug_message("Exit quixel_finalize_undo()\n");
 }
 
 static bool apply_undo_type(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, int type, const char * action, bool revert)
 {
+	t3f_debug_message("Enter apply_undo_type()\n");
 	switch(type)
 	{
 		case QUIXEL_UNDO_TYPE_TOOL:
@@ -137,11 +141,13 @@ static bool apply_undo_type(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, int t
 			return quixel_apply_import_undo(cep, fp);
 		}
 	}
+	t3f_debug_message("Exit apply_undo_type()\n");
 	return false;
 }
 
 static bool apply_redo_type(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, int type, const char * action)
 {
+	t3f_debug_message("Enter apply_redo_type()\n");
 	switch(type)
 	{
 		case QUIXEL_UNDO_TYPE_TOOL:
@@ -177,6 +183,7 @@ static bool apply_redo_type(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, int t
 			return quixel_apply_import_redo(cep, fp);
 		}
 	}
+	t3f_debug_message("Exit apply_redo_type()\n");
 	return false;
 }
 
@@ -188,9 +195,11 @@ bool quixel_apply_undo(QUIXEL_CANVAS_EDITOR * cep, const char * fn, bool revert)
 	char buf[1024];
 	bool ret;
 
+	t3f_debug_message("Enter quixel_apply_undo(cep, %s, %d)\n", fn, revert);
 	fp = al_fopen(fn, "rb");
 	if(!fp)
 	{
+		t3f_debug_message("Failed to open undo file\n");
 		return false;
 	}
 	type = al_fgetc(fp);
@@ -204,6 +213,7 @@ bool quixel_apply_undo(QUIXEL_CANVAS_EDITOR * cep, const char * fn, bool revert)
 		cep->update_title = true;
 	}
 	al_fclose(fp);
+	t3f_debug_message("Exit quixel_apply_undo()\n");
 	return true;
 }
 
@@ -215,9 +225,11 @@ bool quixel_apply_redo(QUIXEL_CANVAS_EDITOR * cep, const char * fn)
 	char buf[1024];
 	bool ret;
 
+	t3f_debug_message("Enter quixel_apply_redo(cep, %s)\n", fn);
 	fp = al_fopen(fn, "rb");
 	if(!fp)
 	{
+		t3f_debug_message("Failed to open redo file\n");
 		return false;
 	}
 	type = al_fgetc(fp);
@@ -231,6 +243,7 @@ bool quixel_apply_redo(QUIXEL_CANVAS_EDITOR * cep, const char * fn)
 		cep->update_title = true;
 	}
 	al_fclose(fp);
+	t3f_debug_message("Exit quixel_apply_redo()\n");
 	return true;
 }
 

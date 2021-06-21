@@ -12,6 +12,7 @@ int quixel_menu_edit_undo(int id, void * data)
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 	char undo_path[1024];
 
+	t3f_debug_message("Enter quixel_menu_edit_undo()\n");
 	if(app->canvas_editor->undo_count > 0)
 	{
 		quixel_get_undo_path("undo", app->canvas_editor->undo_count - 1, undo_path, 1024);
@@ -22,6 +23,7 @@ int quixel_menu_edit_undo(int id, void * data)
 		quixel_update_redo_name(app->canvas_editor);
 		t3f_refresh_menus();
 	}
+	t3f_debug_message("Exit quixel_menu_edit_undo()\n");
 
 	return 0;
 }
@@ -31,6 +33,7 @@ int quixel_menu_edit_redo(int id, void * data)
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 	char redo_path[1024];
 
+	t3f_debug_message("Enter quixel_menu_edit_redo()\n");
 	if(app->canvas_editor->redo_count > 0)
 	{
 		quixel_get_undo_path("redo", app->canvas_editor->redo_count - 1, redo_path, 1024);
@@ -41,6 +44,7 @@ int quixel_menu_edit_redo(int id, void * data)
 		quixel_update_redo_name(app->canvas_editor);
 		t3f_refresh_menus();
 	}
+	t3f_debug_message("Exit quixel_menu_edit_redo()\n");
 
 	return 0;
 }
@@ -49,6 +53,7 @@ int quixel_menu_edit_cut(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
+	t3f_debug_message("Enter quixel_menu_edit_cut()\n");
 	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0)
 	{
 		if(!app->canvas_editor->selection.bitmap)
@@ -78,6 +83,7 @@ int quixel_menu_edit_cut(int id, void * data)
 		}
 		t3f_refresh_menus();
 	}
+	t3f_debug_message("Exit quixel_menu_edit_cut()\n");
 
 	return 0;
 }
@@ -86,6 +92,7 @@ int quixel_menu_edit_copy(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
+	t3f_debug_message("Enter quixel_menu_edit_copy()\n");
 	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0)
 	{
 		if(!app->canvas_editor->selection.bitmap)
@@ -100,6 +107,7 @@ int quixel_menu_edit_copy(int id, void * data)
 		}
 		t3f_refresh_menus();
 	}
+	t3f_debug_message("Exit quixel_menu_edit_copy()\n");
 
 	return 0;
 }
@@ -109,6 +117,7 @@ int quixel_menu_edit_paste(int id, void * data)
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 	ALLEGRO_STATE old_state;
 
+	t3f_debug_message("Enter quixel_menu_edit_paste()\n");
 	if(app->canvas_editor->clipboard.bitmap)
 	{
 		al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);
@@ -135,6 +144,7 @@ int quixel_menu_edit_paste(int id, void * data)
 		al_restore_state(&old_state);
 		t3f_refresh_menus();
 	}
+	t3f_debug_message("Exit quixel_menu_edit_paste()\n");
 
 	return 0;
 }
@@ -143,6 +153,7 @@ int quixel_menu_edit_delete_layer(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
+	t3f_debug_message("Enter quixel_menu_edit_delete_layer()\n");
 	if(!quixel_remove_canvas_layer(app->canvas, app->canvas_editor->current_layer))
 	{
 		printf("Failed to remove layer!\n");
@@ -155,6 +166,7 @@ int quixel_menu_edit_delete_layer(int id, void * data)
 	{
 		app->canvas_editor->current_layer = 0;
 	}
+	t3f_debug_message("Exit quixel_menu_edit_delete_layer()\n");
 	return 0;
 }
 
@@ -163,6 +175,7 @@ int quixel_menu_edit_delete(int id, void * data)
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 	char undo_path[1024];
 
+	t3f_debug_message("Enter quixel_menu_edit_delete()\n");
 	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0)
 	{
 		quixel_get_undo_path("undo", app->canvas_editor->undo_count, undo_path, 1024);
@@ -194,6 +207,7 @@ int quixel_menu_edit_delete(int id, void * data)
 		}
 		t3f_refresh_menus();
 	}
+	t3f_debug_message("Exit quixel_menu_edit_delete()\n");
 
 	return 0;
 }

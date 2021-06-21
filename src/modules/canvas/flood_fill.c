@@ -55,13 +55,16 @@ bool quixel_flood_fill_canvas(QUIXEL_CANVAS * cp, int layer, int start_x, int st
 	int bx, by, bwidth, bheight, right, bottom;
 	bool ret = true;
 
+	t3f_debug_message("Enter quixel_flood_fill_canvas()\n");
 	if(layer >= cp->layer_max)
 	{
+		t3f_debug_message("Fail quixel_flood_fill_canvas() 1\n");
 		return false;
 	}
 	bp = cp->layer[layer]->bitmap[start_y / cp->bitmap_size][start_x / cp->bitmap_size];
 	if(!bp)
 	{
+		t3f_debug_message("Fail quixel_flood_fill_canvas() 2\n");
 		return false;
 	}
 	quixel_get_canvas_dimensions(cp, &bx, &by, &bwidth, &bheight, 0);
@@ -135,13 +138,16 @@ bool quixel_flood_fill_canvas(QUIXEL_CANVAS * cp, int layer, int start_x, int st
 	}
 	cleanup:
 	{
+		t3f_debug_message("Cleanup quixel_flood_fill_canvas()\n");
 		unlock_canvas_layer(cp, layer);
 		al_restore_state(&old_state);
 	}
 	if(!ret)
 	{
+		t3f_debug_message("Revert quixel_flood_fill_canvas()\n");
 		quixel_flood_fill_canvas_from_queue(cp, layer, old_color, out_qp);
 	}
+	t3f_debug_message("Exit quixel_flood_fill_canvas()\n");
 	return ret;
 }
 

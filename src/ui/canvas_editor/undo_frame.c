@@ -10,6 +10,7 @@ bool quixel_make_frame_undo(QUIXEL_CANVAS_EDITOR * cep, const char * action, con
 	const char * action_name = "Add Frame";
 	int i, l;
 
+	t3f_debug_message("Enter quixel_make_frame_undo()\n");
 	fp = al_fopen(fn, "wb");
 	if(!fp)
 	{
@@ -29,10 +30,12 @@ bool quixel_make_frame_undo(QUIXEL_CANVAS_EDITOR * cep, const char * action, con
 		al_fwrite32le(fp, cep->canvas->frame[i]->box.height);
 	}
 	al_fclose(fp);
+	t3f_debug_message("Exit quixel_make_frame_undo()\n");
 	return true;
 
 	fail:
 	{
+		t3f_debug_message("Fail quixel_make_frame_undo()\n");
 		if(fp)
 		{
 			al_fclose(fp);
@@ -54,6 +57,7 @@ bool quixel_apply_frame_undo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, cons
 	int x, y, width, height;
 	char frame_name[256] = {0};
 
+	t3f_debug_message("Enter quixel_apply_frame_undo()\n");
 	quixel_make_frame_redo(cep, action, quixel_get_undo_path("redo", cep->redo_count, undo_path, 1024));
 	cep->redo_count++;
 	frame_max = cep->canvas->frame_max;
@@ -77,10 +81,12 @@ bool quixel_apply_frame_undo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, cons
 		height = al_fread32le(fp);
 		quixel_add_canvas_frame(cep->canvas, frame_name, x, y, width, height);
 	}
+	t3f_debug_message("Exit quixel_apply_frame_undo()\n");
 	return true;
 
 	fail:
 	{
+		t3f_debug_message("Fail quixel_apply_frame_undo()\n");
 		return false;
 	}
 }
@@ -93,6 +99,7 @@ bool quixel_apply_frame_redo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, cons
 	int x, y, width, height;
 	char frame_name[256] = {0};
 
+	t3f_debug_message("Enter quixel_apply_frame_redo()\n");
 	quixel_make_frame_undo(cep, action, quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024));
 	cep->undo_count++;
 	frame_max = cep->canvas->frame_max;
@@ -116,10 +123,12 @@ bool quixel_apply_frame_redo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, cons
 		height = al_fread32le(fp);
 		quixel_add_canvas_frame(cep->canvas, frame_name, x, y, width, height);
 	}
+	t3f_debug_message("Exit quixel_apply_frame_redo()\n");
 	return true;
 
 	fail:
 	{
+		t3f_debug_message("Fail quixel_apply_frame_redo()\n");
 		return false;
 	}
 }

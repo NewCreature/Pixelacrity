@@ -171,6 +171,7 @@ bool quixel_add_canvas_layer(QUIXEL_CANVAS * cp, int layer_index)
 	int layer_size;
 	int i;
 
+	t3f_debug_message("Enter quixel_add_canvas_layer()\n");
 	if(layer_index < 0)
 	{
 		layer_index = cp->layer_max;
@@ -198,10 +199,12 @@ bool quixel_add_canvas_layer(QUIXEL_CANVAS * cp, int layer_index)
 			}
 			cp->layer_max++;
 			free(old_layer);
+			t3f_debug_message("Exit quixel_add_canvas_layer()\n");
 			return true;
 		}
 	}
 	cp->layer = old_layer;
+	t3f_debug_message("Fail quixel_add_canvas_layer()\n");
 	return false;
 }
 
@@ -211,6 +214,7 @@ bool quixel_remove_canvas_layer(QUIXEL_CANVAS * cp, int layer)
 	int layer_size;
 	int i;
 
+	t3f_debug_message("Enter quixel_remove_canvas_layer()\n");
 	old_layer = cp->layer;
 	layer_size = sizeof(QUIXEL_CANVAS_LAYER *) * cp->layer_max - 1;
 	cp->layer = malloc(layer_size);
@@ -229,9 +233,11 @@ bool quixel_remove_canvas_layer(QUIXEL_CANVAS * cp, int layer)
 		}
 		cp->layer_max--;
 		free(old_layer);
+		t3f_debug_message("Exit quixel_remove_canvas_layer()\n");
 		return true;
 	}
 	cp->layer = old_layer;
+	t3f_debug_message("Fail quixel_remove_canvas_layer()\n");
 	return false;
 }
 
@@ -241,6 +247,7 @@ bool quixel_add_canvas_frame(QUIXEL_CANVAS * cp, const char * name, int x, int y
 	int frame_size;
 	int i;
 
+	t3f_debug_message("Enter quixel_add_canvas_frame()\n");
 	old_frame = cp->frame;
 	frame_size = sizeof(QUIXEL_CANVAS_FRAME *) * cp->frame_max + 1;
 	cp->frame = malloc(frame_size);
@@ -256,10 +263,12 @@ bool quixel_add_canvas_frame(QUIXEL_CANVAS * cp, const char * name, int x, int y
 		{
 			cp->frame_max++;
 			free(old_frame);
+			t3f_debug_message("Exit quixel_add_canvas_frame()\n");
 			return true;
 		}
 	}
 	cp->frame = old_frame;
+	t3f_debug_message("Fail quixel_add_canvas_frame()\n");
 	return false;
 }
 
@@ -269,6 +278,7 @@ bool quixel_remove_canvas_frame(QUIXEL_CANVAS * cp, int frame)
 	int frame_size;
 	int i;
 
+	t3f_debug_message("Enter quixel_remove_canvas_frame()\n");
 	old_frame = cp->frame;
 	frame_size = sizeof(QUIXEL_CANVAS_FRAME *) * cp->frame_max - 1;
 	cp->frame = malloc(frame_size);
@@ -285,9 +295,11 @@ bool quixel_remove_canvas_frame(QUIXEL_CANVAS * cp, int frame)
 		}
 		cp->frame_max--;
 		free(old_frame);
+		t3f_debug_message("Exit quixel_remove_canvas_frame()\n");
 		return true;
 	}
 	cp->frame = old_frame;
+	t3f_debug_message("Fail quixel_remove_canvas_frame()\n");
 	return false;
 }
 
@@ -307,6 +319,7 @@ void quixel_shift_canvas_bitmap_array(QUIXEL_CANVAS * cp, int shift_x, int shift
 	int i, j, k;
 	int tx, ty;
 
+	t3f_debug_message("Enter quixel_shift_canvas_bitmap_array()\n");
 	new_width = cp->layer_width + shift_x;
 	new_height = cp->layer_height + shift_y;
 
@@ -354,6 +367,7 @@ void quixel_shift_canvas_bitmap_array(QUIXEL_CANVAS * cp, int shift_x, int shift
 	}
 	cp->layer_width = new_width;
 	cp->layer_height = new_height;
+	t3f_debug_message("Exit quixel_shift_canvas_bitmap_array()\n");
 }
 
 bool quixel_resize_canvas_bitmap_array(QUIXEL_CANVAS * cp, int width, int height)
@@ -361,6 +375,7 @@ bool quixel_resize_canvas_bitmap_array(QUIXEL_CANVAS * cp, int width, int height
 	ALLEGRO_BITMAP *** bitmap;
 	int i, j, k;
 
+	t3f_debug_message("Enter quixel_resize_canvas_bitmap_array()\n");
 	for(i = 0; i < cp->layer_max; i++)
 	{
 		/* create a new array */
@@ -400,6 +415,7 @@ bool quixel_resize_canvas_bitmap_array(QUIXEL_CANVAS * cp, int width, int height
 	}
 	cp->layer_width = width;
 	cp->layer_height = height;
+	t3f_debug_message("Exit quixel_resize_canvas_bitmap_array()\n");
 	return true;
 }
 
@@ -414,6 +430,7 @@ bool quixel_expand_canvas(QUIXEL_CANVAS * cp, int layer, int x, int y)
 
 	if(!cp->layer[layer]->bitmap[y / cp->bitmap_size][x / cp->bitmap_size])
 	{
+		t3f_debug_message("Expand canvas %d %d\n", x, y);
 		al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS | ALLEGRO_STATE_TARGET_BITMAP);
 		al_set_new_bitmap_flags(0);
 		cp->layer[layer]->bitmap[y / cp->bitmap_size][x / cp->bitmap_size] = al_create_bitmap(cp->bitmap_size, cp->bitmap_size);
@@ -424,7 +441,7 @@ bool quixel_expand_canvas(QUIXEL_CANVAS * cp, int layer, int x, int y)
 		}
 		else
 		{
-			printf("Failed to expand canvas!\n");
+			t3f_debug_message("Failed to expand canvas!\n");
 			return false;
 		}
 		al_restore_state(&old_state);

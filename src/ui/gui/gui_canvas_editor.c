@@ -223,6 +223,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			d->flags |= D_TRACKMOUSE;
 			if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_OFF)
 			{
+				t3f_debug_message("Begin tool %d\n", canvas_editor->current_tool);
 				click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
 				switch(canvas_editor->current_tool)
 				{
@@ -355,6 +356,10 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 		{
 			canvas_editor->release_x = canvas_editor->hover_x;
 			canvas_editor->release_y = canvas_editor->hover_y;
+			if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING)
+			{
+				t3f_debug_message("Finish tool %d\n", canvas_editor->current_tool);
+			}
 			switch(canvas_editor->current_tool)
 			{
 				case QUIXEL_TOOL_PIXEL:

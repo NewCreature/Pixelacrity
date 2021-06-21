@@ -127,6 +127,7 @@ bool quixel_handle_float_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep, QUI
 	ALLEGRO_STATE old_state;
 	ALLEGRO_TRANSFORM identity;
 
+	t3f_debug_message("Enter quixel_handle_float_canvas_editor_selection()\n");
 	al_store_state(&old_state, ALLEGRO_STATE_BLENDER | ALLEGRO_STATE_TRANSFORM | ALLEGRO_STATE_TARGET_BITMAP);
 	al_set_new_bitmap_flags(0);
 	cep->selection.bitmap = al_create_bitmap(bp->width, bp->height);
@@ -148,11 +149,13 @@ bool quixel_handle_float_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep, QUI
 	al_restore_state(&old_state);
 	quixel_draw_primitive_to_canvas(cep->canvas, cep->current_layer, bp->start_x, bp->start_y, bp->start_x + bp->width - 1, bp->start_y + bp->height - 1, NULL, al_map_rgba_f(0, 0, 0, 0), QUIXEL_RENDER_COPY, quixel_draw_filled_rectangle);
 	cep->modified++;
+	t3f_debug_message("Exit quixel_handle_float_canvas_editor_selection()\n");
 
 	return true;
 
 	fail:
 	{
+		t3f_debug_message("Fail quixel_handle_float_canvas_editor_selection()\n");
 		if(cep->selection.bitmap)
 		{
 			al_destroy_bitmap(cep->selection.bitmap);
@@ -170,13 +173,16 @@ bool quixel_handle_float_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep, QUI
 
 void quixel_float_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_BOX * bp)
 {
+	t3f_debug_message("Enter quixel_float_canvas_editor_selection()\n");
 	create_float_undo(cep, bp);
 	quixel_finalize_undo(cep);
 	quixel_handle_float_canvas_editor_selection(cep, bp);
+	t3f_debug_message("Exit quixel_float_canvas_editor_selection()\n");
 }
 
 void quixel_handle_unfloat_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_BOX * bp)
 {
+	t3f_debug_message("Enter quixel_handle_unfloat_canvas_editor_selection()\n");
 	if(quixel_handle_canvas_expansion(cep->canvas, cep->selection.box.start_x, cep->selection.box.start_y, cep->selection.box.end_x, cep->selection.box.end_y, &cep->shift_x, &cep->shift_y))
 	{
 		quixel_shift_canvas_editor_variables(cep, cep->shift_x * cep->canvas->bitmap_size, cep->shift_y * cep->canvas->bitmap_size);
@@ -185,15 +191,18 @@ void quixel_handle_unfloat_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep, Q
 	al_destroy_bitmap(cep->selection.bitmap);
 	cep->selection.bitmap = NULL;
 	cep->modified++;
+	t3f_debug_message("Exit quixel_handle_unfloat_canvas_editor_selection()\n");
 }
 
 void quixel_unfloat_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_BOX * bp)
 {
+	t3f_debug_message("Enter quixel_unfloat_canvas_editor_selection()\n");
 	if(create_unfloat_undo(cep))
 	{
 		quixel_finalize_undo(cep);
 	}
 	quixel_handle_unfloat_canvas_editor_selection(cep, bp);
+	t3f_debug_message("Exit quixel_unfloat_canvas_editor_selection()\n");
 }
 
 void quixel_shift_canvas_editor_variables(QUIXEL_CANVAS_EDITOR * cep, int ox, int oy)
@@ -234,6 +243,7 @@ void quixel_select_canvas_editor_tool(QUIXEL_CANVAS_EDITOR * cep, int tool)
 
 bool quixel_import_image(QUIXEL_CANVAS_EDITOR * cep, const char * fn)
 {
+	t3f_debug_message("Enter quixel_import_image()\n");
 	cep->selection.bitmap = al_load_bitmap_flags(fn, ALLEGRO_NO_PREMULTIPLIED_ALPHA);
 	if(cep->selection.bitmap)
 	{
@@ -246,10 +256,12 @@ bool quixel_import_image(QUIXEL_CANVAS_EDITOR * cep, const char * fn)
 		quixel_initialize_box(&cep->selection.box, 0, 0, al_get_bitmap_width(cep->selection.bitmap), al_get_bitmap_height(cep->selection.bitmap), cep->peg_bitmap);
 		quixel_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom);
 	}
+	t3f_debug_message("Exit quixel_import_image()\n");
 	return true;
 
 	fail:
 	{
+		t3f_debug_message("Fail quixel_import_image()\n");
 		if(cep->selection.bitmap)
 		{
 			al_destroy_bitmap(cep->selection.bitmap);

@@ -19,7 +19,9 @@ void app_event_handler(ALLEGRO_EVENT * event, void * data)
 	{
 		case ALLEGRO_EVENT_DISPLAY_RESIZE:
 		{
+			t3f_debug_message("Resize event start\n");
 			t3f_event_handler(event);
+			t3f_debug_message("Resize event default handling done\n");
 			app->restart_ui = true;
 			if(app->canvas_editor)
 			{
@@ -36,11 +38,14 @@ void app_event_handler(ALLEGRO_EVENT * event, void * data)
 					al_restore_state(&old_state);
 				}
 			}
+			t3f_debug_message("Resize event custom handling done\n");
 			break;
 		}
 		case ALLEGRO_EVENT_DISPLAY_CLOSE:
 		{
+			t3f_debug_message("Display close event start\n");
 			quixel_menu_file_exit(0, data);
+			t3f_debug_message("Display close event custom handling done\n");
 			break;
 		}
 		default:
@@ -119,6 +124,7 @@ bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 	t3f_get_filename(t3f_data_path, date_string, debug_fn, 1024);
 	t3f_open_debug_log(debug_fn);
 
+	t3f_debug_message("Create alpha blend shader\n");
 	app->alpha_shader = quixel_create_pixel_shader("data/shaders/alpha_blend_shader.glsl");
 	if(!app->alpha_shader)
 	{
@@ -126,26 +132,34 @@ bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 		return false;
 	}
 
+	t3f_debug_message("Use alpha blend shader\n");
 	al_use_shader(app->alpha_shader);
 
+	t3f_debug_message("Create starting canvas\n");
 	quixel_menu_file_new(0, app);
 	if(!app->canvas)
 	{
+		t3f_debug_message("Failed to create starting canvas\n");
 		return false;
 	}
+	t3f_debug_message("Create canvas editor\n");
 	app->canvas_editor = quixel_create_canvas_editor(app->canvas);
 	if(!app->canvas_editor)
 	{
+		t3f_debug_message("Failed to create canvas editor\n");
 		return false;
 	}
 	app->canvas_editor->update_title = true;
 
+	t3f_debug_message("Create UI\n");
 	app->ui = quixel_create_ui(app->canvas_editor);
 	if(!app->ui)
 	{
 		return false;
 	}
+	t3f_debug_message("Resize UI\n");
 	quixel_resize_ui(app->ui);
+	t3f_debug_message("Show GUI\n");
 	t3gui_show_dialog(app->ui->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, T3GUI_PLAYER_NO_ESCAPE | T3GUI_PLAYER_IGNORE_CLOSE, app);
 	al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_INVERSE_ALPHA);
 
@@ -154,17 +168,21 @@ bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 
 void app_exit(APP_INSTANCE * app)
 {
+	t3f_debug_message("Destroy UI\n");
 	if(app->ui)
 	{
 		quixel_destroy_ui(app->ui);
 	}
 	if(app->canvas_editor)
 	{
+		t3f_debug_message("Clean up undo data\n");
 		quixel_undo_clean_up(app->canvas_editor);
+		t3f_debug_message("Destroy canvas editor\n");
 		quixel_destroy_canvas_editor(app->canvas_editor);
 	}
 	if(app->canvas)
 	{
+		t3f_debug_message("Destroy canvas\n");
 		quixel_destroy_canvas(app->canvas);
 	}
 	t3f_close_debug_log();
