@@ -221,16 +221,13 @@ bool quixel_remove_canvas_layer(QUIXEL_CANVAS * cp, int layer)
 		{
 			cp->layer[i] = old_layer[i];
 		}
+		destroy_bitmap_array(old_layer[layer]->bitmap, cp->layer_width, cp->layer_height);
+		free(old_layer[layer]);
 		for(i = layer; i < cp->layer_max - 1; i++)
 		{
 			cp->layer[i] = old_layer[i + 1];
 		}
 		cp->layer_max--;
-		if(cp->layer_max > 0)
-		{
-			destroy_bitmap_array(old_layer[cp->layer_max]->bitmap, cp->layer_width, cp->layer_height);
-			free(old_layer[cp->layer_max]);
-		}
 		free(old_layer);
 		return true;
 	}
