@@ -2,6 +2,7 @@
 #include "instance.h"
 #include "modules/canvas/canvas_file.h"
 #include "modules/pixel_shader.h"
+#include "modules/date.h"
 #include "ui/canvas_editor/canvas_editor.h"
 #include "ui/canvas_editor/undo.h"
 #include "ui/menu/menu.h"
@@ -101,6 +102,9 @@ void app_render(void * data)
 /* initialize our app, load graphics, etc. */
 bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 {
+	char date_string[256];
+	char debug_fn[1024];
+
 	/* initialize T3F */
 	if(!t3f_initialize(T3F_APP_TITLE, 640, 480, 60.0, app_logic, app_render, T3F_DEFAULT | T3F_USE_MENU | T3F_RESIZABLE | T3F_NO_SCALE | T3F_USE_OPENGL, app))
 	{
@@ -109,6 +113,11 @@ bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 	}
 	memset(app, 0, sizeof(APP_INSTANCE));
 	t3f_set_event_handler(app_event_handler);
+
+	quixel_get_date_string(date_string, 256);
+	strcat(date_string, ".log");
+	t3f_get_filename(t3f_data_path, date_string, debug_fn, 1024);
+	t3f_open_debug_log(debug_fn);
 
 	app->alpha_shader = quixel_create_pixel_shader("data/shaders/alpha_blend_shader.glsl");
 	if(!app->alpha_shader)
@@ -158,6 +167,7 @@ void app_exit(APP_INSTANCE * app)
 	{
 		quixel_destroy_canvas(app->canvas);
 	}
+	t3f_close_debug_log();
 }
 
 int main(int argc, char * argv[])
