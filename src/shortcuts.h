@@ -3,6 +3,6 @@
 
 #include "ui/canvas_editor/canvas_editor.h"
 
-void pa_handle_shortcuts(QUIXEL_CANVAS_EDITOR * cep);
+void pa_handle_shortcuts(APP_INSTANCE * app);
 
 #endif
