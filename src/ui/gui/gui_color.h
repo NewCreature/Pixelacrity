@@ -1,6 +1,6 @@
-#ifndef QUIXEL_GUI_COLOR_H
-#define QUIXEL_GUI_COLOR_H
+#ifndef PA_GUI_COLOR_H
+#define PA_GUI_COLOR_H
 
-int quixel_gui_color_proc(int msg, T3GUI_ELEMENT * d, int c);
+int pa_gui_color_proc(int msg, T3GUI_ELEMENT * d, int c);
 
 #endif

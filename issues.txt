@@ -1,5 +1,5 @@
-Quixel 0.2 Issues
------------------
+Pixelacrity 0.2 Issues
+----------------------
 
 [ ]Resizing window causes freeze on Windows.
 
@@ -21,8 +21,8 @@ Quixel 0.2 Issues
    [X]Need controls for adding and removing frames (menu items, etc.).
 
 
-Quixel 0.3 Issues
------------------
+Pixelacrity 0.3 Issues
+----------------------
 
 [ ]Investigate why pixel x-coordinate is offset by -1.
 
@@ -133,7 +133,7 @@ Closed Issues
    [X]Ensure pre-multiplied alpha setting is correct when importing images. Pre-
       multiplied alpha should always be disabled when loading images.
 
-[X]Fix saving with QUIXEL_CANVAS_SAVE_MINIMAL causing alpha information to be
+[X]Fix saving with PA_CANVAS_SAVE_MINIMAL causing alpha information to be
    lost. We need to implement a pixel shader so we can render the correct colors
    without using pre-multiplied alpha. This will also fix the incorrect
    rendering of alpha blended colors throughout the entire program.
@@ -141,7 +141,7 @@ Closed Issues
    [X]For now, we render the bottom layer using the copy blending mode and
       others using the no pre-multiplied alpha standard blending mode. This
       fixes the issue of the alpha being lost when saving the canvas with
-      QUIXEL_CANVAS_SAVE_MINIMAL, since we render each layer to a separate
+      PA_CANVAS_SAVE_MINIMAL, since we render each layer to a separate
       bitmap. This will not give the best results when exporting a full multi-
       layer canvas to an image file. We need to implement a compositing method
       so we can export the most accurate image data.

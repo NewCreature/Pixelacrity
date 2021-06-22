@@ -6,7 +6,7 @@
 #include "modules/queue.h"
 #include "flood_fill.h"
 
-static ALLEGRO_COLOR get_pixel(QUIXEL_CANVAS * cp, int layer, int x, int y, ALLEGRO_BITMAP ** current_bp, int * ox, int * oy)
+static ALLEGRO_COLOR get_pixel(PA_CANVAS * cp, int layer, int x, int y, ALLEGRO_BITMAP ** current_bp, int * ox, int * oy)
 {
 	*current_bp = cp->layer[layer]->bitmap[y / cp->bitmap_size][x / cp->bitmap_size];
 	*ox = x % cp->bitmap_size;
@@ -19,13 +19,13 @@ static ALLEGRO_COLOR get_pixel(QUIXEL_CANVAS * cp, int layer, int x, int y, ALLE
 	return al_get_pixel(*current_bp, *ox, *oy);
 }
 
-static void put_pixel(QUIXEL_CANVAS * cp, int layer, int ox, int oy, ALLEGRO_COLOR color, ALLEGRO_BITMAP * current_bp)
+static void put_pixel(PA_CANVAS * cp, int layer, int ox, int oy, ALLEGRO_COLOR color, ALLEGRO_BITMAP * current_bp)
 {
 	al_set_target_bitmap(current_bp);
 	al_put_pixel(ox, oy, color);
 }
 
-static void unlock_canvas_layer(QUIXEL_CANVAS * cp, int layer)
+static void unlock_canvas_layer(PA_CANVAS * cp, int layer)
 {
 	ALLEGRO_BITMAP * current_bp;
 	int i, j;
@@ -43,9 +43,9 @@ static void unlock_canvas_layer(QUIXEL_CANVAS * cp, int layer)
 	}
 }
 
-bool quixel_flood_fill_canvas(QUIXEL_CANVAS * cp, int layer, int start_x, int start_y, ALLEGRO_COLOR color, QUIXEL_QUEUE * out_qp)
+bool pa_flood_fill_canvas(PA_CANVAS * cp, int layer, int start_x, int start_y, ALLEGRO_COLOR color, PA_QUEUE * out_qp)
 {
-	QUIXEL_QUEUE * qp;
+	PA_QUEUE * qp;
 	ALLEGRO_COLOR old_color;
 	ALLEGRO_COLOR current_color;
 	ALLEGRO_STATE old_state;
@@ -55,38 +55,38 @@ bool quixel_flood_fill_canvas(QUIXEL_CANVAS * cp, int layer, int start_x, int st
 	int bx, by, bwidth, bheight, right, bottom;
 	bool ret = true;
 
-	t3f_debug_message("Enter quixel_flood_fill_canvas()\n");
+	t3f_debug_message("Enter pa_flood_fill_canvas()\n");
 	if(layer >= cp->layer_max)
 	{
-		t3f_debug_message("Fail quixel_flood_fill_canvas() 1\n");
+		t3f_debug_message("Fail pa_flood_fill_canvas() 1\n");
 		return false;
 	}
 	bp = cp->layer[layer]->bitmap[start_y / cp->bitmap_size][start_x / cp->bitmap_size];
 	if(!bp)
 	{
-		t3f_debug_message("Fail quixel_flood_fill_canvas() 2\n");
+		t3f_debug_message("Fail pa_flood_fill_canvas() 2\n");
 		return false;
 	}
-	quixel_get_canvas_dimensions(cp, &bx, &by, &bwidth, &bheight, 0);
+	pa_get_canvas_dimensions(cp, &bx, &by, &bwidth, &bheight, 0);
 	right = bx + bwidth - 1;
 	bottom = by + bheight - 1;
 	al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP);
-	qp = quixel_create_queue();
+	qp = pa_create_queue();
 	if(qp)
 	{
 		old_color = get_pixel(cp, layer, start_x, start_y, &current_bp, &ox, &oy);
-		if(quixel_color_equal(old_color, color))
+		if(pa_color_equal(old_color, color))
 		{
 			ret = true;
 			goto cleanup;
 		}
 		put_pixel(cp, layer, ox, oy, color, current_bp);
-		quixel_queue_push(qp, start_x, start_y);
-		quixel_queue_push(out_qp, start_x, start_y);
-		while(quixel_queue_pop(qp, &x, &y))
+		pa_queue_push(qp, start_x, start_y);
+		pa_queue_push(out_qp, start_x, start_y);
+		while(pa_queue_pop(qp, &x, &y))
 		{
 			current_color = get_pixel(cp, layer, x - 1, y, &current_bp, &ox, &oy);
-			if(quixel_color_equal(current_color, old_color))
+			if(pa_color_equal(current_color, old_color))
 			{
 				if(x - 1 < bx)
 				{
@@ -94,11 +94,11 @@ bool quixel_flood_fill_canvas(QUIXEL_CANVAS * cp, int layer, int start_x, int st
 					goto cleanup;
 				}
 				put_pixel(cp, layer, ox, oy, color, current_bp);
-				quixel_queue_push(qp, x - 1, y);
-				quixel_queue_push(out_qp, x - 1, y);
+				pa_queue_push(qp, x - 1, y);
+				pa_queue_push(out_qp, x - 1, y);
 			}
 			current_color = get_pixel(cp, layer, x + 1, y, &current_bp, &ox, &oy);
-			if(quixel_color_equal(current_color, old_color))
+			if(pa_color_equal(current_color, old_color))
 			{
 				if(x + 1 > right)
 				{
@@ -106,11 +106,11 @@ bool quixel_flood_fill_canvas(QUIXEL_CANVAS * cp, int layer, int start_x, int st
 					goto cleanup;
 				}
 				put_pixel(cp, layer, ox, oy, color, current_bp);
-				quixel_queue_push(qp, x + 1, y);
-				quixel_queue_push(out_qp, x + 1, y);
+				pa_queue_push(qp, x + 1, y);
+				pa_queue_push(out_qp, x + 1, y);
 			}
 			current_color = get_pixel(cp, layer, x, y - 1, &current_bp, &ox, &oy);
-			if(quixel_color_equal(current_color, old_color))
+			if(pa_color_equal(current_color, old_color))
 			{
 				if(y - 1 < by)
 				{
@@ -118,11 +118,11 @@ bool quixel_flood_fill_canvas(QUIXEL_CANVAS * cp, int layer, int start_x, int st
 					goto cleanup;
 				}
 				put_pixel(cp, layer, ox, oy, color, current_bp);
-				quixel_queue_push(qp, x, y - 1);
-				quixel_queue_push(out_qp, x, y - 1);
+				pa_queue_push(qp, x, y - 1);
+				pa_queue_push(out_qp, x, y - 1);
 			}
 			current_color = get_pixel(cp, layer, x, y + 1, &current_bp, &ox, &oy);
-			if(quixel_color_equal(current_color, old_color))
+			if(pa_color_equal(current_color, old_color))
 			{
 				if(y + 1 > bottom)
 				{
@@ -130,31 +130,31 @@ bool quixel_flood_fill_canvas(QUIXEL_CANVAS * cp, int layer, int start_x, int st
 					goto cleanup;
 				}
 				put_pixel(cp, layer, ox, oy, color, current_bp);
-				quixel_queue_push(qp, x, y + 1);
-				quixel_queue_push(out_qp, x, y + 1);
+				pa_queue_push(qp, x, y + 1);
+				pa_queue_push(out_qp, x, y + 1);
 			}
 		}
-		quixel_destroy_queue(qp);
+		pa_destroy_queue(qp);
 	}
 	cleanup:
 	{
-		t3f_debug_message("Cleanup quixel_flood_fill_canvas()\n");
+		t3f_debug_message("Cleanup pa_flood_fill_canvas()\n");
 		unlock_canvas_layer(cp, layer);
 		al_restore_state(&old_state);
 	}
 	if(!ret)
 	{
-		t3f_debug_message("Revert quixel_flood_fill_canvas()\n");
-		quixel_flood_fill_canvas_from_queue(cp, layer, old_color, out_qp);
+		t3f_debug_message("Revert pa_flood_fill_canvas()\n");
+		pa_flood_fill_canvas_from_queue(cp, layer, old_color, out_qp);
 	}
-	t3f_debug_message("Exit quixel_flood_fill_canvas()\n");
+	t3f_debug_message("Exit pa_flood_fill_canvas()\n");
 	return ret;
 }
 
-void quixel_flood_fill_canvas_from_queue(QUIXEL_CANVAS * cp, int layer, ALLEGRO_COLOR color, QUIXEL_QUEUE * qp)
+void pa_flood_fill_canvas_from_queue(PA_CANVAS * cp, int layer, ALLEGRO_COLOR color, PA_QUEUE * qp)
 {
 	ALLEGRO_STATE old_state;
-	QUIXEL_QUEUE_NODE * current_node;
+	PA_QUEUE_NODE * current_node;
 	ALLEGRO_COLOR current_color;
 	ALLEGRO_BITMAP * current_bp;
 	int ox, oy;

@@ -20,7 +20,7 @@ static const char * ega_palette[64] =
 	"FF5555", "FF55FF", "FFFF55", "FFFFFF"
 };
 
-ALLEGRO_COLOR quixel_get_ega_palette_color(int index)
+ALLEGRO_COLOR pa_get_ega_palette_color(int index)
 {
 	if(index >= 0 && index < 64)
 	{

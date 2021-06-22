@@ -44,7 +44,7 @@ void app_event_handler(ALLEGRO_EVENT * event, void * data)
 		case ALLEGRO_EVENT_DISPLAY_CLOSE:
 		{
 			t3f_debug_message("Display close event start\n");
-			quixel_menu_file_exit(0, data);
+			pa_menu_file_exit(0, data);
 			t3f_debug_message("Display close event custom handling done\n");
 			break;
 		}
@@ -63,7 +63,7 @@ void app_logic(void * data)
 
 	if(app->restart_ui)
 	{
-		quixel_resize_ui(app->ui);
+		pa_resize_ui(app->ui);
 		app->restart_ui = false;
 	}
 	/* handle signals */
@@ -71,21 +71,21 @@ void app_logic(void * data)
 	{
 		switch(app->canvas_editor->signal)
 		{
-			case QUIXEL_CANVAS_EDITOR_SIGNAL_DELETE_LAYER:
+			case PA_CANVAS_EDITOR_SIGNAL_DELETE_LAYER:
 			{
-				app->canvas_editor->signal = QUIXEL_CANVAS_EDITOR_SIGNAL_NONE;
+				app->canvas_editor->signal = PA_CANVAS_EDITOR_SIGNAL_NONE;
 				break;
 			}
 		}
 	}
 
-	quixel_process_ui(app->ui);
+	pa_process_ui(app->ui);
 	strcpy(app->ui->status_left_message, "");
-	if(app->canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING)
+	if(app->canvas_editor->tool_state == PA_TOOL_STATE_DRAWING)
 	{
 		sprintf(app->ui->status_left_message, "(%d, %d)", abs(app->canvas_editor->click_x - app->canvas_editor->hover_x) + 1, abs(app->canvas_editor->click_y - app->canvas_editor->hover_y) + 1);
 	}
-	else if(app->canvas_editor->tool_state == QUIXEL_TOOL_STATE_EDITING)
+	else if(app->canvas_editor->tool_state == PA_TOOL_STATE_EDITING)
 	{
 		sprintf(app->ui->status_left_message, "Selection: (%d, %d)", app->canvas_editor->selection.box.width, app->canvas_editor->selection.box.height);
 	}
@@ -101,7 +101,7 @@ void app_render(void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	quixel_render_ui(app->ui);
+	pa_render_ui(app->ui);
 }
 
 /* initialize our app, load graphics, etc. */
@@ -119,13 +119,13 @@ bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 	memset(app, 0, sizeof(APP_INSTANCE));
 	t3f_set_event_handler(app_event_handler);
 
-	quixel_get_date_string(date_string, 256);
+	pa_get_date_string(date_string, 256);
 	strcat(date_string, ".log");
 	t3f_get_filename(t3f_data_path, date_string, debug_fn, 1024);
 	t3f_open_debug_log(debug_fn);
 
 	t3f_debug_message("Create alpha blend shader\n");
-	app->alpha_shader = quixel_create_pixel_shader("data/shaders/alpha_blend_shader.glsl");
+	app->alpha_shader = pa_create_pixel_shader("data/shaders/alpha_blend_shader.glsl");
 	if(!app->alpha_shader)
 	{
 		printf("Error initializing alpha shader!\n");
@@ -136,14 +136,14 @@ bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 	al_use_shader(app->alpha_shader);
 
 	t3f_debug_message("Create starting canvas\n");
-	quixel_menu_file_new(0, app);
+	pa_menu_file_new(0, app);
 	if(!app->canvas)
 	{
 		t3f_debug_message("Failed to create starting canvas\n");
 		return false;
 	}
 	t3f_debug_message("Create canvas editor\n");
-	app->canvas_editor = quixel_create_canvas_editor(app->canvas);
+	app->canvas_editor = pa_create_canvas_editor(app->canvas);
 	if(!app->canvas_editor)
 	{
 		t3f_debug_message("Failed to create canvas editor\n");
@@ -152,15 +152,15 @@ bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 	app->canvas_editor->update_title = true;
 
 	t3f_debug_message("Create UI\n");
-	app->ui = quixel_create_ui(app->canvas_editor);
+	app->ui = pa_create_ui(app->canvas_editor);
 	if(!app->ui)
 	{
 		return false;
 	}
 	t3f_debug_message("Resize UI\n");
-	quixel_resize_ui(app->ui);
+	pa_resize_ui(app->ui);
 	t3f_debug_message("Show GUI\n");
-	t3gui_show_dialog(app->ui->dialog[QUIXEL_UI_DIALOG_MAIN], NULL, T3GUI_PLAYER_NO_ESCAPE | T3GUI_PLAYER_IGNORE_CLOSE, app);
+	t3gui_show_dialog(app->ui->dialog[PA_UI_DIALOG_MAIN], NULL, T3GUI_PLAYER_NO_ESCAPE | T3GUI_PLAYER_IGNORE_CLOSE, app);
 	al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_INVERSE_ALPHA);
 
 	return true;
@@ -171,19 +171,19 @@ void app_exit(APP_INSTANCE * app)
 	t3f_debug_message("Destroy UI\n");
 	if(app->ui)
 	{
-		quixel_destroy_ui(app->ui);
+		pa_destroy_ui(app->ui);
 	}
 	if(app->canvas_editor)
 	{
 		t3f_debug_message("Clean up undo data\n");
-		quixel_undo_clean_up(app->canvas_editor);
+		pa_undo_clean_up(app->canvas_editor);
 		t3f_debug_message("Destroy canvas editor\n");
-		quixel_destroy_canvas_editor(app->canvas_editor);
+		pa_destroy_canvas_editor(app->canvas_editor);
 	}
 	if(app->canvas)
 	{
 		t3f_debug_message("Destroy canvas\n");
-		quixel_destroy_canvas(app->canvas);
+		pa_destroy_canvas(app->canvas);
 	}
 	t3f_close_debug_log();
 }

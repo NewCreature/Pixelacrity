@@ -4,20 +4,20 @@
 #include "canvas_editor.h"
 #include "undo.h"
 
-bool quixel_make_frame_undo(QUIXEL_CANVAS_EDITOR * cep, const char * action, const char * fn)
+bool pa_make_frame_undo(PA_CANVAS_EDITOR * cep, const char * action, const char * fn)
 {
 	ALLEGRO_FILE * fp = NULL;
 	const char * action_name = "Add Frame";
 	int i, l;
 
-	t3f_debug_message("Enter quixel_make_frame_undo()\n");
+	t3f_debug_message("Enter pa_make_frame_undo()\n");
 	fp = al_fopen(fn, "wb");
 	if(!fp)
 	{
 		printf("fail: %s\n", fn);
 		goto fail;
 	}
-	quixel_write_undo_header(fp, QUIXEL_UNDO_TYPE_FRAME, action ? action : action_name);
+	pa_write_undo_header(fp, PA_UNDO_TYPE_FRAME, action ? action : action_name);
 	al_fwrite32le(fp, cep->canvas->frame_max);
 	for(i = 0; i < cep->canvas->frame_max; i++)
 	{
@@ -30,12 +30,12 @@ bool quixel_make_frame_undo(QUIXEL_CANVAS_EDITOR * cep, const char * action, con
 		al_fwrite32le(fp, cep->canvas->frame[i]->box.height);
 	}
 	al_fclose(fp);
-	t3f_debug_message("Exit quixel_make_frame_undo()\n");
+	t3f_debug_message("Exit pa_make_frame_undo()\n");
 	return true;
 
 	fail:
 	{
-		t3f_debug_message("Fail quixel_make_frame_undo()\n");
+		t3f_debug_message("Fail pa_make_frame_undo()\n");
 		if(fp)
 		{
 			al_fclose(fp);
@@ -44,12 +44,12 @@ bool quixel_make_frame_undo(QUIXEL_CANVAS_EDITOR * cep, const char * action, con
 	}
 }
 
-bool quixel_make_frame_redo(QUIXEL_CANVAS_EDITOR * cep, const char * action, const char * fn)
+bool pa_make_frame_redo(PA_CANVAS_EDITOR * cep, const char * action, const char * fn)
 {
-	return quixel_make_frame_undo(cep, action, fn);
+	return pa_make_frame_undo(cep, action, fn);
 }
 
-bool quixel_apply_frame_undo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, const char * action, bool revert)
+bool pa_apply_frame_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, const char * action, bool revert)
 {
 	char undo_path[1024];
 	int frame_max;
@@ -57,13 +57,13 @@ bool quixel_apply_frame_undo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, cons
 	int x, y, width, height;
 	char frame_name[256] = {0};
 
-	t3f_debug_message("Enter quixel_apply_frame_undo()\n");
-	quixel_make_frame_redo(cep, action, quixel_get_undo_path("redo", cep->redo_count, undo_path, 1024));
+	t3f_debug_message("Enter pa_apply_frame_undo()\n");
+	pa_make_frame_redo(cep, action, pa_get_undo_path("redo", cep->redo_count, undo_path, 1024));
 	cep->redo_count++;
 	frame_max = cep->canvas->frame_max;
 	for(i = 0; i < frame_max; i++)
 	{
-		quixel_remove_canvas_frame(cep->canvas, 0);
+		pa_remove_canvas_frame(cep->canvas, 0);
 	}
 	frame_max = al_fread32le(fp);
 	for(i = 0; i < frame_max; i++)
@@ -79,19 +79,19 @@ bool quixel_apply_frame_undo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, cons
 		y = al_fread32le(fp);
 		width = al_fread32le(fp);
 		height = al_fread32le(fp);
-		quixel_add_canvas_frame(cep->canvas, frame_name, x, y, width, height);
+		pa_add_canvas_frame(cep->canvas, frame_name, x, y, width, height);
 	}
-	t3f_debug_message("Exit quixel_apply_frame_undo()\n");
+	t3f_debug_message("Exit pa_apply_frame_undo()\n");
 	return true;
 
 	fail:
 	{
-		t3f_debug_message("Fail quixel_apply_frame_undo()\n");
+		t3f_debug_message("Fail pa_apply_frame_undo()\n");
 		return false;
 	}
 }
 
-bool quixel_apply_frame_redo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, const char * action)
+bool pa_apply_frame_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, const char * action)
 {
 	char undo_path[1024];
 	int frame_max;
@@ -99,13 +99,13 @@ bool quixel_apply_frame_redo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, cons
 	int x, y, width, height;
 	char frame_name[256] = {0};
 
-	t3f_debug_message("Enter quixel_apply_frame_redo()\n");
-	quixel_make_frame_undo(cep, action, quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024));
+	t3f_debug_message("Enter pa_apply_frame_redo()\n");
+	pa_make_frame_undo(cep, action, pa_get_undo_path("undo", cep->undo_count, undo_path, 1024));
 	cep->undo_count++;
 	frame_max = cep->canvas->frame_max;
 	for(i = 0; i < frame_max; i++)
 	{
-		quixel_remove_canvas_frame(cep->canvas, 0);
+		pa_remove_canvas_frame(cep->canvas, 0);
 	}
 	frame_max = al_fread32le(fp);
 	for(i = 0; i < frame_max; i++)
@@ -121,14 +121,14 @@ bool quixel_apply_frame_redo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, cons
 		y = al_fread32le(fp);
 		width = al_fread32le(fp);
 		height = al_fread32le(fp);
-		quixel_add_canvas_frame(cep->canvas, frame_name, x, y, width, height);
+		pa_add_canvas_frame(cep->canvas, frame_name, x, y, width, height);
 	}
-	t3f_debug_message("Exit quixel_apply_frame_redo()\n");
+	t3f_debug_message("Exit pa_apply_frame_redo()\n");
 	return true;
 
 	fail:
 	{
-		t3f_debug_message("Fail quixel_apply_frame_redo()\n");
+		t3f_debug_message("Fail pa_apply_frame_redo()\n");
 		return false;
 	}
 }

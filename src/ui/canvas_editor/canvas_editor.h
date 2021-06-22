@@ -1,34 +1,34 @@
-#ifndef QUIXEL_CANVAS_EDITOR_H
-#define QUIXEL_CANVAS_EDITOR_H
+#ifndef PA_CANVAS_EDITOR_H
+#define PA_CANVAS_EDITOR_H
 
 #include "t3gui/t3gui.h"
 #include "modules/canvas/canvas.h"
 #include "modules/box.h"
 
-#define QUIXEL_CANVAS_EDITOR_SIGNAL_NONE         0
-#define QUIXEL_CANVAS_EDITOR_SIGNAL_DELETE_LAYER 1
+#define PA_CANVAS_EDITOR_SIGNAL_NONE         0
+#define PA_CANVAS_EDITOR_SIGNAL_DELETE_LAYER 1
 
-#define QUIXEL_BACKUP_INTERVAL (10 * 60 * 60) // 10 minutes
+#define PA_BACKUP_INTERVAL (10 * 60 * 60) // 10 minutes
 
-#define QUIXEL_TOOL_PIXEL            0
-#define QUIXEL_TOOL_LINE             1
-#define QUIXEL_TOOL_RECTANGLE        2
-#define QUIXEL_TOOL_FILLED_RECTANGLE 3
-#define QUIXEL_TOOL_OVAL             4
-#define QUIXEL_TOOL_FILLED_OVAL      5
-#define QUIXEL_TOOL_FLOOD_FILL       6
-#define QUIXEL_TOOL_DROPPER          7
-#define QUIXEL_TOOL_SELECTION        8
-#define QUIXEL_TOOL_ERASER           9
+#define PA_TOOL_PIXEL            0
+#define PA_TOOL_LINE             1
+#define PA_TOOL_RECTANGLE        2
+#define PA_TOOL_FILLED_RECTANGLE 3
+#define PA_TOOL_OVAL             4
+#define PA_TOOL_FILLED_OVAL      5
+#define PA_TOOL_FLOOD_FILL       6
+#define PA_TOOL_DROPPER          7
+#define PA_TOOL_SELECTION        8
+#define PA_TOOL_ERASER           9
 
-#define QUIXEL_TOOL_STATE_OFF        0
-#define QUIXEL_TOOL_STATE_DRAWING    1
-#define QUIXEL_TOOL_STATE_EDITING    2
+#define PA_TOOL_STATE_OFF        0
+#define PA_TOOL_STATE_DRAWING    1
+#define PA_TOOL_STATE_EDITING    2
 
-#define QUIXEL_COLOR_PICKER_SHADES 11
-#define QUIXEL_COLOR_PICKER_SCALE  12
+#define PA_COLOR_PICKER_SHADES 11
+#define PA_COLOR_PICKER_SCALE  12
 
-#define QUIXEL_COLOR_PALETTE_MAX  128
+#define PA_COLOR_PALETTE_MAX  128
 
 typedef struct
 {
@@ -36,12 +36,12 @@ typedef struct
 	ALLEGRO_BITMAP * bitmap;
 	ALLEGRO_BITMAP * combined_bitmap;
 	int layer;
-	QUIXEL_BOX box;
+	PA_BOX box;
 
 	bool moving;
 	int pin_x, pin_y;
 
-} QUIXEL_SELECTION_DATA;
+} PA_SELECTION_DATA;
 
 typedef struct
 {
@@ -77,7 +77,7 @@ typedef struct
 	ALLEGRO_SYSTEM_MOUSE_CURSOR old_cursor;
 	ALLEGRO_SYSTEM_MOUSE_CURSOR current_cursor;
 	int tool_state;
-	QUIXEL_SELECTION_DATA selection;
+	PA_SELECTION_DATA selection;
 	int modified;
 	bool update_title;
 	ALLEGRO_COLOR left_base_color;
@@ -96,10 +96,10 @@ typedef struct
 	ALLEGRO_COLOR last_right_shade_color;
 	ALLEGRO_COLOR right_alpha_color;
 	ALLEGRO_COLOR last_right_alpha_color;
-	ALLEGRO_COLOR pick_color[QUIXEL_COLOR_PICKER_SHADES];
+	ALLEGRO_COLOR pick_color[PA_COLOR_PICKER_SHADES];
 	ALLEGRO_COLOR start_color;
 	ALLEGRO_COLOR hover_color;
-	ALLEGRO_COLOR palette[QUIXEL_COLOR_PALETTE_MAX];
+	ALLEGRO_COLOR palette[PA_COLOR_PALETTE_MAX];
 
 	T3GUI_ELEMENT * left_shade_slider_element;
 	T3GUI_ELEMENT * left_alpha_slider_element;
@@ -108,7 +108,7 @@ typedef struct
 	T3GUI_ELEMENT * editor_element;
 
 	int signal;
-	QUIXEL_CANVAS * canvas;
+	PA_CANVAS * canvas;
 	char canvas_path[4096];
 
 	int undo_count;
@@ -118,18 +118,18 @@ typedef struct
 
 	int backup_tick;
 
-} QUIXEL_CANVAS_EDITOR;
+} PA_CANVAS_EDITOR;
 
-QUIXEL_CANVAS_EDITOR * quixel_create_canvas_editor(QUIXEL_CANVAS * cp);
-void quixel_destroy_canvas_editor(QUIXEL_CANVAS_EDITOR * cep);
+PA_CANVAS_EDITOR * pa_create_canvas_editor(PA_CANVAS * cp);
+void pa_destroy_canvas_editor(PA_CANVAS_EDITOR * cep);
 
-void quixel_center_canvas_editor(QUIXEL_CANVAS_EDITOR * cep, int frame);
-bool quixel_handle_float_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_BOX * bp);
-void quixel_float_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_BOX * bp);
-void quixel_handle_unfloat_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_BOX * bp);
-void quixel_unfloat_canvas_editor_selection(QUIXEL_CANVAS_EDITOR * cep, QUIXEL_BOX * bp);
-void quixel_shift_canvas_editor_variables(QUIXEL_CANVAS_EDITOR * cep, int ox, int oy);
-void quixel_select_canvas_editor_tool(QUIXEL_CANVAS_EDITOR * cep, int tool);
-bool quixel_import_image(QUIXEL_CANVAS_EDITOR * cep, const char * fn);
+void pa_center_canvas_editor(PA_CANVAS_EDITOR * cep, int frame);
+bool pa_handle_float_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp);
+void pa_float_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp);
+void pa_handle_unfloat_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp);
+void pa_unfloat_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp);
+void pa_shift_canvas_editor_variables(PA_CANVAS_EDITOR * cep, int ox, int oy);
+void pa_select_canvas_editor_tool(PA_CANVAS_EDITOR * cep, int tool);
+bool pa_import_image(PA_CANVAS_EDITOR * cep, const char * fn);
 
 #endif

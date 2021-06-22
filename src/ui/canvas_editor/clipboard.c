@@ -1,7 +1,7 @@
 #include "canvas_editor.h"
 #include "modules/canvas/canvas_helpers.h"
 
-bool pa_copy_bitmap_to_clipboard(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_BITMAP * bp)
+bool pa_copy_bitmap_to_clipboard(PA_CANVAS_EDITOR * cep, ALLEGRO_BITMAP * bp)
 {
 	ALLEGRO_STATE old_state;
 
@@ -20,7 +20,7 @@ bool pa_copy_bitmap_to_clipboard(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_BITMAP * bp
 	return false;
 }
 
-bool pa_copy_canvas_to_clipboard(QUIXEL_CANVAS_EDITOR * cep, int layer, int x, int y, int width, int height)
+bool pa_copy_canvas_to_clipboard(PA_CANVAS_EDITOR * cep, int layer, int x, int y, int width, int height)
 {
 	ALLEGRO_STATE old_state;
 
@@ -34,7 +34,7 @@ bool pa_copy_canvas_to_clipboard(QUIXEL_CANVAS_EDITOR * cep, int layer, int x, i
 	al_restore_state(&old_state);
 	if(cep->clipboard.bitmap)
 	{
-		quixel_render_canvas_to_bitmap(cep->canvas, layer, layer + 1, x, y, width, height, 0, cep->clipboard.bitmap);
+		pa_render_canvas_to_bitmap(cep->canvas, layer, layer + 1, x, y, width, height, 0, cep->clipboard.bitmap);
 		return true;
 	}
 	return false;

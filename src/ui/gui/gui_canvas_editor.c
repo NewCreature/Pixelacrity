@@ -23,20 +23,20 @@
 #include "modules/canvas/flood_fill.h"
 #include "modules/combine_bitmap.h"
 
-void quixel_canvas_editor_update_pick_colors(QUIXEL_CANVAS_EDITOR * cep)
+void pa_canvas_editor_update_pick_colors(PA_CANVAS_EDITOR * cep)
 {
 	float new_l, step;
 	int i;
 
-	step = 1.0 / (float)(QUIXEL_COLOR_PICKER_SHADES - 1);
-	for(i = 0; i < QUIXEL_COLOR_PICKER_SHADES; i++)
+	step = 1.0 / (float)(PA_COLOR_PICKER_SHADES - 1);
+	for(i = 0; i < PA_COLOR_PICKER_SHADES; i++)
 	{
 		new_l = step * (float)i;
-		cep->pick_color[i] = quixel_shade_color(cep->left_base_color, new_l);
+		cep->pick_color[i] = pa_shade_color(cep->left_base_color, new_l);
 	}
 }
 
-static void update_window_title(QUIXEL_CANVAS_EDITOR * cep)
+static void update_window_title(PA_CANVAS_EDITOR * cep)
 {
 	char buf[1024];
 	const char * fn;
@@ -57,7 +57,7 @@ static void update_window_title(QUIXEL_CANVAS_EDITOR * cep)
 	}
 }
 
-static void update_cursor(QUIXEL_CANVAS_EDITOR * cep)
+static void update_cursor(PA_CANVAS_EDITOR * cep)
 {
 	if(cep->current_cursor != cep->old_cursor)
 	{
@@ -68,7 +68,7 @@ static void update_cursor(QUIXEL_CANVAS_EDITOR * cep)
 
 static int mouse_button = 0;
 
-static void click_on_canvas(QUIXEL_CANVAS_EDITOR * cep, int button, int x, int y)
+static void click_on_canvas(PA_CANVAS_EDITOR * cep, int button, int x, int y)
 {
 	mouse_button = button;
 	cep->click_x = x;
@@ -84,7 +84,7 @@ static void click_on_canvas(QUIXEL_CANVAS_EDITOR * cep, int button, int x, int y
 	}
 }
 
-static void set_up_tool_variables(QUIXEL_CANVAS_EDITOR * cep)
+static void set_up_tool_variables(PA_CANVAS_EDITOR * cep)
 {
 	cep->scratch_offset_x = cep->view_x;
 	cep->scratch_offset_y = cep->view_y;
@@ -94,7 +94,7 @@ static void set_up_tool_variables(QUIXEL_CANVAS_EDITOR * cep)
 	cep->tool_right = cep->hover_x;
 }
 
-static void update_tool_variables(QUIXEL_CANVAS_EDITOR * cep)
+static void update_tool_variables(PA_CANVAS_EDITOR * cep)
 {
 	cep->scratch_offset_x = cep->view_x;
 	cep->scratch_offset_y = cep->view_y;
@@ -116,37 +116,37 @@ static void update_tool_variables(QUIXEL_CANVAS_EDITOR * cep)
 	}
 }
 
-static bool create_undo(QUIXEL_CANVAS_EDITOR * cep, const char * action, int x, int y, int width, int height)
+static bool create_undo(PA_CANVAS_EDITOR * cep, const char * action, int x, int y, int width, int height)
 {
 	char undo_path[1024];
 
-	quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024);
-	if(quixel_make_tool_undo(cep, action, cep->current_layer, x, y, width, height, undo_path))
+	pa_get_undo_path("undo", cep->undo_count, undo_path, 1024);
+	if(pa_make_tool_undo(cep, action, cep->current_layer, x, y, width, height, undo_path))
 	{
 		return true;
 	}
 	return false;
 }
 
-static bool create_primitive_undo(QUIXEL_CANVAS_EDITOR * cep)
+static bool create_primitive_undo(PA_CANVAS_EDITOR * cep)
 {
 	return create_undo(cep, NULL, cep->tool_left, cep->tool_top, cep->tool_right - cep->tool_left + 1, cep->tool_bottom - cep->tool_top + 1);
 }
 
-static void revert_undo(QUIXEL_CANVAS_EDITOR * cep)
+static void revert_undo(PA_CANVAS_EDITOR * cep)
 {
 	char undo_path[1024];
 
-	quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024);
-	quixel_apply_undo(cep, undo_path, true);
+	pa_get_undo_path("undo", cep->undo_count, undo_path, 1024);
+	pa_apply_undo(cep, undo_path, true);
 }
 
-static bool create_flood_fill_undo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_COLOR color, QUIXEL_QUEUE * qp)
+static bool create_flood_fill_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_COLOR color, PA_QUEUE * qp)
 {
 	char undo_path[1024];
 
-	quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024);
-	if(quixel_make_flood_fill_undo(cep, cep->current_layer, color, qp, undo_path))
+	pa_get_undo_path("undo", cep->undo_count, undo_path, 1024);
+	if(pa_make_flood_fill_undo(cep, cep->current_layer, color, qp, undo_path))
 	{
 		return true;
 	}
@@ -163,55 +163,55 @@ static void clear_bitmap(ALLEGRO_BITMAP * bp)
 	al_restore_state(&old_state);
 }
 
-static bool save_backup(QUIXEL_CANVAS * cp)
+static bool save_backup(PA_CANVAS * cp)
 {
 	char backup_path[1024];
 	char backup_fn[256];
 
-	quixel_get_date_string(backup_fn, 256);
+	pa_get_date_string(backup_fn, 256);
 	strcat(backup_fn, ".qcanvas");
 	t3f_get_filename(t3f_data_path, backup_fn, backup_path, 1024);
-	if(quixel_save_canvas(cp, backup_path, ".png", QUIXEL_CANVAS_SAVE_AUTO))
+	if(pa_save_canvas(cp, backup_path, ".png", PA_CANVAS_SAVE_AUTO))
 	{
 		return true;
 	}
 	return false;
 }
 
-static bool handle_canvas_expansion(QUIXEL_CANVAS_EDITOR * cep)
+static bool handle_canvas_expansion(PA_CANVAS_EDITOR * cep)
 {
 	bool ret;
 
-	ret = quixel_handle_canvas_expansion(cep->canvas, cep->tool_left, cep->tool_top, cep->tool_right, cep->tool_bottom, &cep->shift_x, &cep->shift_y);
-	quixel_shift_canvas_editor_variables(cep, cep->shift_x * cep->canvas->bitmap_size, cep->shift_y * cep->canvas->bitmap_size);
+	ret = pa_handle_canvas_expansion(cep->canvas, cep->tool_left, cep->tool_top, cep->tool_right, cep->tool_bottom, &cep->shift_x, &cep->shift_y);
+	pa_shift_canvas_editor_variables(cep, cep->shift_x * cep->canvas->bitmap_size, cep->shift_y * cep->canvas->bitmap_size);
 
 	return ret;
 }
 
-int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
+int pa_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 {
-	QUIXEL_CANVAS_EDITOR * canvas_editor = (QUIXEL_CANVAS_EDITOR *)d->dp;
+	PA_CANVAS_EDITOR * canvas_editor = (PA_CANVAS_EDITOR *)d->dp;
 	char frame_name[256];
 	int frame_x, frame_y, frame_width, frame_height;
 	int cx, cy, tx, ty;
-	QUIXEL_BOX old_box;
+	PA_BOX old_box;
 	T3GUI_THEME * theme;
 	ALLEGRO_COLOR color = t3f_color_black;
 	bool made_undo = false;
 	bool simulate_mouse_move = false;
-	QUIXEL_QUEUE * flood_fill_queue = NULL;
+	PA_QUEUE * flood_fill_queue = NULL;
 
 	switch(msg)
 	{
 		case MSG_GOTMOUSE:
 		{
-			canvas_editor->hover_color = quixel_get_canvas_pixel(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y);
+			canvas_editor->hover_color = pa_get_canvas_pixel(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y);
 			d->flags |= D_TRACKMOUSE;
 			break;
 		}
 		case MSG_LOSTMOUSE:
 		{
-			if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_OFF)
+			if(canvas_editor->tool_state == PA_TOOL_STATE_OFF)
 			{
 				canvas_editor->hover_color = al_map_rgba_f(0.0, 0.0, 0.0, 0.0);
 				d->flags &= ~D_TRACKMOUSE;
@@ -221,131 +221,131 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 		case MSG_MOUSEDOWN:
 		{
 			d->flags |= D_TRACKMOUSE;
-			if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_OFF)
+			if(canvas_editor->tool_state == PA_TOOL_STATE_OFF)
 			{
 				t3f_debug_message("Begin tool %d\n", canvas_editor->current_tool);
 				click_on_canvas(canvas_editor, c, canvas_editor->hover_x, canvas_editor->hover_y);
 				switch(canvas_editor->current_tool)
 				{
-					case QUIXEL_TOOL_PIXEL:
+					case PA_TOOL_PIXEL:
 					{
 						set_up_tool_variables(canvas_editor);
-						quixel_tool_pixel_start(canvas_editor);
-						canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
+						pa_tool_pixel_start(canvas_editor);
+						canvas_editor->tool_state = PA_TOOL_STATE_DRAWING;
 						break;
 					}
-					case QUIXEL_TOOL_LINE:
+					case PA_TOOL_LINE:
 					{
 						set_up_tool_variables(canvas_editor);
-						quixel_tool_line_logic(canvas_editor);
-						canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
+						pa_tool_line_logic(canvas_editor);
+						canvas_editor->tool_state = PA_TOOL_STATE_DRAWING;
 						break;
 					}
-					case QUIXEL_TOOL_RECTANGLE:
+					case PA_TOOL_RECTANGLE:
 					{
 						set_up_tool_variables(canvas_editor);
-						quixel_tool_rectangle_logic(canvas_editor);
-						canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
+						pa_tool_rectangle_logic(canvas_editor);
+						canvas_editor->tool_state = PA_TOOL_STATE_DRAWING;
 						break;
 					}
-					case QUIXEL_TOOL_FILLED_RECTANGLE:
+					case PA_TOOL_FILLED_RECTANGLE:
 					{
 						set_up_tool_variables(canvas_editor);
-						quixel_tool_filled_rectangle_logic(canvas_editor);
-						canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
+						pa_tool_filled_rectangle_logic(canvas_editor);
+						canvas_editor->tool_state = PA_TOOL_STATE_DRAWING;
 						break;
 					}
-					case QUIXEL_TOOL_OVAL:
+					case PA_TOOL_OVAL:
 					{
 						set_up_tool_variables(canvas_editor);
-						quixel_tool_oval_logic(canvas_editor);
-						canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
+						pa_tool_oval_logic(canvas_editor);
+						canvas_editor->tool_state = PA_TOOL_STATE_DRAWING;
 						break;
 					}
-					case QUIXEL_TOOL_FILLED_OVAL:
+					case PA_TOOL_FILLED_OVAL:
 					{
 						set_up_tool_variables(canvas_editor);
-						quixel_tool_filled_oval_logic(canvas_editor);
-						canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
+						pa_tool_filled_oval_logic(canvas_editor);
+						canvas_editor->tool_state = PA_TOOL_STATE_DRAWING;
 						break;
 					}
-					case QUIXEL_TOOL_FLOOD_FILL:
+					case PA_TOOL_FLOOD_FILL:
 					{
 						tx = canvas_editor->hover_x / canvas_editor->canvas->bitmap_size;
 						ty = canvas_editor->hover_y / canvas_editor->canvas->bitmap_size;
 						if(tx >= 0 && tx < canvas_editor->canvas->layer_width && ty >= 0 && ty < canvas_editor->canvas->layer_height && canvas_editor->canvas->layer[canvas_editor->current_layer]->bitmap[ty][tx])
 						{
-							flood_fill_queue = quixel_create_queue();
+							flood_fill_queue = pa_create_queue();
 							if(flood_fill_queue)
 							{
-								color = quixel_get_canvas_pixel(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y);
-								if(quixel_flood_fill_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y, c == 1 ? canvas_editor->left_color : canvas_editor->right_color, flood_fill_queue))
+								color = pa_get_canvas_pixel(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y);
+								if(pa_flood_fill_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y, c == 1 ? canvas_editor->left_color : canvas_editor->right_color, flood_fill_queue))
 								{
 									made_undo = create_flood_fill_undo(canvas_editor, color, flood_fill_queue);
 									if(made_undo)
 									{
-										quixel_finalize_undo(canvas_editor);
+										pa_finalize_undo(canvas_editor);
 									}
 									canvas_editor->modified++;
 									canvas_editor->update_title = true;
 								}
-								quixel_destroy_queue(flood_fill_queue);
+								pa_destroy_queue(flood_fill_queue);
 							}
 						}
 						break;
 					}
-					case QUIXEL_TOOL_DROPPER:
+					case PA_TOOL_DROPPER:
 					{
-						quixel_tool_dropper_logic(canvas_editor, c);
+						pa_tool_dropper_logic(canvas_editor, c);
 						break;
 					}
-					case QUIXEL_TOOL_ERASER:
+					case PA_TOOL_ERASER:
 					{
 						canvas_editor->click_color = al_map_rgba_f(0.0, 0.0, 0.0, 0.0);
 						set_up_tool_variables(canvas_editor);
-						quixel_tool_pixel_start(canvas_editor);
-						canvas_editor->tool_state = QUIXEL_TOOL_STATE_DRAWING;
+						pa_tool_pixel_start(canvas_editor);
+						canvas_editor->tool_state = PA_TOOL_STATE_DRAWING;
 						break;
 					}
-					case QUIXEL_TOOL_SELECTION:
+					case PA_TOOL_SELECTION:
 					{
 						switch(canvas_editor->selection.box.state)
 						{
 							/* start creating a new selection if we are not currently
 							   interacting with an existing selection */
-							case QUIXEL_BOX_STATE_IDLE:
+							case PA_BOX_STATE_IDLE:
 							{
 								if(canvas_editor->selection.bitmap)
 								{
-									quixel_unfloat_canvas_editor_selection(canvas_editor, &canvas_editor->selection.box);
+									pa_unfloat_canvas_editor_selection(canvas_editor, &canvas_editor->selection.box);
 								}
-								quixel_initialize_box(&canvas_editor->selection.box, canvas_editor->click_x, canvas_editor->click_y, 1, 1, canvas_editor->peg_bitmap);
+								pa_initialize_box(&canvas_editor->selection.box, canvas_editor->click_x, canvas_editor->click_y, 1, 1, canvas_editor->peg_bitmap);
 								canvas_editor->selection.box.hover_handle = 0;
-								canvas_editor->selection.box.state = QUIXEL_BOX_STATE_RESIZING;
+								canvas_editor->selection.box.state = PA_BOX_STATE_RESIZING;
 								break;
 							}
 							/* set box moving logic in motion */
-							case QUIXEL_BOX_STATE_HOVER:
+							case PA_BOX_STATE_HOVER:
 							{
 								canvas_editor->selection.box.click_start_x = canvas_editor->selection.box.start_x;
 								canvas_editor->selection.box.click_start_y = canvas_editor->selection.box.start_y;
 								canvas_editor->selection.box.click_x = canvas_editor->selection.box.hover_x;
 								canvas_editor->selection.box.click_y = canvas_editor->selection.box.hover_y;
-								canvas_editor->selection.box.state = QUIXEL_BOX_STATE_MOVING;
+								canvas_editor->selection.box.state = PA_BOX_STATE_MOVING;
 								break;
 							}
 							/* set box resizing logic in motion */
-							case QUIXEL_BOX_STATE_HOVER_HANDLE:
+							case PA_BOX_STATE_HOVER_HANDLE:
 							{
 								if(canvas_editor->selection.bitmap)
 								{
-									quixel_unfloat_canvas_editor_selection(canvas_editor, &canvas_editor->selection.box);
+									pa_unfloat_canvas_editor_selection(canvas_editor, &canvas_editor->selection.box);
 								}
-								canvas_editor->selection.box.state = QUIXEL_BOX_STATE_RESIZING;
+								canvas_editor->selection.box.state = PA_BOX_STATE_RESIZING;
 								break;
 							}
 						}
-						canvas_editor->tool_state = QUIXEL_TOOL_STATE_EDITING;
+						canvas_editor->tool_state = PA_TOOL_STATE_EDITING;
 						break;
 					}
 				}
@@ -356,127 +356,127 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 		{
 			canvas_editor->release_x = canvas_editor->hover_x;
 			canvas_editor->release_y = canvas_editor->hover_y;
-			if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING)
+			if(canvas_editor->tool_state == PA_TOOL_STATE_DRAWING)
 			{
 				t3f_debug_message("Finish tool %d\n", canvas_editor->current_tool);
 			}
 			switch(canvas_editor->current_tool)
 			{
-				case QUIXEL_TOOL_PIXEL:
-				case QUIXEL_TOOL_ERASER:
+				case PA_TOOL_PIXEL:
+				case PA_TOOL_ERASER:
 				{
-					if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING && c == canvas_editor->click_button)
+					if(canvas_editor->tool_state == PA_TOOL_STATE_DRAWING && c == canvas_editor->click_button)
 					{
 						made_undo = create_primitive_undo(canvas_editor);
 						handle_canvas_expansion(canvas_editor);
-						quixel_tool_pixel_finish(canvas_editor);
+						pa_tool_pixel_finish(canvas_editor);
 						if(made_undo)
 						{
-							quixel_finalize_undo(canvas_editor);
+							pa_finalize_undo(canvas_editor);
 						}
 						canvas_editor->modified++;
 						canvas_editor->update_title = true;
-						canvas_editor->tool_state = QUIXEL_TOOL_STATE_OFF;
+						canvas_editor->tool_state = PA_TOOL_STATE_OFF;
 					}
 					break;
 				}
-				case QUIXEL_TOOL_LINE:
+				case PA_TOOL_LINE:
 				{
-					if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING && c == canvas_editor->click_button)
+					if(canvas_editor->tool_state == PA_TOOL_STATE_DRAWING && c == canvas_editor->click_button)
 					{
 						made_undo = create_primitive_undo(canvas_editor);
 						handle_canvas_expansion(canvas_editor);
-						quixel_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, NULL, canvas_editor->click_color, QUIXEL_RENDER_COPY, quixel_draw_line);
+						pa_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, NULL, canvas_editor->click_color, PA_RENDER_COPY, pa_draw_line);
 						if(made_undo)
 						{
-							quixel_finalize_undo(canvas_editor);
+							pa_finalize_undo(canvas_editor);
 						}
 						canvas_editor->modified++;
 						canvas_editor->update_title = true;
-						canvas_editor->tool_state = QUIXEL_TOOL_STATE_OFF;
+						canvas_editor->tool_state = PA_TOOL_STATE_OFF;
 					}
 					break;
 				}
-				case QUIXEL_TOOL_RECTANGLE:
+				case PA_TOOL_RECTANGLE:
 				{
-					if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING && c == canvas_editor->click_button)
+					if(canvas_editor->tool_state == PA_TOOL_STATE_DRAWING && c == canvas_editor->click_button)
 					{
 						made_undo = create_primitive_undo(canvas_editor);
 						handle_canvas_expansion(canvas_editor);
-						quixel_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, NULL, canvas_editor->click_color, QUIXEL_RENDER_COPY, quixel_draw_rectangle);
+						pa_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, NULL, canvas_editor->click_color, PA_RENDER_COPY, pa_draw_rectangle);
 						if(made_undo)
 						{
-							quixel_finalize_undo(canvas_editor);
+							pa_finalize_undo(canvas_editor);
 						}
 						canvas_editor->modified++;
 						canvas_editor->update_title = true;
-						canvas_editor->tool_state = QUIXEL_TOOL_STATE_OFF;
+						canvas_editor->tool_state = PA_TOOL_STATE_OFF;
 					}
 					break;
 				}
-				case QUIXEL_TOOL_FILLED_RECTANGLE:
+				case PA_TOOL_FILLED_RECTANGLE:
 				{
-					if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING && c == canvas_editor->click_button)
+					if(canvas_editor->tool_state == PA_TOOL_STATE_DRAWING && c == canvas_editor->click_button)
 					{
 						made_undo = create_primitive_undo(canvas_editor);
 						handle_canvas_expansion(canvas_editor);
-						quixel_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, NULL, canvas_editor->click_color, QUIXEL_RENDER_COPY, quixel_draw_filled_rectangle);
+						pa_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, NULL, canvas_editor->click_color, PA_RENDER_COPY, pa_draw_filled_rectangle);
 						if(made_undo)
 						{
-							quixel_finalize_undo(canvas_editor);
+							pa_finalize_undo(canvas_editor);
 						}
 						canvas_editor->modified++;
 						canvas_editor->update_title = true;
-						canvas_editor->tool_state = QUIXEL_TOOL_STATE_OFF;
+						canvas_editor->tool_state = PA_TOOL_STATE_OFF;
 					}
 					break;
 				}
-				case QUIXEL_TOOL_OVAL:
+				case PA_TOOL_OVAL:
 				{
-					if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING && c == canvas_editor->click_button)
+					if(canvas_editor->tool_state == PA_TOOL_STATE_DRAWING && c == canvas_editor->click_button)
 					{
 						made_undo = create_primitive_undo(canvas_editor);
 						handle_canvas_expansion(canvas_editor);
-						quixel_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, NULL, canvas_editor->click_color, QUIXEL_RENDER_COPY, quixel_draw_oval);
+						pa_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, NULL, canvas_editor->click_color, PA_RENDER_COPY, pa_draw_oval);
 						if(made_undo)
 						{
-							quixel_finalize_undo(canvas_editor);
+							pa_finalize_undo(canvas_editor);
 						}
 						canvas_editor->modified++;
 						canvas_editor->update_title = true;
-						canvas_editor->tool_state = QUIXEL_TOOL_STATE_OFF;
+						canvas_editor->tool_state = PA_TOOL_STATE_OFF;
 					}
 					break;
 				}
-				case QUIXEL_TOOL_FILLED_OVAL:
+				case PA_TOOL_FILLED_OVAL:
 				{
-					if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING && c == canvas_editor->click_button)
+					if(canvas_editor->tool_state == PA_TOOL_STATE_DRAWING && c == canvas_editor->click_button)
 					{
 						made_undo = create_primitive_undo(canvas_editor);
 						handle_canvas_expansion(canvas_editor);
-						quixel_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, NULL, canvas_editor->click_color, QUIXEL_RENDER_COPY, quixel_draw_filled_oval);
+						pa_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, NULL, canvas_editor->click_color, PA_RENDER_COPY, pa_draw_filled_oval);
 						if(made_undo)
 						{
-							quixel_finalize_undo(canvas_editor);
+							pa_finalize_undo(canvas_editor);
 						}
 						canvas_editor->modified++;
 						canvas_editor->update_title = true;
-						canvas_editor->tool_state = QUIXEL_TOOL_STATE_OFF;
+						canvas_editor->tool_state = PA_TOOL_STATE_OFF;
 					}
 					break;
 				}
-				case QUIXEL_TOOL_SELECTION:
+				case PA_TOOL_SELECTION:
 				{
 					switch(canvas_editor->selection.box.state)
 					{
-						case QUIXEL_BOX_STATE_MOVING:
-						case QUIXEL_BOX_STATE_RESIZING:
+						case PA_BOX_STATE_MOVING:
+						case PA_BOX_STATE_RESIZING:
 						{
-							canvas_editor->selection.box.state = QUIXEL_BOX_STATE_IDLE;
+							canvas_editor->selection.box.state = PA_BOX_STATE_IDLE;
 							break;
 						}
 					}
-					canvas_editor->tool_state = QUIXEL_TOOL_STATE_OFF;
+					canvas_editor->tool_state = PA_TOOL_STATE_OFF;
 					t3f_refresh_menus();
 					break;
 				}
@@ -488,75 +488,75 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			update_tool_variables(canvas_editor);
 			switch(canvas_editor->current_tool)
 			{
-				case QUIXEL_TOOL_PIXEL:
-				case QUIXEL_TOOL_ERASER:
+				case PA_TOOL_PIXEL:
+				case PA_TOOL_ERASER:
 				{
-					if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING || canvas_editor->tool_state == QUIXEL_TOOL_STATE_EDITING)
+					if(canvas_editor->tool_state == PA_TOOL_STATE_DRAWING || canvas_editor->tool_state == PA_TOOL_STATE_EDITING)
 					{
-						quixel_tool_pixel_logic(canvas_editor);
+						pa_tool_pixel_logic(canvas_editor);
 					}
 					break;
 				}
-				case QUIXEL_TOOL_DROPPER:
+				case PA_TOOL_DROPPER:
 				{
-					if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING || canvas_editor->tool_state == QUIXEL_TOOL_STATE_EDITING)
+					if(canvas_editor->tool_state == PA_TOOL_STATE_DRAWING || canvas_editor->tool_state == PA_TOOL_STATE_EDITING)
 					{
-						quixel_tool_dropper_logic(canvas_editor, mouse_button);
+						pa_tool_dropper_logic(canvas_editor, mouse_button);
 					}
 					break;
 				}
-				case QUIXEL_TOOL_LINE:
+				case PA_TOOL_LINE:
 				{
-					if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING || canvas_editor->tool_state == QUIXEL_TOOL_STATE_EDITING)
+					if(canvas_editor->tool_state == PA_TOOL_STATE_DRAWING || canvas_editor->tool_state == PA_TOOL_STATE_EDITING)
 					{
-						quixel_tool_line_logic(canvas_editor);
+						pa_tool_line_logic(canvas_editor);
 					}
 					break;
 				}
-				case QUIXEL_TOOL_RECTANGLE:
+				case PA_TOOL_RECTANGLE:
 				{
-					if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING || canvas_editor->tool_state == QUIXEL_TOOL_STATE_EDITING)
+					if(canvas_editor->tool_state == PA_TOOL_STATE_DRAWING || canvas_editor->tool_state == PA_TOOL_STATE_EDITING)
 					{
-						quixel_tool_rectangle_logic(canvas_editor);
+						pa_tool_rectangle_logic(canvas_editor);
 					}
 					break;
 				}
-				case QUIXEL_TOOL_FILLED_RECTANGLE:
+				case PA_TOOL_FILLED_RECTANGLE:
 				{
-					if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING || canvas_editor->tool_state == QUIXEL_TOOL_STATE_EDITING)
+					if(canvas_editor->tool_state == PA_TOOL_STATE_DRAWING || canvas_editor->tool_state == PA_TOOL_STATE_EDITING)
 					{
-						quixel_tool_filled_rectangle_logic(canvas_editor);
+						pa_tool_filled_rectangle_logic(canvas_editor);
 					}
 					break;
 				}
-				case QUIXEL_TOOL_OVAL:
+				case PA_TOOL_OVAL:
 				{
-					if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING || canvas_editor->tool_state == QUIXEL_TOOL_STATE_EDITING)
+					if(canvas_editor->tool_state == PA_TOOL_STATE_DRAWING || canvas_editor->tool_state == PA_TOOL_STATE_EDITING)
 					{
-						quixel_tool_oval_logic(canvas_editor);
+						pa_tool_oval_logic(canvas_editor);
 					}
 					break;
 				}
-				case QUIXEL_TOOL_FILLED_OVAL:
+				case PA_TOOL_FILLED_OVAL:
 				{
-					if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING || canvas_editor->tool_state == QUIXEL_TOOL_STATE_EDITING)
+					if(canvas_editor->tool_state == PA_TOOL_STATE_DRAWING || canvas_editor->tool_state == PA_TOOL_STATE_EDITING)
 					{
-						quixel_tool_filled_oval_logic(canvas_editor);
+						pa_tool_filled_oval_logic(canvas_editor);
 					}
 					break;
 				}
-				case QUIXEL_TOOL_SELECTION:
+				case PA_TOOL_SELECTION:
 				{
 					if(canvas_editor->selection.box.width > 0 && canvas_editor->selection.box.height > 0)
 					{
-						memcpy(&old_box, &canvas_editor->selection.box, sizeof(QUIXEL_BOX));
-						quixel_update_box_handles(&canvas_editor->selection.box, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom);
-						quixel_box_logic(&canvas_editor->selection.box, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y);
+						memcpy(&old_box, &canvas_editor->selection.box, sizeof(PA_BOX));
+						pa_update_box_handles(&canvas_editor->selection.box, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom);
+						pa_box_logic(&canvas_editor->selection.box, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y);
 						if(!canvas_editor->selection.bitmap && (canvas_editor->selection.box.start_x != old_box.start_x || canvas_editor->selection.box.start_y != old_box.start_y))
 						{
-							if(canvas_editor->selection.box.state == QUIXEL_BOX_STATE_MOVING)
+							if(canvas_editor->selection.box.state == PA_BOX_STATE_MOVING)
 							{
-								quixel_float_canvas_editor_selection(canvas_editor, &old_box);
+								pa_float_canvas_editor_selection(canvas_editor, &old_box);
 							}
 						}
 					}
@@ -571,57 +571,57 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			{
 				canvas_editor->backup_tick--;
 			}
-			if(canvas_editor->backup_tick <= 0 && canvas_editor->tool_state == QUIXEL_TOOL_STATE_OFF)
+			if(canvas_editor->backup_tick <= 0 && canvas_editor->tool_state == PA_TOOL_STATE_OFF)
 			{
 				save_backup(canvas_editor->canvas);
-				canvas_editor->backup_tick = QUIXEL_BACKUP_INTERVAL;
+				canvas_editor->backup_tick = PA_BACKUP_INTERVAL;
 			}
 			update_window_title(canvas_editor);
 //			update_cursor(canvas_editor);
-			if(!quixel_color_equal(canvas_editor->left_base_color, canvas_editor->last_left_base_color))
+			if(!pa_color_equal(canvas_editor->left_base_color, canvas_editor->last_left_base_color))
 			{
 				canvas_editor->left_color = canvas_editor->left_base_color;
 				canvas_editor->last_left_base_color = canvas_editor->left_base_color;
-				quixel_canvas_editor_update_pick_colors(canvas_editor);
+				pa_canvas_editor_update_pick_colors(canvas_editor);
 			}
-			if(!quixel_color_equal(canvas_editor->left_color, canvas_editor->last_left_color))
+			if(!pa_color_equal(canvas_editor->left_color, canvas_editor->last_left_color))
 			{
 				canvas_editor->last_left_color = canvas_editor->left_color;
-				canvas_editor->left_shade_slider_element->d2 = quixel_get_color_shade(canvas_editor->left_color) * 1000.0;
-				canvas_editor->left_alpha_slider_element->d2 = quixel_get_color_alpha(canvas_editor->left_color) * 1000.0;
+				canvas_editor->left_shade_slider_element->d2 = pa_get_color_shade(canvas_editor->left_color) * 1000.0;
+				canvas_editor->left_alpha_slider_element->d2 = pa_get_color_alpha(canvas_editor->left_color) * 1000.0;
 			}
-			canvas_editor->left_shade_color = quixel_shade_color(canvas_editor->left_base_color, (float)canvas_editor->left_shade_slider_element->d2 / 1000.0);
-			if(!quixel_color_equal(canvas_editor->left_shade_color, canvas_editor->last_left_shade_color))
+			canvas_editor->left_shade_color = pa_shade_color(canvas_editor->left_base_color, (float)canvas_editor->left_shade_slider_element->d2 / 1000.0);
+			if(!pa_color_equal(canvas_editor->left_shade_color, canvas_editor->last_left_shade_color))
 			{
 				canvas_editor->left_color = canvas_editor->left_shade_color;
 				canvas_editor->last_left_shade_color = canvas_editor->left_shade_color;
 			}
-			canvas_editor->left_alpha_color = quixel_alpha_color(canvas_editor->left_shade_color, (float)canvas_editor->left_alpha_slider_element->d2 / 1000.0);
-			if(!quixel_color_equal(canvas_editor->left_alpha_color, canvas_editor->last_left_alpha_color))
+			canvas_editor->left_alpha_color = pa_alpha_color(canvas_editor->left_shade_color, (float)canvas_editor->left_alpha_slider_element->d2 / 1000.0);
+			if(!pa_color_equal(canvas_editor->left_alpha_color, canvas_editor->last_left_alpha_color))
 			{
 				canvas_editor->left_color = canvas_editor->left_alpha_color;
 				canvas_editor->last_left_alpha_color = canvas_editor->left_alpha_color;
 			}
-			if(!quixel_color_equal(canvas_editor->right_base_color, canvas_editor->last_right_base_color))
+			if(!pa_color_equal(canvas_editor->right_base_color, canvas_editor->last_right_base_color))
 			{
 				canvas_editor->right_color = canvas_editor->right_base_color;
 				canvas_editor->last_right_base_color = canvas_editor->right_base_color;
-				quixel_canvas_editor_update_pick_colors(canvas_editor);
+				pa_canvas_editor_update_pick_colors(canvas_editor);
 			}
-			if(!quixel_color_equal(canvas_editor->right_color, canvas_editor->last_right_color))
+			if(!pa_color_equal(canvas_editor->right_color, canvas_editor->last_right_color))
 			{
 				canvas_editor->last_right_color = canvas_editor->right_color;
-				canvas_editor->right_shade_slider_element->d2 = quixel_get_color_shade(canvas_editor->right_color) * 1000.0;
-				canvas_editor->right_alpha_slider_element->d2 = quixel_get_color_alpha(canvas_editor->right_color) * 1000.0;
+				canvas_editor->right_shade_slider_element->d2 = pa_get_color_shade(canvas_editor->right_color) * 1000.0;
+				canvas_editor->right_alpha_slider_element->d2 = pa_get_color_alpha(canvas_editor->right_color) * 1000.0;
 			}
-			canvas_editor->right_shade_color = quixel_shade_color(canvas_editor->right_base_color, (float)canvas_editor->right_shade_slider_element->d2 / 1000.0);
-			if(!quixel_color_equal(canvas_editor->right_shade_color, canvas_editor->last_right_shade_color))
+			canvas_editor->right_shade_color = pa_shade_color(canvas_editor->right_base_color, (float)canvas_editor->right_shade_slider_element->d2 / 1000.0);
+			if(!pa_color_equal(canvas_editor->right_shade_color, canvas_editor->last_right_shade_color))
 			{
 				canvas_editor->right_color = canvas_editor->right_shade_color;
 				canvas_editor->last_right_shade_color = canvas_editor->right_shade_color;
 			}
-			canvas_editor->right_alpha_color = quixel_alpha_color(canvas_editor->right_shade_color, (float)canvas_editor->right_alpha_slider_element->d2 / 1000.0);
-			if(!quixel_color_equal(canvas_editor->right_alpha_color, canvas_editor->last_right_alpha_color))
+			canvas_editor->right_alpha_color = pa_alpha_color(canvas_editor->right_shade_color, (float)canvas_editor->right_alpha_slider_element->d2 / 1000.0);
+			if(!pa_color_equal(canvas_editor->right_alpha_color, canvas_editor->last_right_alpha_color))
 			{
 				canvas_editor->right_color = canvas_editor->right_alpha_color;
 				canvas_editor->last_right_alpha_color = canvas_editor->right_alpha_color;
@@ -676,7 +676,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			}
 			if(t3f_key[ALLEGRO_KEY_H])
 			{
-				canvas_editor->canvas->layer[canvas_editor->current_layer]->flags ^= QUIXEL_CANVAS_FLAG_HIDDEN;
+				canvas_editor->canvas->layer[canvas_editor->current_layer]->flags ^= PA_CANVAS_FLAG_HIDDEN;
 				t3f_key[ALLEGRO_KEY_H] = 0;
 			}
 			canvas_editor->view_x = canvas_editor->view_fx;
@@ -706,8 +706,8 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			if(t3f_key[ALLEGRO_KEY_F])
 			{
 				sprintf(frame_name, "Frame %d", canvas_editor->canvas->frame_max + 1);
-				quixel_get_canvas_dimensions(canvas_editor->canvas, &frame_x, &frame_y, &frame_width, &frame_height, 0);
-				if(quixel_add_canvas_frame(canvas_editor->canvas, frame_name, frame_x, frame_y, frame_width, frame_height))
+				pa_get_canvas_dimensions(canvas_editor->canvas, &frame_x, &frame_y, &frame_width, &frame_height, 0);
+				if(pa_add_canvas_frame(canvas_editor->canvas, frame_name, frame_x, frame_y, frame_width, frame_height))
 				{
 					canvas_editor->current_frame = canvas_editor->canvas->frame_max - 1;
 				}
@@ -715,7 +715,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			}
 			if(t3f_key[ALLEGRO_KEY_G])
 			{
-				quixel_remove_canvas_frame(canvas_editor->canvas, canvas_editor->current_frame);
+				pa_remove_canvas_frame(canvas_editor->canvas, canvas_editor->current_frame);
 				if(canvas_editor->current_frame >= canvas_editor->canvas->frame_max)
 				{
 					canvas_editor->current_frame = canvas_editor->canvas->frame_max - 1;
@@ -728,20 +728,20 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			}
 			if(t3f_key[ALLEGRO_KEY_C] && !(t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]))
 			{
-				quixel_get_canvas_dimensions(canvas_editor->canvas, &frame_x, &frame_y, &frame_width, &frame_height, 0);
+				pa_get_canvas_dimensions(canvas_editor->canvas, &frame_x, &frame_y, &frame_width, &frame_height, 0);
 				canvas_editor->view_x = frame_x + frame_width / 2 - (d->w / 2) / canvas_editor->view_zoom;
 				canvas_editor->view_y = frame_y + frame_height / 2 - (d->h / 2) / canvas_editor->view_zoom;
 				canvas_editor->view_fx = canvas_editor->view_x;
 				canvas_editor->view_fy = canvas_editor->view_y;
 				t3f_key[ALLEGRO_KEY_C] = 0;
 			}
-			if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_OFF)
+			if(canvas_editor->tool_state == PA_TOOL_STATE_OFF)
 			{
-				canvas_editor->hover_color = quixel_get_canvas_pixel(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y);
+				canvas_editor->hover_color = pa_get_canvas_pixel(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y);
 			}
-			if(canvas_editor->selection.box.width > 0 && canvas_editor->selection.box.height > 0 && canvas_editor->selection.box.state == QUIXEL_BOX_STATE_IDLE)
+			if(canvas_editor->selection.box.width > 0 && canvas_editor->selection.box.height > 0 && canvas_editor->selection.box.state == PA_BOX_STATE_IDLE)
 			{
-//				quixel_box_idle_logic(&canvas_editor->selection.box, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y);
+//				pa_box_idle_logic(&canvas_editor->selection.box, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y);
 			}
 			break;
 		}
@@ -758,26 +758,26 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			/* render background layers */
 			for(i = 0; i < canvas_editor->current_layer; i++)
 			{
-				quixel_render_canvas_layer(canvas_editor->canvas, i, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, d->w, d->h);
+				pa_render_canvas_layer(canvas_editor->canvas, i, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, d->w, d->h);
 			}
 
 			if(canvas_editor->selection.bitmap)
 			{
-				quixel_tool_selection_logic(canvas_editor);
+				pa_tool_selection_logic(canvas_editor);
 			}
-			if(canvas_editor->tool_state == QUIXEL_TOOL_STATE_DRAWING || canvas_editor->selection.bitmap)
+			if(canvas_editor->tool_state == PA_TOOL_STATE_DRAWING || canvas_editor->selection.bitmap)
 			{
 				al_draw_scaled_bitmap(canvas_editor->scratch_bitmap, 0, 0,  al_get_bitmap_width(canvas_editor->scratch_bitmap), al_get_bitmap_height(canvas_editor->scratch_bitmap), d->x - (canvas_editor->view_x - canvas_editor->scratch_offset_x) * canvas_editor->view_zoom, d->y - (canvas_editor->view_y - canvas_editor->scratch_offset_y) * canvas_editor->view_zoom, al_get_bitmap_width(canvas_editor->scratch_bitmap) * canvas_editor->view_zoom, al_get_bitmap_height(canvas_editor->scratch_bitmap) * canvas_editor->view_zoom, 0);
 			}
 			else
 			{
-				quixel_render_canvas_layer(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, d->w, d->h);
+				pa_render_canvas_layer(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, d->w, d->h);
 			}
 
 			/* draw foreground layers */
 			for(i = canvas_editor->current_layer + 1; i < canvas_editor->canvas->layer_max; i++)
 			{
-				quixel_render_canvas_layer(canvas_editor->canvas, i, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, d->w, d->h);
+				pa_render_canvas_layer(canvas_editor->canvas, i, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, d->w, d->h);
 			}
 
 			/* render frames */
@@ -794,7 +794,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				}
 				if(theme)
 				{
-					al_draw_text(theme->state[0].font[0], color, d->x + (canvas_editor->canvas->frame[i]->box.start_x - canvas_editor->view_x) * canvas_editor->view_zoom, d->y + (canvas_editor->canvas->frame[i]->box.start_y - canvas_editor->view_y) * canvas_editor->view_zoom - al_get_font_line_height(theme->state[0].font[0]) - QUIXEL_UI_ELEMENT_SPACE, 0, canvas_editor->canvas->frame[i]->name);
+					al_draw_text(theme->state[0].font[0], color, d->x + (canvas_editor->canvas->frame[i]->box.start_x - canvas_editor->view_x) * canvas_editor->view_zoom, d->y + (canvas_editor->canvas->frame[i]->box.start_y - canvas_editor->view_y) * canvas_editor->view_zoom - al_get_font_line_height(theme->state[0].font[0]) - PA_UI_ELEMENT_SPACE, 0, canvas_editor->canvas->frame[i]->name);
 				}
 				al_draw_rectangle(d->x + (canvas_editor->canvas->frame[i]->box.start_x - canvas_editor->view_x) * canvas_editor->view_zoom - 1.0 + 0.5, d->y + (canvas_editor->canvas->frame[i]->box.start_y - canvas_editor->view_y) * canvas_editor->view_zoom - 1.0 + 0.5, d->x + (canvas_editor->canvas->frame[i]->box.start_x + canvas_editor->canvas->frame[i]->box.width - canvas_editor->view_x) * canvas_editor->view_zoom + 0.5, d->y + (canvas_editor->canvas->frame[i]->box.start_y + canvas_editor->canvas->frame[i]->box.height - canvas_editor->view_y) * canvas_editor->view_zoom + 0.5, color, 1.0);
 			}
@@ -802,7 +802,7 @@ int quixel_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			/* render selection box */
 			if(canvas_editor->selection.box.width > 0 && canvas_editor->selection.box.height > 0)
 			{
-				quixel_box_render(&canvas_editor->selection.box, 0, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y);
+				pa_box_render(&canvas_editor->selection.box, 0, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y);
 			}
 			al_restore_state(&old_state);
 			break;

@@ -1,11 +1,11 @@
 #include "queue.h"
 
-bool queue_insert(QUIXEL_QUEUE * qp, int x, int y)
+bool queue_insert(PA_QUEUE * qp, int x, int y)
 {
-	QUIXEL_QUEUE_NODE * node = malloc(sizeof(QUIXEL_QUEUE_NODE));
+	PA_QUEUE_NODE * node = malloc(sizeof(PA_QUEUE_NODE));
 	if(node)
 	{
-		memset(node, 0, sizeof(QUIXEL_QUEUE_NODE));
+		memset(node, 0, sizeof(PA_QUEUE_NODE));
 		node->x = x;
 		node->y = y;
 		node->previous = qp->current;
@@ -19,9 +19,9 @@ bool queue_insert(QUIXEL_QUEUE * qp, int x, int y)
 	}
 }
 
-void queue_delete(QUIXEL_QUEUE * qp)
+void queue_delete(PA_QUEUE * qp)
 {
-	QUIXEL_QUEUE_NODE * temp = NULL;
+	PA_QUEUE_NODE * temp = NULL;
 	if(qp->current)
 	{
 		temp = qp->current->previous;
@@ -30,19 +30,19 @@ void queue_delete(QUIXEL_QUEUE * qp)
 	}
 }
 
-QUIXEL_QUEUE * quixel_create_queue(void)
+PA_QUEUE * pa_create_queue(void)
 {
-	QUIXEL_QUEUE * qp;
+	PA_QUEUE * qp;
 
-	qp = malloc(sizeof(QUIXEL_QUEUE));
+	qp = malloc(sizeof(PA_QUEUE));
 	if(qp)
 	{
-		memset(qp, 0, sizeof(QUIXEL_QUEUE));
+		memset(qp, 0, sizeof(PA_QUEUE));
 	}
 	return qp;
 }
 
-void quixel_destroy_queue(QUIXEL_QUEUE * qp)
+void pa_destroy_queue(PA_QUEUE * qp)
 {
 	while(qp->current)
 	{
@@ -51,12 +51,12 @@ void quixel_destroy_queue(QUIXEL_QUEUE * qp)
 	free(qp);
 }
 
-bool quixel_queue_push(QUIXEL_QUEUE * qp, int x, int y)
+bool pa_queue_push(PA_QUEUE * qp, int x, int y)
 {
 	return queue_insert(qp, x, y);
 }
 
-bool quixel_queue_pop(QUIXEL_QUEUE * qp, int * x, int * y)
+bool pa_queue_pop(PA_QUEUE * qp, int * x, int * y)
 {
 	if(qp->current)
 	{
@@ -68,9 +68,9 @@ bool quixel_queue_pop(QUIXEL_QUEUE * qp, int * x, int * y)
 	return false;
 }
 
-int quixel_get_queue_size(QUIXEL_QUEUE * qp)
+int pa_get_queue_size(PA_QUEUE * qp)
 {
-	QUIXEL_QUEUE_NODE * current_node;
+	PA_QUEUE_NODE * current_node;
 	int size = 0;
 
 	current_node = qp->current;

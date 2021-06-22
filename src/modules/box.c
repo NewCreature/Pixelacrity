@@ -1,7 +1,7 @@
 #include "t3f/t3f.h"
 #include "box.h"
 
-static void quixel_initialize_box_handle(QUIXEL_BOX_HANDLE * hp, int view_x, int view_y, int view_zoom, int type, int offset_x, int offset_y, int * link_x, int * link_y)
+static void pa_initialize_box_handle(PA_BOX_HANDLE * hp, int view_x, int view_y, int view_zoom, int type, int offset_x, int offset_y, int * link_x, int * link_y)
 {
 	hp->type = type;
 	hp->offset_x = offset_x;
@@ -12,7 +12,7 @@ static void quixel_initialize_box_handle(QUIXEL_BOX_HANDLE * hp, int view_x, int
 	hp->screen_y = (*link_y - view_y) * view_zoom + offset_y;
 }
 
-void quixel_setup_box(QUIXEL_BOX * bp, int x, int y, int width, int height)
+void pa_setup_box(PA_BOX * bp, int x, int y, int width, int height)
 {
 	bp->start_x = x;
 	bp->start_y = y;
@@ -24,21 +24,21 @@ void quixel_setup_box(QUIXEL_BOX * bp, int x, int y, int width, int height)
 	bp->middle_y = bp->start_y + bp->height / 2;
 }
 
-void quixel_initialize_box(QUIXEL_BOX * bp, int x, int y, int width, int height, ALLEGRO_BITMAP * handle_bitmap)
+void pa_initialize_box(PA_BOX * bp, int x, int y, int width, int height, ALLEGRO_BITMAP * handle_bitmap)
 {
-	memset(bp, 0, sizeof(QUIXEL_BOX));
+	memset(bp, 0, sizeof(PA_BOX));
 	bp->bitmap = handle_bitmap;
-	quixel_setup_box(bp, x, y, width, height);
+	pa_setup_box(bp, x, y, width, height);
 }
 
-static void update_box(QUIXEL_BOX * bp)
+static void update_box(PA_BOX * bp)
 {
 	if(bp->hover_handle >= 0)
 	{
 		bp->width = abs(bp->end_x - bp->start_x) + 1;
 		switch(bp->handle[bp->hover_handle].type)
 		{
-			case QUIXEL_BOX_HANDLE_TYPE_TOP_LEFT:
+			case PA_BOX_HANDLE_TYPE_TOP_LEFT:
 			{
 				if(*bp->handle[bp->hover_handle].link_x > *bp->handle[1].link_x)
 				{
@@ -47,7 +47,7 @@ static void update_box(QUIXEL_BOX * bp)
 				}
 				break;
 			}
-			case QUIXEL_BOX_HANDLE_TYPE_LEFT:
+			case PA_BOX_HANDLE_TYPE_LEFT:
 			{
 				if(*bp->handle[bp->hover_handle].link_x > *bp->handle[7].link_x)
 				{
@@ -56,7 +56,7 @@ static void update_box(QUIXEL_BOX * bp)
 				}
 				break;
 			}
-			case QUIXEL_BOX_HANDLE_TYPE_BOTTOM_LEFT:
+			case PA_BOX_HANDLE_TYPE_BOTTOM_LEFT:
 			{
 				if(*bp->handle[bp->hover_handle].link_x > *bp->handle[3].link_x)
 				{
@@ -65,7 +65,7 @@ static void update_box(QUIXEL_BOX * bp)
 				}
 				break;
 			}
-			case QUIXEL_BOX_HANDLE_TYPE_TOP_RIGHT:
+			case PA_BOX_HANDLE_TYPE_TOP_RIGHT:
 			{
 				if(*bp->handle[bp->hover_handle].link_x < *bp->handle[0].link_x)
 				{
@@ -74,7 +74,7 @@ static void update_box(QUIXEL_BOX * bp)
 				}
 				break;
 			}
-			case QUIXEL_BOX_HANDLE_TYPE_RIGHT:
+			case PA_BOX_HANDLE_TYPE_RIGHT:
 			{
 				if(*bp->handle[bp->hover_handle].link_x < *bp->handle[6].link_x)
 				{
@@ -83,7 +83,7 @@ static void update_box(QUIXEL_BOX * bp)
 				}
 				break;
 			}
-			case QUIXEL_BOX_HANDLE_TYPE_BOTTOM_RIGHT:
+			case PA_BOX_HANDLE_TYPE_BOTTOM_RIGHT:
 			{
 				if(*bp->handle[bp->hover_handle].link_x < *bp->handle[2].link_x)
 				{
@@ -96,7 +96,7 @@ static void update_box(QUIXEL_BOX * bp)
 		bp->height = abs(bp->end_y - bp->start_y) + 1;
 		switch(bp->handle[bp->hover_handle].type)
 		{
-			case QUIXEL_BOX_HANDLE_TYPE_TOP_LEFT:
+			case PA_BOX_HANDLE_TYPE_TOP_LEFT:
 			{
 				if(*bp->handle[bp->hover_handle].link_y > *bp->handle[2].link_y)
 				{
@@ -105,7 +105,7 @@ static void update_box(QUIXEL_BOX * bp)
 				}
 				break;
 			}
-			case QUIXEL_BOX_HANDLE_TYPE_TOP:
+			case PA_BOX_HANDLE_TYPE_TOP:
 			{
 				if(*bp->handle[bp->hover_handle].link_y > *bp->handle[5].link_y)
 				{
@@ -114,7 +114,7 @@ static void update_box(QUIXEL_BOX * bp)
 				}
 				break;
 			}
-			case QUIXEL_BOX_HANDLE_TYPE_TOP_RIGHT:
+			case PA_BOX_HANDLE_TYPE_TOP_RIGHT:
 			{
 				if(*bp->handle[bp->hover_handle].link_y > *bp->handle[3].link_y)
 				{
@@ -123,7 +123,7 @@ static void update_box(QUIXEL_BOX * bp)
 				}
 				break;
 			}
-			case QUIXEL_BOX_HANDLE_TYPE_BOTTOM_LEFT:
+			case PA_BOX_HANDLE_TYPE_BOTTOM_LEFT:
 			{
 				if(*bp->handle[bp->hover_handle].link_y < *bp->handle[0].link_y)
 				{
@@ -132,7 +132,7 @@ static void update_box(QUIXEL_BOX * bp)
 				}
 				break;
 			}
-			case QUIXEL_BOX_HANDLE_TYPE_BOTTOM:
+			case PA_BOX_HANDLE_TYPE_BOTTOM:
 			{
 				if(*bp->handle[bp->hover_handle].link_y < *bp->handle[4].link_y)
 				{
@@ -141,7 +141,7 @@ static void update_box(QUIXEL_BOX * bp)
 				}
 				break;
 			}
-			case QUIXEL_BOX_HANDLE_TYPE_BOTTOM_RIGHT:
+			case PA_BOX_HANDLE_TYPE_BOTTOM_RIGHT:
 			{
 				if(*bp->handle[bp->hover_handle].link_y < *bp->handle[1].link_y)
 				{
@@ -152,34 +152,34 @@ static void update_box(QUIXEL_BOX * bp)
 			}
 		}
 	}
-	quixel_setup_box(bp, bp->start_x, bp->start_y, bp->width, bp->height);
+	pa_setup_box(bp, bp->start_x, bp->start_y, bp->width, bp->height);
 }
 
 /* update boxes each frame before running the logic to modify boxes */
-void quixel_update_box_handles(QUIXEL_BOX * bp, int view_x, int view_y, int view_zoom)
+void pa_update_box_handles(PA_BOX * bp, int view_x, int view_y, int view_zoom)
 {
 	int offset;
 
-	quixel_initialize_box_handle(&bp->handle[0], view_x, view_y, view_zoom, QUIXEL_BOX_HANDLE_TYPE_TOP_LEFT, -1, -1, &bp->start_x, &bp->start_y);
-	quixel_initialize_box_handle(&bp->handle[1], view_x, view_y, view_zoom, QUIXEL_BOX_HANDLE_TYPE_TOP_RIGHT, view_zoom, -1, &bp->end_x, &bp->start_y);
-	quixel_initialize_box_handle(&bp->handle[2], view_x, view_y, view_zoom, QUIXEL_BOX_HANDLE_TYPE_BOTTOM_LEFT, -1, view_zoom, &bp->start_x, &bp->end_y);
-	quixel_initialize_box_handle(&bp->handle[3], view_x, view_y, view_zoom, QUIXEL_BOX_HANDLE_TYPE_BOTTOM_RIGHT, view_zoom, view_zoom, &bp->end_x, &bp->end_y);
+	pa_initialize_box_handle(&bp->handle[0], view_x, view_y, view_zoom, PA_BOX_HANDLE_TYPE_TOP_LEFT, -1, -1, &bp->start_x, &bp->start_y);
+	pa_initialize_box_handle(&bp->handle[1], view_x, view_y, view_zoom, PA_BOX_HANDLE_TYPE_TOP_RIGHT, view_zoom, -1, &bp->end_x, &bp->start_y);
+	pa_initialize_box_handle(&bp->handle[2], view_x, view_y, view_zoom, PA_BOX_HANDLE_TYPE_BOTTOM_LEFT, -1, view_zoom, &bp->start_x, &bp->end_y);
+	pa_initialize_box_handle(&bp->handle[3], view_x, view_y, view_zoom, PA_BOX_HANDLE_TYPE_BOTTOM_RIGHT, view_zoom, view_zoom, &bp->end_x, &bp->end_y);
 	if(bp->width > 1)
 	{
 		offset = bp->width % 2 == 0 ? 0 : view_zoom / 2;
-		quixel_initialize_box_handle(&bp->handle[4], view_x, view_y, view_zoom, QUIXEL_BOX_HANDLE_TYPE_TOP, offset, -1, &bp->middle_x, &bp->start_y);
-		quixel_initialize_box_handle(&bp->handle[5], view_x, view_y, view_zoom, QUIXEL_BOX_HANDLE_TYPE_BOTTOM, offset, view_zoom, &bp->middle_x, &bp->end_y);
+		pa_initialize_box_handle(&bp->handle[4], view_x, view_y, view_zoom, PA_BOX_HANDLE_TYPE_TOP, offset, -1, &bp->middle_x, &bp->start_y);
+		pa_initialize_box_handle(&bp->handle[5], view_x, view_y, view_zoom, PA_BOX_HANDLE_TYPE_BOTTOM, offset, view_zoom, &bp->middle_x, &bp->end_y);
 	}
 	if(bp->height > 1)
 	{
 		offset = bp->height % 2 == 0 ? 0 : view_zoom / 2;
-		quixel_initialize_box_handle(&bp->handle[6], view_x, view_y, view_zoom, QUIXEL_BOX_HANDLE_TYPE_LEFT, -1, offset, &bp->start_x, &bp->middle_y);
-		quixel_initialize_box_handle(&bp->handle[7], view_x, view_y, view_zoom, QUIXEL_BOX_HANDLE_TYPE_RIGHT, view_zoom, offset, &bp->end_x, &bp->middle_y);
+		pa_initialize_box_handle(&bp->handle[6], view_x, view_y, view_zoom, PA_BOX_HANDLE_TYPE_LEFT, -1, offset, &bp->start_x, &bp->middle_y);
+		pa_initialize_box_handle(&bp->handle[7], view_x, view_y, view_zoom, PA_BOX_HANDLE_TYPE_RIGHT, view_zoom, offset, &bp->end_x, &bp->middle_y);
 	}
 }
 
 /* handle user interaction with boxes */
-void quixel_box_logic(QUIXEL_BOX * bp, int view_x, int view_y, int view_zoom, int offset_x, int offset_y)
+void pa_box_logic(PA_BOX * bp, int view_x, int view_y, int view_zoom, int offset_x, int offset_y)
 {
 	int peg_size = al_get_bitmap_width(bp->bitmap);
 	int peg_offset = peg_size / 2;
@@ -189,12 +189,12 @@ void quixel_box_logic(QUIXEL_BOX * bp, int view_x, int view_y, int view_zoom, in
 	bp->hover_y = (t3f_mouse_y - offset_y) / view_zoom + view_y;
 	switch(bp->state)
 	{
-		case QUIXEL_BOX_STATE_IDLE:
+		case PA_BOX_STATE_IDLE:
 		{
 			bp->hover_handle = -1;
 			for(i = 0; i < 10; i++)
 			{
-				if(bp->handle[i].type != QUIXEL_BOX_HANDLE_TYPE_NONE)
+				if(bp->handle[i].type != PA_BOX_HANDLE_TYPE_NONE)
 				{
 					if(t3f_mouse_x >= bp->handle[i].screen_x - peg_offset + offset_x && t3f_mouse_x <= bp->handle[i].screen_x + peg_offset + offset_x && t3f_mouse_y >= bp->handle[i].screen_y - peg_offset + offset_y && t3f_mouse_y <= bp->handle[i].screen_y + peg_offset + offset_y)
 					{
@@ -206,21 +206,21 @@ void quixel_box_logic(QUIXEL_BOX * bp, int view_x, int view_y, int view_zoom, in
 			{
 				if(t3f_mouse_x >= bp->handle[0].screen_x - peg_offset + offset_x && t3f_mouse_x <= bp->handle[1].screen_x + peg_offset + offset_x && t3f_mouse_y >= bp->handle[0].screen_y - peg_offset + offset_y && t3f_mouse_y <= bp->handle[2].screen_y + peg_offset + offset_y)
 				{
-					bp->state = QUIXEL_BOX_STATE_HOVER;
+					bp->state = PA_BOX_STATE_HOVER;
 				}
 			}
 			else
 			{
-				bp->state = QUIXEL_BOX_STATE_HOVER_HANDLE;
+				bp->state = PA_BOX_STATE_HOVER_HANDLE;
 			}
 			break;
 		}
-		case QUIXEL_BOX_STATE_HOVER:
+		case PA_BOX_STATE_HOVER:
 		{
 			bp->hover_handle = -1;
 			for(i = 0; i < 10; i++)
 			{
-				if(bp->handle[i].type != QUIXEL_BOX_HANDLE_TYPE_NONE)
+				if(bp->handle[i].type != PA_BOX_HANDLE_TYPE_NONE)
 				{
 					if(t3f_mouse_x >= bp->handle[i].screen_x - peg_offset + offset_x && t3f_mouse_x <= bp->handle[i].screen_x + peg_offset + offset_x && t3f_mouse_y >= bp->handle[i].screen_y - peg_offset + offset_y && t3f_mouse_y <= bp->handle[i].screen_y + peg_offset + offset_y)
 					{
@@ -230,51 +230,51 @@ void quixel_box_logic(QUIXEL_BOX * bp, int view_x, int view_y, int view_zoom, in
 			}
 			if(bp->hover_handle >= 0)
 			{
-				bp->state = QUIXEL_BOX_STATE_HOVER_HANDLE;
+				bp->state = PA_BOX_STATE_HOVER_HANDLE;
 			}
 			else if(t3f_mouse_x < bp->handle[0].screen_x - peg_offset + offset_x || t3f_mouse_x > bp->handle[1].screen_x + peg_offset + offset_x || t3f_mouse_y < bp->handle[0].screen_y - peg_offset + offset_y || t3f_mouse_y > bp->handle[2].screen_y + peg_offset + offset_y)
 			{
-				bp->state = QUIXEL_BOX_STATE_IDLE;
+				bp->state = PA_BOX_STATE_IDLE;
 			}
 			break;
 		}
-		case QUIXEL_BOX_STATE_HOVER_HANDLE:
+		case PA_BOX_STATE_HOVER_HANDLE:
 		{
 			if(t3f_mouse_x < bp->handle[bp->hover_handle].screen_x - peg_offset + offset_x || t3f_mouse_x > bp->handle[bp->hover_handle].screen_x + peg_offset + offset_x || t3f_mouse_y < bp->handle[bp->hover_handle].screen_y - peg_offset + offset_y || t3f_mouse_y > bp->handle[bp->hover_handle].screen_y + peg_offset + offset_y)
 			{
 				bp->hover_handle = -1;
-				bp->state = QUIXEL_BOX_STATE_IDLE;
+				bp->state = PA_BOX_STATE_IDLE;
 			}
 			break;
 		}
-		case QUIXEL_BOX_STATE_MOVING:
+		case PA_BOX_STATE_MOVING:
 		{
-			quixel_setup_box(bp, bp->click_start_x + (bp->hover_x - bp->click_x), bp->click_start_y + (bp->hover_y - bp->click_y), bp->width, bp->height);
+			pa_setup_box(bp, bp->click_start_x + (bp->hover_x - bp->click_x), bp->click_start_y + (bp->hover_y - bp->click_y), bp->width, bp->height);
 			bp->click_tick++;
 			break;
 		}
-		case QUIXEL_BOX_STATE_RESIZING:
+		case PA_BOX_STATE_RESIZING:
 		{
-			if(bp->handle[bp->hover_handle].type == QUIXEL_BOX_HANDLE_TYPE_TOP_LEFT || bp->handle[bp->hover_handle].type == QUIXEL_BOX_HANDLE_TYPE_TOP_RIGHT || bp->handle[bp->hover_handle].type == QUIXEL_BOX_HANDLE_TYPE_BOTTOM_LEFT || bp->handle[bp->hover_handle].type == QUIXEL_BOX_HANDLE_TYPE_BOTTOM_RIGHT || bp->handle[bp->hover_handle].type == QUIXEL_BOX_HANDLE_TYPE_LEFT || bp->handle[bp->hover_handle].type == QUIXEL_BOX_HANDLE_TYPE_RIGHT)
+			if(bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_TOP_LEFT || bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_TOP_RIGHT || bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_BOTTOM_LEFT || bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_BOTTOM_RIGHT || bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_LEFT || bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_RIGHT)
 			{
 				bp->handle[bp->hover_handle].screen_x = t3f_mouse_x - peg_offset - offset_x;
 				*bp->handle[bp->hover_handle].link_x = (bp->handle[bp->hover_handle].screen_x) / view_zoom + view_x;
 				bp->handle[bp->hover_handle].screen_x = (*bp->handle[bp->hover_handle].link_x - view_x) * view_zoom + bp->handle[bp->hover_handle].offset_x;
 			}
-			if(bp->handle[bp->hover_handle].type == QUIXEL_BOX_HANDLE_TYPE_TOP_LEFT || bp->handle[bp->hover_handle].type == QUIXEL_BOX_HANDLE_TYPE_TOP_RIGHT || bp->handle[bp->hover_handle].type == QUIXEL_BOX_HANDLE_TYPE_BOTTOM_LEFT || bp->handle[bp->hover_handle].type == QUIXEL_BOX_HANDLE_TYPE_BOTTOM_RIGHT || bp->handle[bp->hover_handle].type == QUIXEL_BOX_HANDLE_TYPE_TOP || bp->handle[bp->hover_handle].type == QUIXEL_BOX_HANDLE_TYPE_BOTTOM)
+			if(bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_TOP_LEFT || bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_TOP_RIGHT || bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_BOTTOM_LEFT || bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_BOTTOM_RIGHT || bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_TOP || bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_BOTTOM)
 			{
 				bp->handle[bp->hover_handle].screen_y = t3f_mouse_y - peg_offset - offset_y;
 				*bp->handle[bp->hover_handle].link_y = (bp->handle[bp->hover_handle].screen_y) / view_zoom + view_y;
 				bp->handle[bp->hover_handle].screen_y = (*bp->handle[bp->hover_handle].link_y - view_y) * view_zoom + bp->handle[bp->hover_handle].offset_y;
 			}
 			update_box(bp);
-			quixel_update_box_handles(bp, view_x, view_y, view_zoom);
+			pa_update_box_handles(bp, view_x, view_y, view_zoom);
 			break;
 		}
 	}
 }
 
-void quixel_box_render(QUIXEL_BOX * bp, int style, int view_x, int view_y, int view_zoom, int offset_x, int offset_y)
+void pa_box_render(PA_BOX * bp, int style, int view_x, int view_y, int view_zoom, int offset_x, int offset_y)
 {
 	int i;
 	int peg_size = 8;
@@ -295,7 +295,7 @@ void quixel_box_render(QUIXEL_BOX * bp, int style, int view_x, int view_y, int v
 		al_draw_rectangle(offset_x + start_x - 1.0 + 0.5, offset_y + start_y - 1.0 + 0.5, offset_x + end_x + 0.5, offset_y + end_y + 0.5, t3f_color_black, 1.0);
 		for(i = 0; i < 10; i++)
 		{
-			if(bp->handle[i].type != QUIXEL_BOX_HANDLE_TYPE_NONE)
+			if(bp->handle[i].type != PA_BOX_HANDLE_TYPE_NONE)
 			{
 				if(bp->bitmap)
 				{

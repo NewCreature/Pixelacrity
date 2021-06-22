@@ -1,28 +1,28 @@
 #include "t3f/t3f.h"
 #include "canvas.h"
 
-static QUIXEL_CANVAS_LAYER * quixel_create_canvas_layer(void)
+static PA_CANVAS_LAYER * pa_create_canvas_layer(void)
 {
-	QUIXEL_CANVAS_LAYER * lp;
+	PA_CANVAS_LAYER * lp;
 
-	lp = malloc(sizeof(QUIXEL_CANVAS_LAYER));
+	lp = malloc(sizeof(PA_CANVAS_LAYER));
 	if(lp)
 	{
-		memset(lp, 0, sizeof(QUIXEL_CANVAS_LAYER));
+		memset(lp, 0, sizeof(PA_CANVAS_LAYER));
 	}
 	return lp;
 }
 
-static QUIXEL_CANVAS_FRAME * quixel_create_canvas_frame(const char * name, int x, int y, int width, int height)
+static PA_CANVAS_FRAME * pa_create_canvas_frame(const char * name, int x, int y, int width, int height)
 {
-	QUIXEL_CANVAS_FRAME * fp = NULL;
+	PA_CANVAS_FRAME * fp = NULL;
 
-	fp = malloc(sizeof(QUIXEL_CANVAS_FRAME));
+	fp = malloc(sizeof(PA_CANVAS_FRAME));
 	if(!fp)
 	{
 		goto fail;
 	}
-	memset(fp, 0, sizeof(QUIXEL_CANVAS_FRAME));
+	memset(fp, 0, sizeof(PA_CANVAS_FRAME));
 	fp->name = strdup(name);
 	if(!fp->name)
 	{
@@ -95,14 +95,14 @@ static ALLEGRO_BITMAP *** create_bitmap_array(int width, int height)
 	}
 }
 
-QUIXEL_CANVAS * quixel_create_canvas(int bitmap_max)
+PA_CANVAS * pa_create_canvas(int bitmap_max)
 {
-	QUIXEL_CANVAS * cp;
+	PA_CANVAS * cp;
 
-	cp = malloc(sizeof(QUIXEL_CANVAS));
+	cp = malloc(sizeof(PA_CANVAS));
 	if(cp)
 	{
-		memset(cp, 0, sizeof(QUIXEL_CANVAS));
+		memset(cp, 0, sizeof(PA_CANVAS));
 		cp->bitmap_size = al_get_display_option(t3f_display, ALLEGRO_MAX_BITMAP_SIZE) / 2;
 		if(cp->bitmap_size > bitmap_max)
 		{
@@ -118,12 +118,12 @@ QUIXEL_CANVAS * quixel_create_canvas(int bitmap_max)
 
 	fail:
 	{
-		quixel_destroy_canvas(cp);
+		pa_destroy_canvas(cp);
 		return NULL;
 	}
 }
 
-void quixel_destroy_canvas(QUIXEL_CANVAS * cp)
+void pa_destroy_canvas(PA_CANVAS * cp)
 {
 	int i, j, k;
 
@@ -165,19 +165,19 @@ void quixel_destroy_canvas(QUIXEL_CANVAS * cp)
 	}
 }
 
-bool quixel_add_canvas_layer(QUIXEL_CANVAS * cp, int layer_index)
+bool pa_add_canvas_layer(PA_CANVAS * cp, int layer_index)
 {
-	QUIXEL_CANVAS_LAYER ** old_layer;
+	PA_CANVAS_LAYER ** old_layer;
 	int layer_size;
 	int i;
 
-	t3f_debug_message("Enter quixel_add_canvas_layer()\n");
+	t3f_debug_message("Enter pa_add_canvas_layer()\n");
 	if(layer_index < 0)
 	{
 		layer_index = cp->layer_max;
 	}
 	old_layer = cp->layer;
-	layer_size = sizeof(QUIXEL_CANVAS_LAYER *) * cp->layer_max + 1;
+	layer_size = sizeof(PA_CANVAS_LAYER *) * cp->layer_max + 1;
 	cp->layer = malloc(layer_size);
 	if(cp->layer)
 	{
@@ -190,7 +190,7 @@ bool quixel_add_canvas_layer(QUIXEL_CANVAS * cp, int layer_index)
 		{
 			cp->layer[i] = old_layer[i - 1];
 		}
-		cp->layer[layer_index] = quixel_create_canvas_layer();
+		cp->layer[layer_index] = pa_create_canvas_layer();
 		if(cp->layer[layer_index])
 		{
 			if(cp->layer_width > 0 && cp->layer_height > 0)
@@ -199,24 +199,24 @@ bool quixel_add_canvas_layer(QUIXEL_CANVAS * cp, int layer_index)
 			}
 			cp->layer_max++;
 			free(old_layer);
-			t3f_debug_message("Exit quixel_add_canvas_layer()\n");
+			t3f_debug_message("Exit pa_add_canvas_layer()\n");
 			return true;
 		}
 	}
 	cp->layer = old_layer;
-	t3f_debug_message("Fail quixel_add_canvas_layer()\n");
+	t3f_debug_message("Fail pa_add_canvas_layer()\n");
 	return false;
 }
 
-bool quixel_remove_canvas_layer(QUIXEL_CANVAS * cp, int layer)
+bool pa_remove_canvas_layer(PA_CANVAS * cp, int layer)
 {
-	QUIXEL_CANVAS_LAYER ** old_layer;
+	PA_CANVAS_LAYER ** old_layer;
 	int layer_size;
 	int i;
 
-	t3f_debug_message("Enter quixel_remove_canvas_layer()\n");
+	t3f_debug_message("Enter pa_remove_canvas_layer()\n");
 	old_layer = cp->layer;
-	layer_size = sizeof(QUIXEL_CANVAS_LAYER *) * cp->layer_max - 1;
+	layer_size = sizeof(PA_CANVAS_LAYER *) * cp->layer_max - 1;
 	cp->layer = malloc(layer_size);
 	if(cp->layer)
 	{
@@ -233,23 +233,23 @@ bool quixel_remove_canvas_layer(QUIXEL_CANVAS * cp, int layer)
 		}
 		cp->layer_max--;
 		free(old_layer);
-		t3f_debug_message("Exit quixel_remove_canvas_layer()\n");
+		t3f_debug_message("Exit pa_remove_canvas_layer()\n");
 		return true;
 	}
 	cp->layer = old_layer;
-	t3f_debug_message("Fail quixel_remove_canvas_layer()\n");
+	t3f_debug_message("Fail pa_remove_canvas_layer()\n");
 	return false;
 }
 
-bool quixel_add_canvas_frame(QUIXEL_CANVAS * cp, const char * name, int x, int y, int width, int height)
+bool pa_add_canvas_frame(PA_CANVAS * cp, const char * name, int x, int y, int width, int height)
 {
-	QUIXEL_CANVAS_FRAME ** old_frame;
+	PA_CANVAS_FRAME ** old_frame;
 	int frame_size;
 	int i;
 
-	t3f_debug_message("Enter quixel_add_canvas_frame()\n");
+	t3f_debug_message("Enter pa_add_canvas_frame()\n");
 	old_frame = cp->frame;
-	frame_size = sizeof(QUIXEL_CANVAS_FRAME *) * cp->frame_max + 1;
+	frame_size = sizeof(PA_CANVAS_FRAME *) * cp->frame_max + 1;
 	cp->frame = malloc(frame_size);
 	if(cp->frame)
 	{
@@ -258,29 +258,29 @@ bool quixel_add_canvas_frame(QUIXEL_CANVAS * cp, const char * name, int x, int y
 		{
 			cp->frame[i] = old_frame[i];
 		}
-		cp->frame[cp->frame_max] = quixel_create_canvas_frame(name, x, y, width, height);
+		cp->frame[cp->frame_max] = pa_create_canvas_frame(name, x, y, width, height);
 		if(cp->frame[cp->frame_max])
 		{
 			cp->frame_max++;
 			free(old_frame);
-			t3f_debug_message("Exit quixel_add_canvas_frame()\n");
+			t3f_debug_message("Exit pa_add_canvas_frame()\n");
 			return true;
 		}
 	}
 	cp->frame = old_frame;
-	t3f_debug_message("Fail quixel_add_canvas_frame()\n");
+	t3f_debug_message("Fail pa_add_canvas_frame()\n");
 	return false;
 }
 
-bool quixel_remove_canvas_frame(QUIXEL_CANVAS * cp, int frame)
+bool pa_remove_canvas_frame(PA_CANVAS * cp, int frame)
 {
-	QUIXEL_CANVAS_FRAME ** old_frame;
+	PA_CANVAS_FRAME ** old_frame;
 	int frame_size;
 	int i;
 
-	t3f_debug_message("Enter quixel_remove_canvas_frame()\n");
+	t3f_debug_message("Enter pa_remove_canvas_frame()\n");
 	old_frame = cp->frame;
-	frame_size = sizeof(QUIXEL_CANVAS_FRAME *) * cp->frame_max - 1;
+	frame_size = sizeof(PA_CANVAS_FRAME *) * cp->frame_max - 1;
 	cp->frame = malloc(frame_size);
 	if(cp->frame)
 	{
@@ -295,15 +295,15 @@ bool quixel_remove_canvas_frame(QUIXEL_CANVAS * cp, int frame)
 		}
 		cp->frame_max--;
 		free(old_frame);
-		t3f_debug_message("Exit quixel_remove_canvas_frame()\n");
+		t3f_debug_message("Exit pa_remove_canvas_frame()\n");
 		return true;
 	}
 	cp->frame = old_frame;
-	t3f_debug_message("Fail quixel_remove_canvas_frame()\n");
+	t3f_debug_message("Fail pa_remove_canvas_frame()\n");
 	return false;
 }
 
-static ALLEGRO_BITMAP * get_bitmap(QUIXEL_CANVAS * cp, int layer, int x, int y)
+static ALLEGRO_BITMAP * get_bitmap(PA_CANVAS * cp, int layer, int x, int y)
 {
 	if(x >= 0 && x < cp->layer_width && y >= 0 && y < cp->layer_height)
 	{
@@ -312,14 +312,14 @@ static ALLEGRO_BITMAP * get_bitmap(QUIXEL_CANVAS * cp, int layer, int x, int y)
 	return NULL;
 }
 
-void quixel_shift_canvas_bitmap_array(QUIXEL_CANVAS * cp, int shift_x, int shift_y)
+void pa_shift_canvas_bitmap_array(PA_CANVAS * cp, int shift_x, int shift_y)
 {
 	ALLEGRO_BITMAP *** bitmap;
 	int new_width, new_height;
 	int i, j, k;
 	int tx, ty;
 
-	t3f_debug_message("Enter quixel_shift_canvas_bitmap_array()\n");
+	t3f_debug_message("Enter pa_shift_canvas_bitmap_array()\n");
 	new_width = cp->layer_width + shift_x;
 	new_height = cp->layer_height + shift_y;
 
@@ -367,15 +367,15 @@ void quixel_shift_canvas_bitmap_array(QUIXEL_CANVAS * cp, int shift_x, int shift
 	}
 	cp->layer_width = new_width;
 	cp->layer_height = new_height;
-	t3f_debug_message("Exit quixel_shift_canvas_bitmap_array()\n");
+	t3f_debug_message("Exit pa_shift_canvas_bitmap_array()\n");
 }
 
-bool quixel_resize_canvas_bitmap_array(QUIXEL_CANVAS * cp, int width, int height)
+bool pa_resize_canvas_bitmap_array(PA_CANVAS * cp, int width, int height)
 {
 	ALLEGRO_BITMAP *** bitmap;
 	int i, j, k;
 
-	t3f_debug_message("Enter quixel_resize_canvas_bitmap_array()\n");
+	t3f_debug_message("Enter pa_resize_canvas_bitmap_array()\n");
 	for(i = 0; i < cp->layer_max; i++)
 	{
 		/* create a new array */
@@ -415,11 +415,11 @@ bool quixel_resize_canvas_bitmap_array(QUIXEL_CANVAS * cp, int width, int height
 	}
 	cp->layer_width = width;
 	cp->layer_height = height;
-	t3f_debug_message("Exit quixel_resize_canvas_bitmap_array()\n");
+	t3f_debug_message("Exit pa_resize_canvas_bitmap_array()\n");
 	return true;
 }
 
-bool quixel_expand_canvas(QUIXEL_CANVAS * cp, int layer, int x, int y)
+bool pa_expand_canvas(PA_CANVAS * cp, int layer, int x, int y)
 {
 	ALLEGRO_STATE old_state;
 
@@ -449,7 +449,7 @@ bool quixel_expand_canvas(QUIXEL_CANVAS * cp, int layer, int x, int y)
 	return true;
 }
 
-static bool bitmap_visible(QUIXEL_CANVAS * cp, int j, int i, int x, int y, int width, int height, int scale)
+static bool bitmap_visible(PA_CANVAS * cp, int j, int i, int x, int y, int width, int height, int scale)
 {
 	int b_top, b_bottom, b_left, b_right;
 	int c_top, c_bottom, c_left, c_right;
@@ -469,7 +469,7 @@ static bool bitmap_visible(QUIXEL_CANVAS * cp, int j, int i, int x, int y, int w
 	return false;
 }
 
-void quixel_render_canvas_layer(QUIXEL_CANVAS * cp, int i, int x, int y, int scale, float ox, float oy, int width, int height)
+void pa_render_canvas_layer(PA_CANVAS * cp, int i, int x, int y, int scale, float ox, float oy, int width, int height)
 {
 	int j, k;
 
@@ -479,7 +479,7 @@ void quixel_render_canvas_layer(QUIXEL_CANVAS * cp, int i, int x, int y, int sca
 		{
 			if(i < cp->layer_max)
 			{
-				if(!(cp->layer[i]->flags & QUIXEL_CANVAS_FLAG_HIDDEN) && cp->layer[i]->bitmap[j][k] && bitmap_visible(cp, k, j, x, y, width, height, scale))
+				if(!(cp->layer[i]->flags & PA_CANVAS_FLAG_HIDDEN) && cp->layer[i]->bitmap[j][k] && bitmap_visible(cp, k, j, x, y, width, height, scale))
 				{
 					t3f_draw_scaled_bitmap(cp->layer[i]->bitmap[j][k], t3f_color_white, ox + (k * cp->bitmap_size - x) * scale, oy + (j * cp->bitmap_size - y) * scale, 0, cp->bitmap_size * scale, cp->bitmap_size * scale, 0);
 				}
@@ -488,7 +488,7 @@ void quixel_render_canvas_layer(QUIXEL_CANVAS * cp, int i, int x, int y, int sca
 	}
 }
 
-void quixel_render_canvas(QUIXEL_CANVAS * cp, int x, int y, int scale, float ox, float oy, int width, int height)
+void pa_render_canvas(PA_CANVAS * cp, int x, int y, int scale, float ox, float oy, int width, int height)
 {
 //	int cx, cy, cw, ch;
 	int i;
@@ -497,7 +497,7 @@ void quixel_render_canvas(QUIXEL_CANVAS * cp, int x, int y, int scale, float ox,
 //	al_set_clipping_rectangle(x, y, width, height);
 	for(i = 0; i < cp->layer_max; i++)
 	{
-		quixel_render_canvas_layer(cp, i, x, y, scale, ox, oy, width, height);
+		pa_render_canvas_layer(cp, i, x, y, scale, ox, oy, width, height);
 	}
 //	al_set_clipping_rectangle(cx, cy, cw, ch);
 }

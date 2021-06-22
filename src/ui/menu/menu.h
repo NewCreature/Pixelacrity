@@ -1,11 +1,11 @@
-#ifndef QUIXEL_MENU_H
-#define QUIXEL_MENU_H
+#ifndef PA_MENU_H
+#define PA_MENU_H
 
 #include "ui/ui.h"
 
-bool quixel_setup_menus(QUIXEL_UI * uip);
-void quixel_destroy_menus(QUIXEL_UI * uip);
+bool pa_setup_menus(PA_UI * uip);
+void pa_destroy_menus(PA_UI * uip);
 
-void quixel_update_undo_menu(QUIXEL_UI * uip, const char * undo_name, const char * redo_name);
+void pa_update_undo_menu(PA_UI * uip, const char * undo_name, const char * redo_name);
 
 #endif

@@ -6,7 +6,7 @@
 static ALLEGRO_BITMAP * _palette_bitmap = NULL;
 static int mouse_button = 0;
 
-static ALLEGRO_BITMAP * quixel_create_palette(int width, int height)
+static ALLEGRO_BITMAP * pa_create_palette(int width, int height)
 {
 	ALLEGRO_BITMAP * bp;
 	ALLEGRO_COLOR color;
@@ -41,22 +41,22 @@ static ALLEGRO_BITMAP * quixel_create_palette(int width, int height)
 	return NULL;
 }
 
-void quixel_resize_palette(int width, int height)
+void pa_resize_palette(int width, int height)
 {
 	if(_palette_bitmap)
 	{
 		al_destroy_bitmap(_palette_bitmap);
 	}
-	_palette_bitmap = quixel_create_palette(width, height);
+	_palette_bitmap = pa_create_palette(width, height);
 }
 
-int quixel_gui_palette_proc(int msg, T3GUI_ELEMENT * d, int c)
+int pa_gui_palette_proc(int msg, T3GUI_ELEMENT * d, int c)
 {
 	switch(msg)
 	{
 		case MSG_START:
 		{
-			quixel_resize_palette(d->w, d->h);
+			pa_resize_palette(d->w, d->h);
 			break;
 		}
 		case MSG_END:
@@ -98,7 +98,7 @@ int quixel_gui_palette_proc(int msg, T3GUI_ELEMENT * d, int c)
 		{
 			if(mouse_button)
 			{
-				quixel_gui_palette_proc(MSG_MOUSEDOWN, d, mouse_button);
+				pa_gui_palette_proc(MSG_MOUSEDOWN, d, mouse_button);
 			}
 			break;
 		}

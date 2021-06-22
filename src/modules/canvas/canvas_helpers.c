@@ -5,7 +5,7 @@
 #include "modules/primitives.h"
 
 /* assume all canvas bitmaps are already locked */
-static int get_canvas_alpha(QUIXEL_CANVAS * cp, int x, int y, int flags_filter)
+static int get_canvas_alpha(PA_CANVAS * cp, int x, int y, int flags_filter)
 {
 	ALLEGRO_COLOR color;
 	int i;
@@ -17,7 +17,7 @@ static int get_canvas_alpha(QUIXEL_CANVAS * cp, int x, int y, int flags_filter)
 	for(i = 0; i < cp->layer_max; i++)
 	{
 		flags = cp->layer[i]->flags & ~flags_filter;
-		if(!(flags & QUIXEL_CANVAS_FLAG_HIDDEN))
+		if(!(flags & PA_CANVAS_FLAG_HIDDEN))
 		{
 			tile_x = x / cp->bitmap_size;
 			tile_y = y / cp->bitmap_size;
@@ -37,7 +37,7 @@ static int get_canvas_alpha(QUIXEL_CANVAS * cp, int x, int y, int flags_filter)
 	return 0;
 }
 
-void quixel_get_canvas_dimensions(QUIXEL_CANVAS * cp, int * offset_x, int * offset_y, int * width, int * height, int flags_filter)
+void pa_get_canvas_dimensions(PA_CANVAS * cp, int * offset_x, int * offset_y, int * width, int * height, int flags_filter)
 {
 	int i, j, k, l, m, x, y;
 	int left_x = 1000000;
@@ -55,7 +55,7 @@ void quixel_get_canvas_dimensions(QUIXEL_CANVAS * cp, int * offset_x, int * offs
 			for(i = 0; i < cp->layer_max; i++)
 			{
 				flags = cp->layer[i]->flags & ~flags_filter;
-				if(!(flags & QUIXEL_CANVAS_FLAG_HIDDEN))
+				if(!(flags & PA_CANVAS_FLAG_HIDDEN))
 				{
 					if(cp->layer[i]->bitmap[j][k])
 					{
@@ -97,7 +97,7 @@ void quixel_get_canvas_dimensions(QUIXEL_CANVAS * cp, int * offset_x, int * offs
 			for(i = 0; i < cp->layer_max; i++)
 			{
 				flags = cp->layer[i]->flags & ~flags_filter;
-				if(!(flags & QUIXEL_CANVAS_FLAG_HIDDEN))
+				if(!(flags & PA_CANVAS_FLAG_HIDDEN))
 				{
 					if(cp->layer[i]->bitmap[j][k])
 					{
@@ -125,7 +125,7 @@ void quixel_get_canvas_dimensions(QUIXEL_CANVAS * cp, int * offset_x, int * offs
 	}
 }
 
-static void draw_canvas_layer(QUIXEL_CANVAS * cp, int layer, int flags, ALLEGRO_BITMAP * bp, int offset_x, int offset_y, int width, int height)
+static void draw_canvas_layer(PA_CANVAS * cp, int layer, int flags, ALLEGRO_BITMAP * bp, int offset_x, int offset_y, int width, int height)
 {
 	int j, k;
 	int x, y;
@@ -144,7 +144,7 @@ static void draw_canvas_layer(QUIXEL_CANVAS * cp, int layer, int flags, ALLEGRO_
 	}
 }
 
-static void draw_canvas_layers(QUIXEL_CANVAS * cp, int start_layer, int end_layer, int flags_filter, ALLEGRO_BITMAP * bp, int offset_x, int offset_y, int width, int height)
+static void draw_canvas_layers(PA_CANVAS * cp, int start_layer, int end_layer, int flags_filter, ALLEGRO_BITMAP * bp, int offset_x, int offset_y, int width, int height)
 {
 	ALLEGRO_TRANSFORM identity;
 	int flags;
@@ -167,7 +167,7 @@ static void draw_canvas_layers(QUIXEL_CANVAS * cp, int start_layer, int end_laye
 		if(i < cp->layer_max)
 		{
 			flags = cp->layer[i]->flags & ~flags_filter;
-			if(!(flags & QUIXEL_CANVAS_FLAG_HIDDEN))
+			if(!(flags & PA_CANVAS_FLAG_HIDDEN))
 			{
 				draw_canvas_layer(cp, i, flags, bp, offset_x, offset_y, width, height);
 			}
@@ -175,7 +175,7 @@ static void draw_canvas_layers(QUIXEL_CANVAS * cp, int start_layer, int end_laye
 	}
 }
 
-void quixel_render_canvas_to_bitmap(QUIXEL_CANVAS * cp, int start_layer, int end_layer, int x, int y, int w, int h, int flags_filter, ALLEGRO_BITMAP * bp)
+void pa_render_canvas_to_bitmap(PA_CANVAS * cp, int start_layer, int end_layer, int x, int y, int w, int h, int flags_filter, ALLEGRO_BITMAP * bp)
 {
 	ALLEGRO_STATE old_state;
 
@@ -189,14 +189,14 @@ void quixel_render_canvas_to_bitmap(QUIXEL_CANVAS * cp, int start_layer, int end
 	al_restore_state(&old_state);
 }
 
-ALLEGRO_BITMAP * quixel_get_bitmap_from_canvas(QUIXEL_CANVAS * cp, int start_layer, int end_layer, int flags_filter)
+ALLEGRO_BITMAP * pa_get_bitmap_from_canvas(PA_CANVAS * cp, int start_layer, int end_layer, int flags_filter)
 {
 	ALLEGRO_BITMAP * bp;
 	ALLEGRO_STATE old_state;
 	int w, h;
 
 	al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);
-	quixel_get_canvas_dimensions(cp, &cp->export_offset_x, &cp->export_offset_y, &w, &h, flags_filter);
+	pa_get_canvas_dimensions(cp, &cp->export_offset_x, &cp->export_offset_y, &w, &h, flags_filter);
 	al_set_new_bitmap_flags(ALLEGRO_MEMORY_BITMAP);
 	bp = al_create_bitmap(w, h);
 	al_restore_state(&old_state);
@@ -204,7 +204,7 @@ ALLEGRO_BITMAP * quixel_get_bitmap_from_canvas(QUIXEL_CANVAS * cp, int start_lay
 	{
 		goto fail;
 	}
-	quixel_render_canvas_to_bitmap(cp, start_layer, end_layer, cp->export_offset_x, cp->export_offset_y, w, h, flags_filter, bp);
+	pa_render_canvas_to_bitmap(cp, start_layer, end_layer, cp->export_offset_x, cp->export_offset_y, w, h, flags_filter, bp);
 	return bp;
 
 	fail:
@@ -213,15 +213,15 @@ ALLEGRO_BITMAP * quixel_get_bitmap_from_canvas(QUIXEL_CANVAS * cp, int start_lay
 	}
 }
 
-void quixel_import_bitmap_to_canvas(QUIXEL_CANVAS * cp, ALLEGRO_BITMAP * bp, int layer, int x, int y)
+void pa_import_bitmap_to_canvas(PA_CANVAS * cp, ALLEGRO_BITMAP * bp, int layer, int x, int y)
 {
 	int shift_x, shift_y;
 
-	quixel_handle_canvas_expansion(cp, x, y, x + al_get_bitmap_width(bp), y + al_get_bitmap_height(bp), &shift_x, &shift_y);
-	quixel_get_canvas_shift(cp, x, y, &shift_x, &shift_y);
+	pa_handle_canvas_expansion(cp, x, y, x + al_get_bitmap_width(bp), y + al_get_bitmap_height(bp), &shift_x, &shift_y);
+	pa_get_canvas_shift(cp, x, y, &shift_x, &shift_y);
 	x += shift_x * cp->bitmap_size;
 	y += shift_y * cp->bitmap_size;
-	quixel_draw_primitive_to_canvas(cp, layer, x, y, x + al_get_bitmap_width(bp), y + al_get_bitmap_height(bp), bp, t3f_color_white, QUIXEL_RENDER_COPY, quixel_draw_quad);
+	pa_draw_primitive_to_canvas(cp, layer, x, y, x + al_get_bitmap_width(bp), y + al_get_bitmap_height(bp), bp, t3f_color_white, PA_RENDER_COPY, pa_draw_quad);
 }
 
 static bool loop_break_test(int i1, int i2, int dir)
@@ -294,7 +294,7 @@ static bool ** make_use_array(int layer_width, int layer_height)
 	}
 }
 
-void quixel_draw_primitive_to_canvas(QUIXEL_CANVAS * cp, int layer, int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_COLOR color, int mode, void (*primitive_proc)(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_COLOR color))
+void pa_draw_primitive_to_canvas(PA_CANVAS * cp, int layer, int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_COLOR color, int mode, void (*primitive_proc)(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_COLOR color))
 {
 	ALLEGRO_STATE old_state;
 	ALLEGRO_TRANSFORM identity;
@@ -350,10 +350,10 @@ void quixel_draw_primitive_to_canvas(QUIXEL_CANVAS * cp, int layer, int x1, int 
 		{
 			if(use_bitmap[i][j])
 			{
-				quixel_expand_canvas(cp, layer, j * cp->bitmap_size, i * cp->bitmap_size);
+				pa_expand_canvas(cp, layer, j * cp->bitmap_size, i * cp->bitmap_size);
 				al_set_target_bitmap(cp->layer[layer]->bitmap[i][j]);
 				al_use_transform(&identity);
-				if(mode == QUIXEL_RENDER_COPY)
+				if(mode == PA_RENDER_COPY)
 				{
 					al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
 				}
@@ -367,7 +367,7 @@ void quixel_draw_primitive_to_canvas(QUIXEL_CANVAS * cp, int layer, int x1, int 
 	al_restore_state(&old_state);
 }
 
-ALLEGRO_COLOR quixel_get_canvas_pixel(QUIXEL_CANVAS * cp, int layer, int x, int y)
+ALLEGRO_COLOR pa_get_canvas_pixel(PA_CANVAS * cp, int layer, int x, int y)
 {
 	int tx, ty;
 
@@ -381,7 +381,7 @@ ALLEGRO_COLOR quixel_get_canvas_pixel(QUIXEL_CANVAS * cp, int layer, int x, int 
 	return al_map_rgba_f(0.0, 0.0, 0.0, 0.0);
 }
 
-void quixel_get_canvas_shift(QUIXEL_CANVAS * cp, int x, int y, int * shift_x, int * shift_y)
+void pa_get_canvas_shift(PA_CANVAS * cp, int x, int y, int * shift_x, int * shift_y)
 {
 	*shift_x = 0;
 	*shift_y = 0;
@@ -397,7 +397,7 @@ void quixel_get_canvas_shift(QUIXEL_CANVAS * cp, int x, int y, int * shift_x, in
 	}
 }
 
-bool quixel_handle_canvas_expansion(QUIXEL_CANVAS * cp, int left, int top, int right, int bottom, int * shift_x, int * shift_y)
+bool pa_handle_canvas_expansion(PA_CANVAS * cp, int left, int top, int right, int bottom, int * shift_x, int * shift_y)
 {
 	int cx, cy;
 	int new_width, new_height;
@@ -405,15 +405,15 @@ bool quixel_handle_canvas_expansion(QUIXEL_CANVAS * cp, int left, int top, int r
 	/* create initial array if needed */
 	if(cp->layer_width < 1 || cp->layer_height < 1)
 	{
-		quixel_resize_canvas_bitmap_array(cp, 1, 1);
+		pa_resize_canvas_bitmap_array(cp, 1, 1);
 	}
 
-	quixel_get_canvas_shift(cp, left, top, shift_x, shift_y);
+	pa_get_canvas_shift(cp, left, top, shift_x, shift_y);
 
 	/* actually shift the bitmap array and update variables if we need to */
 	if(*shift_x || *shift_y)
 	{
-		quixel_shift_canvas_bitmap_array(cp, *shift_x, *shift_y);
+		pa_shift_canvas_bitmap_array(cp, *shift_x, *shift_y);
 	}
 
 	/* expand down and to the right if needed */
@@ -431,7 +431,7 @@ bool quixel_handle_canvas_expansion(QUIXEL_CANVAS * cp, int left, int top, int r
 	}
 	if(new_width != cp->layer_width || new_height != cp->layer_height)
 	{
-		quixel_resize_canvas_bitmap_array(cp, new_width, new_height);
+		pa_resize_canvas_bitmap_array(cp, new_width, new_height);
 	}
 	return true;
 }

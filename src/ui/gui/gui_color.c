@@ -3,7 +3,7 @@
 #include "instance.h"
 #include "gui_color.h"
 
-int quixel_gui_color_proc(int msg, T3GUI_ELEMENT * d, int c)
+int pa_gui_color_proc(int msg, T3GUI_ELEMENT * d, int c)
 {
 	ALLEGRO_STATE old_state;
 	ALLEGRO_COLOR color;

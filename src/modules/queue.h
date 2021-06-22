@@ -1,5 +1,5 @@
-#ifndef QUIXEL_QUEUE_H
-#define QUIXEL_QUEUE_H
+#ifndef PA_QUEUE_H
+#define PA_QUEUE_H
 
 #include "t3f/t3f.h"
 
@@ -9,7 +9,7 @@ typedef struct
 	int x;
 	int y;
 
-} QUIXEL_QUEUE_ITEM;
+} PA_QUEUE_ITEM;
 
 typedef struct
 {
@@ -18,19 +18,19 @@ typedef struct
 	int x;
 	int y;
 
-} QUIXEL_QUEUE_NODE;
+} PA_QUEUE_NODE;
 
 typedef struct
 {
 
-	QUIXEL_QUEUE_NODE * current;
+	PA_QUEUE_NODE * current;
 
-} QUIXEL_QUEUE;
+} PA_QUEUE;
 
-QUIXEL_QUEUE * quixel_create_queue(void);
-void quixel_destroy_queue(QUIXEL_QUEUE * qp);
-bool quixel_queue_push(QUIXEL_QUEUE * qp, int x, int y);
-bool quixel_queue_pop(QUIXEL_QUEUE * qp, int * x, int * y);
-int quixel_get_queue_size(QUIXEL_QUEUE * qp);
+PA_QUEUE * pa_create_queue(void);
+void pa_destroy_queue(PA_QUEUE * qp);
+bool pa_queue_push(PA_QUEUE * qp, int x, int y);
+bool pa_queue_pop(PA_QUEUE * qp, int * x, int * y);
+int pa_get_queue_size(PA_QUEUE * qp);
 
 #endif

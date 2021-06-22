@@ -4,7 +4,7 @@
 /* typedef for the listbox callback functions */
 typedef const char *(getfuncptr)(int index, int *num_elem, void *dp3);
 
-int quixel_list_proc(int msg, T3GUI_ELEMENT *d, int c)
+int pa_list_proc(int msg, T3GUI_ELEMENT *d, int c)
 {
   switch(msg)
   {

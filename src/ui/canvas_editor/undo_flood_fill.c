@@ -18,23 +18,23 @@ static bool write_color(ALLEGRO_FILE * fp, ALLEGRO_COLOR color)
 	return true;
 }
 
-bool quixel_make_flood_fill_undo(QUIXEL_CANVAS_EDITOR * cep, int layer, ALLEGRO_COLOR color, QUIXEL_QUEUE * qp, const char * fn)
+bool pa_make_flood_fill_undo(PA_CANVAS_EDITOR * cep, int layer, ALLEGRO_COLOR color, PA_QUEUE * qp, const char * fn)
 {
 	ALLEGRO_FILE * fp = NULL;
-	QUIXEL_QUEUE_NODE * current_node;
+	PA_QUEUE_NODE * current_node;
 
-	t3f_debug_message("Enter quixel_make_flood_fill_undo()\n");
+	t3f_debug_message("Enter pa_make_flood_fill_undo()\n");
 	fp = al_fopen(fn, "wb");
 	if(!fp)
 	{
 		printf("fail: %s\n", fn);
 		goto fail;
 	}
-	quixel_write_undo_header(fp, QUIXEL_UNDO_TYPE_FLOOD_FILL, "Flood Fill");
+	pa_write_undo_header(fp, PA_UNDO_TYPE_FLOOD_FILL, "Flood Fill");
 	al_fwrite16le(fp, cep->current_tool);
 	al_fwrite32le(fp, layer);
 	write_color(fp, color);
-	al_fwrite32le(fp, quixel_get_queue_size(qp));
+	al_fwrite32le(fp, pa_get_queue_size(qp));
 	current_node = qp->current;
 	while(current_node)
 	{
@@ -43,12 +43,12 @@ bool quixel_make_flood_fill_undo(QUIXEL_CANVAS_EDITOR * cep, int layer, ALLEGRO_
 		current_node = current_node->previous;
 	}
 	al_fclose(fp);
-	t3f_debug_message("Exit quixel_make_flood_fill_undo()\n");
+	t3f_debug_message("Exit pa_make_flood_fill_undo()\n");
 	return true;
 
 	fail:
 	{
-		t3f_debug_message("Fail quixel_make_flood_fill_undo()\n");
+		t3f_debug_message("Fail pa_make_flood_fill_undo()\n");
 		if(fp)
 		{
 			al_fclose(fp);
@@ -57,9 +57,9 @@ bool quixel_make_flood_fill_undo(QUIXEL_CANVAS_EDITOR * cep, int layer, ALLEGRO_
 	}
 }
 
-bool quixel_make_flood_fill_redo(QUIXEL_CANVAS_EDITOR * cep, int layer, ALLEGRO_COLOR color, QUIXEL_QUEUE * qp, const char * fn)
+bool pa_make_flood_fill_redo(PA_CANVAS_EDITOR * cep, int layer, ALLEGRO_COLOR color, PA_QUEUE * qp, const char * fn)
 {
-	return quixel_make_flood_fill_undo(cep, layer, color, qp, fn);
+	return pa_make_flood_fill_undo(cep, layer, color, qp, fn);
 }
 
 static bool read_color(ALLEGRO_FILE * fp, ALLEGRO_COLOR * color)
@@ -75,9 +75,9 @@ static bool read_color(ALLEGRO_FILE * fp, ALLEGRO_COLOR * color)
 	return true;
 }
 
-bool quixel_apply_flood_fill_undo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
+bool pa_apply_flood_fill_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 {
-	QUIXEL_QUEUE * qp;
+	PA_QUEUE * qp;
 	ALLEGRO_COLOR color;
 	ALLEGRO_COLOR old_color;
 	int size;
@@ -86,14 +86,14 @@ bool quixel_apply_flood_fill_undo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 	int layer;
 	int tool;
 
-	t3f_debug_message("Enter quixel_apply_flood_fill_undo()\n");
+	t3f_debug_message("Enter pa_apply_flood_fill_undo()\n");
 	tool = al_fread16le(fp);
 	layer = al_fread32le(fp);
 	read_color(fp, &color);
 	size = al_fread32le(fp);
 	if(size)
 	{
-		qp = quixel_create_queue();
+		qp = pa_create_queue();
 		if(!qp)
 		{
 			goto fail;
@@ -102,32 +102,32 @@ bool quixel_apply_flood_fill_undo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 		{
 			x = al_fread32le(fp);
 			y = al_fread32le(fp);
-			quixel_queue_push(qp, x, y);
+			pa_queue_push(qp, x, y);
 		}
-		old_color = quixel_get_canvas_pixel(cep->canvas, layer, x, y);
-		quixel_make_flood_fill_redo(cep, layer, old_color, qp,  quixel_get_undo_path("redo", cep->redo_count, undo_path, 1024));
+		old_color = pa_get_canvas_pixel(cep->canvas, layer, x, y);
+		pa_make_flood_fill_redo(cep, layer, old_color, qp,  pa_get_undo_path("redo", cep->redo_count, undo_path, 1024));
 		cep->redo_count++;
-		quixel_flood_fill_canvas_from_queue(cep->canvas, layer, color, qp);
-		quixel_destroy_queue(qp);
+		pa_flood_fill_canvas_from_queue(cep->canvas, layer, color, qp);
+		pa_destroy_queue(qp);
 	}
-	quixel_select_canvas_editor_tool(cep, QUIXEL_TOOL_FLOOD_FILL);
-	t3f_debug_message("Exit quixel_apply_flood_fill_undo()\n");
+	pa_select_canvas_editor_tool(cep, PA_TOOL_FLOOD_FILL);
+	t3f_debug_message("Exit pa_apply_flood_fill_undo()\n");
 	return true;
 
 	fail:
 	{
-		t3f_debug_message("Fail quixel_apply_flood_fill_undo()\n");
+		t3f_debug_message("Fail pa_apply_flood_fill_undo()\n");
 		if(qp)
 		{
-			quixel_destroy_queue(qp);
+			pa_destroy_queue(qp);
 		}
 		return false;
 	}
 }
 
-bool quixel_apply_flood_fill_redo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
+bool pa_apply_flood_fill_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 {
-	QUIXEL_QUEUE * qp;
+	PA_QUEUE * qp;
 	ALLEGRO_COLOR color;
 	ALLEGRO_COLOR old_color;
 	int size;
@@ -136,14 +136,14 @@ bool quixel_apply_flood_fill_redo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 	int layer;
 	int tool;
 
-	t3f_debug_message("Enter quixel_apply_flood_fill_redo()\n");
+	t3f_debug_message("Enter pa_apply_flood_fill_redo()\n");
 	tool = al_fread16le(fp);
 	layer = al_fread32le(fp);
 	read_color(fp, &color);
 	size = al_fread32le(fp);
 	if(size)
 	{
-		qp = quixel_create_queue();
+		qp = pa_create_queue();
 		if(!qp)
 		{
 			goto fail;
@@ -152,24 +152,24 @@ bool quixel_apply_flood_fill_redo(QUIXEL_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 		{
 			x = al_fread32le(fp);
 			y = al_fread32le(fp);
-			quixel_queue_push(qp, x, y);
+			pa_queue_push(qp, x, y);
 		}
-		old_color = quixel_get_canvas_pixel(cep->canvas, layer, x, y);
-		quixel_make_flood_fill_undo(cep, layer, old_color, qp,  quixel_get_undo_path("undo", cep->undo_count, undo_path, 1024));
+		old_color = pa_get_canvas_pixel(cep->canvas, layer, x, y);
+		pa_make_flood_fill_undo(cep, layer, old_color, qp,  pa_get_undo_path("undo", cep->undo_count, undo_path, 1024));
 		cep->undo_count++;
-		quixel_flood_fill_canvas_from_queue(cep->canvas, layer, color, qp);
-		quixel_destroy_queue(qp);
+		pa_flood_fill_canvas_from_queue(cep->canvas, layer, color, qp);
+		pa_destroy_queue(qp);
 	}
-	quixel_select_canvas_editor_tool(cep, QUIXEL_TOOL_FLOOD_FILL);
-	t3f_debug_message("Exit quixel_apply_flood_fill_redo()\n");
+	pa_select_canvas_editor_tool(cep, PA_TOOL_FLOOD_FILL);
+	t3f_debug_message("Exit pa_apply_flood_fill_redo()\n");
 	return true;
 
 	fail:
 	{
-		t3f_debug_message("Fail quixel_apply_flood_fill_redo()\n");
+		t3f_debug_message("Fail pa_apply_flood_fill_redo()\n");
 		if(qp)
 		{
-			quixel_destroy_queue(qp);
+			pa_destroy_queue(qp);
 		}
 		return false;
 	}

@@ -1,5 +1,5 @@
-#ifndef QUIXEL_INSTANCE_H
-#define QUIXEL_INSTANCE_H
+#ifndef PA_INSTANCE_H
+#define PA_INSTANCE_H
 
 #include "t3f/t3f.h"
 #include "modules/canvas/canvas.h"
@@ -10,9 +10,9 @@
 typedef struct
 {
 
-	QUIXEL_CANVAS * canvas;
-	QUIXEL_UI * ui;
-	QUIXEL_CANVAS_EDITOR * canvas_editor;
+	PA_CANVAS * canvas;
+	PA_UI * ui;
+	PA_CANVAS_EDITOR * canvas_editor;
 	ALLEGRO_SHADER * alpha_shader;
 	bool restart_ui;
 

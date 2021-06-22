@@ -6,13 +6,13 @@
 #include "ui/canvas_editor/canvas_editor.h"
 #include "tool_pixel.h"
 
-static QUIXEL_QUEUE * pixel_queue = NULL;
+static PA_QUEUE * pixel_queue = NULL;
 
-static void render_queued_lines(QUIXEL_CANVAS_EDITOR * cep)
+static void render_queued_lines(PA_CANVAS_EDITOR * cep)
 {
 	ALLEGRO_TRANSFORM identity;
 	ALLEGRO_STATE old_state;
-	QUIXEL_QUEUE_NODE * current_node;
+	PA_QUEUE_NODE * current_node;
 	int current_x, current_y;
 	int old_x, old_y;
 	float start_x, start_y, end_x, end_y;
@@ -24,7 +24,7 @@ static void render_queued_lines(QUIXEL_CANVAS_EDITOR * cep)
 	al_use_transform(&identity);
 	al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
 	al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
-	quixel_render_canvas_layer(cep->canvas, cep->current_layer, cep->view_x, cep->view_y, 1, 0, 0, cep->editor_element->w, cep->editor_element->h);
+	pa_render_canvas_layer(cep->canvas, cep->current_layer, cep->view_x, cep->view_y, 1, 0, 0, cep->editor_element->w, cep->editor_element->h);
 
 	current_node = pixel_queue->current;
 	current_x = pixel_queue->current->x;
@@ -47,7 +47,7 @@ static void render_queued_lines(QUIXEL_CANVAS_EDITOR * cep)
 			start_y = current_y - cep->view_y;
 			end_x = old_x - cep->view_x;
 			end_y = old_y - cep->view_y;
-			quixel_draw_line(start_x, start_y, end_x, end_y, NULL, cep->click_color);
+			pa_draw_line(start_x, start_y, end_x, end_y, NULL, cep->click_color);
 		}
 		else
 		{
@@ -57,18 +57,18 @@ static void render_queued_lines(QUIXEL_CANVAS_EDITOR * cep)
 	al_restore_state(&old_state);
 }
 
-bool quixel_tool_pixel_start(QUIXEL_CANVAS_EDITOR * cep)
+bool pa_tool_pixel_start(PA_CANVAS_EDITOR * cep)
 {
-	pixel_queue = quixel_create_queue();
+	pixel_queue = pa_create_queue();
 	if(!pixel_queue)
 	{
 		goto fail;
 	}
-	if(!quixel_queue_push(pixel_queue, cep->click_x, cep->click_y))
+	if(!pa_queue_push(pixel_queue, cep->click_x, cep->click_y))
 	{
 		goto fail;
 	}
-	if(!quixel_queue_push(pixel_queue, cep->click_x, cep->click_y))
+	if(!pa_queue_push(pixel_queue, cep->click_x, cep->click_y))
 	{
 		goto fail;
 	}
@@ -79,24 +79,24 @@ bool quixel_tool_pixel_start(QUIXEL_CANVAS_EDITOR * cep)
 	{
 		if(pixel_queue)
 		{
-			quixel_destroy_queue(pixel_queue);
+			pa_destroy_queue(pixel_queue);
 		}
 		return false;
 	}
 }
 
-void quixel_tool_pixel_logic(QUIXEL_CANVAS_EDITOR * cep)
+void pa_tool_pixel_logic(PA_CANVAS_EDITOR * cep)
 {
 	if(cep->hover_x != pixel_queue->current->x || cep->hover_y != pixel_queue->current->y)
 	{
-		quixel_queue_push(pixel_queue, cep->hover_x, cep->hover_y);
+		pa_queue_push(pixel_queue, cep->hover_x, cep->hover_y);
 		render_queued_lines(cep);
 	}
 }
 
-void quixel_tool_pixel_finish(QUIXEL_CANVAS_EDITOR * cep)
+void pa_tool_pixel_finish(PA_CANVAS_EDITOR * cep)
 {
-	QUIXEL_QUEUE_NODE * current_node;
+	PA_QUEUE_NODE * current_node;
 	int current_x, current_y;
 	int old_x, old_y;
 
@@ -114,12 +114,12 @@ void quixel_tool_pixel_finish(QUIXEL_CANVAS_EDITOR * cep)
 			old_y = current_y;
 			current_x = current_node->x + cep->shift_x * cep->canvas->bitmap_size;
 			current_y = current_node->y + cep->shift_y * cep->canvas->bitmap_size;
-			quixel_draw_primitive_to_canvas(cep->canvas, cep->current_layer, old_x, old_y, current_x, current_y, NULL, cep->click_color, QUIXEL_RENDER_COPY, quixel_draw_line);
+			pa_draw_primitive_to_canvas(cep->canvas, cep->current_layer, old_x, old_y, current_x, current_y, NULL, cep->click_color, PA_RENDER_COPY, pa_draw_line);
 		}
 		else
 		{
 			break;
 		}
 	}
-	quixel_destroy_queue(pixel_queue);
+	pa_destroy_queue(pixel_queue);
 }
