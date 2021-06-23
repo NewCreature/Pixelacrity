@@ -350,6 +350,7 @@ static void select_button(PA_UI * uip, int button)
 	uip->element[PA_UI_ELEMENT_BUTTON_OVAL]->flags &= ~D_SELECTED;
 	uip->element[PA_UI_ELEMENT_BUTTON_FILLED_OVAL]->flags &= ~D_SELECTED;
 	uip->element[PA_UI_ELEMENT_BUTTON_ERASER]->flags &= ~D_SELECTED;
+	uip->element[PA_UI_ELEMENT_BUTTON_FLOOD_FILL]->flags &= ~D_SELECTED;
 	uip->element[PA_UI_ELEMENT_BUTTON_DROPPER]->flags &= ~D_SELECTED;
 	uip->element[PA_UI_ELEMENT_BUTTON_SELECTION]->flags &= ~D_SELECTED;
 	uip->element[button]->flags |= D_SELECTED;
@@ -404,6 +405,11 @@ void pa_process_ui(PA_UI * uip)
 		case PA_TOOL_FILLED_OVAL:
 		{
 			select_button(uip, PA_UI_ELEMENT_BUTTON_FILLED_OVAL);
+			break;
+		}
+		case PA_TOOL_FLOOD_FILL:
+		{
+			select_button(uip, PA_UI_ELEMENT_BUTTON_FLOOD_FILL);
 			break;
 		}
 		case PA_TOOL_ERASER:
