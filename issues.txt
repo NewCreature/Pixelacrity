@@ -8,6 +8,9 @@ Pixelacrity 0.2 Issues
 [ ]Status bar is not at the bottom of the window on Windows. I think it might be
    something to do with the window being implicitly resized when adding a menu.
 
+   [ ]This gets corrected after a resize operation. Maybe something to do with
+      T3F trying to restore the window size from the previous session.
+
 [ ]Crash when resizing on M1 Macbook Air.
 
    [ ]UNSUPPORTED (log once): setPrimitiveRestartEnabled:index: unsupported!
