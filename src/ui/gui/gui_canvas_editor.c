@@ -627,22 +627,22 @@ int pa_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				canvas_editor->last_right_alpha_color = canvas_editor->right_alpha_color;
 			}
 			canvas_editor->view_scroll_speed = 8.0 / (float)canvas_editor->view_zoom;
-			if(t3f_key[ALLEGRO_KEY_LEFT])
+			if(t3f_key[ALLEGRO_KEY_LEFT] || t3f_key[ALLEGRO_KEY_A])
 			{
 				canvas_editor->view_fx -= canvas_editor->view_scroll_speed;
 				simulate_mouse_move = true;
 			}
-			if(t3f_key[ALLEGRO_KEY_RIGHT])
+			if(t3f_key[ALLEGRO_KEY_RIGHT] || t3f_key[ALLEGRO_KEY_D])
 			{
 				canvas_editor->view_fx += canvas_editor->view_scroll_speed;
 				simulate_mouse_move = true;
 			}
-			if(t3f_key[ALLEGRO_KEY_UP])
+			if(t3f_key[ALLEGRO_KEY_UP] || t3f_key[ALLEGRO_KEY_W])
 			{
 				canvas_editor->view_fy -= canvas_editor->view_scroll_speed;
 				simulate_mouse_move = true;
 			}
-			if(t3f_key[ALLEGRO_KEY_DOWN])
+			if(t3f_key[ALLEGRO_KEY_DOWN] || t3f_key[ALLEGRO_KEY_S])
 			{
 				canvas_editor->view_fy += canvas_editor->view_scroll_speed;
 				simulate_mouse_move = true;
