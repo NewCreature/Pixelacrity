@@ -230,13 +230,10 @@ void pa_destroy_menus(PA_UI * uip)
 {
 	int i;
 
-	for(i = PA_UI_MAX_MENUS - 1; i >= 0; i--)
+	al_set_display_menu(t3f_display, NULL);
+	for(i = 0; i < PA_UI_MAX_MENUS; i++)
 	{
-		if(uip->menu[i])
-		{
-			al_destroy_menu(uip->menu[i]);
-			uip->menu[i] = NULL;
-		}
+		uip->menu[i] = NULL;
 	}
 	t3f_reset_menus();
 }
