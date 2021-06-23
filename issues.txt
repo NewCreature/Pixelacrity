@@ -1,8 +1,6 @@
 Pixelacrity 0.2 Issues
 ----------------------
 
-[ ]Flood fill button doesn't indicate it's selected.
-
 [ ]Status bar is not at the bottom of the window on Windows. I think it might be
    something to do with the window being implicitly resized when adding a menu.
 
@@ -388,3 +386,5 @@ Closed Issues
 [X]Crash when deleting layer.
 
 [X]Resizing window causes freeze on Windows.
+
+[X]Flood fill button doesn't indicate it's selected.
