@@ -1,6 +1,8 @@
 Pixelacrity 0.2 Issues
 ----------------------
 
+[ ]Flood fill button doesn't indicate it's selected.
+
 [ ]Resizing window causes freeze on Windows.
 
 [ ]Status bar is not at the bottom of the window on Windows. I think it might be
