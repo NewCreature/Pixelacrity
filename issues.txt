@@ -1,3 +1,17 @@
+Pixelacrity 0.2.1 Issues
+------------------------
+
+[ ]Investigate artifacting when releasing mouse button to commit drawing to
+   canvas on Linux. Some areas around primitives being drawn to canvas can
+   disappear.
+
+[ ]Figure out why moving where we set the pre-multiplied alpha shader before
+   rendering the UI to the main UI rendering code causes the color GUI elements
+   to render incorrectly.
+
+[ ]Add keyboard shortcuts for cut, copy, and paste.
+
+
 Pixelacrity 0.3 Issues
 ----------------------
 
