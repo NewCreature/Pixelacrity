@@ -124,17 +124,6 @@ bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 	t3f_get_filename(t3f_data_path, date_string, debug_fn, 1024);
 	t3f_open_debug_log(debug_fn);
 
-	t3f_debug_message("Create alpha blend shader\n");
-	app->alpha_shader = pa_create_pixel_shader("data/shaders/alpha_blend_shader.glsl");
-	if(!app->alpha_shader)
-	{
-		printf("Error initializing alpha shader!\n");
-		return false;
-	}
-
-	t3f_debug_message("Use alpha blend shader\n");
-	al_use_shader(app->alpha_shader);
-
 	t3f_debug_message("Create starting canvas\n");
 	pa_menu_file_new(0, app);
 	if(!app->canvas)

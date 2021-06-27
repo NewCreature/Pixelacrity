@@ -34,7 +34,6 @@ typedef struct
 {
 
 	ALLEGRO_BITMAP * bitmap;
-	ALLEGRO_BITMAP * combined_bitmap;
 	int layer;
 	PA_BOX box;
 
@@ -53,6 +52,9 @@ typedef struct
 typedef struct
 {
 
+	ALLEGRO_SHADER * standard_shader;
+	ALLEGRO_SHADER * premultiplied_alpha_shader;
+	ALLEGRO_SHADER * conditional_copy_shader;
 	ALLEGRO_BITMAP * scratch_bitmap;
 	ALLEGRO_BITMAP * peg_bitmap;
 	PA_CLIPBOARD_DATA clipboard;

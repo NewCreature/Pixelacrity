@@ -1,7 +1,5 @@
-// This shader should correctly blend the destination pixel with the source
-// pixel so we don't have to use pre-multiplied alpha. This is necessary for
-// programs that need to load and save image data, so we don't lose the original
-// pixel colors in the actual image data.
+// This shader implements pre-multiplied alpha at render time so we can keep
+// the original color data in our textures.
 
 #ifdef GL_ES
 precision lowp float;

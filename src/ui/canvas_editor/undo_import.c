@@ -58,11 +58,6 @@ bool pa_apply_import_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 		al_destroy_bitmap(cep->selection.bitmap);
 		cep->selection.bitmap = NULL;
 	}
-	if(cep->selection.combined_bitmap)
-	{
-		al_destroy_bitmap(cep->selection.combined_bitmap);
-		cep->selection.combined_bitmap = NULL;
-	}
 	cep->selection.box.width = 0;
 	cep->selection.box.height = 0;
 	t3f_debug_message("Exit pa_apply_import_undo()\n");

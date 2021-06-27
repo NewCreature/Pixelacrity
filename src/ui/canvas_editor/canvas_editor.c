@@ -3,6 +3,7 @@
 #include "canvas_editor.h"
 #include "modules/canvas/canvas_helpers.h"
 #include "modules/primitives.h"
+#include "modules/pixel_shader.h"
 #include "undo.h"
 #include "undo_selection.h"
 
@@ -29,6 +30,31 @@ PA_CANVAS_EDITOR * pa_create_canvas_editor(PA_CANVAS * cp)
 		goto fail;
 	}
 	memset(cep, 0, sizeof(PA_CANVAS_EDITOR));
+
+	t3f_debug_message("Create standard shader\n");
+	cep->standard_shader = pa_create_pixel_shader("data/shaders/standard_shader.glsl");
+	if(!cep->standard_shader)
+	{
+		printf("Error initializing standard shader!\n");
+		return false;
+	}
+	t3f_debug_message("Create pre-multiplied alpha shader\n");
+	cep->premultiplied_alpha_shader = pa_create_pixel_shader("data/shaders/premultiplied_alpha_shader.glsl");
+	if(!cep->premultiplied_alpha_shader)
+	{
+		printf("Error initializing pre-multiplied alpha shader!\n");
+		return false;
+	}
+	t3f_debug_message("Create conditional copy shader\n");
+	cep->conditional_copy_shader = pa_create_pixel_shader("data/shaders/conditional_copy_shader.glsl");
+	if(!cep->conditional_copy_shader)
+	{
+		printf("Error initializing conditional copy shader!\n");
+		return false;
+	}
+	t3f_debug_message("Use alpha blend shader\n");
+	al_use_shader(cep->standard_shader);
+
 	al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);
 	al_set_new_bitmap_flags(0);
 	cep->scratch_bitmap = al_create_bitmap(al_get_display_width(t3f_display), al_get_display_height(t3f_display));
@@ -135,11 +161,6 @@ bool pa_handle_float_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp
 	{
 		goto fail;
 	}
-	cep->selection.combined_bitmap = al_create_bitmap(bp->width, bp->height);
-	if(!cep->selection.combined_bitmap)
-	{
-		goto fail;
-	}
 	al_set_target_bitmap(cep->selection.bitmap);
 	al_identity_transform(&identity);
 	al_use_transform(&identity);
@@ -147,7 +168,7 @@ bool pa_handle_float_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp
 	al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
 	pa_render_canvas_layer(cep->canvas, cep->current_layer, bp->start_x, bp->start_y, 1, 0, 0, bp->width, bp->height);
 	al_restore_state(&old_state);
-	pa_draw_primitive_to_canvas(cep->canvas, cep->current_layer, bp->start_x, bp->start_y, bp->start_x + bp->width - 1, bp->start_y + bp->height - 1, NULL, al_map_rgba_f(0, 0, 0, 0), PA_RENDER_COPY, pa_draw_filled_rectangle);
+	pa_draw_primitive_to_canvas(cep->canvas, cep->current_layer, bp->start_x, bp->start_y, bp->start_x + bp->width - 1, bp->start_y + bp->height - 1, NULL, al_map_rgba_f(0, 0, 0, 0), PA_RENDER_COPY, NULL, pa_draw_filled_rectangle);
 	cep->modified++;
 	t3f_debug_message("Exit pa_handle_float_canvas_editor_selection()\n");
 
@@ -160,11 +181,6 @@ bool pa_handle_float_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp
 		{
 			al_destroy_bitmap(cep->selection.bitmap);
 			cep->selection.bitmap = NULL;
-		}
-		if(cep->selection.combined_bitmap)
-		{
-			al_destroy_bitmap(cep->selection.combined_bitmap);
-			cep->selection.combined_bitmap = NULL;
 		}
 		al_restore_state(&old_state);
 		return false;
@@ -187,7 +203,8 @@ void pa_handle_unfloat_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * 
 	{
 		pa_shift_canvas_editor_variables(cep, cep->shift_x * cep->canvas->bitmap_size, cep->shift_y * cep->canvas->bitmap_size);
 	}
-	pa_draw_primitive_to_canvas(cep->canvas, cep->current_layer, bp->start_x, bp->start_y, bp->start_x + bp->width, bp->start_y + bp->height, cep->selection.combined_bitmap, al_map_rgba_f(0, 0, 0, 0), PA_RENDER_COPY, pa_draw_quad);
+	pa_draw_primitive_to_canvas(cep->canvas, cep->current_layer, bp->start_x, bp->start_y, bp->start_x + bp->width, bp->start_y + bp->height, cep->selection.bitmap, al_map_rgba_f(0, 0, 0, 0), PA_RENDER_COPY, cep->conditional_copy_shader, pa_draw_quad);
+	al_use_shader(cep->standard_shader);
 	al_destroy_bitmap(cep->selection.bitmap);
 	cep->selection.bitmap = NULL;
 	cep->modified++;
@@ -247,11 +264,6 @@ bool pa_import_image(PA_CANVAS_EDITOR * cep, const char * fn)
 	cep->selection.bitmap = al_load_bitmap_flags(fn, ALLEGRO_NO_PREMULTIPLIED_ALPHA);
 	if(cep->selection.bitmap)
 	{
-		cep->selection.combined_bitmap = al_create_bitmap(al_get_bitmap_width(cep->selection.bitmap), al_get_bitmap_height(cep->selection.bitmap));
-		if(!cep->selection.combined_bitmap)
-		{
-			goto fail;
-		}
 		pa_select_canvas_editor_tool(cep, PA_TOOL_SELECTION);
 		pa_initialize_box(&cep->selection.box, 0, 0, al_get_bitmap_width(cep->selection.bitmap), al_get_bitmap_height(cep->selection.bitmap), cep->peg_bitmap);
 		pa_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom);
@@ -259,19 +271,4 @@ bool pa_import_image(PA_CANVAS_EDITOR * cep, const char * fn)
 	t3f_debug_message("Exit pa_import_image()\n");
 	return true;
 
-	fail:
-	{
-		t3f_debug_message("Fail pa_import_image()\n");
-		if(cep->selection.bitmap)
-		{
-			al_destroy_bitmap(cep->selection.bitmap);
-			cep->selection.bitmap = NULL;
-		}
-		if(cep->selection.combined_bitmap)
-		{
-			al_destroy_bitmap(cep->selection.combined_bitmap);
-			cep->selection.combined_bitmap = NULL;
-		}
-		return false;
-	}
 }

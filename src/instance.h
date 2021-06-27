@@ -13,7 +13,6 @@ typedef struct
 	PA_CANVAS * canvas;
 	PA_UI * ui;
 	PA_CANVAS_EDITOR * canvas_editor;
-	ALLEGRO_SHADER * alpha_shader;
 	bool restart_ui;
 
 } APP_INSTANCE;

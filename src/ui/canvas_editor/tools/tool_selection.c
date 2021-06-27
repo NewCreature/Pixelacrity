@@ -36,13 +36,14 @@ void pa_tool_selection_logic(PA_CANVAS_EDITOR * cep)
 	al_identity_transform(&identity);
 	al_use_transform(&identity);
 	al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
+	al_use_shader(cep->standard_shader);
 	al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
 	pa_render_canvas_layer(cep->canvas, cep->current_layer, cep->view_x, cep->view_y, 1, 0, 0, cep->editor_element->w, cep->editor_element->h);
 
-	pa_render_canvas_to_bitmap(cep->canvas, 0, cep->current_layer + 1, cep->selection.box.start_x, cep->selection.box.start_y, cep->selection.box.width, cep->selection.box.height, 0, cep->selection.combined_bitmap);
-	pa_combine_bitmap(cep->selection.bitmap, cep->selection.combined_bitmap);
+	al_use_shader(cep->conditional_copy_shader);
 	al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
-	al_draw_scaled_bitmap(cep->selection.combined_bitmap, 0, 0,  cep->selection.box.width, cep->selection.box.height, cep->selection.box.start_x - cep->view_x, cep->selection.box.start_y - cep->view_y, cep->selection.box.width, cep->selection.box.height, 0);
+	al_draw_scaled_bitmap(cep->selection.bitmap, 0, 0,  cep->selection.box.width, cep->selection.box.height, cep->selection.box.start_x - cep->view_x, cep->selection.box.start_y - cep->view_y, cep->selection.box.width, cep->selection.box.height, 0);
+	al_use_shader(cep->standard_shader);
 
 	al_restore_state(&old_state);
 }
