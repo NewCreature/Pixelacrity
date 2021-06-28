@@ -9,7 +9,7 @@ Pixelacrity 0.2.1 Issues
    rendering the UI to the main UI rendering code causes the color GUI elements
    to render incorrectly.
 
-[ ]Add keyboard shortcuts for cut, copy, and paste.
+[ ]Add keyboard shortcuts for undo/redo.
 
 
 Pixelacrity 0.3 Issues
