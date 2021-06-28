@@ -28,12 +28,9 @@ int pa_gui_color_proc(int msg, T3GUI_ELEMENT * d, int c)
 		}
 		case MSG_DRAW:
 		{
-			al_store_state(&old_state, ALLEGRO_STATE_BLENDER);
-			al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_INVERSE_ALPHA);
 			al_unmap_rgba_f(*(ALLEGRO_COLOR *)d->dp, &r, &g, &b, &a);
 			color = al_map_rgba_f(r * a, g * a, b * a, a);
 			al_draw_filled_rectangle(d->x, d->y, d->x + d->w, d->y + d->h, color);
-			al_restore_state(&old_state);
 			break;
 		}
 	}
