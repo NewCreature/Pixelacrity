@@ -6,7 +6,6 @@
 int pa_gui_color_proc(int msg, T3GUI_ELEMENT * d, int c)
 {
 	ALLEGRO_STATE old_state;
-	ALLEGRO_COLOR color;
 	float r, g, b, a;
 
 	switch(msg)
@@ -28,9 +27,7 @@ int pa_gui_color_proc(int msg, T3GUI_ELEMENT * d, int c)
 		}
 		case MSG_DRAW:
 		{
-			al_unmap_rgba_f(*(ALLEGRO_COLOR *)d->dp, &r, &g, &b, &a);
-			color = al_map_rgba_f(r * a, g * a, b * a, a);
-			al_draw_filled_rectangle(d->x, d->y, d->x + d->w, d->y + d->h, color);
+			al_draw_filled_rectangle(d->x, d->y, d->x + d->w, d->y + d->h, *(ALLEGRO_COLOR *)d->dp);
 			break;
 		}
 	}

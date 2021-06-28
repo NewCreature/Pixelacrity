@@ -437,9 +437,11 @@ void pa_process_ui(PA_UI * uip)
 
 void pa_render_ui(PA_UI * uip)
 {
+	PA_CANVAS_EDITOR * cep = (PA_CANVAS_EDITOR *)uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->dp;
 	int i, j;
 	int tw, th;
 
+	al_use_shader(cep->premultiplied_alpha_shader);
 	tw = t3f_default_view->width / PA_UI_BG_SCALE + 1;
 	th = t3f_default_view->height / PA_UI_BG_SCALE + 1;
 	for(i = 0; i < th; i++)
@@ -450,4 +452,5 @@ void pa_render_ui(PA_UI * uip)
 		}
 	}
 	t3gui_render();
+	al_use_shader(cep->standard_shader);
 }

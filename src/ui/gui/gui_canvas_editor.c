@@ -756,7 +756,6 @@ int pa_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			al_use_transform(&identity);
 
 			/* render background layers */
-			al_use_shader(canvas_editor->premultiplied_alpha_shader);
 			for(i = 0; i < canvas_editor->current_layer; i++)
 			{
 				pa_render_canvas_layer(canvas_editor->canvas, i, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, d->w, d->h);
@@ -806,7 +805,6 @@ int pa_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				pa_box_render(&canvas_editor->selection.box, 0, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y);
 			}
 			al_restore_state(&old_state);
-			al_use_shader(canvas_editor->standard_shader);
 			break;
 		}
 	}
