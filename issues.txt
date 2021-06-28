@@ -9,8 +9,6 @@ Pixelacrity 0.2.1 Issues
    rendering the UI to the main UI rendering code causes the color GUI elements
    to render incorrectly.
 
-[ ]Add keyboard shortcuts for undo/redo.
-
 
 Pixelacrity 0.3 Issues
 ----------------------
@@ -398,3 +396,5 @@ Closed Issues
 
    [X]This gets corrected after a resize operation. Maybe something to do with
       T3F trying to restore the window size from the previous session.
+
+[X]Add keyboard shortcuts for undo/redo.
