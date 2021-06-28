@@ -27,6 +27,16 @@ void pa_handle_shortcuts(APP_INSTANCE * app)
 		pa_menu_edit_delete(0, app);
 		t3f_key[ALLEGRO_KEY_DELETE] = 0;
 	}
+	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && t3f_key[ALLEGRO_KEY_Z])
+	{
+		pa_menu_edit_undo(0, app);
+		t3f_key[ALLEGRO_KEY_Z] = 0;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && t3f_key[ALLEGRO_KEY_Y])
+	{
+		pa_menu_edit_redo(0, app);
+		t3f_key[ALLEGRO_KEY_Y] = 0;
+	}
 	else if(t3f_key[ALLEGRO_KEY_C])
 	{
 		pa_get_canvas_dimensions(app->canvas_editor->canvas, &x, &y, &width, &height, 0);
