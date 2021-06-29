@@ -10,7 +10,7 @@ Pixelacrity 0.2.1 Issues
 
 [ ]Implement brush in oval tool.
 
-[ ]Implement brush in reectangle tool.
+[ ]Implement brush in rectangle tool.
 
 
 Pixelacrity 0.3 Issues
