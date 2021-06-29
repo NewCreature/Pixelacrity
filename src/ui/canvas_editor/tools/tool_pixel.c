@@ -25,6 +25,7 @@ static void render_queued_lines(PA_CANVAS_EDITOR * cep)
 	al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
 	al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
 	pa_render_canvas_layer(cep->canvas, cep->current_layer, cep->view_x, cep->view_y, 1, 0, 0, cep->editor_element->w, cep->editor_element->h);
+	al_use_shader(cep->conditional_copy_shader);
 
 	current_node = pixel_queue->current;
 	current_x = pixel_queue->current->x;
@@ -55,6 +56,7 @@ static void render_queued_lines(PA_CANVAS_EDITOR * cep)
 		}
 	}
 	al_restore_state(&old_state);
+	al_use_shader(cep->standard_shader);
 }
 
 bool pa_tool_pixel_start(PA_CANVAS_EDITOR * cep)
@@ -114,8 +116,8 @@ void pa_tool_pixel_finish(PA_CANVAS_EDITOR * cep)
 			old_y = current_y;
 			current_x = current_node->x + cep->shift_x * cep->canvas->bitmap_size;
 			current_y = current_node->y + cep->shift_y * cep->canvas->bitmap_size;
-			pa_draw_primitive_to_canvas(cep->canvas, cep->current_layer, old_x, old_y, current_x, current_y, cep->brush, cep->click_color, PA_RENDER_COPY, cep->conditional_copy_shader, pa_draw_line);
-			al_use_shader(cep->conditional_copy_shader);
+			pa_draw_primitive_to_canvas(cep->canvas, cep->current_layer, current_x, current_y, old_x, old_y, cep->brush, cep->click_color, PA_RENDER_COPY, cep->conditional_copy_shader, pa_draw_line);
+			al_use_shader(cep->standard_shader);
 		}
 		else
 		{
