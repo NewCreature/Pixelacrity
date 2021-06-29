@@ -22,107 +22,94 @@ void pa_sort_coordinates(int * x1, int * x2)
 
 void pa_do_line(int x1, int y1, int x2, int y2, void * dp, void (*proc)(int, int, void *))
 {
-	int dx = x2 - x1;
-	int dy = y2-y1;
-	int i1, i2;
-	int x, y;
-	int dd;
+   int dx = x2-x1;
+   int dy = y2-y1;
+   int i1, i2;
+   int x, y;
+   int dd;
 
-	/* worker macro */
-	#define DO_LINE(pri_sign, pri_c, pri_cond, sec_sign, sec_c, sec_cond)     \
-	{                                                                         \
-		if(d##pri_c == 0)                                                       \
-		{                                                                       \
-			proc(x1, y1, dp);                                                     \
-			return;                                                               \
-		}                                                                       \
-		i1 = 2 * d##sec_c;                                                      \
-		dd = i1 - (sec_sign (pri_sign d##pri_c));                               \
-		i2 = dd - (sec_sign (pri_sign d##pri_c));                               \
-		x = x1;                                                                 \
-		y = y1;                                                                 \
-		while (pri_c pri_cond pri_c##2)                                         \
-		{                                                                       \
-			proc(x, y, dp);                                                       \
-			if(dd sec_cond 0)                                                     \
-			{                                                                     \
-				sec_c = sec_c sec_sign 1;                                           \
-				dd += i2;                                                           \
-			}                                                                     \
-			else                                                                  \
-			{                                                                     \
-				dd += i1;                                                           \
-				pri_c = pri_c pri_sign 1;                                           \
-			}                                                                     \
-		}                                                                       \
-	}
+   /* worker macro */
+   #define DO_LINE(pri_sign, pri_c, pri_cond, sec_sign, sec_c, sec_cond)     \
+   {                                                                         \
+      if (d##pri_c == 0) {                                                   \
+	 proc(x1, y1, dp);                                               \
+	 return;                                                             \
+      }                                                                      \
+									     \
+      i1 = 2 * d##sec_c;                                                     \
+      dd = i1 - (sec_sign (pri_sign d##pri_c));                              \
+      i2 = dd - (sec_sign (pri_sign d##pri_c));                              \
+									     \
+      x = x1;                                                                \
+      y = y1;                                                                \
+									     \
+      while (pri_c pri_cond pri_c##2) {                                      \
+	 proc(x, y, dp);                                                 \
+									     \
+	 if (dd sec_cond 0) {                                                \
+	    sec_c = sec_c sec_sign 1;                                        \
+	    dd += i2;                                                        \
+	 }                                                                   \
+	 else                                                                \
+	    dd += i1;                                                        \
+									     \
+	 pri_c = pri_c pri_sign 1;                                           \
+      }                                                                      \
+   }
 
-	if(dx >= 0)
-	{
-		if(dy >= 0)
-		{
-			if(dx >= dy)
-			{
-				/* (x1 <= x2) && (y1 <= y2) && (dx >= dy) */
-				DO_LINE(+, x, <=, +, y, >=);
-			}
-			else
-			{
-				/* (x1 <= x2) && (y1 <= y2) && (dx < dy) */
-				DO_LINE(+, y, <=, +, x, >=);
-			}
-		}
-		else
-		{
-			if(dx >= -dy)
-			{
-				/* (x1 <= x2) && (y1 > y2) && (dx >= dy) */
-				DO_LINE(+, x, <=, -, y, <=);
-			}
-			else
-			{
-				/* (x1 <= x2) && (y1 > y2) && (dx < dy) */
-				DO_LINE(-, y, >=, +, x, >=);
-			}
-		}
-	}
-	else
-	{
-		if (dy >= 0)
-		{
-			if (-dx >= dy)
-			{
-				/* (x1 > x2) && (y1 <= y2) && (dx >= dy) */
-				DO_LINE(-, x, >=, +, y, >=);
-			}
-			else
-			{
-				/* (x1 > x2) && (y1 <= y2) && (dx < dy) */
-				DO_LINE(+, y, <=, -, x, <=);
-			}
-		}
-		else
-		{
-			if(-dx >= -dy)
-			{
-				/* (x1 > x2) && (y1 > y2) && (dx >= dy) */
-				DO_LINE(-, x, >=, -, y, <=);
-			}
-			else
-			{
-				/* (x1 > x2) && (y1 > y2) && (dx < dy) */
-				DO_LINE(-, y, >=, -, x, <=);
-			}
-		}
-	}
-	#undef DO_LINE
+   if (dx >= 0) {
+      if (dy >= 0) {
+	 if (dx >= dy) {
+	    /* (x1 <= x2) && (y1 <= y2) && (dx >= dy) */
+	    DO_LINE(+, x, <=, +, y, >=);
+	 }
+	 else {
+	    /* (x1 <= x2) && (y1 <= y2) && (dx < dy) */
+	    DO_LINE(+, y, <=, +, x, >=);
+	 }
+      }
+      else {
+	 if (dx >= -dy) {
+	    /* (x1 <= x2) && (y1 > y2) && (dx >= dy) */
+	    DO_LINE(+, x, <=, -, y, <=);
+	 }
+	 else {
+	    /* (x1 <= x2) && (y1 > y2) && (dx < dy) */
+	    DO_LINE(-, y, >=, +, x, >=);
+	 }
+      }
+   }
+   else {
+      if (dy >= 0) {
+	 if (-dx >= dy) {
+	    /* (x1 > x2) && (y1 <= y2) && (dx >= dy) */
+	    DO_LINE(-, x, >=, +, y, >=);
+	 }
+	 else {
+	    /* (x1 > x2) && (y1 <= y2) && (dx < dy) */
+	    DO_LINE(+, y, <=, -, x, <=);
+	 }
+      }
+      else {
+	 if (-dx >= -dy) {
+	    /* (x1 > x2) && (y1 > y2) && (dx >= dy) */
+	    DO_LINE(-, x, >=, -, y, <=);
+	 }
+	 else {
+	    /* (x1 > x2) && (y1 > y2) && (dx < dy) */
+	    DO_LINE(-, y, >=, -, x, <=);
+	 }
+      }
+   }
+
+   #undef DO_LINE
 }
 
 static void brush_draw(int x, int y, void * dp)
 {
 	BRUSH_DATA * brush_data = (BRUSH_DATA *)dp;
 
-	al_draw_bitmap(brush_data->bitmap, x, y, 0);
+	al_draw_tinted_bitmap(brush_data->bitmap, brush_data->color, x, y, 0);
 }
 
 void pa_draw_line(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_COLOR color)
