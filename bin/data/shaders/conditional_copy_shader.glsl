@@ -21,7 +21,7 @@ void main()
     c = varying_color * texture2D(al_tex, varying_texcoord);
   else
     c = varying_color;
-  if(c.a > 0.0)
+  if(!al_use_tex || c.a > 0.0)
   {
     gl_FragColor = c;
   }
