@@ -17,17 +17,26 @@ bool alpha_test_func(float x, int op, float compare);
 void main()
 {
   vec4 c;
-  if (al_use_tex)
-    c = varying_color * texture2D(al_tex, varying_texcoord);
-  else
-    c = varying_color;
-  if(!al_use_tex || c.a > 0.0)
+  vec4 t;
+  if(al_use_tex)
   {
-    gl_FragColor = c;
+    t = texture2D(al_tex, varying_texcoord);
+    if(t.a > 0.0)
+    {
+      c = varying_color * t;
+    }
   }
   else
   {
+    c = varying_color;
+  }
+  if(al_use_tex && t.a <= 0.0)
+  {
     discard;
+  }
+  else
+  {
+    gl_FragColor = c;
   }
 }
 
