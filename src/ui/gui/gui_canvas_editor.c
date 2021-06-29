@@ -386,7 +386,7 @@ int pa_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 					{
 						made_undo = create_primitive_undo(canvas_editor);
 						handle_canvas_expansion(canvas_editor);
-						pa_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, canvas_editor->conditional_copy_shader, canvas_editor->click_color, PA_RENDER_COPY, canvas_editor->conditional_copy_shader, pa_draw_line);
+						pa_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->release_x, canvas_editor->release_y, canvas_editor->brush, canvas_editor->click_color, PA_RENDER_COPY, canvas_editor->conditional_copy_shader, pa_draw_line);
 						al_use_shader(canvas_editor->standard_shader);
 						if(made_undo)
 						{

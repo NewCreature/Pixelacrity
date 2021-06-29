@@ -19,6 +19,23 @@ static int get_config_val(ALLEGRO_CONFIG * cp, const char * section, const char 
 	return default_val;
 }
 
+static ALLEGRO_BITMAP * create_default_brush(void)
+{
+	ALLEGRO_BITMAP * bp;
+	ALLEGRO_STATE old_state;
+
+	al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);
+	al_set_new_bitmap_flags(0);
+	bp = al_create_bitmap(1, 1);
+	if(bp)
+	{
+		al_set_target_bitmap(bp);
+		al_clear_to_color(t3f_color_white);
+	}
+	al_restore_state(&old_state);
+	return bp;
+}
+
 PA_CANVAS_EDITOR * pa_create_canvas_editor(PA_CANVAS * cp)
 {
 	PA_CANVAS_EDITOR * cep;
@@ -57,6 +74,11 @@ PA_CANVAS_EDITOR * pa_create_canvas_editor(PA_CANVAS * cp)
 
 	al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);
 	al_set_new_bitmap_flags(0);
+	cep->brush = create_default_brush();
+	if(!cep->brush)
+	{
+		goto fail;
+	}
 	cep->scratch_bitmap = al_create_bitmap(al_get_display_width(t3f_display), al_get_display_height(t3f_display));
 	al_restore_state(&old_state);
 	if(!cep->scratch_bitmap)
