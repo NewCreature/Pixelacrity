@@ -5,9 +5,6 @@ Pixelacrity 0.2.1 Issues
    canvas on Linux. Some areas around primitives being drawn to canvas can
    disappear.
 
-[ ]Look into why line fragments used by the pixel tool don't render identically
-   to the scratch bitmap and canvas.
-
 [ ]Implement brush in oval tool.
 
 [ ]Implement brush in rectangle tool.
@@ -405,3 +402,6 @@ Closed Issues
 [X]Figure out why moving where we set the pre-multiplied alpha shader before
    rendering the UI to the main UI rendering code causes the color GUI elements
    to render incorrectly.
+
+[X]Look into why line fragments used by the pixel tool don't render identically
+   to the scratch bitmap and canvas.
