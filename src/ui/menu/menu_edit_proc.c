@@ -128,6 +128,7 @@ int pa_menu_edit_paste(int id, void * data)
 				pa_initialize_box(&app->canvas_editor->selection.box, app->canvas_editor->view_x, app->canvas_editor->view_y, al_get_bitmap_width(app->canvas_editor->selection.bitmap), al_get_bitmap_height(app->canvas_editor->selection.bitmap), app->canvas_editor->peg_bitmap);
 				pa_update_box_handles(&app->canvas_editor->selection.box, app->canvas_editor->view_x, app->canvas_editor->view_y, app->canvas_editor->view_zoom);
 			}
+			app->canvas_editor->current_tool = PA_TOOL_SELECTION;
 		}
 		al_restore_state(&old_state);
 		t3f_refresh_menus();
