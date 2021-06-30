@@ -5,8 +5,6 @@ Pixelacrity 0.2.2 Issues
 
 [ ]Implement brush in rectangle tool.
 
-[ ]Make mouse wheel change zoom level.
-
 [ ]Allow scrolling the canvas by holding the mouse wheel button and moving the
    mouse.
 
@@ -445,3 +443,5 @@ Closed Issues
 [X]Fix save changes prompt showing up when attempting to import an image.
 
 [X]Add controls for changing the position of a layer within the layer stack.
+
+[X]Make mouse wheel change zoom level.
