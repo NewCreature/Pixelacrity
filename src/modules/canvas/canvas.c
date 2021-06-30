@@ -419,6 +419,13 @@ bool pa_resize_canvas_bitmap_array(PA_CANVAS * cp, int width, int height)
 	return true;
 }
 
+static void clear_bitmap(ALLEGRO_BITMAP * bp)
+{
+	al_set_target_bitmap(bp);
+	al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
+	al_draw_filled_rectangle(0, 0, al_get_bitmap_width(bp), al_get_bitmap_height(bp), al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
+}
+
 bool pa_expand_canvas(PA_CANVAS * cp, int layer, int x, int y)
 {
 	ALLEGRO_STATE old_state;
@@ -431,13 +438,12 @@ bool pa_expand_canvas(PA_CANVAS * cp, int layer, int x, int y)
 	if(!cp->layer[layer]->bitmap[y / cp->bitmap_size][x / cp->bitmap_size])
 	{
 		t3f_debug_message("Expand canvas %d %d\n", x, y);
-		al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS | ALLEGRO_STATE_TARGET_BITMAP);
+		al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS | ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_BLENDER);
 		al_set_new_bitmap_flags(0);
 		cp->layer[layer]->bitmap[y / cp->bitmap_size][x / cp->bitmap_size] = al_create_bitmap(cp->bitmap_size, cp->bitmap_size);
 		if(cp->layer[layer]->bitmap[y / cp->bitmap_size][x / cp->bitmap_size])
 		{
-			al_set_target_bitmap(cp->layer[layer]->bitmap[y / cp->bitmap_size][x / cp->bitmap_size]);
-			al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
+			clear_bitmap(cp->layer[layer]->bitmap[y / cp->bitmap_size][x / cp->bitmap_size]);
 		}
 		else
 		{
