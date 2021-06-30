@@ -105,6 +105,135 @@ void pa_do_line(int x1, int y1, int x2, int y2, void * dp, void (*proc)(int, int
    #undef DO_LINE
 }
 
+void pa_do_ellipse(int ix, int iy, float rx0, float ry0, void * dp, void (*proc)(int, int, void *))
+{
+   int rx = 0, ry = 0;
+   int x, y;
+   float x_change;
+   float y_change;
+   float ellipse_error;
+   float two_a_sq;
+   float two_b_sq;
+   float stopping_x;
+   float stopping_y;
+   int midway_x = 0;
+	 int shift_x = 0;
+	 int shift_y = 0;
+
+	 if(rx0 > 0.0)
+	 {
+		 rx = rx0;
+	 }
+	 if(ry0 > 0.0)
+	 {
+		 ry = ry0;
+	 }
+	 if(fmod(rx0, rx))
+	 {
+		 shift_x = -1;
+	 }
+	 if(fmod(ry0, ry))
+	 {
+		 shift_y = -1;
+	 }
+
+   two_a_sq = 2 * rx * rx;
+   two_b_sq = 2 * ry * ry;
+
+   x = rx;
+   y = 0;
+
+   x_change = ry * ry * (1 - 2 * rx);
+   y_change = rx * rx;
+   ellipse_error = 0.0;
+
+   /* The following two variables decide when to stop.  It's easier than
+    * solving for this explicitly.
+    */
+   stopping_x = two_b_sq * rx;
+   stopping_y = 0.0;
+
+   /* First set of points. */
+   while (y <= ry) {
+      proc(ix + x, iy + y, dp);
+      if (x != 0) {
+         proc(ix - x + shift_x, iy + y, dp);
+      }
+      if (y != 0) {
+         proc(ix + x, iy - y + shift_y, dp);
+         if (x != 0) {
+            proc(ix - x + shift_x, iy - y + shift_y, dp);
+         }
+      }
+
+      y++;
+      stopping_y += two_a_sq;
+      ellipse_error += y_change;
+      y_change += two_a_sq;
+      midway_x = x;
+
+      if (stopping_x < stopping_y && x > 1) {
+         break;
+      }
+
+      if ((2.0f * ellipse_error + x_change) > 0.0) {
+         if (x) {
+            x--;
+            stopping_x -= two_b_sq;
+            ellipse_error += x_change;
+            x_change += two_b_sq;
+         }
+      }
+   }
+
+   /* To do the other half of the ellipse we reset to the top of it, and
+    * iterate in the opposite direction.
+    */
+   x = 0;
+   y = ry;
+
+   x_change = ry * ry;
+   y_change = rx * rx * (1 - 2 * ry);
+   ellipse_error = 0.0;
+
+   while (x < midway_x) {
+      proc(ix + x, iy + y, dp);
+      if (x != 0) {
+         proc(ix - x + shift_x, iy + y, dp);
+      }
+      if (y != 0) {
+         proc(ix + x, iy - y + shift_y, dp);
+         if (x != 0) {
+            proc(ix - x + shift_x, iy - y + shift_y, dp);
+         }
+      }
+
+      x++;
+      ellipse_error += x_change;
+      x_change += two_b_sq;
+
+      if ((2.0f * ellipse_error + y_change) > 0.0) {
+         if (y) {
+            y--;
+            ellipse_error += y_change;
+            y_change += two_a_sq;
+         }
+      }
+   }
+
+	 /* fill in holes */
+	 if(shift_x)
+	 {
+		 proc(ix + shift_x, iy - ry + shift_y, dp);
+		 proc(ix + shift_x, iy + ry, dp);
+	 }
+	 if(shift_y)
+	 {
+		 proc(ix - rx + shift_x, iy + shift_y, dp);
+		 proc(ix + rx, iy + shift_y, dp);
+	 }
+}
+
 static void brush_draw(int x, int y, void * dp)
 {
 	BRUSH_DATA * brush_data = (BRUSH_DATA *)dp;
@@ -120,7 +249,9 @@ void pa_draw_line(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_C
 	{
 		brush_data.bitmap = bp;
 		brush_data.color = color;
+		al_hold_bitmap_drawing(true);
 		pa_do_line(x1, y1, x2, y2, &brush_data, brush_draw);
+		al_hold_bitmap_drawing(false);
 	}
 	else
 	{
@@ -147,6 +278,7 @@ void pa_draw_filled_rectangle(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * b
 
 void pa_draw_oval(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_COLOR color)
 {
+	BRUSH_DATA brush_data;
 	float cx, cy, rx, ry;
 
 	pa_sort_coordinates(&x1, &x2);
@@ -155,20 +287,29 @@ void pa_draw_oval(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_C
 	ry = (float)(y2 - y1) / 2.0;
 	cx = x1 + rx + 0.5;
 	cy = y1 + ry + 0.5;
+	al_hold_bitmap_drawing(true);
 	if(x1 == x2 || y1 == y2)
 	{
-		al_draw_pixel(x1, y1, color);
-		al_draw_pixel(x2, y2, color);
-		al_draw_line((float)x1 + 0.5, (float)y1 + 0.5, (float)x2 + 0.5, (float)y2 + 0.5, color, 0.0);
+		pa_draw_line(x1, y1, x2, y2, bp, color);
 	}
 	else if(abs(x1 - x2) < 2 || abs(y1 - y2) < 2)
 	{
-		al_draw_rectangle((float)x1 + 0.5, (float)y1 + 0.5, (float)x2 + 0.5, (float)y2 + 0.5, color, 0.0);
+		pa_draw_rectangle(x1, y1, x2, y2, bp, color);
 	}
 	else
 	{
-		al_draw_ellipse(cx, cy, rx, ry, color, 0.0);
+		if(bp)
+		{
+			brush_data.bitmap = bp;
+			brush_data.color = color;
+			pa_do_ellipse(cx, cy, rx, ry, &brush_data, brush_draw);
+		}
+		else
+		{
+			al_draw_ellipse(cx, cy, rx, ry, color, 0.0);
+		}
 	}
+	al_hold_bitmap_drawing(false);
 }
 
 void pa_draw_filled_oval(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_COLOR color)
