@@ -5,7 +5,7 @@ Pixelacrity 0.2.1 Issues
    canvas on Linux. Some areas around primitives being drawn to canvas can
    disappear.
 
-[ ]Implement brush in oval tool.
+[ ]Fix oval tool missing pixels on slim ovals.
 
 [ ]Implement brush in rectangle tool.
 
@@ -405,3 +405,5 @@ Closed Issues
 
 [X]Look into why line fragments used by the pixel tool don't render identically
    to the scratch bitmap and canvas.
+
+[X]Implement brush in oval tool.
