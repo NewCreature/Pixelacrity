@@ -7,8 +7,6 @@ Pixelacrity 0.2.2 Issues
 
 [ ]Make mouse wheel change zoom level.
 
-[ ]Add controls for changing the position of a layer within the layer stack.
-
 [ ]Allow scrolling the canvas by holding the mouse wheel button and moving the
    mouse.
 
@@ -36,6 +34,8 @@ Pixelacrity 0.2.2 Issues
 [ ]Add shortcut to show only the current layer.
 
 [ ]Not all frames are rendering.
+
+[ ]Make layer swaping undoable.
 
 
 Pixelacrity 0.3 Issues
@@ -441,3 +441,5 @@ Closed Issues
    disappear.
 
 [X]Fix save changes prompt showing up when attempting to import an image.
+
+[X]Add controls for changing the position of a layer within the layer stack.
