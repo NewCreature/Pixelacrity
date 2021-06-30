@@ -5,6 +5,23 @@ Pixelacrity 0.2.2 Issues
 
 [ ]Implement brush in rectangle tool.
 
+[ ]Make mouse wheel change zoom level.
+
+[ ]Add controls for changing the position of a layer within the layer stack.
+
+[ ]Allow scrolling the canvas by holding the mouse wheel button and moving the
+   mouse.
+
+[ ]Add shortcut keys for changing between tools.
+
+[ ]Add a way to have filled shapes use the other color for outline.
+
+[ ]Fix save changes prompt showing up when attempting to import an image.
+
+[ ]Add optional crosshair to line up drawing.
+
+[ ]Fix right-clicking a color not getting correct color on first click.
+
 
 Pixelacrity 0.3 Issues
 ----------------------
