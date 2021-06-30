@@ -311,34 +311,31 @@ int pa_menu_file_import(int id, void * data)
 	const char * file_path;
 
 	t3f_debug_message("Enter pa_menu_file_import()\n");
-	if(close_canvas(app))
+	file_chooser = al_create_native_file_dialog(NULL, "Choose image file...", "*.png;*.tga;*.pcx;*.bmp;*.jpg", ALLEGRO_FILECHOOSER_FILE_MUST_EXIST);
+	if(file_chooser)
 	{
-		file_chooser = al_create_native_file_dialog(NULL, "Choose image file...", "*.png;*.tga;*.pcx;*.bmp;*.jpg", ALLEGRO_FILECHOOSER_FILE_MUST_EXIST);
-		if(file_chooser)
+		al_stop_timer(t3f_timer);
+		if(al_show_native_file_dialog(t3f_display, file_chooser))
 		{
-			al_stop_timer(t3f_timer);
-			if(al_show_native_file_dialog(t3f_display, file_chooser))
+			if(al_get_native_file_dialog_count(file_chooser) > 0)
 			{
-				if(al_get_native_file_dialog_count(file_chooser) > 0)
+				file_path = al_get_native_file_dialog_path(file_chooser, 0);
+				if(file_path)
 				{
-					file_path = al_get_native_file_dialog_path(file_chooser, 0);
-					if(file_path)
+					if(pa_import_image(app->canvas_editor, file_path))
 					{
-						if(pa_import_image(app->canvas_editor, file_path))
+						if(make_import_undo(app->canvas_editor, file_path))
 						{
-							if(make_import_undo(app->canvas_editor, file_path))
-							{
-								pa_finalize_undo(app->canvas_editor);
-							}
-							app->canvas_editor->modified++;
-							app->canvas_editor->update_title = true;
+							pa_finalize_undo(app->canvas_editor);
 						}
+						app->canvas_editor->modified++;
+						app->canvas_editor->update_title = true;
 					}
 				}
 			}
-			al_destroy_native_file_dialog(file_chooser);
-			al_start_timer(t3f_timer);
 		}
+		al_destroy_native_file_dialog(file_chooser);
+		al_start_timer(t3f_timer);
 	}
 	t3f_debug_message("Exit pa_menu_file_import()\n");
 	return 0;
