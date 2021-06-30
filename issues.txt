@@ -16,8 +16,6 @@ Pixelacrity 0.2.2 Issues
 
 [ ]Add a way to have filled shapes use the other color for outline.
 
-[ ]Fix save changes prompt showing up when attempting to import an image.
-
 [ ]Add optional crosshair to line up drawing.
 
 [ ]Fix right-clicking a color not getting correct color on first click.
@@ -29,6 +27,9 @@ Pixelacrity 0.2.2 Issues
 [ ]Make switching layer float current selection.
 
 [ ]Reverse order of layer list to make it more intuitive.
+
+[ ]Selection should be unfloated any time we are performing an action that
+   would cause a selection to be discarded.
 
 
 Pixelacrity 0.3 Issues
@@ -432,3 +433,5 @@ Closed Issues
 [X]Investigate artifacting when releasing mouse button to commit drawing to
    canvas on Linux. Some areas around primitives being drawn to canvas can
    disappear.
+
+[X]Fix save changes prompt showing up when attempting to import an image.
