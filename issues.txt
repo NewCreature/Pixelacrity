@@ -35,6 +35,8 @@ Pixelacrity 0.2.2 Issues
 
 [ ]Not all frames are rendering.
 
+   [ ]Need to shift frames when shifting the canvas.
+
 [ ]Make layer swaping undoable.
 
 
