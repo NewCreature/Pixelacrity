@@ -35,6 +35,8 @@ Pixelacrity 0.2.2 Issues
 
 [ ]Make layer swapping undoable.
 
+[ ]Make selections rotatable and scaleable.
+
 
 Pixelacrity 0.3 Issues
 ----------------------
