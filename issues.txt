@@ -12,8 +12,6 @@ Pixelacrity 0.2.2 Issues
 
 [ ]Add a way to have filled shapes use the other color for outline.
 
-[ ]Add optional crosshair to line up drawing.
-
 [ ]Fix right-clicking a color not getting correct color on first click.
 
 [ ]Add function to move a selection between layers.
@@ -447,3 +445,5 @@ Closed Issues
 [X]Make mouse wheel change zoom level.
 
 [X]Add shortcut to show only the current layer.
+
+[X]Add optional crosshair to line up drawing.
