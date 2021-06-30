@@ -724,29 +724,6 @@ int pa_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				}
 				t3f_key[ALLEGRO_KEY_PGDN] = 0;
 			}
-			if(t3f_key[ALLEGRO_KEY_F])
-			{
-				sprintf(frame_name, "Frame %d", canvas_editor->canvas->frame_max + 1);
-				pa_get_canvas_dimensions(canvas_editor->canvas, &frame_x, &frame_y, &frame_width, &frame_height, 0);
-				if(pa_add_canvas_frame(canvas_editor->canvas, frame_name, frame_x, frame_y, frame_width, frame_height))
-				{
-					canvas_editor->current_frame = canvas_editor->canvas->frame_max - 1;
-				}
-				t3f_key[ALLEGRO_KEY_F] = 0;
-			}
-			if(t3f_key[ALLEGRO_KEY_G])
-			{
-				pa_remove_canvas_frame(canvas_editor->canvas, canvas_editor->current_frame);
-				if(canvas_editor->current_frame >= canvas_editor->canvas->frame_max)
-				{
-					canvas_editor->current_frame = canvas_editor->canvas->frame_max - 1;
-				}
-				if(canvas_editor->current_frame < 0)
-				{
-					canvas_editor->current_frame = 0;
-				}
-				t3f_key[ALLEGRO_KEY_G] = 0;
-			}
 			if(t3f_key[ALLEGRO_KEY_C] && !(t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]))
 			{
 				pa_get_canvas_dimensions(canvas_editor->canvas, &frame_x, &frame_y, &frame_width, &frame_height, 0);
@@ -830,6 +807,14 @@ int pa_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			if(canvas_editor->selection.box.width > 0 && canvas_editor->selection.box.height > 0)
 			{
 				pa_box_render(&canvas_editor->selection.box, 0, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y);
+			}
+
+			if(t3f_key[ALLEGRO_KEY_G])
+			{
+				tx = ((int)(t3f_mouse_x - d->x) / canvas_editor->view_zoom) * canvas_editor->view_zoom + canvas_editor->view_zoom / 2 + d->x;
+				ty = ((int)(t3f_mouse_y - d->y) / canvas_editor->view_zoom) * canvas_editor->view_zoom + canvas_editor->view_zoom / 2 + d->y;
+				al_draw_line(d->x, ty + 0.5, d->x + d->w, ty + 0.5, t3f_color_black, 0.0);
+				al_draw_line(tx + 0.5, d->y, tx + 0/5, d->y + d->h, t3f_color_black, 0.0);
 			}
 			al_restore_state(&old_state);
 			break;
