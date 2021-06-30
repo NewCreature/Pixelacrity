@@ -33,6 +33,8 @@ Pixelacrity 0.2.2 Issues
 
 [ ]Optimize flood fill.
 
+[ ]Add shortcut to show only the current layer.
+
 
 Pixelacrity 0.3 Issues
 ----------------------
