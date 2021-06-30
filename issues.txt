@@ -35,7 +35,7 @@ Pixelacrity 0.2.2 Issues
 
    [ ]Need to shift frames when shifting the canvas.
 
-[ ]Make layer swaping undoable.
+[ ]Make layer swapping undoable.
 
 
 Pixelacrity 0.3 Issues
