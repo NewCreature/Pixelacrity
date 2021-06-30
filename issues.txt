@@ -31,6 +31,8 @@ Pixelacrity 0.2.2 Issues
 [ ]Selection should be unfloated any time we are performing an action that
    would cause a selection to be discarded.
 
+[ ]Optimize flood fill.
+
 
 Pixelacrity 0.3 Issues
 ----------------------
