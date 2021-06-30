@@ -29,8 +29,6 @@ Pixelacrity 0.2.2 Issues
 
 [ ]Optimize flood fill.
 
-[ ]Add shortcut to show only the current layer.
-
 [ ]Not all frames are rendering.
 
    [ ]Need to shift frames when shifting the canvas.
@@ -445,3 +443,5 @@ Closed Issues
 [X]Add controls for changing the position of a layer within the layer stack.
 
 [X]Make mouse wheel change zoom level.
+
+[X]Add shortcut to show only the current layer.
