@@ -22,6 +22,14 @@ Pixelacrity 0.2.2 Issues
 
 [ ]Fix right-clicking a color not getting correct color on first click.
 
+[ ]Add function to move a selection between layers.
+
+[ ]Allow moving selections between layers.
+
+[ ]Make switching layer float current selection.
+
+[ ]Reverse order of layer list to make it more intuitive.
+
 
 Pixelacrity 0.3 Issues
 ----------------------
