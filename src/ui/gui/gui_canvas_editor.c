@@ -188,6 +188,19 @@ static bool handle_canvas_expansion(PA_CANVAS_EDITOR * cep)
 	return ret;
 }
 
+static void adjust_zoom(T3GUI_ELEMENT * d, PA_CANVAS_EDITOR * cep, int amount)
+{
+	int cx, cy;
+
+	cx = cep->view_x + (d->w / cep->view_zoom) / 2;
+	cy = cep->view_y + (d->h / cep->view_zoom) / 2;
+	cep->view_zoom += amount;
+	cep->view_x = cx - (d->w / cep->view_zoom) / 2;
+	cep->view_y = cy - (d->h / cep->view_zoom) / 2;
+	cep->view_fx = cep->view_x;
+	cep->view_fy = cep->view_y;
+}
+
 int pa_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 {
 	PA_CANVAS_EDITOR * canvas_editor = (PA_CANVAS_EDITOR *)d->dp;
@@ -570,6 +583,21 @@ int pa_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			}
 			break;
 		}
+		case MSG_WHEEL:
+		{
+			if(c < 0)
+			{
+				adjust_zoom(d, canvas_editor, 1);
+			}
+			else if(c > 0)
+			{
+				if(canvas_editor->view_zoom > 1)
+				{
+					adjust_zoom(d, canvas_editor, -1);
+				}
+			}
+			break;
+		}
 		case MSG_IDLE:
 		{
 			if(canvas_editor->backup_tick > 0)
@@ -656,26 +684,14 @@ int pa_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			{
 				if(canvas_editor->view_zoom > 1)
 				{
-					cx = canvas_editor->view_x + (d->w / canvas_editor->view_zoom) / 2;
-					cy = canvas_editor->view_y + (d->h / canvas_editor->view_zoom) / 2;
-					canvas_editor->view_zoom--;
-					canvas_editor->view_x = cx - (d->w / canvas_editor->view_zoom) / 2;
-					canvas_editor->view_y = cy - (d->h / canvas_editor->view_zoom) / 2;
-					canvas_editor->view_fx = canvas_editor->view_x;
-					canvas_editor->view_fy = canvas_editor->view_y;
+					adjust_zoom(d, canvas_editor, -1);
 					simulate_mouse_move = true;
 				}
 				t3f_key[ALLEGRO_KEY_MINUS] = 0;
 			}
 			if(t3f_key[ALLEGRO_KEY_EQUALS])
 			{
-				cx = canvas_editor->view_x + (d->w / canvas_editor->view_zoom) / 2;
-				cy = canvas_editor->view_y + (d->h / canvas_editor->view_zoom) / 2;
-				canvas_editor->view_zoom++;
-				canvas_editor->view_x = cx - (d->w / canvas_editor->view_zoom) / 2;
-				canvas_editor->view_y = cy - (d->h / canvas_editor->view_zoom) / 2;
-				canvas_editor->view_fx = canvas_editor->view_x;
-				canvas_editor->view_fy = canvas_editor->view_y;
+				adjust_zoom(d, canvas_editor, 1);
 				simulate_mouse_move = true;
 				t3f_key[ALLEGRO_KEY_EQUALS] = 0;
 			}
