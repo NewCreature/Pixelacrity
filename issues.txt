@@ -1,9 +1,5 @@
-Pixelacrity 0.2.1 Issues
+Pixelacrity 0.2.2 Issues
 ------------------------
-
-[ ]Investigate artifacting when releasing mouse button to commit drawing to
-   canvas on Linux. Some areas around primitives being drawn to canvas can
-   disappear.
 
 [ ]Fix oval tool missing pixels on slim ovals.
 
@@ -407,3 +403,7 @@ Closed Issues
    to the scratch bitmap and canvas.
 
 [X]Implement brush in oval tool.
+
+[X]Investigate artifacting when releasing mouse button to commit drawing to
+   canvas on Linux. Some areas around primitives being drawn to canvas can
+   disappear.
