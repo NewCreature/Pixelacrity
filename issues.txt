@@ -35,6 +35,8 @@ Pixelacrity 0.2.2 Issues
 
 [ ]Add shortcut to show only the current layer.
 
+[ ]Not all frames are rendering.
+
 
 Pixelacrity 0.3 Issues
 ----------------------
