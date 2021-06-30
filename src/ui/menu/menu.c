@@ -118,6 +118,36 @@ static int menu_edit_paste_update_proc(ALLEGRO_MENU * mp, int item, void * data)
 	return 0;
 }
 
+static int menu_layer_move_up_update_proc(ALLEGRO_MENU * mp, int item, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	if(app->canvas_editor->current_layer < app->canvas->layer_max - 1)
+	{
+		t3f_set_menu_item_flags(mp, item, 0);
+	}
+	else
+	{
+		t3f_set_menu_item_flags(mp, item, ALLEGRO_MENU_ITEM_DISABLED);
+	}
+	return 0;
+}
+
+static int menu_layer_move_down_update_proc(ALLEGRO_MENU * mp, int item, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	if(app->canvas_editor->current_layer > 0)
+	{
+		t3f_set_menu_item_flags(mp, item, 0);
+	}
+	else
+	{
+		t3f_set_menu_item_flags(mp, item, ALLEGRO_MENU_ITEM_DISABLED);
+	}
+	return 0;
+}
+
 bool pa_setup_menus(PA_UI * uip)
 {
 	uip->menu[PA_UI_MENU_FILE] = al_create_menu();
@@ -207,6 +237,9 @@ bool pa_setup_menus(PA_UI * uip)
 	}
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_LAYER], "Add", 0, NULL, pa_menu_layer_add, menu_base_update_proc);
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_LAYER], "Delete", ALLEGRO_MENU_ITEM_DISABLED, NULL, pa_menu_layer_delete, menu_layer_delete_update_proc);
+	t3f_add_menu_item(uip->menu[PA_UI_MENU_LAYER], NULL, 0, NULL, NULL, NULL);
+	t3f_add_menu_item(uip->menu[PA_UI_MENU_LAYER], "Move Up", ALLEGRO_MENU_ITEM_DISABLED, NULL, pa_menu_layer_move_up, menu_layer_move_up_update_proc);
+	t3f_add_menu_item(uip->menu[PA_UI_MENU_LAYER], "Move Down", ALLEGRO_MENU_ITEM_DISABLED, NULL, pa_menu_layer_move_down, menu_layer_move_down_update_proc);
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_LAYER], NULL, 0, NULL, NULL, NULL);
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_LAYER], "Previous", ALLEGRO_MENU_ITEM_DISABLED, NULL, pa_menu_layer_previous, menu_layer_delete_update_proc);
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_LAYER], "Next", ALLEGRO_MENU_ITEM_DISABLED, NULL, pa_menu_layer_next, menu_layer_delete_update_proc);

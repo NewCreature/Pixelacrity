@@ -1,6 +1,7 @@
 #include "t3f/t3f.h"
 #include "instance.h"
 #include "ui/menu/menu_edit_proc.h"
+#include "ui/menu/menu_layer_proc.h"
 #include "modules/canvas/canvas_helpers.h"
 
 void pa_handle_shortcuts(APP_INSTANCE * app)
@@ -36,6 +37,16 @@ void pa_handle_shortcuts(APP_INSTANCE * app)
 	{
 		pa_menu_edit_redo(0, app);
 		t3f_key[ALLEGRO_KEY_Y] = 0;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && t3f_key[ALLEGRO_KEY_PGUP])
+	{
+		pa_menu_layer_move_up(0, app);
+		t3f_key[ALLEGRO_KEY_PGUP] = 0;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && t3f_key[ALLEGRO_KEY_PGDN])
+	{
+		pa_menu_layer_move_down(0, app);
+		t3f_key[ALLEGRO_KEY_PGDN] = 0;
 	}
 	else if(t3f_key[ALLEGRO_KEY_C])
 	{

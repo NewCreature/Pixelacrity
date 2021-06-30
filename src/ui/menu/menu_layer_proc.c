@@ -61,6 +61,39 @@ int pa_menu_layer_delete(int id, void * data)
 	return 0;
 }
 
+int pa_menu_layer_move_up(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+	PA_CANVAS_LAYER * old_layer;
+
+	if(app->canvas_editor->current_layer < app->canvas->layer_max - 1)
+	{
+		old_layer = app->canvas->layer[app->canvas_editor->current_layer];
+		app->canvas->layer[app->canvas_editor->current_layer] = app->canvas->layer[app->canvas_editor->current_layer + 1];
+		app->canvas->layer[app->canvas_editor->current_layer + 1] = old_layer;
+		app->canvas_editor->current_layer++;
+		t3f_refresh_menus();
+	}
+
+	return 0;
+}
+
+int pa_menu_layer_move_down(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+	PA_CANVAS_LAYER * old_layer;
+
+	if(app->canvas_editor->current_layer > 0)
+	{
+		old_layer = app->canvas->layer[app->canvas_editor->current_layer];
+		app->canvas->layer[app->canvas_editor->current_layer] = app->canvas->layer[app->canvas_editor->current_layer - 1];
+		app->canvas->layer[app->canvas_editor->current_layer - 1] = old_layer;
+		app->canvas_editor->current_layer--;
+		t3f_refresh_menus();
+	}
+	return 0;
+}
+
 int pa_menu_layer_previous(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
