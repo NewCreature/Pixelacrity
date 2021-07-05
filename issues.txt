@@ -42,6 +42,8 @@ Pixelacrity 0.2.2 Issues
    [ ]If I load an image as a canvas and immediately try to import, nothing is
       actually imported.
 
+[ ]Fix tool undo not working when undo state contains transparent pixels.
+
 
 Pixelacrity 0.3 Issues
 ----------------------
