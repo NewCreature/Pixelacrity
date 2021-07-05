@@ -25,6 +25,8 @@ Pixelacrity 0.2.2 Issues
 [ ]Selection should be unfloated any time we are performing an action that
    would cause a selection to be discarded.
 
+   [ ]Importing an image should unfloat the selection.
+
 [ ]Optimize flood fill.
 
 [ ]Not all frames are rendering.
@@ -34,6 +36,11 @@ Pixelacrity 0.2.2 Issues
 [ ]Make layer swapping undoable.
 
 [ ]Make selections rotatable and scaleable.
+
+[ ]Importing an image doesn't always work.
+
+   [ ]If I load an image as a canvas and immediately try to import, nothing is
+      actually imported.
 
 
 Pixelacrity 0.3 Issues
