@@ -43,6 +43,20 @@ static void unlock_canvas_layer(PA_CANVAS * cp, int layer)
 	}
 }
 
+static ALLEGRO_BITMAP * get_canvas_tile(PA_CANVAS * cp, int layer, int x, int y)
+{
+	int tx, ty;
+
+	tx = x / cp->bitmap_size;
+	ty = y / cp->bitmap_size;
+
+	if(tx < cp->layer_width && ty < cp->layer_height)
+	{
+		return cp->layer[layer]->bitmap[ty][tx];
+	}
+	return NULL;
+}
+
 bool pa_flood_fill_canvas(PA_CANVAS * cp, int layer, int start_x, int start_y, ALLEGRO_COLOR color, PA_QUEUE * out_qp)
 {
 	PA_QUEUE * qp;
@@ -52,7 +66,6 @@ bool pa_flood_fill_canvas(PA_CANVAS * cp, int layer, int start_x, int start_y, A
 	ALLEGRO_BITMAP * bp;
 	ALLEGRO_BITMAP * current_bp;
 	int x, y, ox, oy;
-	int bx, by, bwidth, bheight, right, bottom;
 	bool ret = true;
 
 	t3f_debug_message("Enter pa_flood_fill_canvas()\n");
@@ -67,9 +80,6 @@ bool pa_flood_fill_canvas(PA_CANVAS * cp, int layer, int start_x, int start_y, A
 		t3f_debug_message("Fail pa_flood_fill_canvas() 2\n");
 		return false;
 	}
-	pa_get_canvas_dimensions(cp, &bx, &by, &bwidth, &bheight, 0);
-	right = bx + bwidth - 1;
-	bottom = by + bheight - 1;
 	al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP);
 	qp = pa_create_queue();
 	if(qp)
@@ -88,7 +98,7 @@ bool pa_flood_fill_canvas(PA_CANVAS * cp, int layer, int start_x, int start_y, A
 			current_color = get_pixel(cp, layer, x - 1, y, &current_bp, &ox, &oy);
 			if(pa_color_equal(current_color, old_color))
 			{
-				if(x - 1 < bx)
+				if(!get_canvas_tile(cp, layer, x - 1, y))
 				{
 					ret = false;
 					goto cleanup;
@@ -100,7 +110,7 @@ bool pa_flood_fill_canvas(PA_CANVAS * cp, int layer, int start_x, int start_y, A
 			current_color = get_pixel(cp, layer, x + 1, y, &current_bp, &ox, &oy);
 			if(pa_color_equal(current_color, old_color))
 			{
-				if(x + 1 > right)
+				if(!get_canvas_tile(cp, layer, x + 1, y))
 				{
 					ret = false;
 					goto cleanup;
@@ -112,7 +122,7 @@ bool pa_flood_fill_canvas(PA_CANVAS * cp, int layer, int start_x, int start_y, A
 			current_color = get_pixel(cp, layer, x, y - 1, &current_bp, &ox, &oy);
 			if(pa_color_equal(current_color, old_color))
 			{
-				if(y - 1 < by)
+				if(!get_canvas_tile(cp, layer, x, y - 1))
 				{
 					ret = false;
 					goto cleanup;
@@ -124,7 +134,7 @@ bool pa_flood_fill_canvas(PA_CANVAS * cp, int layer, int start_x, int start_y, A
 			current_color = get_pixel(cp, layer, x, y + 1, &current_bp, &ox, &oy);
 			if(pa_color_equal(current_color, old_color))
 			{
-				if(y + 1 > bottom)
+				if(!get_canvas_tile(cp, layer, x, y + 1))
 				{
 					ret = false;
 					goto cleanup;
