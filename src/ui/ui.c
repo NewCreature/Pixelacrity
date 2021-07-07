@@ -361,7 +361,7 @@ void pa_process_ui(PA_UI * uip)
 	PA_CANVAS_EDITOR * cep = (PA_CANVAS_EDITOR *)uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->dp;
 	int old_layer_d1;
 
-	uip->element[PA_UI_ELEMENT_LAYER_LIST]->d1 = cep->current_layer;
+	uip->element[PA_UI_ELEMENT_LAYER_LIST]->d1 = cep->canvas->layer_max - cep->current_layer - 1;
 	old_layer_d1 = uip->element[PA_UI_ELEMENT_LAYER_LIST]->d1;
 	if(cep->canvas->layer_max > 1)
 	{
@@ -431,7 +431,7 @@ void pa_process_ui(PA_UI * uip)
 
 	if(uip->element[PA_UI_ELEMENT_LAYER_LIST]->d1 != old_layer_d1)
 	{
-		cep->current_layer = uip->element[PA_UI_ELEMENT_LAYER_LIST]->d1;
+		cep->current_layer = cep->canvas->layer_max - uip->element[PA_UI_ELEMENT_LAYER_LIST]->d1 - 1;
 	}
 }
 

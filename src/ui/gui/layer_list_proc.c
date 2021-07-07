@@ -23,13 +23,13 @@ const char * pa_layer_list_proc(int index, int * num_elem, void * dp3)
 	{
 		if(canvas_editor->canvas)
 		{
-			if(index == canvas_editor->current_layer)
+			if(canvas_editor->canvas->layer_max - index - 1 == canvas_editor->current_layer)
 			{
-				sprintf(list_item_name_buffer, "[Layer %d]", index + 1);
+				sprintf(list_item_name_buffer, "[Layer %d]", canvas_editor->canvas->layer_max - index);
 			}
 			else
 			{
-				sprintf(list_item_name_buffer, "Layer %d", index + 1);
+				sprintf(list_item_name_buffer, "Layer %d", canvas_editor->canvas->layer_max - index);
 			}
 		}
 		else
