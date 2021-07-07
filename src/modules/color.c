@@ -51,3 +51,11 @@ float pa_get_color_alpha(ALLEGRO_COLOR color)
 
 	return a;
 }
+
+void pa_print_color(ALLEGRO_COLOR color)
+{
+	unsigned char r, g, b, a;
+
+	al_unmap_rgba(color, &r, &g, &b, &a);
+	printf("%d, %d, %d, %d\n", r, g, b, a);
+}
