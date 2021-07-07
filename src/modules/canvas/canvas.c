@@ -108,11 +108,6 @@ PA_CANVAS * pa_create_canvas(int bitmap_max)
 		{
 			cp->bitmap_size = bitmap_max;
 		}
-		cp->config = al_create_config();
-		if(!cp->config)
-		{
-			goto fail;
-		}
 	}
 	return cp;
 
@@ -129,10 +124,6 @@ void pa_destroy_canvas(PA_CANVAS * cp)
 
 	if(cp)
 	{
-		if(cp->config)
-		{
-			al_destroy_config(cp->config);
-		}
 		if(cp->layer)
 		{
 			for(i = 0; i < cp->layer_max; i++)

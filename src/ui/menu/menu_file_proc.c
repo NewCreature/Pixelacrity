@@ -136,6 +136,7 @@ int pa_menu_file_load(int id, void * data)
 	const char * extension;
 	bool import_image = false;
 	PA_CANVAS * new_canvas = NULL;
+	ALLEGRO_PATH * pp;
 
 	t3f_debug_message("Enter pa_menu_file_load()\n");
 	if(close_canvas(app))
@@ -180,6 +181,13 @@ int pa_menu_file_load(int id, void * data)
 							pa_center_canvas_editor(app->canvas_editor, 0);
 							strcpy(app->canvas_editor->canvas_path, file_path);
 							app->canvas_editor->update_title = true;
+							pp = al_create_path(file_path);
+							if(pp)
+							{
+								al_set_path_extension(pp, ".ini");
+								pa_load_canvas_editor_state(app->canvas_editor, al_path_cstr(pp, '/'));
+								al_destroy_path(pp);
+							}
 						}
 						else
 						{
@@ -223,6 +231,7 @@ int pa_menu_file_save(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 	ALLEGRO_BITMAP * bp;
+	ALLEGRO_PATH * pp;
 
 	t3f_debug_message("Enter pa_menu_file_save()\n");
 	if(resave_allowed(app->canvas_editor))
@@ -250,6 +259,13 @@ int pa_menu_file_save(int id, void * data)
 				app->canvas_editor->update_title = true;
 			}
 		}
+	}
+	pp = al_create_path(app->canvas_editor->canvas_path);
+	if(pp)
+	{
+		al_set_path_extension(pp, ".ini");
+		pa_save_canvas_editor_state(app->canvas_editor, al_path_cstr(pp, '/'));
+		al_destroy_path(pp);
 	}
 	t3f_debug_message("Exit pa_menu_file_save()\n");
 	return 0;

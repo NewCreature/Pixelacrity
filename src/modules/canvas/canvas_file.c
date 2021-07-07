@@ -174,7 +174,6 @@ PA_CANVAS * pa_load_canvas(const char * fn, int bitmap_max)
 {
 	ALLEGRO_FILE * fp;
 	PA_CANVAS * cp = NULL;
-	ALLEGRO_PATH * pp;
 
 	fp = al_fopen(fn, "rb");
 	if(!fp)
@@ -187,22 +186,6 @@ PA_CANVAS * pa_load_canvas(const char * fn, int bitmap_max)
 	if(!cp)
 	{
 		goto fail;
-	}
-
-	pp = al_create_path(fn);
-	if(pp)
-	{
-		al_set_path_extension(pp, ".ini");
-		cp->config = al_load_config_file(al_path_cstr(pp, '/'));
-		if(!cp->config)
-		{
-			cp->config = al_create_config();
-			if(!cp->config)
-			{
-				goto fail;
-			}
-		}
-		al_destroy_path(pp);
 	}
 
 	return cp;
@@ -411,7 +394,6 @@ bool pa_save_canvas(PA_CANVAS * cp, const char * fn, const char * format, int me
 {
 	ALLEGRO_FILE * fp;
 	bool ret;
-	ALLEGRO_PATH * pp;
 
 	fp = al_fopen(fn, "wb");
 	if(!fp)
@@ -420,14 +402,6 @@ bool pa_save_canvas(PA_CANVAS * cp, const char * fn, const char * format, int me
 	}
 	ret = pa_save_canvas_f(cp, fp, format, method);
 	al_fclose(fp);
-
-	pp = al_create_path(fn);
-	if(pp)
-	{
-		al_set_path_extension(pp, ".ini");
-		al_save_config_file(al_path_cstr(pp, '/'), cp->config);
-		al_destroy_path(pp);
-	}
 
 	return ret;
 

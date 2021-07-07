@@ -19,6 +19,14 @@ static int get_config_val(ALLEGRO_CONFIG * cp, const char * section, const char 
 	return default_val;
 }
 
+static void set_config_val(ALLEGRO_CONFIG * cp, const char * section, const char * key, int val)
+{
+	char buf[256] = {0};
+
+	sprintf(buf, "%d", val);
+	al_set_config_value(cp, section, key, buf);
+}
+
 static ALLEGRO_BITMAP * create_default_brush(void)
 {
 	ALLEGRO_BITMAP * bp;
@@ -93,10 +101,9 @@ PA_CANVAS_EDITOR * pa_create_canvas_editor(PA_CANVAS * cp)
 	cep->canvas = cp;
 	cep->left_base_color = al_map_rgba_f(1.0, 0.0, 0.0, 1.0);
 	cep->right_base_color = al_map_rgba_f(0.0, 0.0, 0.0, 0.0);
-	cep->current_layer = get_config_val(cep->canvas->config, "state", "current_layer", 0);
-	cep->view_x = get_config_val(cep->canvas->config, "state", "view_x", cep->canvas->bitmap_size * 8 + cep->canvas->bitmap_size / 2);
-	cep->view_y = get_config_val(cep->canvas->config, "state", "view_y", cep->canvas->bitmap_size * 8 + cep->canvas->bitmap_size / 2);
-	cep->view_zoom = get_config_val(cep->canvas->config, "state", "view_zoom", 8);
+	cep->view_x = 0;
+	cep->view_y = 0;
+	cep->view_zoom = 8;
 	cep->backup_tick = PA_BACKUP_INTERVAL;
 	return cep;
 
@@ -125,6 +132,43 @@ void pa_destroy_canvas_editor(PA_CANVAS_EDITOR * cep)
 		al_destroy_bitmap(cep->scratch_bitmap);
 	}
 	free(cep);
+}
+
+bool pa_load_canvas_editor_state(PA_CANVAS_EDITOR * cep, const char * fn)
+{
+	cep->config = al_load_config_file(fn);
+	if(cep->config)
+	{
+		cep->view_x = get_config_val(cep->config, "State", "view_x", cep->view_x);
+		cep->view_y = get_config_val(cep->config, "State", "view_y", cep->view_y);
+		cep->view_fx = cep->view_x;
+		cep->view_fy = cep->view_y;
+		cep->view_zoom = get_config_val(cep->config, "State", "view_zoom", 0);
+		cep->current_tool = get_config_val(cep->config, "State", "current_tool", 0);
+		cep->current_layer = get_config_val(cep->config, "State", "current_layer", 0);
+		return true;
+	}
+	return false;
+}
+
+bool pa_save_canvas_editor_state(PA_CANVAS_EDITOR * cep, const char * fn)
+{
+	if(!cep->config)
+	{
+		cep->config = al_create_config();
+		if(!cep->config)
+		{
+			return false;
+		}
+	}
+	set_config_val(cep->config, "State", "view_x", cep->view_x);
+	set_config_val(cep->config, "State", "view_y", cep->view_y);
+	set_config_val(cep->config, "State", "view_zoom", cep->view_zoom);
+	set_config_val(cep->config, "State", "current_tool", cep->current_tool);
+	set_config_val(cep->config, "State", "current_layer", cep->current_layer);
+	return al_save_config_file(fn, cep->config);
+
+	return true;
 }
 
 void pa_center_canvas_editor(PA_CANVAS_EDITOR * cep, int frame)

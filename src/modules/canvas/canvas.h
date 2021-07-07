@@ -34,8 +34,6 @@ typedef struct
 	PA_CANVAS_FRAME ** frame;
 	int frame_max;
 
-	ALLEGRO_CONFIG * config;
-
 	int export_offset_x;
 	int export_offset_y;
 
