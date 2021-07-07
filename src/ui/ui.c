@@ -431,7 +431,7 @@ void pa_process_ui(PA_UI * uip)
 
 	if(uip->element[PA_UI_ELEMENT_LAYER_LIST]->d1 != old_layer_d1)
 	{
-		cep->current_layer = cep->canvas->layer_max - uip->element[PA_UI_ELEMENT_LAYER_LIST]->d1 - 1;
+		pa_select_canvas_editor_layer(cep, cep->canvas->layer_max - uip->element[PA_UI_ELEMENT_LAYER_LIST]->d1 - 1);
 	}
 }
 

@@ -19,7 +19,7 @@ int pa_menu_layer_add(int id, void * data)
 	}
 	if(pa_add_canvas_layer(app->canvas, -1))
 	{
-		app->canvas_editor->current_layer = app->canvas->layer_max - 1;
+		pa_select_canvas_editor_layer(app->canvas_editor, app->canvas_editor->canvas->layer_max - 1);
 		app->canvas_editor->modified++;
 		app->canvas_editor->update_title = true;
 		t3f_refresh_menus();
@@ -47,10 +47,10 @@ int pa_menu_layer_delete(int id, void * data)
 		pa_remove_canvas_layer(app->canvas, app->canvas_editor->current_layer);
 		if(app->canvas_editor->current_layer >= app->canvas->layer_max)
 		{
-			app->canvas_editor->current_layer = app->canvas->layer_max - 1;
+			pa_select_canvas_editor_layer(app->canvas_editor, app->canvas_editor->canvas->layer_max - 1);
 			if(app->canvas_editor->current_layer < 0)
 			{
-				app->canvas_editor->current_layer = 0;
+				pa_select_canvas_editor_layer(app->canvas_editor, app->canvas_editor->canvas->layer_max - 1);
 			}
 		}
 		app->canvas_editor->modified++;
@@ -102,10 +102,10 @@ int pa_menu_layer_previous(int id, void * data)
 	app->canvas_editor->current_layer--;
 	if(app->canvas_editor->current_layer < 0)
 	{
-		app->canvas_editor->current_layer = app->canvas->layer_max - 1;
+		pa_select_canvas_editor_layer(app->canvas_editor, app->canvas_editor->canvas->layer_max - 1);
 		if(app->canvas_editor->current_layer < 0)
 		{
-			app->canvas_editor->current_layer = 0;
+			pa_select_canvas_editor_layer(app->canvas_editor, 0);
 		}
 	}
 	t3f_debug_message("Exit pa_menu_layer_previous()\n");
@@ -120,7 +120,7 @@ int pa_menu_layer_next(int id, void * data)
 	app->canvas_editor->current_layer++;
 	if(app->canvas_editor->current_layer >= app->canvas->layer_max)
 	{
-		app->canvas_editor->current_layer = 0;
+		pa_select_canvas_editor_layer(app->canvas_editor, 0);
 	}
 	t3f_debug_message("Exit pa_menu_layer_next()\n");
 	return 0;

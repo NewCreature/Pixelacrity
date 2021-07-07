@@ -133,6 +133,7 @@ void pa_handle_unfloat_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * 
 void pa_unfloat_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp);
 void pa_shift_canvas_editor_variables(PA_CANVAS_EDITOR * cep, int ox, int oy);
 void pa_select_canvas_editor_tool(PA_CANVAS_EDITOR * cep, int tool);
+void pa_select_canvas_editor_layer(PA_CANVAS_EDITOR * cep, int layer);
 bool pa_import_image(PA_CANVAS_EDITOR * cep, const char * fn);
 
 #endif

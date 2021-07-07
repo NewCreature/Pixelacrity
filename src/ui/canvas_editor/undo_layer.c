@@ -160,7 +160,7 @@ bool pa_apply_add_layer_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 	pa_remove_canvas_layer(cep->canvas, cep->canvas->layer_max - 1);
 	if(cep->current_layer >= cep->canvas->layer_max)
 	{
-		cep->current_layer = cep->canvas->layer_max - 1;
+		pa_select_canvas_editor_layer(cep, cep->canvas->layer_max - 1);
 	}
 	t3f_debug_message("Exit pa_apply_add_layer_undo()\n");
 
@@ -175,7 +175,7 @@ bool pa_apply_add_layer_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 	pa_make_add_layer_undo(cep, pa_get_undo_path("undo", cep->undo_count, undo_path, 1024));
 	cep->undo_count++;
 	pa_add_canvas_layer(cep->canvas, -1);
-	cep->current_layer = cep->canvas->layer_max - 1;
+	pa_select_canvas_editor_layer(cep, cep->canvas->layer_max - 1);
 	t3f_debug_message("Exit pa_apply_add_layer_redo()\n");
 
 	return true;
@@ -205,7 +205,7 @@ bool pa_apply_remove_layer_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 		pa_import_bitmap_to_canvas(cep->canvas, bp, layer, x, y);
 		al_destroy_bitmap(bp);
 	}
-	cep->current_layer = layer;
+	pa_select_canvas_editor_layer(cep, layer);
 	t3f_debug_message("Exit pa_apply_remove_layer_undo()\n");
 	return true;
 
@@ -232,7 +232,7 @@ bool pa_apply_remove_layer_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 	pa_remove_canvas_layer(cep->canvas, layer);
 	if(cep->current_layer >= cep->canvas->layer_max)
 	{
-		cep->current_layer = cep->canvas->layer_max - 1;
+		pa_select_canvas_editor_layer(cep, cep->canvas->layer_max - 1);
 	}
 
 	t3f_debug_message("Exit pa_apply_remove_layer_redo()\n");

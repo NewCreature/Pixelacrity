@@ -149,11 +149,11 @@ int pa_menu_edit_delete_layer(int id, void * data)
 	}
 	if(app->canvas_editor->current_layer >= app->canvas->layer_max)
 	{
-		app->canvas_editor->current_layer = app->canvas->layer_max - 1;
+		pa_select_canvas_editor_layer(app->canvas_editor, app->canvas_editor->canvas->layer_max - 1);
 	}
 	if(app->canvas_editor->current_layer < 0)
 	{
-		app->canvas_editor->current_layer = 0;
+		pa_select_canvas_editor_layer(app->canvas_editor, 0);
 	}
 	t3f_debug_message("Exit pa_menu_edit_delete_layer()\n");
 	return 0;

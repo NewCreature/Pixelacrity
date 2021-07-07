@@ -280,6 +280,22 @@ void pa_select_canvas_editor_tool(PA_CANVAS_EDITOR * cep, int tool)
 	cep->current_tool = tool;
 }
 
+void pa_select_canvas_editor_layer(PA_CANVAS_EDITOR * cep, int layer)
+{
+	if(cep->current_layer != layer && layer < cep->canvas->layer_max)
+	{
+		if(cep->selection.box.width > 0 && cep->selection.box.height > 0)
+		{
+			if(!cep->selection.bitmap)
+			{
+				cep->selection.box.width = 0;
+				cep->selection.box.height = 0;
+			}
+		}
+		cep->current_layer = layer;
+	}
+}
+
 bool pa_import_image(PA_CANVAS_EDITOR * cep, const char * fn)
 {
 	t3f_debug_message("Enter pa_import_image()\n");
