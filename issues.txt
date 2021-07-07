@@ -20,8 +20,6 @@ Pixelacrity 0.2.2 Issues
 
 [ ]Make switching layer float current selection.
 
-[ ]Reverse order of layer list to make it more intuitive.
-
 [ ]Selection should be unfloated any time we are performing an action that
    would cause a selection to be discarded.
 
@@ -456,3 +454,5 @@ Closed Issues
 [X]Add optional crosshair to line up drawing.
 
 [X]Fix tool undo not working when undo state contains transparent pixels.
+
+[X]Reverse order of layer list to make it more intuitive.
