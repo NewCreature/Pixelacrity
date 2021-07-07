@@ -143,7 +143,7 @@ bool pa_load_canvas_editor_state(PA_CANVAS_EDITOR * cep, const char * fn)
 		cep->view_y = get_config_val(cep->config, "State", "view_y", cep->view_y);
 		cep->view_fx = cep->view_x;
 		cep->view_fy = cep->view_y;
-		cep->view_zoom = get_config_val(cep->config, "State", "view_zoom", 0);
+		cep->view_zoom = get_config_val(cep->config, "State", "view_zoom", 8);
 		cep->current_tool = get_config_val(cep->config, "State", "current_tool", 0);
 		cep->current_layer = get_config_val(cep->config, "State", "current_layer", 0);
 		return true;
