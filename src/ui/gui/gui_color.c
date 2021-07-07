@@ -12,16 +12,13 @@ int pa_gui_color_proc(int msg, T3GUI_ELEMENT * d, int c)
 	{
 		case MSG_MOUSEDOWN:
 		{
-			if(d->dp2)
+			if(c == 1 && d->dp2)
 			{
-				if(c == 1)
-				{
-					*(ALLEGRO_COLOR *)d->dp2 = *(ALLEGRO_COLOR *)d->dp;
-				}
-				else
-				{
-					*(ALLEGRO_COLOR *)d->dp3 = *(ALLEGRO_COLOR *)d->dp;
-				}
+				*(ALLEGRO_COLOR *)d->dp2 = *(ALLEGRO_COLOR *)d->dp;
+			}
+			else if(d->dp3)
+			{
+				*(ALLEGRO_COLOR *)d->dp3 = *(ALLEGRO_COLOR *)d->dp;
 			}
 			break;
 		}
