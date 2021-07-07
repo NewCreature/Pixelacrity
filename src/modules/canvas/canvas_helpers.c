@@ -367,6 +367,16 @@ void pa_draw_primitive_to_canvas(PA_CANVAS * cp, int layer, int x1, int y1, int 
 			}
 		}
 	}
+	for(i = 0; i < cp->layer_height; i++)
+	{
+		for(j = 0; j < cp->layer_width; j++)
+		{
+			if(use_bitmap[i][j])
+			{
+				pa_set_target_pixel_shader(NULL);
+			}
+		}
+	}
 	free_use_array(use_bitmap, cp->layer_width, cp->layer_height);
 	al_restore_state(&old_state);
 }
