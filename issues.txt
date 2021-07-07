@@ -1,4 +1,4 @@
-Pixelacrity 0.2.2 Issues
+Pixelacrity 0.2.3 Issues
 ------------------------
 
 [ ]Fix oval tool missing pixels on slim ovals.
@@ -28,9 +28,22 @@ Pixelacrity 0.2.2 Issues
    [ ]If I load an image as a canvas and immediately try to import, nothing is
       actually imported.
 
+[ ]Tool undo leaves "droppings" on canvas occasionally. Seems like it has to
+   do with the mouse moving while the button is released.
 
-Pixelacrity 0.3 Issues
-----------------------
+  [ ]I think the variable being used to decide where to draw is not synchronized
+     with the variable that is being used to determine the size of the area
+     taken up by the primitive.
+
+[ ]Implement tool modes for various tools.
+
+   [ ]Snap line to angle.
+
+   [ ]Snap rectangle to square.
+
+   [ ]Snap oval to circle.
+
+   [ ]Snap floating selection to 90 degree angle from starting position.
 
 [ ]Implement frame editing.
 
@@ -41,6 +54,12 @@ Pixelacrity 0.3 Issues
       current frame.
 
    [X]Need controls for adding and removing frames (menu items, etc.).
+
+[ ]Implement full screen preview.
+
+
+Pixelacrity 0.3 Issues
+----------------------
 
 [ ]Crash when resizing on M1 Macbook Air.
 
