@@ -19,8 +19,6 @@ Pixelacrity 0.2.2 Issues
 
    [ ]Importing an image should unfloat the selection.
 
-[ ]Optimize flood fill.
-
 [ ]Not all frames are rendering.
 
    [ ]Need to shift frames when shifting the canvas.
@@ -456,3 +454,5 @@ Closed Issues
 [X]Allow moving selections between layers.
 
 [X]Make switching layer float current selection.
+
+[X]Optimize flood fill.
