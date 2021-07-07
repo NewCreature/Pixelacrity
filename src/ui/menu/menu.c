@@ -178,6 +178,7 @@ bool pa_setup_menus(PA_UI * uip)
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT], "Cut", 0, NULL, pa_menu_edit_cut, menu_edit_copy_update_proc);
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT], "Copy", 0, NULL, pa_menu_edit_copy, menu_edit_copy_update_proc);
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT], "Paste", 0, NULL, pa_menu_edit_paste, menu_edit_paste_update_proc);
+	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT], "Paste In Place", 0, NULL, pa_menu_edit_paste_in_place, menu_edit_paste_update_proc);
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT], NULL, 0, NULL, NULL, NULL);
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT], "Delete", 0, NULL, pa_menu_edit_delete, menu_edit_copy_update_proc);
 

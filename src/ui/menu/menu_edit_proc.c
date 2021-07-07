@@ -107,33 +107,57 @@ int pa_menu_edit_copy(int id, void * data)
 	return 0;
 }
 
-int pa_menu_edit_paste(int id, void * data)
+static void paste_helper(PA_CANVAS_EDITOR * cep, bool in_place)
 {
-	APP_INSTANCE * app = (APP_INSTANCE *)data;
 	ALLEGRO_STATE old_state;
+	int x, y;
 
 	t3f_debug_message("Enter pa_menu_edit_paste()\n");
-	if(app->canvas_editor->clipboard.bitmap)
+	if(cep->clipboard.bitmap)
 	{
 		al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);
 		al_set_new_bitmap_flags(ALLEGRO_NO_PREMULTIPLIED_ALPHA);
-		if(app->canvas_editor->selection.bitmap)
+		if(cep->selection.bitmap)
 		{
-			pa_handle_unfloat_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box);
+			pa_handle_unfloat_canvas_editor_selection(cep, &cep->selection.box);
 		}
-		app->canvas_editor->selection.bitmap = al_clone_bitmap(app->canvas_editor->clipboard.bitmap);
-		if(app->canvas_editor->selection.bitmap)
+		cep->selection.bitmap = al_clone_bitmap(cep->clipboard.bitmap);
+		if(cep->selection.bitmap)
 		{
+			if(in_place)
 			{
-				pa_initialize_box(&app->canvas_editor->selection.box, app->canvas_editor->view_x, app->canvas_editor->view_y, al_get_bitmap_width(app->canvas_editor->selection.bitmap), al_get_bitmap_height(app->canvas_editor->selection.bitmap), app->canvas_editor->peg_bitmap);
-				pa_update_box_handles(&app->canvas_editor->selection.box, app->canvas_editor->view_x, app->canvas_editor->view_y, app->canvas_editor->view_zoom);
+				x = cep->clipboard.x;
+				y = cep->clipboard.y;
 			}
-			app->canvas_editor->current_tool = PA_TOOL_SELECTION;
+			else
+			{
+				x = cep->view_x;
+				y = cep->view_y;
+			}
+			pa_initialize_box(&cep->selection.box, x, y, al_get_bitmap_width(cep->selection.bitmap), al_get_bitmap_height(cep->selection.bitmap), cep->peg_bitmap);
+			pa_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom);
+			cep->current_tool = PA_TOOL_SELECTION;
 		}
 		al_restore_state(&old_state);
 		t3f_refresh_menus();
 	}
 	t3f_debug_message("Exit pa_menu_edit_paste()\n");
+}
+
+int pa_menu_edit_paste(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	paste_helper(app->canvas_editor, false);
+
+	return 0;
+}
+
+int pa_menu_edit_paste_in_place(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	paste_helper(app->canvas_editor, true);
 
 	return 0;
 }

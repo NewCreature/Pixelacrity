@@ -35,6 +35,7 @@ bool pa_copy_canvas_to_clipboard(PA_CANVAS_EDITOR * cep, int layer, int x, int y
 	if(cep->clipboard.bitmap)
 	{
 		pa_render_canvas_to_bitmap(cep->canvas, layer, layer + 1, x, y, width, height, 0, cep->clipboard.bitmap);
+		cep->clipboard.x = x, cep->clipboard.y = y;
 		return true;
 	}
 	return false;

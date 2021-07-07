@@ -46,6 +46,7 @@ typedef struct
 {
 
 	ALLEGRO_BITMAP * bitmap;
+	int x, y;
 
 } PA_CLIPBOARD_DATA;
 
