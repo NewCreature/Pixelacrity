@@ -131,8 +131,8 @@ static void paste_helper(PA_CANVAS_EDITOR * cep, bool in_place)
 			}
 			else
 			{
-				x = cep->view_x;
-				y = cep->view_y;
+				x = cep->view_x + cep->view_width / 2 - al_get_bitmap_width(cep->selection.bitmap) / 2;
+				y = cep->view_y + cep->view_height / 2 - al_get_bitmap_height(cep->selection.bitmap) / 2;
 			}
 			pa_initialize_box(&cep->selection.box, x, y, al_get_bitmap_width(cep->selection.bitmap), al_get_bitmap_height(cep->selection.bitmap), cep->peg_bitmap);
 			pa_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom);
