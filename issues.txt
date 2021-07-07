@@ -14,10 +14,6 @@ Pixelacrity 0.2.2 Issues
 
 [ ]Add function to move a selection between layers.
 
-[ ]Allow moving selections between layers.
-
-[ ]Make switching layer float current selection.
-
 [ ]Selection should be unfloated any time we are performing an action that
    would cause a selection to be discarded.
 
@@ -456,3 +452,7 @@ Closed Issues
 [X]Reverse order of layer list to make it more intuitive.
 
 [X]Implement brush in rectangle tool.
+
+[X]Allow moving selections between layers.
+
+[X]Make switching layer float current selection.
