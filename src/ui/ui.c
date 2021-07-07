@@ -143,6 +143,7 @@ static void resize_color_palette(PA_UI * uip, int x, int y)
 
 void pa_resize_ui(PA_UI * uip)
 {
+	PA_CANVAS_EDITOR * canvas_editor = NULL;
 	T3GUI_THEME * default_theme;
 	int left_pane_width;
 	int right_pane_width;
@@ -217,6 +218,10 @@ void pa_resize_ui(PA_UI * uip)
 	resize_element(uip->element[PA_UI_ELEMENT_STATUS_RIGHT_MESSAGE], PA_UI_ELEMENT_SPACE, pos_y, t3f_default_view->width - PA_UI_ELEMENT_SPACE * 2, status_height);
 
 	resize_element(uip->element[PA_UI_ELEMENT_CANVAS_EDITOR], left_pane_width, 0, t3f_default_view->width - left_pane_width - right_pane_width, t3f_default_view->height - status_height);
+
+	canvas_editor = (PA_CANVAS_EDITOR *)uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->dp;
+	canvas_editor->view_width = uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->w / canvas_editor->view_zoom;
+	canvas_editor->view_height = uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->h / canvas_editor->view_zoom;
 }
 
 PA_UI * pa_create_ui(PA_CANVAS_EDITOR * cep)

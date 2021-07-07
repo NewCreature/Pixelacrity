@@ -68,6 +68,7 @@ typedef struct
 	float view_scroll_speed;
 	float view_fx, view_fy;
 	int view_x, view_y;
+	int view_width, view_height;
 	int view_zoom;
 	int hover_x, hover_y;
 	int last_hover_x, last_hover_y;
