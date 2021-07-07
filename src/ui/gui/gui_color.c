@@ -1,13 +1,10 @@
 #include "t3f/t3f.h"
 #include "t3gui/t3gui.h"
+#include "modules/color.h"
 #include "instance.h"
-#include "gui_color.h"
 
 int pa_gui_color_proc(int msg, T3GUI_ELEMENT * d, int c)
 {
-	ALLEGRO_STATE old_state;
-	float r, g, b, a;
-
 	switch(msg)
 	{
 		case MSG_MOUSEDOWN:
