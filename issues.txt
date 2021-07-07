@@ -3,8 +3,6 @@ Pixelacrity 0.2.2 Issues
 
 [ ]Fix oval tool missing pixels on slim ovals.
 
-[ ]Implement brush in rectangle tool.
-
 [ ]Allow scrolling the canvas by holding the mouse wheel button and moving the
    mouse.
 
@@ -456,3 +454,5 @@ Closed Issues
 [X]Fix tool undo not working when undo state contains transparent pixels.
 
 [X]Reverse order of layer list to make it more intuitive.
+
+[X]Implement brush in rectangle tool.
