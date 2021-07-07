@@ -3,6 +3,7 @@
 #include "ui/menu/menu_file_proc.h"
 #include "ui/menu/menu_edit_proc.h"
 #include "ui/menu/menu_layer_proc.h"
+#include "ui/menu/menu_frame_proc.h"
 #include "modules/canvas/canvas_helpers.h"
 
 void pa_handle_shortcuts(APP_INSTANCE * app)
@@ -63,6 +64,11 @@ void pa_handle_shortcuts(APP_INSTANCE * app)
 	{
 		pa_menu_file_load(0, app);
 		t3f_key[ALLEGRO_KEY_O] = 0;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && t3f_key[ALLEGRO_KEY_F])
+	{
+		pa_menu_frame_add_from_selection(0, app);
+		t3f_key[ALLEGRO_KEY_F] = 0;
 	}
 	else if(t3f_key[ALLEGRO_KEY_C])
 	{
