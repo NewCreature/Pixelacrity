@@ -587,14 +587,14 @@ int pa_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 		{
 			if(c < 0)
 			{
-				adjust_zoom(d, canvas_editor, 1);
-			}
-			else if(c > 0)
-			{
 				if(canvas_editor->view_zoom > 1)
 				{
 					adjust_zoom(d, canvas_editor, -1);
 				}
+			}
+			else if(c > 0)
+			{
+				adjust_zoom(d, canvas_editor, 1);
 			}
 			break;
 		}
