@@ -303,7 +303,7 @@ bool pa_import_image(PA_CANVAS_EDITOR * cep, const char * fn)
 	if(cep->selection.bitmap)
 	{
 		pa_select_canvas_editor_tool(cep, PA_TOOL_SELECTION);
-		pa_initialize_box(&cep->selection.box, 0, 0, al_get_bitmap_width(cep->selection.bitmap), al_get_bitmap_height(cep->selection.bitmap), cep->peg_bitmap);
+		pa_initialize_box(&cep->selection.box, cep->view_x, cep->view_y, al_get_bitmap_width(cep->selection.bitmap), al_get_bitmap_height(cep->selection.bitmap), cep->peg_bitmap);
 		pa_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom);
 	}
 	t3f_debug_message("Exit pa_import_image()\n");
