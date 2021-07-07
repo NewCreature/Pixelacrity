@@ -201,6 +201,77 @@ static void adjust_zoom(T3GUI_ELEMENT * d, PA_CANVAS_EDITOR * cep, int amount)
 	cep->view_fy = cep->view_y;
 }
 
+static void update_color_selections(PA_CANVAS_EDITOR * canvas_editor)
+{
+	/* handle left shade slider */
+	if(canvas_editor->old_left_shade_slider_d2 != canvas_editor->left_shade_slider_element->d2)
+	{
+		canvas_editor->left_shade_color = pa_shade_color(canvas_editor->left_base_color, (float)canvas_editor->left_shade_slider_element->d2 / 1000.0);
+		canvas_editor->left_color = canvas_editor->left_shade_color;
+		canvas_editor->last_left_shade_color = canvas_editor->left_shade_color;
+	}
+
+	/* handle left alpha slider */
+	if(canvas_editor->old_left_alpha_slider_d2 != canvas_editor->left_alpha_slider_element->d2)
+	{
+		canvas_editor->left_alpha_color = pa_alpha_color(canvas_editor->left_shade_color, (float)canvas_editor->left_alpha_slider_element->d2 / 1000.0);
+		canvas_editor->left_color = canvas_editor->left_alpha_color;
+		canvas_editor->last_left_alpha_color = canvas_editor->left_alpha_color;
+	}
+
+	/* handle changing the left base color */
+	if(!pa_color_equal(canvas_editor->left_base_color, canvas_editor->last_left_base_color))
+	{
+		canvas_editor->left_color = canvas_editor->left_base_color;
+		canvas_editor->last_left_base_color = canvas_editor->left_base_color;
+		pa_canvas_editor_update_pick_colors(canvas_editor);
+	}
+
+	/* handle changing the left color */
+	if(!pa_color_equal(canvas_editor->left_color, canvas_editor->last_left_color))
+	{
+		canvas_editor->last_left_color = canvas_editor->left_color;
+		canvas_editor->left_shade_slider_element->d2 = pa_get_color_shade(canvas_editor->left_color) * 1000.0;
+		canvas_editor->left_alpha_slider_element->d2 = pa_get_color_alpha(canvas_editor->left_color) * 1000.0;
+	}
+
+	/* handle the right shade slider */
+	if(canvas_editor->old_right_shade_slider_d2 != canvas_editor->right_shade_slider_element->d2)
+	{
+		canvas_editor->right_shade_color = pa_shade_color(canvas_editor->right_base_color, (float)canvas_editor->right_shade_slider_element->d2 / 1000.0);
+		canvas_editor->right_color = canvas_editor->right_shade_color;
+		canvas_editor->last_right_shade_color = canvas_editor->right_shade_color;
+	}
+
+	/* handle the right alpha slider */
+	if(canvas_editor->old_right_alpha_slider_d2 != canvas_editor->right_alpha_slider_element->d2)
+	{
+		canvas_editor->right_alpha_color = pa_alpha_color(canvas_editor->right_shade_color, (float)canvas_editor->right_alpha_slider_element->d2 / 1000.0);
+		canvas_editor->right_color = canvas_editor->right_alpha_color;
+		canvas_editor->last_right_alpha_color = canvas_editor->right_alpha_color;
+	}
+
+	/* handle changing the right base color */
+	if(!pa_color_equal(canvas_editor->right_base_color, canvas_editor->last_right_base_color))
+	{
+		canvas_editor->right_color = canvas_editor->right_base_color;
+		canvas_editor->last_right_base_color = canvas_editor->right_base_color;
+		pa_canvas_editor_update_pick_colors(canvas_editor);
+	}
+
+	/* handle changing the right color */
+	if(!pa_color_equal(canvas_editor->right_color, canvas_editor->last_right_color))
+	{
+		canvas_editor->last_right_color = canvas_editor->right_color;
+		canvas_editor->right_shade_slider_element->d2 = pa_get_color_shade(canvas_editor->right_color) * 1000.0;
+		canvas_editor->right_alpha_slider_element->d2 = pa_get_color_alpha(canvas_editor->right_color) * 1000.0;
+	}
+	canvas_editor->old_left_shade_slider_d2 = canvas_editor->left_shade_slider_element->d2;
+	canvas_editor->old_left_alpha_slider_d2 = canvas_editor->left_alpha_slider_element->d2;
+	canvas_editor->old_right_shade_slider_d2 = canvas_editor->right_shade_slider_element->d2;
+	canvas_editor->old_right_alpha_slider_d2 = canvas_editor->right_alpha_slider_element->d2;
+}
+
 int pa_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 {
 	PA_CANVAS_EDITOR * canvas_editor = (PA_CANVAS_EDITOR *)d->dp;
@@ -611,54 +682,7 @@ int pa_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			}
 			update_window_title(canvas_editor);
 //			update_cursor(canvas_editor);
-			if(!pa_color_equal(canvas_editor->left_base_color, canvas_editor->last_left_base_color))
-			{
-				canvas_editor->left_color = canvas_editor->left_base_color;
-				canvas_editor->last_left_base_color = canvas_editor->left_base_color;
-				pa_canvas_editor_update_pick_colors(canvas_editor);
-			}
-			if(!pa_color_equal(canvas_editor->left_color, canvas_editor->last_left_color))
-			{
-				canvas_editor->last_left_color = canvas_editor->left_color;
-				canvas_editor->left_shade_slider_element->d2 = pa_get_color_shade(canvas_editor->left_color) * 1000.0;
-				canvas_editor->left_alpha_slider_element->d2 = pa_get_color_alpha(canvas_editor->left_color) * 1000.0;
-			}
-			canvas_editor->left_shade_color = pa_shade_color(canvas_editor->left_base_color, (float)canvas_editor->left_shade_slider_element->d2 / 1000.0);
-			if(!pa_color_equal(canvas_editor->left_shade_color, canvas_editor->last_left_shade_color))
-			{
-				canvas_editor->left_color = canvas_editor->left_shade_color;
-				canvas_editor->last_left_shade_color = canvas_editor->left_shade_color;
-			}
-			canvas_editor->left_alpha_color = pa_alpha_color(canvas_editor->left_shade_color, (float)canvas_editor->left_alpha_slider_element->d2 / 1000.0);
-			if(!pa_color_equal(canvas_editor->left_alpha_color, canvas_editor->last_left_alpha_color))
-			{
-				canvas_editor->left_color = canvas_editor->left_alpha_color;
-				canvas_editor->last_left_alpha_color = canvas_editor->left_alpha_color;
-			}
-			if(!pa_color_equal(canvas_editor->right_base_color, canvas_editor->last_right_base_color))
-			{
-				canvas_editor->right_color = canvas_editor->right_base_color;
-				canvas_editor->last_right_base_color = canvas_editor->right_base_color;
-				pa_canvas_editor_update_pick_colors(canvas_editor);
-			}
-			if(!pa_color_equal(canvas_editor->right_color, canvas_editor->last_right_color))
-			{
-				canvas_editor->last_right_color = canvas_editor->right_color;
-				canvas_editor->right_shade_slider_element->d2 = pa_get_color_shade(canvas_editor->right_color) * 1000.0;
-				canvas_editor->right_alpha_slider_element->d2 = pa_get_color_alpha(canvas_editor->right_color) * 1000.0;
-			}
-			canvas_editor->right_shade_color = pa_shade_color(canvas_editor->right_base_color, (float)canvas_editor->right_shade_slider_element->d2 / 1000.0);
-			if(!pa_color_equal(canvas_editor->right_shade_color, canvas_editor->last_right_shade_color))
-			{
-				canvas_editor->right_color = canvas_editor->right_shade_color;
-				canvas_editor->last_right_shade_color = canvas_editor->right_shade_color;
-			}
-			canvas_editor->right_alpha_color = pa_alpha_color(canvas_editor->right_shade_color, (float)canvas_editor->right_alpha_slider_element->d2 / 1000.0);
-			if(!pa_color_equal(canvas_editor->right_alpha_color, canvas_editor->last_right_alpha_color))
-			{
-				canvas_editor->right_color = canvas_editor->right_alpha_color;
-				canvas_editor->last_right_alpha_color = canvas_editor->right_alpha_color;
-			}
+			update_color_selections(canvas_editor);
 			canvas_editor->view_scroll_speed = 8.0 / (float)canvas_editor->view_zoom;
 			if(t3f_key[ALLEGRO_KEY_LEFT] || t3f_key[ALLEGRO_KEY_A])
 			{

@@ -105,9 +105,13 @@ typedef struct
 	ALLEGRO_COLOR palette[PA_COLOR_PALETTE_MAX];
 
 	T3GUI_ELEMENT * left_shade_slider_element;
+	int old_left_shade_slider_d2;
 	T3GUI_ELEMENT * left_alpha_slider_element;
+	int old_left_alpha_slider_d2;
 	T3GUI_ELEMENT * right_shade_slider_element;
+	int old_right_shade_slider_d2;
 	T3GUI_ELEMENT * right_alpha_slider_element;
+	int old_right_alpha_slider_d2;
 	T3GUI_ELEMENT * editor_element;
 
 	int signal;
