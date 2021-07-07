@@ -265,7 +265,10 @@ void pa_draw_rectangle(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLE
 {
 	pa_sort_coordinates(&x1, &x2);
 	pa_sort_coordinates(&y1, &y2);
-	al_draw_rectangle((float)x1 + 0.5, (float)y1 + 0.5, (float)x2 + 0.5, (float)y2 + 0.5, color, 0.0);
+	pa_draw_line(x1, y1, x2, y1, bp, color);
+	pa_draw_line(x2, y1, x2, y2, bp, color);
+	pa_draw_line(x2, y2, x1, y2, bp, color);
+	pa_draw_line(x1, y2, x1, y1, bp, color);
 }
 
 void pa_draw_filled_rectangle(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_COLOR color)
