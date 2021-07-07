@@ -11,8 +11,8 @@ static bool load_canvas_full_f(PA_CANVAS * cp, ALLEGRO_FILE * fp, const char * f
 	char load;
 
 	t3f_debug_message("Enter load_canvas_fill_f()\n");
-	max_width = al_fread32le(fp);
-	max_height = al_fread32le(fp);
+	cp->layer_width = al_fread32le(fp);
+	cp->layer_height = al_fread32le(fp);
 	max_layers = al_fread32le(fp);
 	for(i = 0; i < max_layers; i++)
 	{
@@ -21,9 +21,9 @@ static bool load_canvas_full_f(PA_CANVAS * cp, ALLEGRO_FILE * fp, const char * f
 			goto fail;
 		}
 		cp->layer[i]->flags = al_fread32le(fp);
-		for(j = 0; j < max_height; j++)
+		for(j = 0; j < cp->layer_height; j++)
 		{
-			for(k = 0; k < max_width; k++)
+			for(k = 0; k < cp->layer_width; k++)
 			{
 				load = al_fgetc(fp);
 				if(load)
@@ -220,7 +220,7 @@ PA_CANVAS * pa_load_canvas(const char * fn, int bitmap_max)
 
 static int autodetect_method(PA_CANVAS * cp)
 {
-	return PA_CANVAS_SAVE_MINIMAL;
+	return PA_CANVAS_SAVE_FULL;
 }
 
 static bool save_canvas_full_f(PA_CANVAS * cp, ALLEGRO_FILE * fp, const char * format)
