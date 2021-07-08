@@ -118,6 +118,36 @@ static int menu_edit_paste_update_proc(ALLEGRO_MENU * mp, int item, void * data)
 	return 0;
 }
 
+static int menu_edit_unfloat_update_proc(ALLEGRO_MENU * mp, int item, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	if(app->canvas_editor->selection.bitmap)
+	{
+		t3f_set_menu_item_flags(mp, item, 0);
+	}
+	else
+	{
+		t3f_set_menu_item_flags(mp, item, ALLEGRO_MENU_ITEM_DISABLED);
+	}
+	return 0;
+}
+
+static int menu_edit_float_update_proc(ALLEGRO_MENU * mp, int item, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0 && !app->canvas_editor->selection.bitmap)
+	{
+		t3f_set_menu_item_flags(mp, item, 0);
+	}
+	else
+	{
+		t3f_set_menu_item_flags(mp, item, ALLEGRO_MENU_ITEM_DISABLED);
+	}
+	return 0;
+}
+
 static int menu_layer_move_up_update_proc(ALLEGRO_MENU * mp, int item, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
@@ -179,6 +209,9 @@ bool pa_setup_menus(PA_UI * uip)
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT], "Copy", 0, NULL, pa_menu_edit_copy, menu_edit_copy_update_proc);
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT], "Paste", 0, NULL, pa_menu_edit_paste, menu_edit_paste_update_proc);
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT], "Paste In Place", 0, NULL, pa_menu_edit_paste_in_place, menu_edit_paste_update_proc);
+	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT], NULL, 0, NULL, NULL, NULL);
+	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT], "Float Selection", 0, NULL, pa_menu_edit_float_selection, menu_edit_float_update_proc);
+	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT], "Unfloat Selection", 0, NULL, pa_menu_edit_unfloat_selection, menu_edit_unfloat_update_proc);
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT], NULL, 0, NULL, NULL, NULL);
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT], "Delete", 0, NULL, pa_menu_edit_delete, menu_edit_copy_update_proc);
 

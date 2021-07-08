@@ -219,3 +219,29 @@ int pa_menu_edit_delete(int id, void * data)
 
 	return 0;
 }
+
+int pa_menu_edit_float_selection(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0)
+	{
+		pa_float_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box);
+		t3f_refresh_menus();
+	}
+	return 0;
+}
+
+int pa_menu_edit_unfloat_selection(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	if(app->canvas_editor->selection.bitmap)
+	{
+		pa_unfloat_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box);
+		app->canvas_editor->selection.box.width = 0;
+		app->canvas_editor->selection.box.height = 0;
+		t3f_refresh_menus();
+	}
+	return 0;
+}
