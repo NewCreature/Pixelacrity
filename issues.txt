@@ -6,8 +6,6 @@ Pixelacrity 0.2.3 Issues
 [ ]Allow scrolling the canvas by holding the mouse wheel button and moving the
    mouse.
 
-[ ]Add shortcut keys for changing between tools.
-
 [ ]Add a way to have filled shapes use the other color for outline.
 
 [ ]Selection should be unfloated any time we are performing an action that
@@ -483,3 +481,5 @@ Closed Issues
 [X]Add function to move a selection between layers.
 
 [X]Fix right-clicking a color not getting correct color on first click.
+
+[X]Add shortcut keys for changing between tools.
