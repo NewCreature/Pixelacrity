@@ -61,8 +61,6 @@ Pixelacrity 0.2.3 Issues
 
 [ ]Can't create new selection after cutting a selection.
 
-[ ]Don't allow 1x1 selections.
-
 
 Pixelacrity 0.3 Issues
 ----------------------
@@ -483,3 +481,5 @@ Closed Issues
 [X]Fix right-clicking a color not getting correct color on first click.
 
 [X]Add shortcut keys for changing between tools.
+
+[X]Don't allow 1x1 selections.
