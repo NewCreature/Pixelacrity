@@ -438,6 +438,7 @@ int pa_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 		}
 		case MSG_MOUSEUP:
 		{
+			update_tool_variables(canvas_editor);
 			canvas_editor->release_x = canvas_editor->hover_x;
 			canvas_editor->release_y = canvas_editor->hover_y;
 			if(canvas_editor->tool_state == PA_TOOL_STATE_DRAWING)
