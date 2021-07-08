@@ -102,4 +102,54 @@ void pa_handle_shortcuts(APP_INSTANCE * app)
 		app->canvas_editor->canvas->layer[app->canvas_editor->current_layer]->flags ^= PA_CANVAS_FLAG_HIDDEN;
 		t3f_key[ALLEGRO_KEY_H] = 0;
 	}
+	else if(t3f_key[ALLEGRO_KEY_1])
+	{
+		pa_select_canvas_editor_tool(app->canvas_editor, 0);
+		t3f_key[ALLEGRO_KEY_1] = 0;
+	}
+	else if(t3f_key[ALLEGRO_KEY_2])
+	{
+		pa_select_canvas_editor_tool(app->canvas_editor, 1);
+		t3f_key[ALLEGRO_KEY_2] = 0;
+	}
+	else if(t3f_key[ALLEGRO_KEY_3])
+	{
+		pa_select_canvas_editor_tool(app->canvas_editor, 2);
+		t3f_key[ALLEGRO_KEY_3] = 0;
+	}
+	else if(t3f_key[ALLEGRO_KEY_4])
+	{
+		pa_select_canvas_editor_tool(app->canvas_editor, 3);
+		t3f_key[ALLEGRO_KEY_4] = 0;
+	}
+	else if(t3f_key[ALLEGRO_KEY_5])
+	{
+		pa_select_canvas_editor_tool(app->canvas_editor, 4);
+		t3f_key[ALLEGRO_KEY_5] = 0;
+	}
+	else if(t3f_key[ALLEGRO_KEY_6])
+	{
+		pa_select_canvas_editor_tool(app->canvas_editor, 5);
+		t3f_key[ALLEGRO_KEY_6] = 0;
+	}
+	else if(t3f_key[ALLEGRO_KEY_7])
+	{
+		pa_select_canvas_editor_tool(app->canvas_editor, 6);
+		t3f_key[ALLEGRO_KEY_7] = 0;
+	}
+	else if(t3f_key[ALLEGRO_KEY_8])
+	{
+		pa_select_canvas_editor_tool(app->canvas_editor, 7);
+		t3f_key[ALLEGRO_KEY_8] = 0;
+	}
+	else if(t3f_key[ALLEGRO_KEY_9])
+	{
+		pa_select_canvas_editor_tool(app->canvas_editor, 8);
+		t3f_key[ALLEGRO_KEY_9] = 0;
+	}
+	else if(t3f_key[ALLEGRO_KEY_0])
+	{
+		pa_select_canvas_editor_tool(app->canvas_editor, 9);
+		t3f_key[ALLEGRO_KEY_0] = 0;
+	}
 }
