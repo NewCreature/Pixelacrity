@@ -43,8 +43,6 @@ Pixelacrity 0.2.3 Issues
 
 [ ]Implement full screen preview.
 
-[ ]Add float/unfloat selection options to Edit menu.
-
 [ ]Make cut undoable.
 
 [ ]Can't create new selection after cutting a selection.
@@ -483,3 +481,5 @@ Closed Issues
   [X]I think the variable being used to decide where to draw is not synchronized
      with the variable that is being used to determine the size of the area
      taken up by the primitive.
+
+[X]Add float/unfloat selection options to Edit menu.
