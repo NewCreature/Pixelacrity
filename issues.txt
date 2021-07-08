@@ -57,6 +57,14 @@ Pixelacrity 0.2.3 Issues
 
 [ ]Implement full screen preview.
 
+[ ]Add float/unfloat selection options to Edit menu.
+
+[ ]Make cut undoable.
+
+[ ]Can't create new selection after cutting a selection.
+
+[ ]Don't allow 1x1 selections.
+
 
 Pixelacrity 0.3 Issues
 ----------------------
