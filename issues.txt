@@ -21,11 +21,6 @@ Pixelacrity 0.2.3 Issues
 
 [ ]Make selections rotatable and scaleable.
 
-[ ]Importing an image doesn't always work.
-
-   [ ]If I load an image as a canvas and immediately try to import, nothing is
-      actually imported.
-
 [ ]Tool undo leaves "droppings" on canvas occasionally. Seems like it has to
    do with the mouse moving while the button is released.
 
@@ -483,3 +478,8 @@ Closed Issues
 [X]Add shortcut keys for changing between tools.
 
 [X]Don't allow 1x1 selections.
+
+[X]Importing an image doesn't always work.
+
+   [X]If I load an image as a canvas and immediately try to import, nothing is
+      actually imported.
