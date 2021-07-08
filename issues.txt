@@ -21,13 +21,6 @@ Pixelacrity 0.2.3 Issues
 
 [ ]Make selections rotatable and scaleable.
 
-[ ]Tool undo leaves "droppings" on canvas occasionally. Seems like it has to
-   do with the mouse moving while the button is released.
-
-  [ ]I think the variable being used to decide where to draw is not synchronized
-     with the variable that is being used to determine the size of the area
-     taken up by the primitive.
-
 [ ]Implement tool modes for various tools.
 
    [ ]Snap line to angle.
@@ -483,3 +476,10 @@ Closed Issues
 
    [X]If I load an image as a canvas and immediately try to import, nothing is
       actually imported.
+
+[X]Tool undo leaves "droppings" on canvas occasionally. Seems like it has to
+   do with the mouse moving while the button is released.
+
+  [X]I think the variable being used to decide where to draw is not synchronized
+     with the variable that is being used to determine the size of the area
+     taken up by the primitive.
