@@ -45,8 +45,6 @@ Pixelacrity 0.2.3 Issues
 
 [ ]Make cut undoable.
 
-[ ]Can't create new selection after cutting a selection.
-
 [ ]Implement flip and turn for selections.
 
 
@@ -485,3 +483,5 @@ Closed Issues
      taken up by the primitive.
 
 [X]Add float/unfloat selection options to Edit menu.
+
+[X]Can't create new selection after cutting a selection.
