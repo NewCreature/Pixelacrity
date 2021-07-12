@@ -13,7 +13,6 @@ T3GUI_OBJECTS      = t3gui/dialog.o\
 # modules used by our project
 APP_MODULE_OBJECTS = modules/box.o\
                      modules/color.o\
-                     modules/combine_bitmap.o\
                      modules/date.o\
                      modules/ega_palette.o\
                      modules/pixel_shader.o\
