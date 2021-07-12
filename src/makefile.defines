@@ -18,6 +18,7 @@ APP_MODULE_OBJECTS = modules/box.o\
                      modules/pixel_shader.o\
                      modules/primitives.o\
                      modules/queue.o\
+                     modules/bitmap.o\
                      modules/canvas/canvas.o\
                      modules/canvas/canvas_helpers.o\
                      modules/canvas/canvas_file.o\
