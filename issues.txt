@@ -47,6 +47,8 @@ Pixelacrity 0.2.3 Issues
 
 [ ]Can't create new selection after cutting a selection.
 
+[ ]Implement flip and turn for selections.
+
 
 Pixelacrity 0.3 Issues
 ----------------------
