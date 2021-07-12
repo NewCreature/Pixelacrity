@@ -60,20 +60,13 @@ int pa_menu_edit_cut(int id, void * data)
 		{
 			pa_copy_canvas_to_clipboard(app->canvas_editor, app->canvas_editor->current_layer, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, app->canvas_editor->selection.box.width, app->canvas_editor->selection.box.height);
 			pa_draw_primitive_to_canvas(app->canvas_editor->canvas, app->canvas_editor->current_layer, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, app->canvas_editor->selection.box.end_x, app->canvas_editor->selection.box.end_y, NULL, al_map_rgba_f(0.0, 0.0, 0.0, 0.0), PA_RENDER_COPY, NULL,  pa_draw_filled_rectangle);
-			app->canvas_editor->selection.box.width = 0;
-			app->canvas_editor->selection.box.height = 0;
+			pa_clear_canvas_editor_selection(app->canvas_editor);
 		}
 		else
 		{
 			if(pa_copy_bitmap_to_clipboard(app->canvas_editor, app->canvas_editor->selection.bitmap))
 			{
-				if(app->canvas_editor->selection.bitmap)
-				{
-					al_destroy_bitmap(app->canvas_editor->selection.bitmap);
-					app->canvas_editor->selection.bitmap = NULL;
-				}
-				app->canvas_editor->selection.box.width = 0;
-				app->canvas_editor->selection.box.height = 0;
+				pa_clear_canvas_editor_selection(app->canvas_editor);
 			}
 		}
 		t3f_refresh_menus();
@@ -199,19 +192,12 @@ int pa_menu_edit_delete(int id, void * data)
 				pa_finalize_undo(app->canvas_editor);
 			}
 			pa_draw_primitive_to_canvas(app->canvas_editor->canvas, app->canvas_editor->current_layer, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, app->canvas_editor->selection.box.end_x, app->canvas_editor->selection.box.end_y, NULL, al_map_rgba_f(0.0, 0.0, 0.0, 0.0), PA_RENDER_COPY, NULL,  pa_draw_filled_rectangle);
-			app->canvas_editor->selection.box.width = 0;
-			app->canvas_editor->selection.box.height = 0;
+			pa_clear_canvas_editor_selection(app->canvas_editor);
 			app->canvas_editor->modified++;
 		}
 		else
 		{
-			if(app->canvas_editor->selection.bitmap)
-			{
-				al_destroy_bitmap(app->canvas_editor->selection.bitmap);
-				app->canvas_editor->selection.bitmap = NULL;
-			}
-			app->canvas_editor->selection.box.width = 0;
-			app->canvas_editor->selection.box.height = 0;
+			pa_clear_canvas_editor_selection(app->canvas_editor);
 		}
 		t3f_refresh_menus();
 	}
@@ -239,8 +225,7 @@ int pa_menu_edit_unfloat_selection(int id, void * data)
 	if(app->canvas_editor->selection.bitmap)
 	{
 		pa_unfloat_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box);
-		app->canvas_editor->selection.box.width = 0;
-		app->canvas_editor->selection.box.height = 0;
+		pa_clear_canvas_editor_selection(app->canvas_editor);
 		t3f_refresh_menus();
 	}
 	return 0;

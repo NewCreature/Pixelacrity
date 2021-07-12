@@ -349,14 +349,7 @@ bool pa_apply_unfloat_selection_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, 
 	pa_shift_canvas_editor_variables(cep, cep->shift_x * cep->canvas->bitmap_size, cep->shift_y * cep->canvas->bitmap_size);
 	pa_import_bitmap_to_canvas(cep->canvas, bp, layer, cep->selection.box.start_x, cep->selection.box.start_y);
 	al_destroy_bitmap(bp);
-	cep->selection.box.width = 0;
-	cep->selection.box.height = 0;
-	if(cep->selection.bitmap)
-	{
-		printf("selection undo error 1\n");
-		al_destroy_bitmap(cep->selection.bitmap);
-		cep->selection.bitmap = NULL;
-	}
+	pa_clear_canvas_editor_selection(cep);
 	t3f_debug_message("Exit pa_apply_unfloat_selection_redo()\n");
 	return true;
 

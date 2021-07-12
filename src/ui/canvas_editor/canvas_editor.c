@@ -190,6 +190,18 @@ void pa_center_canvas_editor(PA_CANVAS_EDITOR * cep, int frame)
 	cep->view_fy = cep->view_y;
 }
 
+void pa_clear_canvas_editor_selection(PA_CANVAS_EDITOR * cep)
+{
+	if(cep->selection.bitmap)
+	{
+		al_destroy_bitmap(cep->selection.bitmap);
+		cep->selection.bitmap = NULL;
+	}
+	cep->selection.box.width = 0;
+	cep->selection.box.height = 0;
+	cep->selection.box.state = PA_BOX_STATE_IDLE;
+}
+
 static bool create_unfloat_undo(PA_CANVAS_EDITOR * cep)
 {
 	char undo_path[1024];
@@ -318,8 +330,7 @@ void pa_select_canvas_editor_tool(PA_CANVAS_EDITOR * cep, int tool)
 		{
 			pa_unfloat_canvas_editor_selection(cep, &cep->selection.box);
 		}
-		cep->selection.box.width = 0;
-		cep->selection.box.height = 0;
+		pa_clear_canvas_editor_selection(cep);
 	}
 	cep->current_tool = tool;
 }
@@ -332,8 +343,7 @@ void pa_select_canvas_editor_layer(PA_CANVAS_EDITOR * cep, int layer)
 		{
 			if(!cep->selection.bitmap)
 			{
-				cep->selection.box.width = 0;
-				cep->selection.box.height = 0;
+				pa_clear_canvas_editor_selection(cep);
 			}
 		}
 		cep->current_layer = layer;

@@ -569,8 +569,7 @@ int pa_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 					canvas_editor->tool_state = PA_TOOL_STATE_OFF;
 					if(canvas_editor->selection.box.width < 2 && canvas_editor->selection.box.height < 2)
 					{
-						canvas_editor->selection.box.width = 0;
-						canvas_editor->selection.box.height = 0;
+						pa_clear_canvas_editor_selection(canvas_editor);
 					}
 					t3f_refresh_menus();
 					break;
