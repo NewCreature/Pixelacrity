@@ -13,10 +13,6 @@ Pixelacrity 0.2.3 Issues
 
    [ ]Importing an image should unfloat the selection.
 
-[ ]Not all frames are rendering.
-
-   [ ]Need to shift frames when shifting the canvas.
-
 [ ]Make layer swapping undoable.
 
 [ ]Make selections rotatable and scaleable.
@@ -485,3 +481,7 @@ Closed Issues
 [X]Can't create new selection after cutting a selection.
 
 [X]Implement flip and turn for selections.
+
+[X]Not all frames are rendering.
+
+   [X]Need to shift frames when shifting the canvas.
