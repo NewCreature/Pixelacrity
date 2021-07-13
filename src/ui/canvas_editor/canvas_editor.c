@@ -302,6 +302,8 @@ void pa_unfloat_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp)
 
 void pa_shift_canvas_editor_variables(PA_CANVAS_EDITOR * cep, int ox, int oy)
 {
+	int i;
+
 	cep->view_x += ox;
 	cep->view_y += oy;
 	cep->view_fx = cep->view_x;
@@ -320,6 +322,11 @@ void pa_shift_canvas_editor_variables(PA_CANVAS_EDITOR * cep, int ox, int oy)
 	cep->selection.box.middle_y += oy;
 	cep->selection.box.end_x += ox;
 	cep->selection.box.end_y += oy;
+	for(i = 0; i < cep->canvas->frame_max; i++)
+	{
+		cep->canvas->frame[i]->box.start_x += ox;
+		cep->canvas->frame[i]->box.start_y += oy;
+	}
 }
 
 void pa_select_canvas_editor_tool(PA_CANVAS_EDITOR * cep, int tool)
