@@ -1,4 +1,5 @@
 #include "instance.h"
+#include "modules/bitmap.h"
 #include "modules/canvas/canvas.h"
 #include "modules/canvas/canvas_helpers.h"
 #include "modules/primitives.h"
@@ -152,6 +153,86 @@ int pa_menu_edit_paste_in_place(int id, void * data)
 
 	paste_helper(app->canvas_editor, true);
 
+	return 0;
+}
+
+int pa_menu_edit_flip_horizontal(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+	bool need_float = false;
+
+	if(!app->canvas_editor->selection.bitmap)
+	{
+		pa_handle_float_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box);
+		need_float = true;
+	}
+	if(app->canvas_editor->selection.bitmap)
+	{
+		pa_flip_bitmap(app->canvas_editor->selection.bitmap, true, false);
+	}
+	if(need_float)
+	{
+		pa_handle_unfloat_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box);
+	}
+	return 0;
+}
+
+int pa_menu_edit_flip_vertical(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+	bool need_float = false;
+
+	if(!app->canvas_editor->selection.bitmap)
+	{
+		pa_handle_float_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box);
+		need_float = true;
+	}
+	if(app->canvas_editor->selection.bitmap)
+	{
+		pa_flip_bitmap(app->canvas_editor->selection.bitmap, false, true);
+	}
+	if(need_float)
+	{
+		pa_handle_unfloat_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box);
+	}
+	return 0;
+}
+
+int pa_menu_edit_turn_clockwise(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+	bool need_float = false;
+
+	if(!app->canvas_editor->selection.bitmap)
+	{
+		pa_handle_float_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box);
+		need_float = true;
+	}
+	if(app->canvas_editor->selection.bitmap)
+	{
+		pa_turn_bitmap(&app->canvas_editor->selection.bitmap, 1);
+		pa_initialize_box(&app->canvas_editor->selection.box, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, al_get_bitmap_width(app->canvas_editor->selection.bitmap), al_get_bitmap_height(app->canvas_editor->selection.bitmap), app->canvas_editor->peg_bitmap);
+		pa_update_box_handles(&app->canvas_editor->selection.box, app->canvas_editor->view_x, app->canvas_editor->view_y, app->canvas_editor->view_zoom);
+	}
+	return 0;
+}
+
+int pa_menu_edit_turn_counter_clockwise(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+	bool need_float = false;
+
+	if(!app->canvas_editor->selection.bitmap)
+	{
+		pa_handle_float_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box);
+		need_float = true;
+	}
+	if(app->canvas_editor->selection.bitmap)
+	{
+		pa_turn_bitmap(&app->canvas_editor->selection.bitmap, -1);
+		pa_initialize_box(&app->canvas_editor->selection.box, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, al_get_bitmap_width(app->canvas_editor->selection.bitmap), al_get_bitmap_height(app->canvas_editor->selection.bitmap), app->canvas_editor->peg_bitmap);
+		pa_update_box_handles(&app->canvas_editor->selection.box, app->canvas_editor->view_x, app->canvas_editor->view_y, app->canvas_editor->view_zoom);
+	}
 	return 0;
 }
 

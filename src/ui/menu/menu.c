@@ -210,6 +210,11 @@ bool pa_setup_menus(PA_UI * uip)
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT], "Paste", 0, NULL, pa_menu_edit_paste, menu_edit_paste_update_proc);
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT], "Paste In Place", 0, NULL, pa_menu_edit_paste_in_place, menu_edit_paste_update_proc);
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT], NULL, 0, NULL, NULL, NULL);
+	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT], "Flip Horizontally", 0, NULL, pa_menu_edit_flip_horizontal, menu_edit_copy_update_proc);
+	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT], "Flip Vertically", 0, NULL, pa_menu_edit_flip_vertical, menu_edit_copy_update_proc);
+	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT], "Turn Clockwise", 0, NULL, pa_menu_edit_turn_clockwise, menu_edit_copy_update_proc);
+	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT], "Turn Counter-Clockwise", 0, NULL, pa_menu_edit_turn_counter_clockwise, menu_edit_copy_update_proc);
+	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT], NULL, 0, NULL, NULL, NULL);
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT], "Float Selection", 0, NULL, pa_menu_edit_float_selection, menu_edit_float_update_proc);
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT], "Unfloat Selection", 0, NULL, pa_menu_edit_unfloat_selection, menu_edit_unfloat_update_proc);
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT], NULL, 0, NULL, NULL, NULL);
