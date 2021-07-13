@@ -2,7 +2,6 @@
 #include "modules/canvas/canvas.h"
 #include "modules/canvas/canvas_helpers.h"
 #include "modules/primitives.h"
-#include "modules/combine_bitmap.h"
 #include "ui/canvas_editor/canvas_editor.h"
 
 /*void pa_tool_selection_logic(PA_CANVAS_EDITOR * cep)

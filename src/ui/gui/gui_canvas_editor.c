@@ -21,7 +21,6 @@
 #include "modules/date.h"
 #include "modules/color.h"
 #include "modules/canvas/flood_fill.h"
-#include "modules/combine_bitmap.h"
 
 void pa_canvas_editor_update_pick_colors(PA_CANVAS_EDITOR * cep)
 {
