@@ -1,4 +1,4 @@
-Pixelacrity 0.2.3 Issues
+Pixelacrity 0.2.4 Issues
 ------------------------
 
 [ ]Fix oval tool missing pixels on slim ovals.
