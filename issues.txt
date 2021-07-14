@@ -35,9 +35,6 @@ Pixelacrity 0.2.4 Issues
 
 [ ]Consider making selections always floating.
 
-[ ]Paste in place doesn't paste to the correct location if recopying a pasted-
-   in-place selection.
-
 [ ]Get "Can't allocate memory" when attempting to float a blank selection on an
    empty canvas.
 
@@ -501,3 +498,6 @@ Closed Issues
    [X]Snap oval to circle.
 
    [X]Snap floating selection to 90 degree angle from starting position.
+
+[X]Paste in place doesn't paste to the correct location if recopying a pasted-
+   in-place selection.
