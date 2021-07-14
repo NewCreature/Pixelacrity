@@ -48,6 +48,10 @@ Pixelacrity 0.2.4 Issues
 [ ]Paste in place doesn't paste to the correct location if recopying a pasted-
    in-place selection.
 
+[ ]Crash when using flood fill.
+
+   [ ]Log said drawing a line immediately before.
+
 
 Pixelacrity 0.3 Issues
 ----------------------
