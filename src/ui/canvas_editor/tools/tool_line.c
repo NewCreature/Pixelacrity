@@ -2,6 +2,7 @@
 #include "modules/canvas/canvas.h"
 #include "modules/primitives.h"
 #include "ui/canvas_editor/canvas_editor.h"
+#include "modules/snap.h"
 
 void pa_tool_line_logic(PA_CANVAS_EDITOR * cep)
 {
@@ -13,6 +14,12 @@ void pa_tool_line_logic(PA_CANVAS_EDITOR * cep)
 	start_y = cep->click_y - cep->view_y;
 	end_x = cep->hover_x - cep->view_x;
 	end_y = cep->hover_y - cep->view_y;
+
+	/* apply constraint if user is pressing Control */
+	if(t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL])
+	{
+		pa_snap_coordinates(start_x, start_y, &end_x, &end_y, 0, ALLEGRO_PI / 16.0);
+	}
 
 	cep->scratch_offset_x = cep->view_x;
 	cep->scratch_offset_y = cep->view_y;
