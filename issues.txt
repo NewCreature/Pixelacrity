@@ -19,7 +19,7 @@ Pixelacrity 0.2.4 Issues
 
 [ ]Implement tool modes for various tools.
 
-   [ ]Snap line to angle.
+   [X]Snap line to angle.
 
    [ ]Snap rectangle to square.
 
