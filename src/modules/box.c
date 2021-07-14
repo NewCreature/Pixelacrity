@@ -255,7 +255,10 @@ void pa_box_logic(PA_BOX * bp, int view_x, int view_y, int view_zoom, int offset
 			start_y = bp->click_y;
 			end_x = bp->hover_x;
 			end_y = bp->hover_y;
-			pa_snap_coordinates(start_x, start_y, &end_x, &end_y, 0, ALLEGRO_PI / 2.0);
+			if(snap)
+			{
+				pa_snap_coordinates(start_x, start_y, &end_x, &end_y, 0, ALLEGRO_PI / 2.0);
+			}
 			pa_setup_box(bp, end_x - (bp->click_x - bp->click_start_x), end_y - (bp->click_y - bp->click_start_y), bp->width, bp->height);
 			bp->click_tick++;
 			break;
