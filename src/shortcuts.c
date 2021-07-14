@@ -27,7 +27,7 @@ void pa_handle_shortcuts(APP_INSTANCE * app)
 	}
 	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && t3f_key[ALLEGRO_KEY_V])
 	{
-		pa_menu_edit_paste(0, app);
+		pa_menu_edit_paste(-1, app);
 		t3f_key[ALLEGRO_KEY_V] = 0;
 	}
 	else if(t3f_key[ALLEGRO_KEY_DELETE])

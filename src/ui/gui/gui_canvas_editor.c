@@ -271,13 +271,31 @@ static void update_color_selections(PA_CANVAS_EDITOR * canvas_editor)
 	canvas_editor->old_right_alpha_slider_d2 = canvas_editor->right_alpha_slider_element->d2;
 }
 
+static void pa_update_selection(PA_CANVAS_EDITOR * canvas_editor, T3GUI_ELEMENT * d)
+{
+	PA_BOX old_box;
+
+	if(canvas_editor->selection.box.width > 0 && canvas_editor->selection.box.height > 0)
+	{
+		memcpy(&old_box, &canvas_editor->selection.box, sizeof(PA_BOX));
+		pa_update_box_handles(&canvas_editor->selection.box, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom);
+		pa_box_logic(&canvas_editor->selection.box, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y);
+		if(!canvas_editor->selection.bitmap && (canvas_editor->selection.box.start_x != old_box.start_x || canvas_editor->selection.box.start_y != old_box.start_y))
+		{
+			if(canvas_editor->selection.box.state == PA_BOX_STATE_MOVING)
+			{
+				pa_float_canvas_editor_selection(canvas_editor, &old_box);
+			}
+		}
+	}
+}
+
 int pa_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 {
 	PA_CANVAS_EDITOR * canvas_editor = (PA_CANVAS_EDITOR *)d->dp;
 	char frame_name[256];
 	int frame_x, frame_y, frame_width, frame_height;
 	int cx, cy, tx, ty;
-	PA_BOX old_box;
 	T3GUI_THEME * theme;
 	ALLEGRO_COLOR color = t3f_color_black;
 	bool made_undo = false;
@@ -640,19 +658,7 @@ int pa_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 				}
 				case PA_TOOL_SELECTION:
 				{
-					if(canvas_editor->selection.box.width > 0 && canvas_editor->selection.box.height > 0)
-					{
-						memcpy(&old_box, &canvas_editor->selection.box, sizeof(PA_BOX));
-						pa_update_box_handles(&canvas_editor->selection.box, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom);
-						pa_box_logic(&canvas_editor->selection.box, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y);
-						if(!canvas_editor->selection.bitmap && (canvas_editor->selection.box.start_x != old_box.start_x || canvas_editor->selection.box.start_y != old_box.start_y))
-						{
-							if(canvas_editor->selection.box.state == PA_BOX_STATE_MOVING)
-							{
-								pa_float_canvas_editor_selection(canvas_editor, &old_box);
-							}
-						}
-					}
+					pa_update_selection(canvas_editor, d);
 					break;
 				}
 			}
@@ -765,9 +771,9 @@ int pa_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			{
 				canvas_editor->hover_color = pa_get_canvas_pixel(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y);
 			}
-			if(canvas_editor->selection.box.width > 0 && canvas_editor->selection.box.height > 0 && canvas_editor->selection.box.state == PA_BOX_STATE_IDLE)
+			if(canvas_editor->current_tool == PA_TOOL_SELECTION)
 			{
-//				pa_box_idle_logic(&canvas_editor->selection.box, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y);
+				pa_update_selection(canvas_editor, d);
 			}
 			break;
 		}
