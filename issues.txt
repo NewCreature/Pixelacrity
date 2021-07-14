@@ -41,8 +41,6 @@ Pixelacrity 0.2.4 Issues
 
 [ ]Make cut undoable.
 
-[ ]Make backspace work as delete since Macs don't have a delete key.
-
 [ ]Allow selections to be multi-layered.
 
 [ ]Consider making selections always floating.
@@ -491,3 +489,5 @@ Closed Issues
 [X]Not all frames are rendering.
 
    [X]Need to shift frames when shifting the canvas.
+
+[X]Make backspace work as delete since Macs don't have a delete key.
