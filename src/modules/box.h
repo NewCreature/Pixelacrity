@@ -57,7 +57,7 @@ typedef struct
 
 void pa_initialize_box(PA_BOX * bp, int x, int y, int width, int height, ALLEGRO_BITMAP * handle_bitmap);
 void pa_update_box_handles(PA_BOX * bp, int view_x, int view_y, int view_zoom);
-void pa_box_logic(PA_BOX * bp, int view_x, int view_y, int view_zoom, int offset_x, int offset_y);
+void pa_box_logic(PA_BOX * bp, int view_x, int view_y, int view_zoom, int offset_x, int offset_y, bool snap);
 void pa_box_render(PA_BOX * bp, int style, int view_x, int view_y, int view_zoom, int offset_x, int offset_y);
 
 #endif
