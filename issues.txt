@@ -21,7 +21,7 @@ Pixelacrity 0.2.4 Issues
 
    [X]Snap line to angle.
 
-   [ ]Snap rectangle to square.
+   [X]Snap rectangle to square.
 
    [ ]Snap oval to circle.
 
@@ -47,10 +47,6 @@ Pixelacrity 0.2.4 Issues
 
 [ ]Paste in place doesn't paste to the correct location if recopying a pasted-
    in-place selection.
-
-[ ]Crash when using flood fill.
-
-   [ ]Log said drawing a line immediately before.
 
 
 Pixelacrity 0.3 Issues
@@ -498,3 +494,7 @@ Closed Issues
    [X]Need to shift frames when shifting the canvas.
 
 [X]Make backspace work as delete since Macs don't have a delete key.
+
+[X]Crash when using flood fill.
+
+   [X]Log said drawing a line immediately before.
