@@ -10,8 +10,8 @@ void pa_snap_coordinates(float start_x, float start_y, float * end_x, float * en
 		{
 			a = *end_x - start_x;
 			b = *end_y - start_y;
-			angle = atan2(b, a);
-			angle = angle - interval / 2.0 - fmod(angle - interval / 2.0, interval);
+			angle = atan2(b, a) + ALLEGRO_PI * 2.0;
+			angle = angle + interval / 2.0 - fmod(angle + interval / 2.0, interval);
 			length = sqrt(a * a + b * b);
 			*end_x = start_x + (cos(angle) * length) + 0.5;
 			*end_y = start_y + (sin(angle) * length) + 0.5;
