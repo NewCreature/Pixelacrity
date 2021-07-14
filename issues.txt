@@ -17,16 +17,6 @@ Pixelacrity 0.2.4 Issues
 
 [ ]Make selections rotatable and scaleable.
 
-[ ]Implement tool modes for various tools.
-
-   [X]Snap line to angle.
-
-   [X]Snap rectangle to square.
-
-   [ ]Snap oval to circle.
-
-   [X]Snap floating selection to 90 degree angle from starting position.
-
 [ ]Implement frame editing.
 
    [ ]There should be handles on the corners of each frame so we can edit them
@@ -498,3 +488,13 @@ Closed Issues
 [X]Crash when using flood fill.
 
    [X]Log said drawing a line immediately before.
+
+[X]Implement tool modes for various tools.
+
+   [X]Snap line to angle.
+
+   [X]Snap rectangle to square.
+
+   [X]Snap oval to circle.
+
+   [X]Snap floating selection to 90 degree angle from starting position.
