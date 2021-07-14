@@ -43,6 +43,8 @@ Pixelacrity 0.2.4 Issues
 
 [ ]Make backspace work as delete since Macs don't have a delete key.
 
+[ ]Allow selections to be multi-layered.
+
 
 Pixelacrity 0.3 Issues
 ----------------------
