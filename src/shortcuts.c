@@ -30,10 +30,11 @@ void pa_handle_shortcuts(APP_INSTANCE * app)
 		pa_menu_edit_paste(-1, app);
 		t3f_key[ALLEGRO_KEY_V] = 0;
 	}
-	else if(t3f_key[ALLEGRO_KEY_DELETE])
+	else if(t3f_key[ALLEGRO_KEY_DELETE] || t3f_key[ALLEGRO_KEY_BACKSPACE])
 	{
 		pa_menu_edit_delete(0, app);
 		t3f_key[ALLEGRO_KEY_DELETE] = 0;
+		t3f_key[ALLEGRO_KEY_BACKSPACE] = 0;
 	}
 	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && t3f_key[ALLEGRO_KEY_Z])
 	{
