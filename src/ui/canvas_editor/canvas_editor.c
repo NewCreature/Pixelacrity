@@ -103,7 +103,7 @@ PA_CANVAS_EDITOR * pa_create_canvas_editor(PA_CANVAS * cp)
 	cep->right_base_color = al_map_rgba_f(0.0, 0.0, 0.0, 0.0);
 	cep->view_x = 0;
 	cep->view_y = 0;
-	cep->view_zoom = 8;
+	pa_set_canvas_editor_zoom(cep, 8);
 	cep->backup_tick = PA_BACKUP_INTERVAL;
 	return cep;
 
@@ -136,6 +136,8 @@ void pa_destroy_canvas_editor(PA_CANVAS_EDITOR * cep)
 
 bool pa_load_canvas_editor_state(PA_CANVAS_EDITOR * cep, const char * fn)
 {
+	int zoom;
+
 	cep->config = al_load_config_file(fn);
 	if(cep->config)
 	{
@@ -143,7 +145,8 @@ bool pa_load_canvas_editor_state(PA_CANVAS_EDITOR * cep, const char * fn)
 		cep->view_y = get_config_val(cep->config, "State", "view_y", cep->view_y);
 		cep->view_fx = cep->view_x;
 		cep->view_fy = cep->view_y;
-		cep->view_zoom = get_config_val(cep->config, "State", "view_zoom", 8);
+		zoom = get_config_val(cep->config, "State", "view_zoom", 8);
+		pa_set_canvas_editor_zoom(cep, zoom);
 		cep->current_tool = get_config_val(cep->config, "State", "current_tool", 0);
 		cep->current_layer = get_config_val(cep->config, "State", "current_layer", 0);
 		return true;
@@ -188,6 +191,31 @@ void pa_center_canvas_editor(PA_CANVAS_EDITOR * cep, int frame)
 	}
 	cep->view_fx = cep->view_x;
 	cep->view_fy = cep->view_y;
+}
+
+void pa_set_canvas_editor_zoom(PA_CANVAS_EDITOR * cep, int level)
+{
+	int cx, cy;
+	int amount = cep->view_zoom - level;
+
+	if(level > 0)
+	{
+		if(cep->editor_element)
+		{
+			cx = cep->view_x + (cep->editor_element->w / cep->view_zoom) / 2;
+			cy = cep->view_y + (cep->editor_element->h / cep->view_zoom) / 2;
+		}
+		cep->view_zoom = level;
+		if(cep->editor_element)
+		{
+			cep->view_x = cx - (cep->editor_element->w / cep->view_zoom) / 2;
+			cep->view_y = cy - (cep->editor_element->h / cep->view_zoom) / 2;
+			cep->view_fx = cep->view_x;
+			cep->view_fy = cep->view_y;
+			cep->view_width = cep->editor_element->w / cep->view_zoom;
+			cep->view_height = cep->editor_element->h / cep->view_zoom;
+		}
+	}
 }
 
 void pa_clear_canvas_editor_selection(PA_CANVAS_EDITOR * cep)

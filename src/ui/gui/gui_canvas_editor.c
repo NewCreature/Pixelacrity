@@ -188,19 +188,6 @@ static bool handle_canvas_expansion(PA_CANVAS_EDITOR * cep)
 	return ret;
 }
 
-static void adjust_zoom(T3GUI_ELEMENT * d, PA_CANVAS_EDITOR * cep, int amount)
-{
-	int cx, cy;
-
-	cx = cep->view_x + (d->w / cep->view_zoom) / 2;
-	cy = cep->view_y + (d->h / cep->view_zoom) / 2;
-	cep->view_zoom += amount;
-	cep->view_x = cx - (d->w / cep->view_zoom) / 2;
-	cep->view_y = cy - (d->h / cep->view_zoom) / 2;
-	cep->view_fx = cep->view_x;
-	cep->view_fy = cep->view_y;
-}
-
 static void update_color_selections(PA_CANVAS_EDITOR * canvas_editor)
 {
 	/* handle left shade slider */
@@ -721,12 +708,12 @@ int pa_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			{
 				if(canvas_editor->view_zoom > 1)
 				{
-					adjust_zoom(d, canvas_editor, -1);
+					pa_set_canvas_editor_zoom(canvas_editor, canvas_editor->view_zoom - 1);
 				}
 			}
 			else if(c > 0)
 			{
-				adjust_zoom(d, canvas_editor, 1);
+				pa_set_canvas_editor_zoom(canvas_editor, canvas_editor->view_zoom + 1);
 			}
 			break;
 		}
@@ -769,14 +756,14 @@ int pa_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			{
 				if(canvas_editor->view_zoom > 1)
 				{
-					adjust_zoom(d, canvas_editor, -1);
+					pa_set_canvas_editor_zoom(canvas_editor, canvas_editor->view_zoom - 1);
 					simulate_mouse_move = true;
 				}
 				t3f_key[ALLEGRO_KEY_MINUS] = 0;
 			}
 			if(t3f_key[ALLEGRO_KEY_EQUALS])
 			{
-				adjust_zoom(d, canvas_editor, 1);
+				pa_set_canvas_editor_zoom(canvas_editor, canvas_editor->view_zoom + 1);
 				simulate_mouse_move = true;
 				t3f_key[ALLEGRO_KEY_EQUALS] = 0;
 			}
