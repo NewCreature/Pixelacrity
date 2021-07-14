@@ -45,6 +45,8 @@ Pixelacrity 0.2.4 Issues
 
 [ ]Allow selections to be multi-layered.
 
+[ ]Consider making selections always floating.
+
 
 Pixelacrity 0.3 Issues
 ----------------------
