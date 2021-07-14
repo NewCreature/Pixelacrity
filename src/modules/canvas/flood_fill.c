@@ -95,50 +95,50 @@ bool pa_flood_fill_canvas(PA_CANVAS * cp, int layer, int start_x, int start_y, A
 		pa_queue_push(out_qp, start_x, start_y);
 		while(pa_queue_pop(qp, &x, &y))
 		{
+			if(!get_canvas_tile(cp, layer, x - 1, y))
+			{
+				ret = false;
+				goto cleanup;
+			}
 			current_color = get_pixel(cp, layer, x - 1, y, &current_bp, &ox, &oy);
 			if(pa_color_equal(current_color, old_color))
 			{
-				if(!get_canvas_tile(cp, layer, x - 1, y))
-				{
-					ret = false;
-					goto cleanup;
-				}
 				put_pixel(cp, layer, ox, oy, color, current_bp);
 				pa_queue_push(qp, x - 1, y);
 				pa_queue_push(out_qp, x - 1, y);
 			}
+			if(!get_canvas_tile(cp, layer, x + 1, y))
+			{
+				ret = false;
+				goto cleanup;
+			}
 			current_color = get_pixel(cp, layer, x + 1, y, &current_bp, &ox, &oy);
 			if(pa_color_equal(current_color, old_color))
 			{
-				if(!get_canvas_tile(cp, layer, x + 1, y))
-				{
-					ret = false;
-					goto cleanup;
-				}
 				put_pixel(cp, layer, ox, oy, color, current_bp);
 				pa_queue_push(qp, x + 1, y);
 				pa_queue_push(out_qp, x + 1, y);
 			}
+			if(!get_canvas_tile(cp, layer, x, y - 1))
+			{
+				ret = false;
+				goto cleanup;
+			}
 			current_color = get_pixel(cp, layer, x, y - 1, &current_bp, &ox, &oy);
 			if(pa_color_equal(current_color, old_color))
 			{
-				if(!get_canvas_tile(cp, layer, x, y - 1))
-				{
-					ret = false;
-					goto cleanup;
-				}
 				put_pixel(cp, layer, ox, oy, color, current_bp);
 				pa_queue_push(qp, x, y - 1);
 				pa_queue_push(out_qp, x, y - 1);
 			}
+			if(!get_canvas_tile(cp, layer, x, y + 1))
+			{
+				ret = false;
+				goto cleanup;
+			}
 			current_color = get_pixel(cp, layer, x, y + 1, &current_bp, &ox, &oy);
 			if(pa_color_equal(current_color, old_color))
 			{
-				if(!get_canvas_tile(cp, layer, x, y + 1))
-				{
-					ret = false;
-					goto cleanup;
-				}
 				put_pixel(cp, layer, ox, oy, color, current_bp);
 				pa_queue_push(qp, x, y + 1);
 				pa_queue_push(out_qp, x, y + 1);
