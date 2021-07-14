@@ -38,6 +38,9 @@ Pixelacrity 0.2.4 Issues
 [ ]Paste in place doesn't paste to the correct location if recopying a pasted-
    in-place selection.
 
+[ ]Get "Can't allocate memory" when attempting to float a blank selection on an
+   empty canvas.
+
 
 Pixelacrity 0.3 Issues
 ----------------------
