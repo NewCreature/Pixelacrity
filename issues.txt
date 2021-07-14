@@ -41,6 +41,8 @@ Pixelacrity 0.2.4 Issues
 
 [ ]Make cut undoable.
 
+[ ]Make backspace work as delete since Macs don't have a delete key.
+
 
 Pixelacrity 0.3 Issues
 ----------------------
