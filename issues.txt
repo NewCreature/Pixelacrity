@@ -25,7 +25,7 @@ Pixelacrity 0.2.4 Issues
 
    [ ]Snap oval to circle.
 
-   [ ]Snap floating selection to 90 degree angle from starting position.
+   [X]Snap floating selection to 90 degree angle from starting position.
 
 [ ]Implement frame editing.
 
