@@ -137,11 +137,13 @@ int pa_menu_file_load(int id, void * data)
 	bool import_image = false;
 	PA_CANVAS * new_canvas = NULL;
 	ALLEGRO_PATH * pp;
+	const char * val;
 
 	t3f_debug_message("Enter pa_menu_file_load()\n");
+	val = al_get_config_value(t3f_config, "App Data", "last_canvas_path");
 	if(close_canvas(app))
 	{
-		file_chooser = al_create_native_file_dialog(NULL, "Choose canvas or image file...", "*.qcanvas;*.png;*.tga;*.pcx;*.bmp;*.jpg", ALLEGRO_FILECHOOSER_FILE_MUST_EXIST);
+		file_chooser = al_create_native_file_dialog(val, "Choose canvas or image file...", "*.qcanvas;*.png;*.tga;*.pcx;*.bmp;*.jpg", ALLEGRO_FILECHOOSER_FILE_MUST_EXIST);
 		if(file_chooser)
 		{
 			al_stop_timer(t3f_timer);
@@ -186,6 +188,8 @@ int pa_menu_file_load(int id, void * data)
 							{
 								al_set_path_extension(pp, ".ini");
 								pa_load_canvas_editor_state(app->canvas_editor, al_path_cstr(pp, '/'));
+								al_set_path_filename(pp, "");
+								al_set_config_value(t3f_config, "App Data", "last_canvas_path", al_path_cstr(pp, '/'));
 								al_destroy_path(pp);
 							}
 						}
@@ -277,9 +281,11 @@ int pa_menu_file_save_as(int id, void * data)
 	ALLEGRO_FILECHOOSER * file_chooser;
 	const char * file_path;
 	ALLEGRO_PATH * path;
+	const char * val;
 
 	t3f_debug_message("Enter pa_menu_file_save_as()\n");
-	file_chooser = al_create_native_file_dialog(NULL, "Save canvas as...", "*.qcanvas", ALLEGRO_FILECHOOSER_SAVE);
+	val = al_get_config_value(t3f_config, "App Data", "last_canvas_path");
+	file_chooser = al_create_native_file_dialog(val, "Save canvas as...", "*.qcanvas", ALLEGRO_FILECHOOSER_SAVE);
 	if(file_chooser)
 	{
 		al_stop_timer(t3f_timer);
@@ -296,6 +302,8 @@ int pa_menu_file_save_as(int id, void * data)
 						al_set_path_extension(path, ".qcanvas");
 						strcpy(app->canvas_editor->canvas_path, al_path_cstr(path, '/'));
 						pa_menu_file_save(id, data);
+						al_set_path_filename(path, "");
+						al_set_config_value(t3f_config, "App Data", "last_canvas_path", al_path_cstr(path, '/'));
 						al_destroy_path(path);
 					}
 				}
@@ -325,9 +333,12 @@ int pa_menu_file_import(int id, void * data)
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 	ALLEGRO_FILECHOOSER * file_chooser = NULL;
 	const char * file_path;
+	ALLEGRO_PATH * pp;
+	const char * val;
 
 	t3f_debug_message("Enter pa_menu_file_import()\n");
-	file_chooser = al_create_native_file_dialog(NULL, "Choose image file...", "*.png;*.tga;*.pcx;*.bmp;*.jpg", ALLEGRO_FILECHOOSER_FILE_MUST_EXIST);
+	val = al_get_config_value(t3f_config, "App Data", "last_image_path");
+	file_chooser = al_create_native_file_dialog(val, "Choose image file...", "*.png;*.tga;*.pcx;*.bmp;*.jpg", ALLEGRO_FILECHOOSER_FILE_MUST_EXIST);
 	if(file_chooser)
 	{
 		al_stop_timer(t3f_timer);
@@ -343,6 +354,13 @@ int pa_menu_file_import(int id, void * data)
 						if(make_import_undo(app->canvas_editor, file_path))
 						{
 							pa_finalize_undo(app->canvas_editor);
+						}
+						pp = al_create_path(file_path);
+						if(pp)
+						{
+							al_set_path_filename(pp, "");
+							al_set_config_value(t3f_config, "App Data", "last_image_path", al_path_cstr(pp, '/'));
+							al_destroy_path(pp);
 						}
 						app->canvas_editor->modified++;
 						app->canvas_editor->update_title = true;
