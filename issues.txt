@@ -38,6 +38,8 @@ Pixelacrity 0.2.4 Issues
 [ ]Get "Can't allocate memory" when attempting to float a blank selection on an
    empty canvas.
 
+[ ]Remember last path for canvas and image files.
+
 
 Pixelacrity 0.3 Issues
 ----------------------
