@@ -67,6 +67,8 @@ int pa_menu_edit_cut(int id, void * data)
 		{
 			if(pa_copy_bitmap_to_clipboard(app->canvas_editor, app->canvas_editor->selection.bitmap))
 			{
+				app->canvas_editor->clipboard.x = app->canvas_editor->selection.box.start_x;
+				app->canvas_editor->clipboard.y = app->canvas_editor->selection.box.start_y;
 				pa_clear_canvas_editor_selection(app->canvas_editor);
 			}
 		}
@@ -92,6 +94,8 @@ int pa_menu_edit_copy(int id, void * data)
 		{
 			if(pa_copy_bitmap_to_clipboard(app->canvas_editor, app->canvas_editor->selection.bitmap))
 			{
+				app->canvas_editor->clipboard.x = app->canvas_editor->selection.box.start_x;
+				app->canvas_editor->clipboard.y = app->canvas_editor->selection.box.start_y;
 			}
 		}
 		t3f_refresh_menus();
