@@ -135,8 +135,6 @@ void pa_destroy_canvas_editor(PA_CANVAS_EDITOR * cep)
 
 bool pa_load_canvas_editor_state(PA_CANVAS_EDITOR * cep, const char * fn)
 {
-	int zoom;
-
 	cep->config = al_load_config_file(fn);
 	if(cep->config)
 	{
@@ -144,8 +142,7 @@ bool pa_load_canvas_editor_state(PA_CANVAS_EDITOR * cep, const char * fn)
 		cep->view_y = get_config_val(cep->config, "State", "view_y", cep->view_y);
 		cep->view_fx = cep->view_x;
 		cep->view_fy = cep->view_y;
-		zoom = get_config_val(cep->config, "State", "view_zoom", 8);
-		pa_set_canvas_editor_zoom(cep, zoom);
+		cep->view_zoom = get_config_val(cep->config, "State", "view_zoom", 8);
 		cep->current_tool = get_config_val(cep->config, "State", "current_tool", 0);
 		cep->current_layer = get_config_val(cep->config, "State", "current_layer", 0);
 		return true;
