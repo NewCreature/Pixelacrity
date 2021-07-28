@@ -4,6 +4,7 @@
 #include "modules/canvas/canvas_helpers.h"
 #include "modules/primitives.h"
 #include "modules/pixel_shader.h"
+#include "modules/color.h"
 #include "undo.h"
 #include "undo_selection.h"
 
@@ -99,8 +100,6 @@ PA_CANVAS_EDITOR * pa_create_canvas_editor(PA_CANVAS * cp)
 		goto fail;
 	}
 	cep->canvas = cp;
-	cep->left_base_color = al_map_rgba_f(1.0, 0.0, 0.0, 1.0);
-	cep->right_base_color = al_map_rgba_f(0.0, 0.0, 0.0, 0.0);
 	cep->view_x = 0;
 	cep->view_y = 0;
 	pa_set_canvas_editor_zoom(cep, 8);
@@ -172,6 +171,23 @@ bool pa_save_canvas_editor_state(PA_CANVAS_EDITOR * cep, const char * fn)
 	return al_save_config_file(fn, cep->config);
 
 	return true;
+}
+
+void pa_set_color(PA_COLOR_INFO * cip, ALLEGRO_COLOR color)
+{
+	cip->base_color = color;
+	cip->last_base_color = color;
+	cip->color = color;
+	cip->last_color = color;
+	cip->shade_color = color;
+	cip->last_shade_color = color;
+	cip->alpha_color = color;
+	cip->last_alpha_color = color;
+
+	cip->shade_slider_element->d2 = pa_get_color_shade(color) * 1000.0;
+	cip->alpha_slider_element->d2 = pa_get_color_alpha(color) * 1000.0;
+	cip->old_shade_slider_d2 = cip->shade_slider_element->d2;
+	cip->old_alpha_slider_d2 = cip->alpha_slider_element->d2;
 }
 
 void pa_center_canvas_editor(PA_CANVAS_EDITOR * cep, int frame)

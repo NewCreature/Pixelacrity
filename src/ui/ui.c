@@ -49,7 +49,7 @@ static bool add_color_picker(PA_UI * uip, PA_CANVAS_EDITOR * cep, T3GUI_DIALOG *
 	left_panel_width = PA_COLOR_PICKER_SHADES * PA_COLOR_PICKER_SCALE + PA_COLOR_PICKER_SCALE;
 	for(i = 0; i < PA_COLOR_PICKER_SHADES; i++)
 	{
-		uip->color_picker_element[i] = t3gui_dialog_add_element(dp, NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->pick_color[i], &cep->left_color, &cep->right_color);
+		uip->color_picker_element[i] = t3gui_dialog_add_element(dp, NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->pick_color[i], &cep->left_color.color, &cep->right_color.color);
 		if(i <= 0 || i >= PA_COLOR_PICKER_SHADES - 2)
 		{
 			pos_x += PA_COLOR_PICKER_SCALE + PA_COLOR_PICKER_SCALE / 2;
@@ -71,7 +71,7 @@ static bool add_color_palette(PA_UI * uip, PA_CANVAS_EDITOR * cep, T3GUI_DIALOG 
 	left_panel_width = PA_COLOR_PICKER_SHADES * PA_COLOR_PICKER_SCALE + PA_COLOR_PICKER_SCALE;
 	for(i = 0; i < 9; i++)
 	{
-		uip->palette_color_element[i] = t3gui_dialog_add_element(dp, NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->palette[i], &cep->left_base_color, &cep->right_base_color);
+		uip->palette_color_element[i] = t3gui_dialog_add_element(dp, NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->palette[i], &cep->left_color.base_color, &cep->right_color.base_color);
 		pos_x += PA_COLOR_PICKER_SCALE;
 	}
 	y += PA_COLOR_PICKER_SCALE;
@@ -80,7 +80,7 @@ static bool add_color_palette(PA_UI * uip, PA_CANVAS_EDITOR * cep, T3GUI_DIALOG 
 		pos_x = x;
 		for(j = 0; j < 8; j++)
 		{
-			uip->palette_color_element[i * 8 + j + 9] = t3gui_dialog_add_element(dp, NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->palette[i * 8 + j + 9], &cep->left_base_color, &cep->right_base_color);
+			uip->palette_color_element[i * 8 + j + 9] = t3gui_dialog_add_element(dp, NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->palette[i * 8 + j + 9], &cep->left_color.base_color, &cep->right_color.base_color);
 			pos_x += PA_COLOR_PICKER_SCALE;
 		}
 		y += PA_COLOR_PICKER_SCALE;
@@ -282,22 +282,22 @@ PA_UI * pa_create_ui(PA_CANVAS_EDITOR * cep)
 		uip->element[PA_UI_ELEMENT_BUTTON_REMOVE_LAYER] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 0, 0, "-", pa_layer_remove_button_proc, NULL);
 
 		uip->element[PA_UI_ELEMENT_LEFT_PANE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_box_proc, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL);
-		uip->element[PA_UI_ELEMENT_LEFT_COLOR] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->left_color, NULL, NULL);
-		uip->element[PA_UI_ELEMENT_RIGHT_COLOR] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->right_color, NULL, NULL);
-		cep->left_shade_slider_element = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_slider_proc, 0, 0, 0, 0, 0, 0, 1000, 0, NULL, NULL, NULL);
-		uip->element[PA_UI_ELEMENT_LEFT_SHADE_SLIDER] = cep->left_shade_slider_element;
-		cep->right_shade_slider_element = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_slider_proc, 0, 0, 0, 0, 0, 0, 1000, 0, NULL, NULL, NULL);
-		uip->element[PA_UI_ELEMENT_RIGHT_SHADE_SLIDER] = cep->right_shade_slider_element;
-		cep->left_alpha_slider_element = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_slider_proc, 0, 0, 0, 0, 0, 0, 1000, 0, NULL, NULL, NULL);
-		uip->element[PA_UI_ELEMENT_LEFT_ALPHA_SLIDER] = cep->left_alpha_slider_element;
-		cep->right_alpha_slider_element = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_slider_proc, 0, 0, 0, 0, 0, 0, 1000, 0, NULL, NULL, NULL);
-		uip->element[PA_UI_ELEMENT_RIGHT_ALPHA_SLIDER] = cep->right_alpha_slider_element;
+		uip->element[PA_UI_ELEMENT_LEFT_COLOR] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->left_color.color, NULL, NULL);
+		uip->element[PA_UI_ELEMENT_RIGHT_COLOR] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->right_color.color, NULL, NULL);
+		cep->left_color.shade_slider_element = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_slider_proc, 0, 0, 0, 0, 0, 0, 1000, 0, NULL, NULL, NULL);
+		uip->element[PA_UI_ELEMENT_LEFT_SHADE_SLIDER] = cep->left_color.shade_slider_element;
+		cep->right_color.shade_slider_element = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_slider_proc, 0, 0, 0, 0, 0, 0, 1000, 0, NULL, NULL, NULL);
+		uip->element[PA_UI_ELEMENT_RIGHT_SHADE_SLIDER] = cep->right_color.shade_slider_element;
+		cep->left_color.alpha_slider_element = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_slider_proc, 0, 0, 0, 0, 0, 0, 1000, 0, NULL, NULL, NULL);
+		uip->element[PA_UI_ELEMENT_LEFT_ALPHA_SLIDER] = cep->left_color.alpha_slider_element;
+		cep->right_color.alpha_slider_element = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_slider_proc, 0, 0, 0, 0, 0, 0, 1000, 0, NULL, NULL, NULL);
+		uip->element[PA_UI_ELEMENT_RIGHT_ALPHA_SLIDER] = cep->right_color.alpha_slider_element;
 
 		add_color_picker(uip, cep, uip->dialog[PA_UI_DIALOG_MAIN], 0, 0);
 
 		add_color_palette(uip, cep, uip->dialog[PA_UI_DIALOG_MAIN], 0, 0);
 
-		uip->element[PA_UI_ELEMENT_PALETTE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, pa_gui_palette_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->left_base_color, &cep->right_base_color, NULL);
+		uip->element[PA_UI_ELEMENT_PALETTE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, pa_gui_palette_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->left_color.base_color, &cep->right_color.base_color, NULL);
 
 		uip->element[PA_UI_ELEMENT_STATUS_BAR] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_box_proc, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL);
 		uip->element[PA_UI_ELEMENT_STATUS_LEFT_MESSAGE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_text_proc, 0, 0, 0, 0, 0, 0, 0, 0, uip->status_left_message, NULL, NULL);
@@ -306,6 +306,8 @@ PA_UI * pa_create_ui(PA_CANVAS_EDITOR * cep)
 
 		cep->editor_element = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, pa_gui_canvas_editor_proc, 0, 0, 0, 0, 0, 0, 0, 0, cep, NULL, NULL);
 		uip->element[PA_UI_ELEMENT_CANVAS_EDITOR] = cep->editor_element;
+		pa_set_color(&cep->left_color, al_map_rgba_f(1.0, 0.0, 0.0, 1.0));
+		pa_set_color(&cep->right_color, al_map_rgba_f(0.0, 0.0, 0.0, 1.0));
 	}
 	return uip;
 

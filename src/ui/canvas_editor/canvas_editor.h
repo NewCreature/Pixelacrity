@@ -53,6 +53,24 @@ typedef struct
 typedef struct
 {
 
+	ALLEGRO_COLOR base_color;
+	ALLEGRO_COLOR last_base_color;
+	ALLEGRO_COLOR color;
+	ALLEGRO_COLOR last_color;
+	ALLEGRO_COLOR shade_color;
+	ALLEGRO_COLOR last_shade_color;
+	ALLEGRO_COLOR alpha_color;
+	ALLEGRO_COLOR last_alpha_color;
+	T3GUI_ELEMENT * shade_slider_element;
+	int old_shade_slider_d2;
+	T3GUI_ELEMENT * alpha_slider_element;
+	int old_alpha_slider_d2;
+
+} PA_COLOR_INFO;
+
+typedef struct
+{
+
 	ALLEGRO_SHADER * standard_shader;
 	ALLEGRO_SHADER * premultiplied_alpha_shader;
 	ALLEGRO_SHADER * conditional_copy_shader;
@@ -85,35 +103,13 @@ typedef struct
 	PA_SELECTION_DATA selection;
 	int modified;
 	bool update_title;
-	ALLEGRO_COLOR left_base_color;
-	ALLEGRO_COLOR last_left_base_color;
-	ALLEGRO_COLOR left_color;
-	ALLEGRO_COLOR last_left_color;
-	ALLEGRO_COLOR left_shade_color;
-	ALLEGRO_COLOR last_left_shade_color;
-	ALLEGRO_COLOR left_alpha_color;
-	ALLEGRO_COLOR last_left_alpha_color;
-	ALLEGRO_COLOR right_base_color;
-	ALLEGRO_COLOR last_right_base_color;
-	ALLEGRO_COLOR right_color;
-	ALLEGRO_COLOR last_right_color;
-	ALLEGRO_COLOR right_shade_color;
-	ALLEGRO_COLOR last_right_shade_color;
-	ALLEGRO_COLOR right_alpha_color;
-	ALLEGRO_COLOR last_right_alpha_color;
+	PA_COLOR_INFO left_color;
+	PA_COLOR_INFO right_color;
 	ALLEGRO_COLOR pick_color[PA_COLOR_PICKER_SHADES];
 	ALLEGRO_COLOR start_color;
 	ALLEGRO_COLOR hover_color;
 	ALLEGRO_COLOR palette[PA_COLOR_PALETTE_MAX];
 
-	T3GUI_ELEMENT * left_shade_slider_element;
-	int old_left_shade_slider_d2;
-	T3GUI_ELEMENT * left_alpha_slider_element;
-	int old_left_alpha_slider_d2;
-	T3GUI_ELEMENT * right_shade_slider_element;
-	int old_right_shade_slider_d2;
-	T3GUI_ELEMENT * right_alpha_slider_element;
-	int old_right_alpha_slider_d2;
 	T3GUI_ELEMENT * editor_element;
 
 	int signal;
@@ -136,6 +132,8 @@ void pa_destroy_canvas_editor(PA_CANVAS_EDITOR * cep);
 
 bool pa_load_canvas_editor_state(PA_CANVAS_EDITOR * cep, const char * fn);
 bool pa_save_canvas_editor_state(PA_CANVAS_EDITOR * cep, const char * fn);
+
+void pa_set_color(PA_COLOR_INFO * cip, ALLEGRO_COLOR color);
 
 void pa_center_canvas_editor(PA_CANVAS_EDITOR * cep, int frame);
 void pa_set_canvas_editor_zoom(PA_CANVAS_EDITOR * cep, int level);
