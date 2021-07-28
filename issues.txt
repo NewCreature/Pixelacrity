@@ -42,6 +42,8 @@ Pixelacrity 0.2.4 Issues
 
 [ ]Paste sometimes does paste-in-place.
 
+[ ]Canvas editor settings don't always load correctly.
+
 
 Pixelacrity 0.3 Issues
 ----------------------
