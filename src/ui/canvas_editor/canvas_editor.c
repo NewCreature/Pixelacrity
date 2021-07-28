@@ -118,6 +118,10 @@ PA_CANVAS_EDITOR * pa_create_canvas_editor(PA_CANVAS * cp)
 
 void pa_destroy_canvas_editor(PA_CANVAS_EDITOR * cep)
 {
+	if(cep->export_path)
+	{
+		free(cep->export_path);
+	}
 	if(cep->selection.bitmap)
 	{
 		al_destroy_bitmap(cep->selection.bitmap);
@@ -152,6 +156,9 @@ bool pa_load_canvas_editor_state(PA_CANVAS_EDITOR * cep, const char * fn)
 
 bool pa_save_canvas_editor_state(PA_CANVAS_EDITOR * cep, const char * fn)
 {
+	int i;
+	char buf[64];
+
 	if(!cep->config)
 	{
 		cep->config = al_create_config();
@@ -165,9 +172,19 @@ bool pa_save_canvas_editor_state(PA_CANVAS_EDITOR * cep, const char * fn)
 	set_config_val(cep->config, "State", "view_zoom", cep->view_zoom);
 	set_config_val(cep->config, "State", "current_tool", cep->current_tool);
 	set_config_val(cep->config, "State", "current_layer", cep->current_layer);
+	if(cep->export_path)
+	{
+		al_set_config_value(cep->config, "State", "export_path", cep->export_path);
+	}
+	for(i = 0; i < cep->canvas->frame_max; i++)
+	{
+		if(cep->canvas->frame[i]->export_path)
+		{
+			sprintf(buf, "Frame %d", i);
+			al_set_config_value(cep->config, buf, "export_path", cep->canvas->frame[i]->export_path);
+		}
+	}
 	return al_save_config_file(fn, cep->config);
-
-	return true;
 }
 
 void pa_set_color(PA_COLOR_INFO * cip, ALLEGRO_COLOR color)

@@ -19,6 +19,7 @@ typedef struct
 
 	char * name;
 	PA_BOX box;
+	char * export_path;
 
 } PA_CANVAS_FRAME;
 

@@ -409,6 +409,11 @@ int pa_menu_file_export(int id, void * data)
 
 						if(app->canvas_editor->current_frame < app->canvas->frame_max)
 						{
+							if(app->canvas->frame[app->canvas_editor->current_frame]->export_path)
+							{
+								free(app->canvas->frame[app->canvas_editor->current_frame]->export_path);
+							}
+							app->canvas->frame[app->canvas_editor->current_frame]->export_path = strdup(al_path_cstr(path, '/'));
 							x = app->canvas->frame[app->canvas_editor->current_frame]->box.start_x;
 							y = app->canvas->frame[app->canvas_editor->current_frame]->box.start_y;
 							w = app->canvas->frame[app->canvas_editor->current_frame]->box.width;
@@ -416,6 +421,11 @@ int pa_menu_file_export(int id, void * data)
 						}
 						else
 						{
+							if(app->canvas_editor->export_path)
+							{
+								free(app->canvas_editor->export_path);
+							}
+							app->canvas_editor->export_path = strdup(al_path_cstr(path, '/'));
 							pa_get_canvas_dimensions(app->canvas, &x, &y, &w, &h, 0);
 						}
 						al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);

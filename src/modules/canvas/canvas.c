@@ -280,6 +280,11 @@ bool pa_remove_canvas_frame(PA_CANVAS * cp, int frame)
 		{
 			cp->frame[i] = old_frame[i];
 		}
+		if(old_frame[frame]->export_path)
+		{
+			free(old_frame[frame]->export_path);
+		}
+		free(old_frame[frame]);
 		for(i = frame; i < cp->frame_max - 1; i++)
 		{
 			cp->frame[i] = old_frame[i + 1];
