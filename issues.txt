@@ -40,6 +40,8 @@ Pixelacrity 0.2.4 Issues
 
 [ ]Changing the alpha on a color make alters the shade.
 
+[ ]Paste sometimes does paste-in-place.
+
 
 Pixelacrity 0.3 Issues
 ----------------------
