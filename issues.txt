@@ -40,8 +40,6 @@ Pixelacrity 0.2.5 Issues
 
 [ ]Paste sometimes does paste-in-place.
 
-[ ]Canvas editor settings don't always load correctly.
-
 
 Pixelacrity 0.3 Issues
 ----------------------
@@ -509,3 +507,5 @@ Closed Issues
 [X]Remember last path for canvas and image files.
 
 [X]Changing the alpha on a color make alters the shade.
+
+[X]Canvas editor settings don't always load correctly.
