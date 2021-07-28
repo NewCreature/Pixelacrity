@@ -11,6 +11,26 @@ static int menu_base_update_proc(ALLEGRO_MENU * mp, int item, void * data)
 	return 0;
 }
 
+static int menu_export_all_update_proc(ALLEGRO_MENU * mp, int item, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+	int i;
+
+	for(i = 0; i < app->canvas->frame_max; i++)
+	{
+		if(app->canvas->frame[i]->export_path)
+		{
+			t3f_set_menu_item_flags(mp, item, 0);
+			break;
+		}
+	}
+	if(i >= app->canvas->frame_max)
+	{
+		t3f_set_menu_item_flags(mp, item, ALLEGRO_MENU_ITEM_DISABLED);
+	}
+	return 0;
+}
+
 static int menu_undo_update_proc(ALLEGRO_MENU * mp, int item, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
@@ -191,7 +211,10 @@ bool pa_setup_menus(PA_UI * uip)
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_FILE], "Save As", 0, NULL, pa_menu_file_save_as, menu_base_update_proc);
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_FILE], NULL, 0, NULL, NULL, NULL);
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_FILE], "Import", 0, NULL, pa_menu_file_import, menu_base_update_proc);
+	t3f_add_menu_item(uip->menu[PA_UI_MENU_FILE], NULL, 0, NULL, NULL, NULL);
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_FILE], "Export", 0, NULL, pa_menu_file_export, menu_base_update_proc);
+	t3f_add_menu_item(uip->menu[PA_UI_MENU_FILE], "Export All", 0, NULL, pa_menu_file_export_all, menu_export_all_update_proc);
+	t3f_add_menu_item(uip->menu[PA_UI_MENU_FILE], "Export As", 0, NULL, pa_menu_file_export_as, menu_base_update_proc);
 	#ifndef ALLEGRO_MACOSX
 		t3f_add_menu_item(uip->menu[PA_UI_MENU_FILE], NULL, 0, NULL, NULL, NULL);
 		t3f_add_menu_item(uip->menu[PA_UI_MENU_FILE], "Exit", 0, NULL, pa_menu_file_exit, menu_base_update_proc);
