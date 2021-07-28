@@ -326,6 +326,10 @@ void pa_draw_primitive_to_canvas(PA_CANVAS * cp, int layer, int x1, int y1, int 
 	{
 		y_dir = -1;
 	}
+	if(cp->layer_width <= 0 || cp->layer_height <= 0)
+	{
+		return;
+	}
 	use_bitmap = make_use_array(cp->layer_width, cp->layer_height);
 	if(!use_bitmap)
 	{
