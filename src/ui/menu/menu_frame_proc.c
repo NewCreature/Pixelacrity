@@ -38,11 +38,14 @@ int pa_menu_frame_add_from_selection(int id, void * data)
 static bool add_frame(PA_CANVAS_EDITOR * cep, int width, int height)
 {
 	char buf[256];
+	int x, y;
 
 	t3f_debug_message("Enter add_frame(cep, %d, %d)\n", width, height);
 	make_frame_undo(cep);
 	sprintf(buf, "Frame %d", cep->canvas->frame_max + 1);
-	pa_add_canvas_frame(cep->canvas, buf, cep->view_x, cep->view_y, width, height);
+	x = cep->view_x + cep->view_width / 2 - width / 2;
+	y = cep->view_y + cep->view_height / 2 - height / 2;
+	pa_add_canvas_frame(cep->canvas, buf, x, y, width, height);
 	cep->current_frame = cep->canvas->frame_max - 1;
 	t3f_refresh_menus();
 	t3f_debug_message("Exit add_frame()\n");
