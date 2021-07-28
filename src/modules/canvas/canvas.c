@@ -168,7 +168,7 @@ bool pa_add_canvas_layer(PA_CANVAS * cp, int layer_index)
 		layer_index = cp->layer_max;
 	}
 	old_layer = cp->layer;
-	layer_size = sizeof(PA_CANVAS_LAYER *) * cp->layer_max + 1;
+	layer_size = sizeof(PA_CANVAS_LAYER *) * (cp->layer_max + 1);
 	cp->layer = malloc(layer_size);
 	if(cp->layer)
 	{
@@ -207,7 +207,7 @@ bool pa_remove_canvas_layer(PA_CANVAS * cp, int layer)
 
 	t3f_debug_message("Enter pa_remove_canvas_layer()\n");
 	old_layer = cp->layer;
-	layer_size = sizeof(PA_CANVAS_LAYER *) * cp->layer_max - 1;
+	layer_size = sizeof(PA_CANVAS_LAYER *) * (cp->layer_max - 1);
 	cp->layer = malloc(layer_size);
 	if(cp->layer)
 	{
@@ -240,7 +240,7 @@ bool pa_add_canvas_frame(PA_CANVAS * cp, const char * name, int x, int y, int wi
 
 	t3f_debug_message("Enter pa_add_canvas_frame()\n");
 	old_frame = cp->frame;
-	frame_size = sizeof(PA_CANVAS_FRAME *) * cp->frame_max + 1;
+	frame_size = sizeof(PA_CANVAS_FRAME *) * (cp->frame_max + 1);
 	cp->frame = malloc(frame_size);
 	if(cp->frame)
 	{
@@ -271,7 +271,7 @@ bool pa_remove_canvas_frame(PA_CANVAS * cp, int frame)
 
 	t3f_debug_message("Enter pa_remove_canvas_frame()\n");
 	old_frame = cp->frame;
-	frame_size = sizeof(PA_CANVAS_FRAME *) * cp->frame_max - 1;
+	frame_size = sizeof(PA_CANVAS_FRAME *) * (cp->frame_max - 1);
 	cp->frame = malloc(frame_size);
 	if(cp->frame)
 	{
