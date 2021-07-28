@@ -50,7 +50,7 @@ static ALLEGRO_BITMAP * get_canvas_tile(PA_CANVAS * cp, int layer, int x, int y)
 	tx = x / cp->bitmap_size;
 	ty = y / cp->bitmap_size;
 
-	if(tx < cp->layer_width && ty < cp->layer_height)
+	if(x >= 0 && y >= 0 && tx < cp->layer_width && ty < cp->layer_height)
 	{
 		return cp->layer[layer]->bitmap[ty][tx];
 	}
