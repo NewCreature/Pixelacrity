@@ -1,4 +1,4 @@
-Pixelacrity 0.2.4 Issues
+Pixelacrity 0.2.5 Issues
 ------------------------
 
 [ ]Fix oval tool missing pixels on slim ovals.
@@ -37,8 +37,6 @@ Pixelacrity 0.2.4 Issues
 
 [ ]Get "Can't allocate memory" when attempting to float a blank selection on an
    empty canvas.
-
-[ ]Changing the alpha on a color make alters the shade.
 
 [ ]Paste sometimes does paste-in-place.
 
@@ -509,3 +507,5 @@ Closed Issues
    in-place selection.
 
 [X]Remember last path for canvas and image files.
+
+[X]Changing the alpha on a color make alters the shade.
