@@ -70,7 +70,7 @@ static bool read_color(ALLEGRO_FILE * fp, ALLEGRO_COLOR * color)
 	g = al_fgetc(fp);
 	b = al_fgetc(fp);
 	a = al_fgetc(fp);
-	*color = al_map_rgba(r, b, b, a);
+	*color = al_map_rgba(r, g, b, a);
 
 	return true;
 }
