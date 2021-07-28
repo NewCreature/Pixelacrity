@@ -188,6 +188,14 @@ int pa_menu_frame_delete(int id, void * data)
 	{
 		make_frame_undo(app->canvas_editor);
 		pa_remove_canvas_frame(app->canvas, app->canvas_editor->current_frame);
+		if(app->canvas_editor->current_frame >= app->canvas->frame_max)
+		{
+			app->canvas_editor->current_frame = app->canvas->frame_max - 1;
+		}
+		if(app->canvas_editor->current_frame < 0)
+		{
+			app->canvas_editor->current_frame = 0;
+		}
 		t3f_refresh_menus();
 	}
 	t3f_debug_message("Exit pa_menu_frame_delete()\n");
