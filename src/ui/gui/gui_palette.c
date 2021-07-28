@@ -74,7 +74,6 @@ int pa_gui_palette_proc(int msg, T3GUI_ELEMENT * d, int c)
 			mouse_button = c;
 			if(d->dp)
 			{
-				printf("palette\n");
 				if(t3f_mouse_x - d->x >= 0 && t3f_mouse_x - d->x < al_get_bitmap_width(_palette_bitmap) && t3f_mouse_y - d->y >= 0 && t3f_mouse_y - d->y < al_get_bitmap_height(_palette_bitmap))
 				{
 					if(c == 1)
