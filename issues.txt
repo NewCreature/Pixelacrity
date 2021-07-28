@@ -38,6 +38,8 @@ Pixelacrity 0.2.4 Issues
 [ ]Get "Can't allocate memory" when attempting to float a blank selection on an
    empty canvas.
 
+[ ]Changing the alpha on a color make alters the shade.
+
 
 Pixelacrity 0.3 Issues
 ----------------------
