@@ -22,11 +22,13 @@ void pa_handle_shortcuts(APP_INSTANCE * app)
 	}
 	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && (t3f_key[ALLEGRO_KEY_ALT] || t3f_key[ALLEGRO_KEY_ALTGR]) && t3f_key[ALLEGRO_KEY_V])
 	{
+		printf("paste in place\n");
 		pa_menu_edit_paste_in_place(0, app);
 		t3f_key[ALLEGRO_KEY_V] = 0;
 	}
 	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && t3f_key[ALLEGRO_KEY_V])
 	{
+		printf("paste\n");
 		pa_menu_edit_paste(-1, app);
 		t3f_key[ALLEGRO_KEY_V] = 0;
 	}

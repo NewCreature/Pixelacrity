@@ -110,6 +110,7 @@ static void paste_helper(PA_CANVAS_EDITOR * cep, int pos, int ox, int oy)
 	ALLEGRO_STATE old_state;
 	int x, y;
 
+	printf("paste helper %d %d %d\n", pos, ox, oy);
 	t3f_debug_message("Enter pa_menu_edit_paste()\n");
 	if(cep->clipboard.bitmap)
 	{
@@ -126,18 +127,21 @@ static void paste_helper(PA_CANVAS_EDITOR * cep, int pos, int ox, int oy)
 			{
 				case 0:
 				{
+					printf("paste 0\n");
 					x = cep->view_x + cep->view_width / 2 - al_get_bitmap_width(cep->selection.bitmap) / 2;
 					y = cep->view_y + cep->view_height / 2 - al_get_bitmap_height(cep->selection.bitmap) / 2;
 					break;
 				}
 				case 1:
 				{
+					printf("paste 1\n");
 					x = cep->clipboard.x;
 					y = cep->clipboard.y;
 					break;
 				}
 				case 2:
 				{
+					printf("paste 2\n");
 					x = cep->view_x + (t3f_mouse_x + ox) / cep->view_zoom - al_get_bitmap_width(cep->selection.bitmap) / 2;
 					y = cep->view_y + (t3f_mouse_y + oy) / cep->view_zoom - al_get_bitmap_height(cep->selection.bitmap) / 2;
 					break;
