@@ -39,12 +39,6 @@ Pixelacrity 0.2.5 Issues
 
 [ ]Canvas is not marked as modified when floating a blank selection.
 
-[ ]Creating a new canvas should reset the canvas editor variables.
-
-   [ ]The canvas path needs to be reset.
-
-   [ ]The selected layer needs to be reset.
-
 [ ]Selecting a color from the color picker and subsequently using the alpha
    slider resets the shad slider to the last used shade level.
 
@@ -523,3 +517,9 @@ Closed Issues
 
 [X]Get "Can't allocate memory" when attempting to float a blank selection on an
    empty canvas.
+
+[X]Creating a new canvas should reset the canvas editor variables.
+
+   [X]The canvas path needs to be reset.
+
+   [X]The selected layer needs to be reset.
