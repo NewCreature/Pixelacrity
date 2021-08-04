@@ -37,6 +37,8 @@ Pixelacrity 0.2.7 Issues
 
 [ ]Canvas is not marked as modified when floating a blank selection.
 
+[ ]Add ability to scroll by the size of the view.
+
 
 Pixelacrity 0.3 Issues
 ----------------------
