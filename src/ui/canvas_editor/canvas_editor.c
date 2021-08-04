@@ -151,6 +151,7 @@ bool pa_load_canvas_editor_state(PA_CANVAS_EDITOR * cep, const char * fn)
 {
 	char buf[64];
 	int i;
+	const char * val;
 
 	cep->config = al_load_config_file(fn);
 	if(cep->config)
@@ -162,11 +163,27 @@ bool pa_load_canvas_editor_state(PA_CANVAS_EDITOR * cep, const char * fn)
 		cep->view_zoom = get_config_val(cep->config, "State", "view_zoom", 8);
 		cep->current_tool = get_config_val(cep->config, "State", "current_tool", 0);
 		cep->current_layer = get_config_val(cep->config, "State", "current_layer", 0);
-		cep->export_path = strdup(al_get_config_value(cep->config, "State", "export_path"));
+		val = al_get_config_value(cep->config, "State", "export_path");
+		if(val)
+		{
+			cep->export_path = strdup(val);
+		}
+		else
+		{
+			cep->export_path = NULL;
+		}
 		for(i = 0; i < cep->canvas->frame_max; i++)
 		{
 			sprintf(buf, "Frame %d", i);
-			cep->canvas->frame[i]->export_path = strdup(al_get_config_value(cep->config, buf, "export_path"));
+			val = al_get_config_value(cep->config, buf, "export_path");
+			if(val)
+			{
+				cep->canvas->frame[i]->export_path = strdup(val);
+			}
+			else
+			{
+				cep->canvas->frame[i]->export_path = NULL;
+			}
 		}
 		return true;
 	}
