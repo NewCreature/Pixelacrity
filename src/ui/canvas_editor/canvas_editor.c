@@ -5,8 +5,10 @@
 #include "modules/primitives.h"
 #include "modules/pixel_shader.h"
 #include "modules/color.h"
+#include "modules/dynamic_array.h"
 #include "undo.h"
 #include "undo_selection.h"
+#include "clipboard.h"
 
 static int get_config_val(ALLEGRO_CONFIG * cp, const char * section, const char * key, int default_val)
 {
@@ -132,10 +134,7 @@ void pa_destroy_canvas_editor(PA_CANVAS_EDITOR * cep)
 	{
 		free(cep->export_path);
 	}
-	if(cep->selection.bitmap)
-	{
-		al_destroy_bitmap(cep->selection.bitmap);
-	}
+	pa_free_clipboard(cep);
 	if(cep->peg_bitmap)
 	{
 		al_destroy_bitmap(cep->peg_bitmap);
@@ -286,11 +285,7 @@ void pa_set_canvas_editor_zoom(PA_CANVAS_EDITOR * cep, int level)
 
 void pa_clear_canvas_editor_selection(PA_CANVAS_EDITOR * cep)
 {
-	if(cep->selection.bitmap)
-	{
-		al_destroy_bitmap(cep->selection.bitmap);
-		cep->selection.bitmap = NULL;
-	}
+	pa_free_clipboard(cep);
 	cep->selection.box.width = 0;
 	cep->selection.box.height = 0;
 	cep->selection.box.state = PA_BOX_STATE_IDLE;
@@ -320,6 +315,24 @@ static bool create_float_undo(PA_CANVAS_EDITOR * cep, PA_BOX * bp)
 	return false;
 }
 
+static void free_selection(PA_CANVAS_EDITOR * cep)
+{
+	int i;
+
+	if(cep->selection.bitmap)
+	{
+		for(i = 0; i < cep->selection.layer_max; i++)
+		{
+			if(cep->selection.bitmap[i])
+			{
+				al_destroy_bitmap(cep->selection.bitmap[i]);
+			}
+		}
+		pa_free((void **)cep->selection.bitmap, cep->selection.layer_max);
+		cep->selection.bitmap = NULL;
+	}
+}
+
 bool pa_handle_float_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp)
 {
 	ALLEGRO_STATE old_state;
@@ -328,12 +341,19 @@ bool pa_handle_float_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp
 	t3f_debug_message("Enter pa_handle_float_canvas_editor_selection()\n");
 	al_store_state(&old_state, ALLEGRO_STATE_BLENDER | ALLEGRO_STATE_TRANSFORM | ALLEGRO_STATE_TARGET_BITMAP);
 	al_set_new_bitmap_flags(0);
-	cep->selection.bitmap = al_create_bitmap(bp->width, bp->height);
+	cep->selection.bitmap = (ALLEGRO_BITMAP **)pa_malloc(sizeof(ALLEGRO_BITMAP *), cep->canvas->layer_max);
 	if(!cep->selection.bitmap)
 	{
 		goto fail;
 	}
-	al_set_target_bitmap(cep->selection.bitmap);
+	cep->selection.bitmap[cep->current_layer] = al_create_bitmap(bp->width, bp->height);
+	if(!cep->selection.bitmap[cep->current_layer])
+	{
+		goto fail;
+	}
+	cep->selection.layer_max = cep->canvas->layer_max;
+	cep->selection.layer = cep->current_layer;
+	al_set_target_bitmap(cep->selection.bitmap[cep->current_layer]);
 	al_identity_transform(&identity);
 	al_use_transform(&identity);
 	al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
@@ -349,11 +369,7 @@ bool pa_handle_float_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp
 	fail:
 	{
 		t3f_debug_message("Fail pa_handle_float_canvas_editor_selection()\n");
-		if(cep->selection.bitmap)
-		{
-			al_destroy_bitmap(cep->selection.bitmap);
-			cep->selection.bitmap = NULL;
-		}
+		free_selection(cep);
 		al_restore_state(&old_state);
 		return false;
 	}
@@ -370,15 +386,23 @@ void pa_float_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp)
 
 void pa_handle_unfloat_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp)
 {
+	int i;
+
 	t3f_debug_message("Enter pa_handle_unfloat_canvas_editor_selection()\n");
 	if(pa_handle_canvas_expansion(cep->canvas, cep->selection.box.start_x, cep->selection.box.start_y, cep->selection.box.end_x, cep->selection.box.end_y, &cep->shift_x, &cep->shift_y))
 	{
 		pa_shift_canvas_editor_variables(cep, cep->shift_x * cep->canvas->bitmap_size, cep->shift_y * cep->canvas->bitmap_size);
 	}
-	pa_draw_primitive_to_canvas(cep->canvas, cep->current_layer, bp->start_x, bp->start_y, bp->start_x + bp->width, bp->start_y + bp->height, cep->selection.bitmap, al_map_rgba_f(0, 0, 0, 0), PA_RENDER_COPY, cep->conditional_copy_shader, pa_draw_quad);
-	al_use_shader(cep->standard_shader);
-	al_destroy_bitmap(cep->selection.bitmap);
-	cep->selection.bitmap = NULL;
+	if(cep->selection.layer >= 0)
+	{
+		pa_draw_primitive_to_canvas(cep->canvas, cep->current_layer, bp->start_x, bp->start_y, bp->start_x + bp->width, bp->start_y + bp->height, cep->selection.bitmap[cep->selection.layer], al_map_rgba_f(0, 0, 0, 0), PA_RENDER_COPY, cep->conditional_copy_shader, pa_draw_quad);
+		al_use_shader(cep->standard_shader);
+	}
+	if(cep->selection.bitmap)
+	{
+
+	}
+	free_selection(cep);
 	cep->modified++;
 	t3f_debug_message("Exit pa_handle_unfloat_canvas_editor_selection()\n");
 }
@@ -460,14 +484,18 @@ bool pa_import_image(PA_CANVAS_EDITOR * cep, const char * fn)
 	{
 		pa_handle_unfloat_canvas_editor_selection(cep, &cep->selection.box);
 	}
-	cep->selection.bitmap = al_load_bitmap_flags(fn, ALLEGRO_NO_PREMULTIPLIED_ALPHA);
+	cep->selection.bitmap = (ALLEGRO_BITMAP **)pa_malloc(sizeof(ALLEGRO_BITMAP *), cep->canvas->layer_max);
 	if(cep->selection.bitmap)
 	{
-		pa_select_canvas_editor_tool(cep, PA_TOOL_SELECTION);
-		x = cep->view_x + cep->view_width / 2 - al_get_bitmap_width(cep->selection.bitmap) / 2;
-		y = cep->view_y + cep->view_height / 2 - al_get_bitmap_height(cep->selection.bitmap) / 2;
-		pa_initialize_box(&cep->selection.box, x, y, al_get_bitmap_width(cep->selection.bitmap), al_get_bitmap_height(cep->selection.bitmap), cep->peg_bitmap);
-		pa_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom);
+		cep->selection.bitmap[0] = al_load_bitmap_flags(fn, ALLEGRO_NO_PREMULTIPLIED_ALPHA);
+		if(cep->selection.bitmap[0])
+		{
+			pa_select_canvas_editor_tool(cep, PA_TOOL_SELECTION);
+			x = cep->view_x + cep->view_width / 2 - al_get_bitmap_width(cep->selection.bitmap[0]) / 2;
+			y = cep->view_y + cep->view_height / 2 - al_get_bitmap_height(cep->selection.bitmap[0]) / 2;
+			pa_initialize_box(&cep->selection.box, x, y, al_get_bitmap_width(cep->selection.bitmap[0]), al_get_bitmap_height(cep->selection.bitmap[0]), cep->peg_bitmap);
+			pa_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom);
+		}
 	}
 	t3f_debug_message("Exit pa_import_image()\n");
 	return true;

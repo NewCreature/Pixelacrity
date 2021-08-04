@@ -33,7 +33,8 @@
 typedef struct
 {
 
-	ALLEGRO_BITMAP * bitmap;
+	ALLEGRO_BITMAP ** bitmap;
+	int layer_max;
 	int layer;
 	PA_BOX box;
 
@@ -45,7 +46,9 @@ typedef struct
 typedef struct
 {
 
-	ALLEGRO_BITMAP * bitmap;
+	ALLEGRO_BITMAP ** bitmap;
+	int layer_max;
+	int layer;
 	int x, y;
 
 } PA_CLIPBOARD_DATA;

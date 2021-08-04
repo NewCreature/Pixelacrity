@@ -3,6 +3,7 @@
 #include "modules/canvas/canvas.h"
 #include "modules/canvas/canvas_helpers.h"
 #include "modules/primitives.h"
+#include "modules/dynamic_array.h"
 #include "ui/canvas_editor/undo.h"
 #include "ui/canvas_editor/undo_tool.h"
 #include "ui/canvas_editor/undo_selection.h"
@@ -65,7 +66,7 @@ int pa_menu_edit_cut(int id, void * data)
 		}
 		else
 		{
-			if(pa_copy_bitmap_to_clipboard(app->canvas_editor, app->canvas_editor->selection.bitmap))
+			if(pa_copy_bitmap_to_clipboard(app->canvas_editor, app->canvas_editor->selection.bitmap, app->canvas_editor->selection.layer_max))
 			{
 				app->canvas_editor->clipboard.x = app->canvas_editor->selection.box.start_x;
 				app->canvas_editor->clipboard.y = app->canvas_editor->selection.box.start_y;
@@ -92,7 +93,7 @@ int pa_menu_edit_copy(int id, void * data)
 		}
 		else
 		{
-			if(pa_copy_bitmap_to_clipboard(app->canvas_editor, app->canvas_editor->selection.bitmap))
+			if(pa_copy_bitmap_to_clipboard(app->canvas_editor, app->canvas_editor->selection.bitmap, app->canvas_editor->selection.layer_max))
 			{
 				app->canvas_editor->clipboard.x = app->canvas_editor->selection.box.start_x;
 				app->canvas_editor->clipboard.y = app->canvas_editor->selection.box.start_y;
@@ -108,51 +109,70 @@ int pa_menu_edit_copy(int id, void * data)
 static void paste_helper(PA_CANVAS_EDITOR * cep, int pos, int ox, int oy)
 {
 	ALLEGRO_STATE old_state;
-	int x, y;
+	int x, y, i, c = -1;
 
-	printf("paste helper %d %d %d\n", pos, ox, oy);
 	t3f_debug_message("Enter pa_menu_edit_paste()\n");
 	if(cep->clipboard.bitmap)
 	{
+		for(i = 0; i < cep->clipboard.layer_max; i++)
+		{
+			if(cep->clipboard.bitmap[i])
+			{
+				c = i;
+			}
+		}
+		if(c < 0)
+		{
+			return;
+		}
 		al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);
 		al_set_new_bitmap_flags(ALLEGRO_NO_PREMULTIPLIED_ALPHA);
 		if(cep->selection.bitmap)
 		{
 			pa_handle_unfloat_canvas_editor_selection(cep, &cep->selection.box);
 		}
-		cep->selection.bitmap = al_clone_bitmap(cep->clipboard.bitmap);
+		cep->selection.bitmap = (ALLEGRO_BITMAP **)pa_malloc(sizeof(ALLEGRO_BITMAP *), cep->clipboard.layer_max);
 		if(cep->selection.bitmap)
 		{
-			switch(pos)
+			for(i = 0; i < cep->clipboard.layer_max; i++)
 			{
-				case 0:
+				if(cep->clipboard.bitmap[i])
 				{
-					printf("paste 0\n");
-					x = cep->view_x + cep->view_width / 2 - al_get_bitmap_width(cep->selection.bitmap) / 2;
-					y = cep->view_y + cep->view_height / 2 - al_get_bitmap_height(cep->selection.bitmap) / 2;
-					break;
-				}
-				case 1:
-				{
-					printf("paste 1\n");
-					x = cep->clipboard.x;
-					y = cep->clipboard.y;
-					break;
-				}
-				case 2:
-				{
-					printf("paste 2\n");
-					x = cep->view_x + (t3f_mouse_x + ox) / cep->view_zoom - al_get_bitmap_width(cep->selection.bitmap) / 2;
-					y = cep->view_y + (t3f_mouse_y + oy) / cep->view_zoom - al_get_bitmap_height(cep->selection.bitmap) / 2;
-					break;
+					cep->selection.bitmap[i] = al_clone_bitmap(cep->clipboard.bitmap[i]);
 				}
 			}
-			pa_initialize_box(&cep->selection.box, x, y, al_get_bitmap_width(cep->selection.bitmap), al_get_bitmap_height(cep->selection.bitmap), cep->peg_bitmap);
-			pa_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom);
-			cep->current_tool = PA_TOOL_SELECTION;
+			cep->selection.layer_max = cep->clipboard.layer_max;
+			cep->selection.layer = cep->clipboard.layer;
+			if(cep->selection.bitmap)
+			{
+				switch(pos)
+				{
+					case 0:
+					{
+						x = cep->view_x + cep->view_width / 2 - al_get_bitmap_width(cep->selection.bitmap[c]) / 2;
+						y = cep->view_y + cep->view_height / 2 - al_get_bitmap_height(cep->selection.bitmap[c]) / 2;
+						break;
+					}
+					case 1:
+					{
+						x = cep->clipboard.x;
+						y = cep->clipboard.y;
+						break;
+					}
+					case 2:
+					{
+						x = cep->view_x + (t3f_mouse_x + ox) / cep->view_zoom - al_get_bitmap_width(cep->selection.bitmap[c]) / 2;
+						y = cep->view_y + (t3f_mouse_y + oy) / cep->view_zoom - al_get_bitmap_height(cep->selection.bitmap[c]) / 2;
+						break;
+					}
+				}
+				pa_initialize_box(&cep->selection.box, x, y, al_get_bitmap_width(cep->selection.bitmap[c]), al_get_bitmap_height(cep->selection.bitmap[c]), cep->peg_bitmap);
+				pa_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom);
+				cep->current_tool = PA_TOOL_SELECTION;
+			}
+			al_restore_state(&old_state);
+			t3f_refresh_menus();
 		}
-		al_restore_state(&old_state);
-		t3f_refresh_menus();
 	}
 	t3f_debug_message("Exit pa_menu_edit_paste()\n");
 }
@@ -188,6 +208,7 @@ int pa_menu_edit_flip_horizontal(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 	bool need_float = false;
+	int i;
 
 	if(!app->canvas_editor->selection.bitmap)
 	{
@@ -196,7 +217,13 @@ int pa_menu_edit_flip_horizontal(int id, void * data)
 	}
 	if(app->canvas_editor->selection.bitmap)
 	{
-		pa_flip_bitmap(app->canvas_editor->selection.bitmap, true, false);
+		for(i = 0; i < app->canvas_editor->selection.layer_max; i++)
+		{
+			if(app->canvas_editor->selection.bitmap[i])
+			{
+				pa_flip_bitmap(app->canvas_editor->selection.bitmap[i], true, false);
+			}
+		}
 	}
 	if(need_float)
 	{
@@ -209,6 +236,7 @@ int pa_menu_edit_flip_vertical(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 	bool need_float = false;
+	int i;
 
 	if(!app->canvas_editor->selection.bitmap)
 	{
@@ -217,7 +245,13 @@ int pa_menu_edit_flip_vertical(int id, void * data)
 	}
 	if(app->canvas_editor->selection.bitmap)
 	{
-		pa_flip_bitmap(app->canvas_editor->selection.bitmap, false, true);
+		for(i = 0; i < app->canvas_editor->selection.layer_max; i++)
+		{
+			if(app->canvas_editor->selection.bitmap[i])
+			{
+				pa_flip_bitmap(app->canvas_editor->selection.bitmap[i], false, true);
+			}
+		}
 	}
 	if(need_float)
 	{
@@ -230,6 +264,7 @@ int pa_menu_edit_turn_clockwise(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 	bool need_float = false;
+	int i, c = -1;
 
 	if(!app->canvas_editor->selection.bitmap)
 	{
@@ -238,8 +273,18 @@ int pa_menu_edit_turn_clockwise(int id, void * data)
 	}
 	if(app->canvas_editor->selection.bitmap)
 	{
-		pa_turn_bitmap(&app->canvas_editor->selection.bitmap, 1);
-		pa_initialize_box(&app->canvas_editor->selection.box, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, al_get_bitmap_width(app->canvas_editor->selection.bitmap), al_get_bitmap_height(app->canvas_editor->selection.bitmap), app->canvas_editor->peg_bitmap);
+		for(i = 0; i < app->canvas_editor->selection.layer_max; i++)
+		{
+			if(app->canvas_editor->selection.bitmap[i])
+			{
+				pa_turn_bitmap(&app->canvas_editor->selection.bitmap[i], 1);
+				c = i;
+			}
+		}
+		if(c >= 0)
+		{
+			pa_initialize_box(&app->canvas_editor->selection.box, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, al_get_bitmap_width(app->canvas_editor->selection.bitmap[c]), al_get_bitmap_height(app->canvas_editor->selection.bitmap[c]), app->canvas_editor->peg_bitmap);
+		}
 		pa_update_box_handles(&app->canvas_editor->selection.box, app->canvas_editor->view_x, app->canvas_editor->view_y, app->canvas_editor->view_zoom);
 	}
 	return 0;
@@ -249,6 +294,7 @@ int pa_menu_edit_turn_counter_clockwise(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 	bool need_float = false;
+	int i, c = -1;
 
 	if(!app->canvas_editor->selection.bitmap)
 	{
@@ -257,8 +303,18 @@ int pa_menu_edit_turn_counter_clockwise(int id, void * data)
 	}
 	if(app->canvas_editor->selection.bitmap)
 	{
-		pa_turn_bitmap(&app->canvas_editor->selection.bitmap, -1);
-		pa_initialize_box(&app->canvas_editor->selection.box, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, al_get_bitmap_width(app->canvas_editor->selection.bitmap), al_get_bitmap_height(app->canvas_editor->selection.bitmap), app->canvas_editor->peg_bitmap);
+		for(i = 0; i < app->canvas_editor->selection.layer_max; i++)
+		{
+			if(app->canvas_editor->selection.bitmap[i])
+			{
+				pa_turn_bitmap(&app->canvas_editor->selection.bitmap[i], -1);
+				c = i;
+			}
+		}
+		if(c >= 0)
+		{
+			pa_initialize_box(&app->canvas_editor->selection.box, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, al_get_bitmap_width(app->canvas_editor->selection.bitmap[c]), al_get_bitmap_height(app->canvas_editor->selection.bitmap[c]), app->canvas_editor->peg_bitmap);
+		}
 		pa_update_box_handles(&app->canvas_editor->selection.box, app->canvas_editor->view_x, app->canvas_editor->view_y, app->canvas_editor->view_zoom);
 	}
 	return 0;
