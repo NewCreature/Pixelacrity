@@ -45,6 +45,19 @@ static ALLEGRO_BITMAP * create_default_brush(void)
 	return bp;
 }
 
+void pa_reset_canvas_editor(PA_CANVAS_EDITOR * cep)
+{
+	cep->view_x = 0;
+	cep->view_y = 0;
+	cep->view_fx = 0.0;
+	cep->view_fy = 0.0;
+	cep->view_zoom = 8;
+	cep->current_layer = 0;
+	cep->modified = 0;
+	strcpy(cep->canvas_path, "");
+	cep->backup_tick = PA_BACKUP_INTERVAL;
+}
+
 PA_CANVAS_EDITOR * pa_create_canvas_editor(PA_CANVAS * cp)
 {
 	PA_CANVAS_EDITOR * cep;
@@ -100,10 +113,7 @@ PA_CANVAS_EDITOR * pa_create_canvas_editor(PA_CANVAS * cp)
 		goto fail;
 	}
 	cep->canvas = cp;
-	cep->view_x = 0;
-	cep->view_y = 0;
-	pa_set_canvas_editor_zoom(cep, 8);
-	cep->backup_tick = PA_BACKUP_INTERVAL;
+	pa_reset_canvas_editor(cep);
 	return cep;
 
 	fail:
@@ -152,11 +162,11 @@ bool pa_load_canvas_editor_state(PA_CANVAS_EDITOR * cep, const char * fn)
 		cep->view_zoom = get_config_val(cep->config, "State", "view_zoom", 8);
 		cep->current_tool = get_config_val(cep->config, "State", "current_tool", 0);
 		cep->current_layer = get_config_val(cep->config, "State", "current_layer", 0);
-		cep->export_path = al_get_config_value(cep->config, "State", "export_path");
+		cep->export_path = strdup(al_get_config_value(cep->config, "State", "export_path"));
 		for(i = 0; i < cep->canvas->frame_max; i++)
 		{
 			sprintf(buf, "Frame %d", i);
-			cep->canvas->frame[i]->export_path = al_get_config_value(cep->config, buf, "export_path");
+			cep->canvas->frame[i]->export_path = strdup(al_get_config_value(cep->config, buf, "export_path"));
 		}
 		return true;
 	}

@@ -128,6 +128,7 @@ typedef struct
 
 } PA_CANVAS_EDITOR;
 
+void pa_reset_canvas_editor(PA_CANVAS_EDITOR * cep);
 PA_CANVAS_EDITOR * pa_create_canvas_editor(PA_CANVAS * cp);
 void pa_destroy_canvas_editor(PA_CANVAS_EDITOR * cep);
 

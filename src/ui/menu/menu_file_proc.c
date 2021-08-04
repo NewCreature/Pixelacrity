@@ -70,8 +70,8 @@ int pa_menu_file_new(int id, void * data)
 		}
 		if(app->canvas_editor)
 		{
+			pa_reset_canvas_editor(app->canvas_editor);
 			app->canvas_editor->canvas = app->canvas;
-			app->canvas_editor->modified = 0;
 			app->canvas_editor->update_title = true;
 			pa_center_canvas_editor(app->canvas_editor, 0);
 		}
