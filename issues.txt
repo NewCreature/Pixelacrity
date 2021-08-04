@@ -39,9 +39,6 @@ Pixelacrity 0.2.5 Issues
 
 [ ]Canvas is not marked as modified when floating a blank selection.
 
-[ ]Selecting a color from the color picker and subsequently using the alpha
-   slider resets the shad slider to the last used shade level.
-
 
 Pixelacrity 0.3 Issues
 ----------------------
@@ -523,3 +520,6 @@ Closed Issues
 
 [X]The color picker is not updated when using the dropper tool to select a
    color.
+
+[X]Selecting a color from the color picker and subsequently using the alpha
+   slider resets the shad slider to the last used shade level.
