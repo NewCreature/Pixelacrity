@@ -308,6 +308,7 @@ PA_UI * pa_create_ui(PA_CANVAS_EDITOR * cep)
 		uip->element[PA_UI_ELEMENT_CANVAS_EDITOR] = cep->editor_element;
 		pa_set_color(&cep->left_color, al_map_rgba_f(1.0, 0.0, 0.0, 1.0));
 		pa_set_color(&cep->right_color, al_map_rgba_f(0.0, 0.0, 0.0, 1.0));
+		pa_canvas_editor_update_pick_colors(cep);
 	}
 	return uip;
 
