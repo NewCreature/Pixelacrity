@@ -33,6 +33,22 @@ Pixelacrity 0.2.7 Issues
 
 [ ]Allow selections to be multi-layered.
 
+   [ ]Holding Shift while the mouse button is released should cause the
+      selection to become multi-layered.
+
+   [ ]Modify the selection and clipboard when layers are added or removed. The
+      bitmap arrays need to stay synchronized with the canvas.
+
+   [ ]Ctrl+Shift+C should make a multi-layer copy of the current selection if it
+      isn't floating.
+
+   [ ]The main canvas editor rendering code will need to handle rendering the
+      current selection. The scratch bitmap is only a single layer, so we will
+      need to iterate through each layer, render that layer to scratch, and
+      render scratch to the screen. This should allow us to utilize the
+      conditional copy shader per layer with each layer finally composited to
+      the backbuffer giving the expected result.
+
 [ ]Consider making selections always floating.
 
 [ ]Canvas is not marked as modified when floating a blank selection.
