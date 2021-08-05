@@ -89,7 +89,7 @@ int pa_menu_edit_copy(int id, void * data)
 	{
 		if(!app->canvas_editor->selection.bitmap)
 		{
-			pa_copy_canvas_to_clipboard(app->canvas_editor, app->canvas_editor->current_layer, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, app->canvas_editor->selection.box.width, app->canvas_editor->selection.box.height);
+			pa_copy_canvas_to_clipboard(app->canvas_editor, app->canvas_editor->selection.layer < 0 ? -1 : app->canvas_editor->current_layer, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, app->canvas_editor->selection.box.width, app->canvas_editor->selection.box.height);
 		}
 		else
 		{
@@ -114,17 +114,6 @@ static void paste_helper(PA_CANVAS_EDITOR * cep, int pos, int ox, int oy)
 	t3f_debug_message("Enter pa_menu_edit_paste()\n");
 	if(cep->clipboard.bitmap)
 	{
-		for(i = 0; i < cep->clipboard.layer_max; i++)
-		{
-			if(cep->clipboard.bitmap[i])
-			{
-				c = i;
-			}
-		}
-		if(c < 0)
-		{
-			return;
-		}
 		al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);
 		al_set_new_bitmap_flags(ALLEGRO_NO_PREMULTIPLIED_ALPHA);
 		if(cep->selection.bitmap)
@@ -139,6 +128,7 @@ static void paste_helper(PA_CANVAS_EDITOR * cep, int pos, int ox, int oy)
 				if(cep->clipboard.bitmap[i])
 				{
 					cep->selection.bitmap[i] = al_clone_bitmap(cep->clipboard.bitmap[i]);
+					c = i;
 				}
 			}
 			cep->selection.layer_max = cep->clipboard.layer_max;

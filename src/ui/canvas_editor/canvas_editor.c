@@ -337,6 +337,7 @@ bool pa_handle_float_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp
 {
 	ALLEGRO_STATE old_state;
 	ALLEGRO_TRANSFORM identity;
+	int i;
 
 	t3f_debug_message("Enter pa_handle_float_canvas_editor_selection()\n");
 	al_store_state(&old_state, ALLEGRO_STATE_BLENDER | ALLEGRO_STATE_TRANSFORM | ALLEGRO_STATE_TARGET_BITMAP);
@@ -346,21 +347,50 @@ bool pa_handle_float_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp
 	{
 		goto fail;
 	}
-	cep->selection.bitmap[cep->current_layer] = al_create_bitmap(bp->width, bp->height);
-	if(!cep->selection.bitmap[cep->current_layer])
-	{
-		goto fail;
-	}
 	cep->selection.layer_max = cep->canvas->layer_max;
-	cep->selection.layer = cep->current_layer;
-	al_set_target_bitmap(cep->selection.bitmap[cep->current_layer]);
-	al_identity_transform(&identity);
-	al_use_transform(&identity);
-	al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
-	al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
-	pa_render_canvas_layer(cep->canvas, cep->current_layer, bp->start_x, bp->start_y, 1, 0, 0, bp->width, bp->height);
-	al_restore_state(&old_state);
-	pa_draw_primitive_to_canvas(cep->canvas, cep->current_layer, bp->start_x, bp->start_y, bp->start_x + bp->width - 1, bp->start_y + bp->height - 1, NULL, al_map_rgba_f(0, 0, 0, 0), PA_RENDER_COPY, NULL, pa_draw_filled_rectangle);
+	if(t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT])
+	{
+		cep->selection.layer = -1;
+	}
+	else
+	{
+		cep->selection.layer = cep->current_layer;
+	}
+	if(cep->selection.layer >= 0)
+	{
+		cep->selection.bitmap[cep->current_layer] = al_create_bitmap(bp->width, bp->height);
+		if(!cep->selection.bitmap[cep->current_layer])
+		{
+			goto fail;
+		}
+		al_set_target_bitmap(cep->selection.bitmap[cep->current_layer]);
+		al_identity_transform(&identity);
+		al_use_transform(&identity);
+		al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
+		al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
+		pa_render_canvas_layer(cep->canvas, cep->current_layer, bp->start_x, bp->start_y, 1, 0, 0, bp->width, bp->height);
+		al_restore_state(&old_state);
+		pa_draw_primitive_to_canvas(cep->canvas, cep->current_layer, bp->start_x, bp->start_y, bp->start_x + bp->width - 1, bp->start_y + bp->height - 1, NULL, al_map_rgba_f(0, 0, 0, 0), PA_RENDER_COPY, NULL, pa_draw_filled_rectangle);
+	}
+	else
+	{
+		for(i = 0; i < cep->selection.layer_max; i++)
+		{
+			cep->selection.bitmap[i] = al_create_bitmap(bp->width, bp->height);
+			if(!cep->selection.bitmap[i])
+			{
+				goto fail;
+			}
+			al_set_target_bitmap(cep->selection.bitmap[i]);
+			al_identity_transform(&identity);
+			al_use_transform(&identity);
+			al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
+			al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
+			pa_render_canvas_layer(cep->canvas, i, bp->start_x, bp->start_y, 1, 0, 0, bp->width, bp->height);
+			al_restore_state(&old_state);
+			pa_draw_primitive_to_canvas(cep->canvas, i, bp->start_x, bp->start_y, bp->start_x + bp->width - 1, bp->start_y + bp->height - 1, NULL, al_map_rgba_f(0, 0, 0, 0), PA_RENDER_COPY, NULL, pa_draw_filled_rectangle);
+		}
+	}
 	cep->modified++;
 	t3f_debug_message("Exit pa_handle_float_canvas_editor_selection()\n");
 
@@ -397,6 +427,17 @@ void pa_handle_unfloat_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * 
 	{
 		pa_draw_primitive_to_canvas(cep->canvas, cep->current_layer, bp->start_x, bp->start_y, bp->start_x + bp->width, bp->start_y + bp->height, cep->selection.bitmap[cep->selection.layer], al_map_rgba_f(0, 0, 0, 0), PA_RENDER_COPY, cep->conditional_copy_shader, pa_draw_quad);
 		al_use_shader(cep->standard_shader);
+	}
+	else
+	{
+		for(i = 0; i < cep->selection.layer_max; i++)
+		{
+			if(cep->selection.bitmap[i])
+			{
+				pa_draw_primitive_to_canvas(cep->canvas, i, bp->start_x, bp->start_y, bp->start_x + bp->width, bp->start_y + bp->height, cep->selection.bitmap[i], al_map_rgba_f(0, 0, 0, 0), PA_RENDER_COPY, cep->conditional_copy_shader, pa_draw_quad);
+				al_use_shader(cep->standard_shader);
+			}
+		}
 	}
 	if(cep->selection.bitmap)
 	{

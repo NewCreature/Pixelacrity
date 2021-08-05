@@ -75,6 +75,7 @@ bool pa_copy_canvas_to_clipboard(PA_CANVAS_EDITOR * cep, int layer, int x, int y
 			cep->clipboard.x = x, cep->clipboard.y = y;
 			ret = true;
 		}
+		cep->clipboard.layer = layer;
 	}
 	al_restore_state(&old_state);
 	return ret;

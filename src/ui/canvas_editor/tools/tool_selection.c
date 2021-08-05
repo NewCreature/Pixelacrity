@@ -19,7 +19,7 @@
 	pa_initialize_box(&cep->selection.box, start_x, start_y, end_x - start_x + 1, end_y - start_y + 1, cep->peg_bitmap);
 } */
 
-void pa_tool_selection_logic(PA_CANVAS_EDITOR * cep)
+void pa_tool_selection_render_layer(PA_CANVAS_EDITOR * cep, int layer)
 {
 	ALLEGRO_TRANSFORM identity;
 	ALLEGRO_STATE old_state;
@@ -27,22 +27,21 @@ void pa_tool_selection_logic(PA_CANVAS_EDITOR * cep)
 	int old_x, old_y;
 	float start_x, start_y, end_x, end_y;
 	int count = 0;
+	int i;
 
+	al_store_state(&old_state, ALLEGRO_STATE_BLENDER);
 	cep->scratch_offset_x = cep->view_x;
 	cep->scratch_offset_y = cep->view_y;
-	al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_TRANSFORM | ALLEGRO_STATE_BLENDER);
-	al_set_target_bitmap(cep->scratch_bitmap);
-	al_identity_transform(&identity);
-	al_use_transform(&identity);
-	al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
 	al_use_shader(cep->standard_shader);
-	al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
-	pa_render_canvas_layer(cep->canvas, cep->current_layer, cep->view_x, cep->view_y, 1, 0, 0, cep->editor_element->w, cep->editor_element->h);
+	pa_render_canvas_layer(cep->canvas, cep->current_layer, cep->view_x, cep->view_y, cep->view_zoom, cep->editor_element->x, cep->editor_element->y, cep->editor_element->w, cep->editor_element->h);
 
 	al_use_shader(cep->conditional_copy_shader);
 	al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
-	al_draw_scaled_bitmap(cep->selection.bitmap[cep->selection.layer], 0, 0,  cep->selection.box.width, cep->selection.box.height, cep->selection.box.start_x - cep->view_x, cep->selection.box.start_y - cep->view_y, cep->selection.box.width, cep->selection.box.height, 0);
-	al_use_shader(cep->standard_shader);
-
+	i = cep->selection.layer ? layer : cep->selection.layer;
+	if(cep->selection.bitmap[i])
+	{
+		al_draw_scaled_bitmap(cep->selection.bitmap[i], 0, 0,  cep->selection.box.width, cep->selection.box.height, (cep->selection.box.start_x - cep->view_x) * cep->view_zoom + cep->editor_element->x, (cep->selection.box.start_y - cep->view_y) * cep->view_zoom + cep->editor_element->y, cep->selection.box.width * cep->view_zoom, cep->selection.box.height * cep->view_zoom, 0);
+	}
 	al_restore_state(&old_state);
+	al_use_shader(cep->standard_shader);
 }
