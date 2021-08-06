@@ -33,7 +33,7 @@ void pa_tool_selection_render_layer(PA_CANVAS_EDITOR * cep, int layer)
 	cep->scratch_offset_x = cep->view_x;
 	cep->scratch_offset_y = cep->view_y;
 	al_use_shader(cep->standard_shader);
-	pa_render_canvas_layer(cep->canvas, cep->current_layer, cep->view_x, cep->view_y, cep->view_zoom, cep->editor_element->x, cep->editor_element->y, cep->editor_element->w, cep->editor_element->h);
+	pa_render_canvas_layer(cep->canvas, layer, cep->view_x, cep->view_y, cep->view_zoom, cep->editor_element->x, cep->editor_element->y, cep->editor_element->w, cep->editor_element->h);
 
 	al_use_shader(cep->conditional_copy_shader);
 	al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
