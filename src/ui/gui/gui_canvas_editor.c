@@ -832,45 +832,41 @@ int pa_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			al_identity_transform(&identity);
 			al_use_transform(&identity);
 
-			/* render background layers */
-			if(!t3f_key[ALLEGRO_KEY_I])
+			if(canvas_editor->selection.layer < 0 && canvas_editor->selection.bitmap)
 			{
-				for(i = 0; i < canvas_editor->current_layer; i++)
+				for(i = 0; i < canvas_editor->canvas->layer_max; i++)
 				{
-					if(canvas_editor->selection.layer < 0 && canvas_editor->selection.bitmap)
-					{
-						pa_tool_selection_render_layer(canvas_editor, i);
-					}
-					else
+					pa_tool_selection_render_layer(canvas_editor, i);
+				}
+			}
+			else
+			{
+				/* render background layers */
+				if(!t3f_key[ALLEGRO_KEY_I])
+				{
+					for(i = 0; i < canvas_editor->current_layer; i++)
 					{
 						pa_render_canvas_layer(canvas_editor->canvas, i, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, d->w, d->h);
 					}
 				}
-			}
 
-			if(canvas_editor->selection.bitmap)
-			{
-				pa_tool_selection_render_layer(canvas_editor, canvas_editor->current_layer);
-			}
-			else if(canvas_editor->tool_state == PA_TOOL_STATE_DRAWING)
-			{
-				al_draw_scaled_bitmap(canvas_editor->scratch_bitmap, 0, 0,  al_get_bitmap_width(canvas_editor->scratch_bitmap), al_get_bitmap_height(canvas_editor->scratch_bitmap), d->x - (canvas_editor->view_x - canvas_editor->scratch_offset_x) * canvas_editor->view_zoom, d->y - (canvas_editor->view_y - canvas_editor->scratch_offset_y) * canvas_editor->view_zoom, al_get_bitmap_width(canvas_editor->scratch_bitmap) * canvas_editor->view_zoom, al_get_bitmap_height(canvas_editor->scratch_bitmap) * canvas_editor->view_zoom, 0);
-			}
-			else
-			{
-				pa_render_canvas_layer(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, d->w, d->h);
-			}
-
-			/* draw foreground layers */
-			if(!t3f_key[ALLEGRO_KEY_I])
-			{
-				for(i = canvas_editor->current_layer + 1; i < canvas_editor->canvas->layer_max; i++)
+				if(canvas_editor->selection.bitmap)
 				{
-					if(canvas_editor->selection.layer < 0 && canvas_editor->selection.bitmap)
-					{
-						pa_tool_selection_render_layer(canvas_editor, i);
-					}
-					else
+					pa_tool_selection_render_layer(canvas_editor, canvas_editor->current_layer);
+				}
+				else if(canvas_editor->tool_state == PA_TOOL_STATE_DRAWING)
+				{
+					al_draw_scaled_bitmap(canvas_editor->scratch_bitmap, 0, 0,  al_get_bitmap_width(canvas_editor->scratch_bitmap), al_get_bitmap_height(canvas_editor->scratch_bitmap), d->x - (canvas_editor->view_x - canvas_editor->scratch_offset_x) * canvas_editor->view_zoom, d->y - (canvas_editor->view_y - canvas_editor->scratch_offset_y) * canvas_editor->view_zoom, al_get_bitmap_width(canvas_editor->scratch_bitmap) * canvas_editor->view_zoom, al_get_bitmap_height(canvas_editor->scratch_bitmap) * canvas_editor->view_zoom, 0);
+				}
+				else
+				{
+					pa_render_canvas_layer(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, d->w, d->h);
+				}
+
+				/* draw foreground layers */
+				if(!t3f_key[ALLEGRO_KEY_I])
+				{
+					for(i = canvas_editor->current_layer + 1; i < canvas_editor->canvas->layer_max; i++)
 					{
 						pa_render_canvas_layer(canvas_editor->canvas, i, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, d->w, d->h);
 					}
