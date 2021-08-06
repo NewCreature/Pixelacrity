@@ -46,14 +46,14 @@ Pixelacrity 0.2.7 Issues
    [ ]Ctrl+Shift+C should make a multi-layer copy of the current selection if it
       isn't floating.
 
-   [ ]The main canvas editor rendering code will need to handle rendering the
+   [X]The main canvas editor rendering code will need to handle rendering the
       current selection. The scratch bitmap is only a single layer, so we will
       need to iterate through each layer, render that layer to scratch, and
       render scratch to the screen. This should allow us to utilize the
       conditional copy shader per layer with each layer finally composited to
       the backbuffer giving the expected result.
 
-      [ ]This is implemented, but it seems to be a bit buggy.
+      [X]This is implemented, but it seems to be a bit buggy.
 
    [ ]Add menu options related to multi-layer selections.
 
