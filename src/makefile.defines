@@ -53,10 +53,10 @@ APP_UI_OBJECTS =     ui/ui.o\
                      ui/menu/menu_layer_proc.o\
                      ui/gui/gui_color.o\
                      ui/gui/gui_palette.o\
-                     ui/gui/gui_canvas_editor.o\
                      ui/gui/button_proc.o\
                      ui/gui/list_proc.o\
-                     ui/gui/layer_list_proc.o
+                     ui/gui/layer_list_proc.o\
+                     ui/gui/canvas_editor/element.o
 
 #########################
 # application variables #

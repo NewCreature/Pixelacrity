@@ -8,7 +8,7 @@
 #include "ui/canvas_editor/undo_tool.h"
 #include "ui/canvas_editor/undo_flood_fill.h"
 #include "modules/primitives.h"
-#include "ui/gui/gui_canvas_editor.h"
+#include "element.h"
 #include "ui/canvas_editor/tools/tool_pixel.h"
 #include "ui/canvas_editor/tools/tool_line.h"
 #include "ui/canvas_editor/tools/tool_rectangle.h"

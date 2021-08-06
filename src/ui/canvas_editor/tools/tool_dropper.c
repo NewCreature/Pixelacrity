@@ -1,5 +1,5 @@
 #include "ui/canvas_editor/canvas_editor.h"
-#include "ui/gui/gui_canvas_editor.h"
+#include "ui/gui/canvas_editor/element.h"
 #include "modules/canvas/canvas_helpers.h"
 
 void pa_tool_dropper_logic(PA_CANVAS_EDITOR * cep, int button)

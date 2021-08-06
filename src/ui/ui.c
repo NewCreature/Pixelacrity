@@ -10,7 +10,7 @@
 #include "modules/canvas/canvas_helpers.h"
 #include "gui/gui_color.h"
 #include "gui/gui_palette.h"
-#include "gui/gui_canvas_editor.h"
+#include "gui/canvas_editor/element.h"
 #include "modules/ega_palette.h"
 #include "gui/list_proc.h"
 #include "gui/layer_list_proc.h"
