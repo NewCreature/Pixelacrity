@@ -4,6 +4,7 @@
 #include "modules/canvas/canvas_helpers.h"
 #include "canvas_editor.h"
 #include "undo.h"
+#include "selection.h"
 
 bool pa_make_import_undo(PA_CANVAS_EDITOR * cep, int layer, const char * import_fn, const char * fn)
 {

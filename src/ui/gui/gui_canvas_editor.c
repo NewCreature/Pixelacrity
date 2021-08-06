@@ -22,6 +22,7 @@
 #include "modules/color.h"
 #include "modules/canvas/flood_fill.h"
 #include "modules/snap.h"
+#include "ui/canvas_editor/selection.h"
 
 void pa_canvas_editor_update_pick_colors(PA_CANVAS_EDITOR * cep)
 {

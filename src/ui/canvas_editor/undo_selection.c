@@ -6,6 +6,7 @@
 #include "canvas_editor.h"
 #include "undo.h"
 #include "clipboard.h"
+#include "selection.h"
 
 static void copy_bitmap_to_target(ALLEGRO_BITMAP * bp, ALLEGRO_BITMAP * target_bp)
 {

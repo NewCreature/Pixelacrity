@@ -142,11 +142,6 @@ void pa_set_color(PA_COLOR_INFO * cip, ALLEGRO_COLOR color);
 
 void pa_center_canvas_editor(PA_CANVAS_EDITOR * cep, int frame);
 void pa_set_canvas_editor_zoom(PA_CANVAS_EDITOR * cep, int level);
-void pa_clear_canvas_editor_selection(PA_CANVAS_EDITOR * cep);
-bool pa_handle_float_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp);
-void pa_float_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp);
-void pa_handle_unfloat_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp);
-void pa_unfloat_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp);
 void pa_shift_canvas_editor_variables(PA_CANVAS_EDITOR * cep, int ox, int oy);
 void pa_select_canvas_editor_tool(PA_CANVAS_EDITOR * cep, int tool);
 void pa_select_canvas_editor_layer(PA_CANVAS_EDITOR * cep, int layer);

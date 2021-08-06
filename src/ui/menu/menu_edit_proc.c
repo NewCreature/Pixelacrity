@@ -8,6 +8,7 @@
 #include "ui/canvas_editor/undo_tool.h"
 #include "ui/canvas_editor/undo_selection.h"
 #include "ui/canvas_editor/clipboard.h"
+#include "ui/canvas_editor/selection.h"
 
 int pa_menu_edit_undo(int id, void * data)
 {
