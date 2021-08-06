@@ -56,7 +56,15 @@ APP_UI_OBJECTS =     ui/ui.o\
                      ui/gui/button_proc.o\
                      ui/gui/list_proc.o\
                      ui/gui/layer_list_proc.o\
-                     ui/gui/canvas_editor/element.o
+                     ui/gui/canvas_editor/element.o\
+                     ui/gui/canvas_editor/MSG_GOTMOUSE.o\
+                     ui/gui/canvas_editor/MSG_LOSTMOUSE.o\
+                     ui/gui/canvas_editor/MSG_MOUSEDOWN.o\
+                     ui/gui/canvas_editor/MSG_MOUSEUP.o\
+                     ui/gui/canvas_editor/MSG_MOUSEMOVE.o\
+                     ui/gui/canvas_editor/MSG_WHEEL.o\
+                     ui/gui/canvas_editor/MSG_IDLE.o\
+                     ui/gui/canvas_editor/MSG_DRAW.o
 
 #########################
 # application variables #

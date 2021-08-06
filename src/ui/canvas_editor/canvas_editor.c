@@ -367,3 +367,38 @@ bool pa_import_image(PA_CANVAS_EDITOR * cep, const char * fn)
 	return true;
 
 }
+
+void pa_update_tool_variables(PA_CANVAS_EDITOR * cep)
+{
+	cep->scratch_offset_x = cep->view_x;
+	cep->scratch_offset_y = cep->view_y;
+	if(cep->hover_x < cep->tool_left)
+	{
+		cep->tool_left = cep->hover_x;
+	}
+	if(cep->hover_x > cep->tool_right)
+	{
+		cep->tool_right = cep->hover_x;
+	}
+	if(cep->hover_y < cep->tool_top)
+	{
+		cep->tool_top = cep->hover_y;
+	}
+	if(cep->hover_y > cep->tool_bottom)
+	{
+		cep->tool_bottom = cep->hover_y;
+	}
+}
+
+void pa_canvas_editor_update_pick_colors(PA_CANVAS_EDITOR * cep)
+{
+	float new_l, step;
+	int i;
+
+	step = 1.0 / (float)(PA_COLOR_PICKER_SHADES - 1);
+	for(i = 0; i < PA_COLOR_PICKER_SHADES; i++)
+	{
+		new_l = step * (float)i;
+		cep->pick_color[i] = pa_shade_color(cep->left_color.base_color, new_l);
+	}
+}

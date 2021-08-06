@@ -182,3 +182,27 @@ void pa_unfloat_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp)
 	pa_handle_unfloat_canvas_editor_selection(cep, bp);
 	t3f_debug_message("Exit pa_unfloat_canvas_editor_selection()\n");
 }
+
+void pa_update_selection(PA_CANVAS_EDITOR * canvas_editor, T3GUI_ELEMENT * d)
+{
+	PA_BOX old_box;
+	bool snap = false;
+
+	if(canvas_editor->selection.box.width > 0 && canvas_editor->selection.box.height > 0)
+	{
+		memcpy(&old_box, &canvas_editor->selection.box, sizeof(PA_BOX));
+		pa_update_box_handles(&canvas_editor->selection.box, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom);
+		if(t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL])
+		{
+			snap = true;
+		}
+		pa_box_logic(&canvas_editor->selection.box, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, snap);
+		if(!canvas_editor->selection.bitmap && (canvas_editor->selection.box.start_x != old_box.start_x || canvas_editor->selection.box.start_y != old_box.start_y))
+		{
+			if(canvas_editor->selection.box.state == PA_BOX_STATE_MOVING)
+			{
+				pa_float_canvas_editor_selection(canvas_editor, &old_box);
+			}
+		}
+	}
+}
