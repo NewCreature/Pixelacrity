@@ -14,10 +14,8 @@ void ** pa_malloc(int element_size, int elements)
 	return p;
 }
 
-void pa_free(void ** p, int elements)
+void pa_free(void ** p)
 {
-	int i;
-
 	if(p)
 	{
 		free(p);

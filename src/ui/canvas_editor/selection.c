@@ -52,7 +52,7 @@ static void free_selection(PA_CANVAS_EDITOR * cep)
 				al_destroy_bitmap(cep->selection.bitmap[i]);
 			}
 		}
-		pa_free((void **)cep->selection.bitmap, cep->selection.layer_max);
+		pa_free((void **)cep->selection.bitmap);
 		cep->selection.bitmap = NULL;
 	}
 }
