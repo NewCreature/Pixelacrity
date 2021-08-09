@@ -206,3 +206,60 @@ void pa_update_selection(PA_CANVAS_EDITOR * canvas_editor, T3GUI_ELEMENT * d)
 		}
 	}
 }
+
+bool pa_add_layer_to_selection(PA_CANVAS_EDITOR * cep, int layer)
+{
+	ALLEGRO_BITMAP ** old_bitmap;
+	int i;
+
+	if(layer < 0)
+	{
+		layer = cep->selection.layer_max;
+	}
+	old_bitmap = cep->selection.bitmap;
+	cep->selection.bitmap = (ALLEGRO_BITMAP **)pa_malloc(sizeof(ALLEGRO_BITMAP *), cep->selection.layer_max + 1);
+	if(cep->selection.bitmap)
+	{
+		for(i = 0; i < layer; i++)
+		{
+			cep->selection.bitmap[i] = old_bitmap[i];
+		}
+		for(i = layer + 1; i < cep->selection.layer_max + 1; i++)
+		{
+			cep->selection.bitmap[i] = old_bitmap[i - 1];
+		}
+		cep->selection.bitmap[layer] = al_create_bitmap(al_get_bitmap_width(cep->selection.bitmap[0]), al_get_bitmap_height(cep->selection.bitmap[0]));
+		if(cep->selection.bitmap[layer])
+		{
+			cep->selection.layer_max++;
+			pa_free((void **)old_bitmap);
+			return true;
+		}
+	}
+	return false;
+}
+
+bool pa_remove_layer_from_selection(PA_CANVAS_EDITOR * cep, int layer)
+{
+	ALLEGRO_BITMAP ** old_bitmap;
+	int i;
+
+	old_bitmap = cep->selection.bitmap;
+	cep->selection.bitmap = (ALLEGRO_BITMAP **)pa_malloc(sizeof(ALLEGRO_BITMAP *), cep->selection.layer_max - 1);
+	if(cep->selection.bitmap)
+	{
+		for(i = 0; i < layer; i++)
+		{
+			cep->selection.bitmap[i] = old_bitmap[i];
+		}
+		al_destroy_bitmap(cep->selection.bitmap[layer]);
+		for(i = layer; i < cep->selection.layer_max - 1; i++)
+		{
+			cep->selection.bitmap[i] = old_bitmap[i + 1];
+		}
+		cep->selection.layer_max--;
+		pa_free((void **)old_bitmap);
+		return true;
+	}
+	return false;
+}
