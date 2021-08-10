@@ -166,6 +166,7 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 						pa_initialize_box(&canvas_editor->selection.box, canvas_editor->click_x, canvas_editor->click_y, 1, 1, canvas_editor->peg_bitmap);
 						canvas_editor->selection.box.hover_handle = 0;
 						canvas_editor->selection.box.state = PA_BOX_STATE_RESIZING;
+						canvas_editor->selection.layer = canvas_editor->current_layer;
 						break;
 					}
 					/* set box moving logic in motion */
