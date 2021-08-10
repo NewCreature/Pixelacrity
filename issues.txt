@@ -67,6 +67,11 @@ Pixelacrity 0.2.7 Issues
 
 [ ]Translucency doesn't work correctly in floating selection preview.
 
+   [ ]I think the preview needs to be rendered to scratch first before finally
+      being rendered to the screen. The pixels rendered with the conditional
+      copy shader are copied verbatim to the screen which, I believe, ends up
+      throwing out the alpha value (the backbuffer can't contain alpha).
+
 
 Pixelacrity 0.3 Issues
 ----------------------
