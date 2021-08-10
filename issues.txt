@@ -63,6 +63,8 @@ Pixelacrity 0.2.7 Issues
 
 [ ]Add ability to scroll by the size of the view.
 
+[ ]Crash when pasting from the clipboard.
+
 
 Pixelacrity 0.3 Issues
 ----------------------
