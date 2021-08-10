@@ -65,6 +65,8 @@ Pixelacrity 0.2.7 Issues
 
 [ ]Crash when pasting from the clipboard.
 
+[ ]Translucency doesn't work correctly in floating selection preview.
+
 
 Pixelacrity 0.3 Issues
 ----------------------
