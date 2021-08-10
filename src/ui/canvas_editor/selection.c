@@ -7,9 +7,29 @@
 #include "clipboard.h"
 #include "undo_selection.h"
 
+void pa_free_selection(PA_CANVAS_EDITOR * cep)
+{
+	int i;
+
+	t3f_debug_message("Enter pa_free_selection()\n");
+	if(cep->selection.bitmap)
+	{
+		for(i = 0; i < cep->selection.layer_max; i++)
+		{
+			if(cep->selection.bitmap[i])
+			{
+				al_destroy_bitmap(cep->selection.bitmap[i]);
+			}
+		}
+		pa_free((void **)cep->selection.bitmap);
+		cep->selection.bitmap = NULL;
+	}
+	t3f_debug_message("Exit pa_free_selection()\n");
+}
+
 void pa_clear_canvas_editor_selection(PA_CANVAS_EDITOR * cep)
 {
-	pa_free_clipboard(cep);
+	pa_free_selection(cep);
 	cep->selection.box.width = 0;
 	cep->selection.box.height = 0;
 	cep->selection.box.state = PA_BOX_STATE_IDLE;
