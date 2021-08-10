@@ -120,6 +120,11 @@ PA_CANVAS_EDITOR * pa_create_canvas_editor(PA_CANVAS * cp)
 	{
 		goto fail;
 	}
+	cep->singlelayer_bitmap = al_load_bitmap_flags("data/graphics/singlelayer.png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
+	if(!cep->singlelayer_bitmap)
+	{
+		goto fail;
+	}
 	cep->canvas = cp;
 	pa_reset_canvas_editor(cep);
 	return cep;

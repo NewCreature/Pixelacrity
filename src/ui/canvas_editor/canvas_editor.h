@@ -80,6 +80,7 @@ typedef struct
 	ALLEGRO_BITMAP * scratch_bitmap;
 	ALLEGRO_BITMAP * peg_bitmap;
 	ALLEGRO_BITMAP * multilayer_bitmap;
+	ALLEGRO_BITMAP * singlelayer_bitmap;
 	ALLEGRO_BITMAP * brush;
 	PA_CLIPBOARD_DATA clipboard;
 	int scratch_offset_x; // offset of scratch in relation to view
