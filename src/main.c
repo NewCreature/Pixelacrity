@@ -116,6 +116,7 @@ bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 		printf("Error initializing T3F\n");
 		return false;
 	}
+	al_set_new_bitmap_flags(0);
 	memset(app, 0, sizeof(APP_INSTANCE));
 	t3f_set_event_handler(app_event_handler);
 
