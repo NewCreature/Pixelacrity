@@ -6,6 +6,7 @@ void pa_free_clipboard(PA_CANVAS_EDITOR * cep)
 {
 	int i;
 
+	t3f_debug_message("Enter pa_free_clipboard()\n");
 	if(cep->clipboard.bitmap)
 	{
 		for(i = 0; i < cep->clipboard.layer_max; i++)
@@ -18,6 +19,7 @@ void pa_free_clipboard(PA_CANVAS_EDITOR * cep)
 		pa_free((void **)cep->clipboard.bitmap);
 		cep->clipboard.bitmap = NULL;
 	}
+	t3f_debug_message("Exit pa_free_clipboard()\n");
 }
 
 bool pa_copy_bitmap_to_clipboard(PA_CANVAS_EDITOR * cep, ALLEGRO_BITMAP ** bp, int max)
@@ -25,6 +27,7 @@ bool pa_copy_bitmap_to_clipboard(PA_CANVAS_EDITOR * cep, ALLEGRO_BITMAP ** bp, i
 	ALLEGRO_STATE old_state;
 	int i;
 
+	t3f_debug_message("Enter pa_copy_bitmap_to_clipboard()\n");
 	al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);
 	pa_free_clipboard(cep);
 	al_set_new_bitmap_flags(ALLEGRO_NO_PREMULTIPLIED_ALPHA);
@@ -38,6 +41,7 @@ bool pa_copy_bitmap_to_clipboard(PA_CANVAS_EDITOR * cep, ALLEGRO_BITMAP ** bp, i
 	}
 	cep->clipboard.layer_max = max;
 	al_restore_state(&old_state);
+	t3f_debug_message("Exit pa_copy_bitmap_to_clipboard()\n");
 	if(cep->clipboard.bitmap)
 	{
 		return true;
@@ -51,6 +55,7 @@ bool pa_copy_canvas_to_clipboard(PA_CANVAS_EDITOR * cep, int layer, int x, int y
 	int i;
 	bool ret = false;
 
+	t3f_debug_message("Enter pa_copy_canvas_to_clipboard()\n");
 	al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);
 	pa_free_clipboard(cep);
 	al_set_new_bitmap_flags(ALLEGRO_NO_PREMULTIPLIED_ALPHA);
@@ -76,6 +81,7 @@ bool pa_copy_canvas_to_clipboard(PA_CANVAS_EDITOR * cep, int layer, int x, int y
 		cep->clipboard.layer_max = cep->canvas->layer_max;
 	}
 	al_restore_state(&old_state);
+	t3f_debug_message("Exit pa_copy_canvas_to_clipboard()\n");
 	return ret;
 }
 
@@ -84,6 +90,7 @@ bool pa_add_layer_to_clipboard(PA_CANVAS_EDITOR * cep, int layer)
 	ALLEGRO_BITMAP ** old_bitmap;
 	int i;
 
+	t3f_debug_message("Enter pa_add_layer_to_clipboard()\n");
 	if(layer < 0)
 	{
 		layer = cep->clipboard.layer_max;
@@ -105,9 +112,11 @@ bool pa_add_layer_to_clipboard(PA_CANVAS_EDITOR * cep, int layer)
 		{
 			cep->clipboard.layer_max++;
 			pa_free((void **)old_bitmap);
+			t3f_debug_message("pa_add_layer_to_clipboard() success\n");
 			return true;
 		}
 	}
+	t3f_debug_message("pa_add_layer_to_clipboard() fail\n");
 	return false;
 }
 
@@ -116,6 +125,7 @@ bool pa_remove_layer_from_clipboard(PA_CANVAS_EDITOR * cep, int layer)
 	ALLEGRO_BITMAP ** old_bitmap;
 	int i;
 
+	t3f_debug_message("Enter pa_remove_layer_from_clipboard()\n");
 	old_bitmap = cep->clipboard.bitmap;
 	cep->clipboard.bitmap = (ALLEGRO_BITMAP **)pa_malloc(sizeof(ALLEGRO_BITMAP *), cep->clipboard.layer_max - 1);
 	if(cep->clipboard.bitmap)
@@ -131,7 +141,9 @@ bool pa_remove_layer_from_clipboard(PA_CANVAS_EDITOR * cep, int layer)
 		}
 		cep->clipboard.layer_max--;
 		pa_free((void **)old_bitmap);
+		t3f_debug_message("pa_remove_layer_from_clipboard() success\n");
 		return true;
 	}
+	t3f_debug_message("pa_remove_layer_from_clipboard() fail\n");
 	return false;
 }

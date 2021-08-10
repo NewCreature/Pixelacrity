@@ -212,6 +212,7 @@ bool pa_add_layer_to_selection(PA_CANVAS_EDITOR * cep, int layer)
 	ALLEGRO_BITMAP ** old_bitmap;
 	int i;
 
+	t3f_debug_message("Enter pa_add_layer_to_selection()\n");
 	if(layer < 0)
 	{
 		layer = cep->selection.layer_max;
@@ -233,9 +234,11 @@ bool pa_add_layer_to_selection(PA_CANVAS_EDITOR * cep, int layer)
 		{
 			cep->selection.layer_max++;
 			pa_free((void **)old_bitmap);
+			t3f_debug_message("pa_add_layer_to_selection() success\n");
 			return true;
 		}
 	}
+	t3f_debug_message("pa_add_layer_to_selection() fail\n");
 	return false;
 }
 
@@ -244,6 +247,7 @@ bool pa_remove_layer_from_selection(PA_CANVAS_EDITOR * cep, int layer)
 	ALLEGRO_BITMAP ** old_bitmap;
 	int i;
 
+	t3f_debug_message("Enter pa_remove_layer_from_selection()\n");
 	old_bitmap = cep->selection.bitmap;
 	cep->selection.bitmap = (ALLEGRO_BITMAP **)pa_malloc(sizeof(ALLEGRO_BITMAP *), cep->selection.layer_max - 1);
 	if(cep->selection.bitmap)
@@ -259,7 +263,9 @@ bool pa_remove_layer_from_selection(PA_CANVAS_EDITOR * cep, int layer)
 		}
 		cep->selection.layer_max--;
 		pa_free((void **)old_bitmap);
+		t3f_debug_message("pa_remove_layer_from_selection() success\n");
 		return true;
 	}
+	t3f_debug_message("pa_remove_layer_from_selection() fail\n");
 	return false;
 }
