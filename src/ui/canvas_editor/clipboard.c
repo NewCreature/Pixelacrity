@@ -36,9 +36,13 @@ bool pa_copy_bitmap_to_clipboard(PA_CANVAS_EDITOR * cep, ALLEGRO_BITMAP ** bp, i
 	{
 		for(i = 0; i < max; i++)
 		{
-			cep->clipboard.bitmap[i] = al_clone_bitmap(bp[i]);
+			if(bp[i])
+			{
+				cep->clipboard.bitmap[i] = al_clone_bitmap(bp[i]);
+			}
 		}
 	}
+	cep->clipboard.layer = cep->selection.layer;
 	cep->clipboard.layer_max = max;
 	al_restore_state(&old_state);
 	t3f_debug_message("Exit pa_copy_bitmap_to_clipboard()\n");
