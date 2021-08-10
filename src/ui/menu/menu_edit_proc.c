@@ -90,7 +90,7 @@ int pa_menu_edit_copy(int id, void * data)
 	{
 		if(!app->canvas_editor->selection.bitmap)
 		{
-			pa_copy_canvas_to_clipboard(app->canvas_editor, app->canvas_editor->selection.layer < 0 ? -1 : app->canvas_editor->current_layer, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, app->canvas_editor->selection.box.width, app->canvas_editor->selection.box.height);
+			pa_copy_canvas_to_clipboard(app->canvas_editor, app->canvas_editor->current_layer, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, app->canvas_editor->selection.box.width, app->canvas_editor->selection.box.height);
 		}
 		else
 		{

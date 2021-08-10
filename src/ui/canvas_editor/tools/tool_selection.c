@@ -37,7 +37,7 @@ void pa_tool_selection_render_layer(PA_CANVAS_EDITOR * cep, int layer)
 
 	al_use_shader(cep->conditional_copy_shader);
 	al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
-	i = cep->selection.layer ? layer : cep->selection.layer;
+	i = cep->selection.layer < 0 ? layer : cep->selection.layer;
 	if(cep->selection.bitmap[i])
 	{
 		al_draw_scaled_bitmap(cep->selection.bitmap[i], 0, 0,  cep->selection.box.width, cep->selection.box.height, (cep->selection.box.start_x - cep->view_x) * cep->view_zoom + cep->editor_element->x, (cep->selection.box.start_y - cep->view_y) * cep->view_zoom + cep->editor_element->y, cep->selection.box.width * cep->view_zoom, cep->selection.box.height * cep->view_zoom, 0);

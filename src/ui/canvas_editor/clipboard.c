@@ -57,25 +57,23 @@ bool pa_copy_canvas_to_clipboard(PA_CANVAS_EDITOR * cep, int layer, int x, int y
 	cep->clipboard.bitmap = (ALLEGRO_BITMAP **)pa_malloc(sizeof(ALLEGRO_BITMAP *), cep->canvas->layer_max);
 	if(cep->clipboard.bitmap)
 	{
-		if(cep->clipboard.bitmap)
+		if(layer < 0)
 		{
-			if(layer < 0)
+			for(i = 0; i < cep->canvas->layer_max; i++)
 			{
-				for(i = 0; i < cep->canvas->layer_max; i++)
-				{
-					cep->clipboard.bitmap[i] = al_create_bitmap(width, height);
-					pa_render_canvas_to_bitmap(cep->canvas, i, i + 1, x, y, width, height, 0, cep->clipboard.bitmap[i]);
-				}
+				cep->clipboard.bitmap[i] = al_create_bitmap(width, height);
+				pa_render_canvas_to_bitmap(cep->canvas, i, i + 1, x, y, width, height, 0, cep->clipboard.bitmap[i]);
 			}
-			else
-			{
-				cep->clipboard.bitmap[layer] = al_create_bitmap(width, height);
-				pa_render_canvas_to_bitmap(cep->canvas, layer, layer + 1, x, y, width, height, 0, cep->clipboard.bitmap[layer]);
-			}
-			cep->clipboard.x = x, cep->clipboard.y = y;
-			ret = true;
 		}
+		else
+		{
+			cep->clipboard.bitmap[layer] = al_create_bitmap(width, height);
+			pa_render_canvas_to_bitmap(cep->canvas, layer, layer + 1, x, y, width, height, 0, cep->clipboard.bitmap[layer]);
+		}
+		cep->clipboard.x = x, cep->clipboard.y = y;
+		ret = true;
 		cep->clipboard.layer = layer;
+		cep->clipboard.layer_max = cep->canvas->layer_max;
 	}
 	al_restore_state(&old_state);
 	return ret;
