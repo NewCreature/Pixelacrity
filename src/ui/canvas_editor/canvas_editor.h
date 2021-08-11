@@ -93,6 +93,7 @@ typedef struct
 	int view_x, view_y;
 	int view_width, view_height;
 	int view_zoom;
+	bool view_isolate;
 	int hover_x, hover_y;
 	int last_hover_x, last_hover_y;
 	int click_x, click_y, click_button;

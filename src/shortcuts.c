@@ -169,4 +169,9 @@ void pa_handle_shortcuts(APP_INSTANCE * app)
 		pa_select_canvas_editor_tool(app->canvas_editor, 9);
 		t3f_key[ALLEGRO_KEY_0] = 0;
 	}
+	else if(t3f_key[ALLEGRO_KEY_I])
+	{
+		app->canvas_editor->view_isolate = !app->canvas_editor->view_isolate;
+		t3f_key[ALLEGRO_KEY_I] = 0;
+	}
 }

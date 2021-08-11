@@ -32,7 +32,7 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 	else
 	{
 		/* render background layers */
-		if(!t3f_key[ALLEGRO_KEY_I])
+		if(!canvas_editor->view_isolate)
 		{
 			for(i = 0; i < canvas_editor->current_layer; i++)
 			{
@@ -55,7 +55,7 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 		}
 
 		/* draw foreground layers */
-		if(!t3f_key[ALLEGRO_KEY_I])
+		if(!canvas_editor->view_isolate)
 		{
 			for(i = canvas_editor->current_layer + 1; i < canvas_editor->canvas->layer_max; i++)
 			{
