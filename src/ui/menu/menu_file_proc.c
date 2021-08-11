@@ -180,6 +180,7 @@ int pa_menu_file_load(int id, void * data)
 							app->canvas_editor->canvas = app->canvas;
 							app->canvas_editor->modified = 0;
 							app->canvas_editor->update_title = true;
+							pa_reset_canvas_editor(app->canvas_editor);
 							pa_center_canvas_editor(app->canvas_editor, 0);
 							strcpy(app->canvas_editor->canvas_path, file_path);
 							app->canvas_editor->update_title = true;
