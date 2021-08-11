@@ -50,6 +50,7 @@ void app_event_handler(ALLEGRO_EVENT * event, void * data)
 			break;
 		}
 		case ALLEGRO_EVENT_DISPLAY_SWITCH_OUT:
+		case ALLEGRO_EVENT_DISPLAY_SWITCH_IN:
 		{
 			for(i = 0; i < ALLEGRO_KEY_MAX; i++)
 			{
