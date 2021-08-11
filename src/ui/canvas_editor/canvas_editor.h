@@ -116,6 +116,7 @@ typedef struct
 	ALLEGRO_COLOR palette[PA_COLOR_PALETTE_MAX];
 
 	T3GUI_ELEMENT * editor_element;
+	bool simulate_mouse_move;
 
 	int signal;
 	PA_CANVAS * canvas;

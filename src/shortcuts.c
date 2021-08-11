@@ -9,6 +9,8 @@
 void pa_handle_shortcuts(APP_INSTANCE * app)
 {
 	int x, y, width, height;
+	float speed;
+	bool step = false;
 
 	if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && (t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT]) && t3f_key[ALLEGRO_KEY_X])
 	{
@@ -173,5 +175,86 @@ void pa_handle_shortcuts(APP_INSTANCE * app)
 	{
 		app->canvas_editor->view_isolate = !app->canvas_editor->view_isolate;
 		t3f_key[ALLEGRO_KEY_I] = 0;
+	}
+	else
+	{
+		speed = (8.0 / (float)app->canvas_editor->view_zoom);
+		if(t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT])
+		{
+			if(!t3f_key[ALLEGRO_KEY_LCTRL] && !t3f_key[ALLEGRO_KEY_RCTRL] && !t3f_key[ALLEGRO_KEY_COMMAND])
+			{
+				speed *= 2.0;
+			}
+			else
+			{
+				speed = app->canvas_editor->view_width - 16;
+				step = true;
+			}
+		}
+		else if(t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND])
+		{
+			speed = 1.0;
+			step = true;
+		}
+		if(t3f_key[ALLEGRO_KEY_LEFT] || t3f_key[ALLEGRO_KEY_A])
+		{
+			app->canvas_editor->view_fx -= speed;
+			app->canvas_editor->simulate_mouse_move = true;
+			if(step)
+			{
+				t3f_key[ALLEGRO_KEY_LEFT] = 0;
+				t3f_key[ALLEGRO_KEY_A] = 0;
+			}
+		}
+		if(t3f_key[ALLEGRO_KEY_RIGHT] || t3f_key[ALLEGRO_KEY_D])
+		{
+			app->canvas_editor->view_fx += speed;
+			app->canvas_editor->simulate_mouse_move = true;
+			if(step)
+			{
+				t3f_key[ALLEGRO_KEY_RIGHT] = 0;
+				t3f_key[ALLEGRO_KEY_D] = 0;
+			}
+		}
+		if(t3f_key[ALLEGRO_KEY_UP] || t3f_key[ALLEGRO_KEY_W])
+		{
+			app->canvas_editor->view_fy -= speed;
+			app->canvas_editor->simulate_mouse_move = true;
+			if(step)
+			{
+				t3f_key[ALLEGRO_KEY_UP] = 0;
+				t3f_key[ALLEGRO_KEY_W] = 0;
+			}
+		}
+		if(t3f_key[ALLEGRO_KEY_DOWN] || t3f_key[ALLEGRO_KEY_S])
+		{
+			app->canvas_editor->view_fy += speed;
+			app->canvas_editor->simulate_mouse_move = true;
+			if(step)
+			{
+				t3f_key[ALLEGRO_KEY_DOWN] = 0;
+				t3f_key[ALLEGRO_KEY_S] = 0;
+			}
+		}
+		if(t3f_key[ALLEGRO_KEY_MINUS])
+		{
+			if(app->canvas_editor->view_zoom > 1)
+			{
+				pa_set_canvas_editor_zoom(app->canvas_editor, app->canvas_editor->view_zoom - 1);
+				app->canvas_editor->simulate_mouse_move = true;
+			}
+			t3f_key[ALLEGRO_KEY_MINUS] = 0;
+		}
+		if(t3f_key[ALLEGRO_KEY_EQUALS])
+		{
+			pa_set_canvas_editor_zoom(app->canvas_editor, app->canvas_editor->view_zoom + 1);
+			app->canvas_editor->simulate_mouse_move = true;
+			t3f_key[ALLEGRO_KEY_EQUALS] = 0;
+		}
+		if(t3f_key[ALLEGRO_KEY_H])
+		{
+			app->canvas_editor->canvas->layer[app->canvas_editor->current_layer]->flags ^= PA_CANVAS_FLAG_HIDDEN;
+			t3f_key[ALLEGRO_KEY_H] = 0;
+		}
 	}
 }

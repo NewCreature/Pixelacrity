@@ -121,8 +121,6 @@ void pa_canvas_editor_MSG_IDLE(T3GUI_ELEMENT * d, int c)
 	PA_CANVAS_EDITOR * canvas_editor = (PA_CANVAS_EDITOR *)d->dp;
 	bool simulate_mouse_move = false;
 	int frame_x, frame_y, frame_width, frame_height;
-	float speed;
-	bool step = false;
 
 	if(canvas_editor->backup_tick > 0)
 	{
@@ -136,93 +134,16 @@ void pa_canvas_editor_MSG_IDLE(T3GUI_ELEMENT * d, int c)
 	update_window_title(canvas_editor);
 //			update_cursor(canvas_editor);
 	update_color_selections(canvas_editor);
-	speed = (8.0 / (float)canvas_editor->view_zoom);
-	if(t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT])
-	{
-		if(!t3f_key[ALLEGRO_KEY_LCTRL] && !t3f_key[ALLEGRO_KEY_RCTRL] && !t3f_key[ALLEGRO_KEY_COMMAND])
-		{
-			speed *= 2.0;
-		}
-		else
-		{
-			speed = canvas_editor->view_width - 16;
-			step = true;
-		}
-	}
-	else if(t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND])
-	{
-		speed = 1.0;
-		step = true;
-	}
-	if(t3f_key[ALLEGRO_KEY_LEFT] || t3f_key[ALLEGRO_KEY_A])
-	{
-		canvas_editor->view_fx -= speed;
-		simulate_mouse_move = true;
-		if(step)
-		{
-			t3f_key[ALLEGRO_KEY_LEFT] = 0;
-			t3f_key[ALLEGRO_KEY_A] = 0;
-		}
-	}
-	if(t3f_key[ALLEGRO_KEY_RIGHT] || t3f_key[ALLEGRO_KEY_D])
-	{
-		canvas_editor->view_fx += speed;
-		simulate_mouse_move = true;
-		if(step)
-		{
-			t3f_key[ALLEGRO_KEY_RIGHT] = 0;
-			t3f_key[ALLEGRO_KEY_D] = 0;
-		}
-	}
-	if(t3f_key[ALLEGRO_KEY_UP] || t3f_key[ALLEGRO_KEY_W])
-	{
-		canvas_editor->view_fy -= speed;
-		simulate_mouse_move = true;
-		if(step)
-		{
-			t3f_key[ALLEGRO_KEY_UP] = 0;
-			t3f_key[ALLEGRO_KEY_W] = 0;
-		}
-	}
-	if(t3f_key[ALLEGRO_KEY_DOWN] || t3f_key[ALLEGRO_KEY_S])
-	{
-		canvas_editor->view_fy += speed;
-		simulate_mouse_move = true;
-		if(step)
-		{
-			t3f_key[ALLEGRO_KEY_DOWN] = 0;
-			t3f_key[ALLEGRO_KEY_S] = 0;
-		}
-	}
-	if(t3f_key[ALLEGRO_KEY_MINUS])
-	{
-		if(canvas_editor->view_zoom > 1)
-		{
-			pa_set_canvas_editor_zoom(canvas_editor, canvas_editor->view_zoom - 1);
-			simulate_mouse_move = true;
-		}
-		t3f_key[ALLEGRO_KEY_MINUS] = 0;
-	}
-	if(t3f_key[ALLEGRO_KEY_EQUALS])
-	{
-		pa_set_canvas_editor_zoom(canvas_editor, canvas_editor->view_zoom + 1);
-		simulate_mouse_move = true;
-		t3f_key[ALLEGRO_KEY_EQUALS] = 0;
-	}
-	if(t3f_key[ALLEGRO_KEY_H])
-	{
-		canvas_editor->canvas->layer[canvas_editor->current_layer]->flags ^= PA_CANVAS_FLAG_HIDDEN;
-		t3f_key[ALLEGRO_KEY_H] = 0;
-	}
 	canvas_editor->view_x = canvas_editor->view_fx;
 	canvas_editor->view_y = canvas_editor->view_fy;
 	canvas_editor->last_hover_x = canvas_editor->hover_x;
 	canvas_editor->hover_x = canvas_editor->view_x + (t3f_mouse_x - d->x) / canvas_editor->view_zoom;
 	canvas_editor->last_hover_y = canvas_editor->hover_y;
 	canvas_editor->hover_y = canvas_editor->view_y + (t3f_mouse_y - d->y) / canvas_editor->view_zoom;
-	if(simulate_mouse_move)
+	if(canvas_editor->simulate_mouse_move)
 	{
 		t3gui_object_message(d, MSG_MOUSEMOVE, 0);
+		canvas_editor->simulate_mouse_move = false;
 	}
 
 	if(t3f_key[ALLEGRO_KEY_PGUP])
