@@ -59,6 +59,7 @@ void pa_reset_canvas_editor(PA_CANVAS_EDITOR * cep)
 	cep->modified = 0;
 	strcpy(cep->canvas_path, "");
 	cep->backup_tick = PA_BACKUP_INTERVAL;
+	pa_clear_canvas_editor_selection(cep);
 }
 
 PA_CANVAS_EDITOR * pa_create_canvas_editor(PA_CANVAS * cp)
