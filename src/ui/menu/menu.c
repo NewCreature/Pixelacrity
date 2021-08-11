@@ -220,6 +220,26 @@ bool pa_setup_menus(PA_UI * uip)
 		t3f_add_menu_item(uip->menu[PA_UI_MENU_FILE], "Exit", 0, NULL, pa_menu_file_exit, menu_base_update_proc);
 	#endif
 
+	uip->menu[PA_UI_MENU_EDIT_MULTILAYER] = al_create_menu();
+	if(!uip->menu[PA_UI_MENU_EDIT_MULTILAYER])
+	{
+		return false;
+	}
+	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT_MULTILAYER], "Cut", 0, NULL, pa_menu_edit_multilayer_cut, menu_edit_copy_update_proc);
+	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT_MULTILAYER], "Copy", 0, NULL, pa_menu_edit_multilayer_copy, menu_edit_copy_update_proc);
+	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT_MULTILAYER], "Paste", 0, NULL, pa_menu_edit_paste, menu_edit_paste_update_proc);
+	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT_MULTILAYER], "Paste In Place", 0, NULL, pa_menu_edit_paste_in_place, menu_edit_paste_update_proc);
+	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT_MULTILAYER], NULL, 0, NULL, NULL, NULL);
+	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT_MULTILAYER], "Flip Horizontally", 0, NULL, pa_menu_edit_multilayer_flip_horizontal, menu_edit_copy_update_proc);
+	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT_MULTILAYER], "Flip Vertically", 0, NULL, pa_menu_edit_multilayer_flip_vertical, menu_edit_copy_update_proc);
+	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT_MULTILAYER], "Turn Clockwise", 0, NULL, pa_menu_edit_multilayer_turn_clockwise, menu_edit_copy_update_proc);
+	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT_MULTILAYER], "Turn Counter-Clockwise", 0, NULL, pa_menu_edit_multilayer_turn_counter_clockwise, menu_edit_copy_update_proc);
+	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT_MULTILAYER], NULL, 0, NULL, NULL, NULL);
+	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT_MULTILAYER], "Float Selection", 0, NULL, pa_menu_edit_multilayer_float_selection, menu_edit_float_update_proc);
+	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT_MULTILAYER], "Unfloat Selection", 0, NULL, pa_menu_edit_unfloat_selection, menu_edit_unfloat_update_proc);
+	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT_MULTILAYER], NULL, 0, NULL, NULL, NULL);
+	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT_MULTILAYER], "Delete", 0, NULL, pa_menu_edit_multilayer_delete, menu_edit_copy_update_proc);
+
 	uip->menu[PA_UI_MENU_EDIT] = al_create_menu();
 	if(!uip->menu[PA_UI_MENU_EDIT])
 	{
@@ -228,6 +248,7 @@ bool pa_setup_menus(PA_UI * uip)
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT], "Undo", ALLEGRO_MENU_ITEM_DISABLED, NULL, pa_menu_edit_undo, menu_undo_update_proc);
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT], "Redo", ALLEGRO_MENU_ITEM_DISABLED, NULL, pa_menu_edit_redo, menu_redo_update_proc);
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT], NULL, 0, NULL, NULL, NULL);
+	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT], "Multi-Layer", 0, uip->menu[PA_UI_MENU_EDIT_MULTILAYER], NULL, NULL);
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT], "Cut", 0, NULL, pa_menu_edit_cut, menu_edit_copy_update_proc);
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT], "Copy", 0, NULL, pa_menu_edit_copy, menu_edit_copy_update_proc);
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_EDIT], "Paste", 0, NULL, pa_menu_edit_paste, menu_edit_paste_update_proc);

@@ -77,7 +77,7 @@ static void free_selection(PA_CANVAS_EDITOR * cep)
 	}
 }
 
-bool pa_handle_float_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp)
+bool pa_handle_float_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp, bool multilayer)
 {
 	ALLEGRO_STATE old_state;
 	ALLEGRO_TRANSFORM identity;
@@ -92,7 +92,7 @@ bool pa_handle_float_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp
 		goto fail;
 	}
 	cep->selection.layer_max = cep->canvas->layer_max;
-	if(t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT])
+	if(multilayer)
 	{
 		cep->selection.layer = -1;
 	}
@@ -149,12 +149,12 @@ bool pa_handle_float_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp
 	}
 }
 
-void pa_float_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp)
+void pa_float_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp, bool multilayer)
 {
 	t3f_debug_message("Enter pa_float_canvas_editor_selection()\n");
 	create_float_undo(cep, bp);
 	pa_finalize_undo(cep);
-	pa_handle_float_canvas_editor_selection(cep, bp);
+	pa_handle_float_canvas_editor_selection(cep, bp, multilayer);
 	t3f_debug_message("Exit pa_float_canvas_editor_selection()\n");
 }
 
@@ -207,6 +207,7 @@ void pa_update_selection(PA_CANVAS_EDITOR * canvas_editor, T3GUI_ELEMENT * d)
 {
 	PA_BOX old_box;
 	bool snap = false;
+	bool multilayer = false;
 
 	if(canvas_editor->selection.box.width > 0 && canvas_editor->selection.box.height > 0)
 	{
@@ -216,12 +217,16 @@ void pa_update_selection(PA_CANVAS_EDITOR * canvas_editor, T3GUI_ELEMENT * d)
 		{
 			snap = true;
 		}
+		if(t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT])
+		{
+			multilayer = true;
+		}
 		pa_box_logic(&canvas_editor->selection.box, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, snap);
 		if(!canvas_editor->selection.bitmap && (canvas_editor->selection.box.start_x != old_box.start_x || canvas_editor->selection.box.start_y != old_box.start_y))
 		{
 			if(canvas_editor->selection.box.state == PA_BOX_STATE_MOVING)
 			{
-				pa_float_canvas_editor_selection(canvas_editor, &old_box);
+				pa_float_canvas_editor_selection(canvas_editor, &old_box, multilayer);
 			}
 		}
 	}

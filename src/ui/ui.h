@@ -18,6 +18,7 @@
 #define PA_UI_MENU_FRAME_ADD                   5
 #define PA_UI_MENU_FRAME_ADD_ICON_TEMPLATE     6
 #define PA_UI_MENU_FRAME_ADD_DISPLAY_TEMPLATE  7
+#define PA_UI_MENU_EDIT_MULTILAYER             8
 
 #define PA_UI_MAX_DIALOGS 32
 #define PA_UI_DIALOG_MAIN  0

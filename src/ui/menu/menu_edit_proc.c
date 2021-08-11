@@ -57,6 +57,7 @@ int pa_menu_edit_cut(int id, void * data)
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
 	t3f_debug_message("Enter pa_menu_edit_cut()\n");
+
 	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0)
 	{
 		if(!app->canvas_editor->selection.bitmap)
@@ -203,7 +204,7 @@ int pa_menu_edit_flip_horizontal(int id, void * data)
 
 	if(!app->canvas_editor->selection.bitmap)
 	{
-		pa_handle_float_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box);
+		pa_handle_float_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box, false);
 		need_float = true;
 	}
 	if(app->canvas_editor->selection.bitmap)
@@ -231,7 +232,7 @@ int pa_menu_edit_flip_vertical(int id, void * data)
 
 	if(!app->canvas_editor->selection.bitmap)
 	{
-		pa_handle_float_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box);
+		pa_handle_float_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box, false);
 		need_float = true;
 	}
 	if(app->canvas_editor->selection.bitmap)
@@ -259,7 +260,7 @@ int pa_menu_edit_turn_clockwise(int id, void * data)
 
 	if(!app->canvas_editor->selection.bitmap)
 	{
-		pa_handle_float_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box);
+		pa_handle_float_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box, false);
 		need_float = true;
 	}
 	if(app->canvas_editor->selection.bitmap)
@@ -289,7 +290,7 @@ int pa_menu_edit_turn_counter_clockwise(int id, void * data)
 
 	if(!app->canvas_editor->selection.bitmap)
 	{
-		pa_handle_float_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box);
+		pa_handle_float_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box, false);
 		need_float = true;
 	}
 	if(app->canvas_editor->selection.bitmap)
@@ -368,7 +369,7 @@ int pa_menu_edit_float_selection(int id, void * data)
 
 	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0)
 	{
-		pa_float_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box);
+		pa_float_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box, false);
 		t3f_refresh_menus();
 	}
 	return 0;
@@ -382,6 +383,228 @@ int pa_menu_edit_unfloat_selection(int id, void * data)
 	{
 		pa_unfloat_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box);
 		pa_clear_canvas_editor_selection(app->canvas_editor);
+		t3f_refresh_menus();
+	}
+	return 0;
+}
+
+int pa_menu_edit_multilayer_cut(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+	int i;
+
+	t3f_debug_message("Enter pa_menu_edit_multilayer_cut()\n");
+
+	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0)
+	{
+		if(!app->canvas_editor->selection.bitmap)
+		{
+			pa_copy_canvas_to_clipboard(app->canvas_editor, -1, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, app->canvas_editor->selection.box.width, app->canvas_editor->selection.box.height);
+			for(i = 0; i < app->canvas->layer_max; i++)
+			{
+				pa_draw_primitive_to_canvas(app->canvas_editor->canvas, i, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, app->canvas_editor->selection.box.end_x, app->canvas_editor->selection.box.end_y, NULL, al_map_rgba_f(0.0, 0.0, 0.0, 0.0), PA_RENDER_COPY, NULL,  pa_draw_filled_rectangle);
+			}
+			pa_clear_canvas_editor_selection(app->canvas_editor);
+		}
+		else
+		{
+			if(pa_copy_bitmap_to_clipboard(app->canvas_editor, app->canvas_editor->selection.bitmap, app->canvas_editor->selection.layer_max))
+			{
+				app->canvas_editor->clipboard.x = app->canvas_editor->selection.box.start_x;
+				app->canvas_editor->clipboard.y = app->canvas_editor->selection.box.start_y;
+				pa_clear_canvas_editor_selection(app->canvas_editor);
+			}
+		}
+		t3f_refresh_menus();
+	}
+	t3f_debug_message("Exit pa_menu_edit_multilayer_cut()\n");
+
+	return 0;
+}
+
+int pa_menu_edit_multilayer_copy(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	t3f_debug_message("Enter pa_menu_edit_multilayer_copy()\n");
+	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0)
+	{
+		if(!app->canvas_editor->selection.bitmap)
+		{
+			pa_copy_canvas_to_clipboard(app->canvas_editor, -1, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, app->canvas_editor->selection.box.width, app->canvas_editor->selection.box.height);
+		}
+		else
+		{
+			if(pa_copy_bitmap_to_clipboard(app->canvas_editor, app->canvas_editor->selection.bitmap, app->canvas_editor->selection.layer_max))
+			{
+				app->canvas_editor->clipboard.x = app->canvas_editor->selection.box.start_x;
+				app->canvas_editor->clipboard.y = app->canvas_editor->selection.box.start_y;
+			}
+		}
+		t3f_refresh_menus();
+	}
+	t3f_debug_message("Exit pa_menu_edit_multilayer_copy()\n");
+
+	return 0;
+}
+
+int pa_menu_edit_multilayer_flip_horizontal(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+	bool need_float = false;
+	int i;
+
+	if(!app->canvas_editor->selection.bitmap)
+	{
+		pa_handle_float_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box, true);
+		need_float = true;
+	}
+	if(app->canvas_editor->selection.bitmap)
+	{
+		for(i = 0; i < app->canvas_editor->selection.layer_max; i++)
+		{
+			if(app->canvas_editor->selection.bitmap[i])
+			{
+				pa_flip_bitmap(app->canvas_editor->selection.bitmap[i], true, false);
+			}
+		}
+	}
+	if(need_float)
+	{
+		pa_handle_unfloat_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box);
+	}
+	return 0;
+}
+
+int pa_menu_edit_multilayer_flip_vertical(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+	bool need_float = false;
+	int i;
+
+	if(!app->canvas_editor->selection.bitmap)
+	{
+		pa_handle_float_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box, true);
+		need_float = true;
+	}
+	if(app->canvas_editor->selection.bitmap)
+	{
+		for(i = 0; i < app->canvas_editor->selection.layer_max; i++)
+		{
+			if(app->canvas_editor->selection.bitmap[i])
+			{
+				pa_flip_bitmap(app->canvas_editor->selection.bitmap[i], false, true);
+			}
+		}
+	}
+	if(need_float)
+	{
+		pa_handle_unfloat_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box);
+	}
+	return 0;
+}
+
+int pa_menu_edit_multilayer_turn_clockwise(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+	bool need_float = false;
+	int i, c = -1;
+
+	if(!app->canvas_editor->selection.bitmap)
+	{
+		pa_handle_float_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box, true);
+		need_float = true;
+	}
+	if(app->canvas_editor->selection.bitmap)
+	{
+		for(i = 0; i < app->canvas_editor->selection.layer_max; i++)
+		{
+			if(app->canvas_editor->selection.bitmap[i])
+			{
+				pa_turn_bitmap(&app->canvas_editor->selection.bitmap[i], 1);
+				c = i;
+			}
+		}
+		if(c >= 0)
+		{
+			pa_initialize_box(&app->canvas_editor->selection.box, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, al_get_bitmap_width(app->canvas_editor->selection.bitmap[c]), al_get_bitmap_height(app->canvas_editor->selection.bitmap[c]), app->canvas_editor->peg_bitmap);
+		}
+		pa_update_box_handles(&app->canvas_editor->selection.box, app->canvas_editor->view_x, app->canvas_editor->view_y, app->canvas_editor->view_zoom);
+	}
+	return 0;
+}
+
+int pa_menu_edit_multilayer_turn_counter_clockwise(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+	bool need_float = false;
+	int i, c = -1;
+
+	if(!app->canvas_editor->selection.bitmap)
+	{
+		pa_handle_float_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box, true);
+		need_float = true;
+	}
+	if(app->canvas_editor->selection.bitmap)
+	{
+		for(i = 0; i < app->canvas_editor->selection.layer_max; i++)
+		{
+			if(app->canvas_editor->selection.bitmap[i])
+			{
+				pa_turn_bitmap(&app->canvas_editor->selection.bitmap[i], -1);
+				c = i;
+			}
+		}
+		if(c >= 0)
+		{
+			pa_initialize_box(&app->canvas_editor->selection.box, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, al_get_bitmap_width(app->canvas_editor->selection.bitmap[c]), al_get_bitmap_height(app->canvas_editor->selection.bitmap[c]), app->canvas_editor->peg_bitmap);
+		}
+		pa_update_box_handles(&app->canvas_editor->selection.box, app->canvas_editor->view_x, app->canvas_editor->view_y, app->canvas_editor->view_zoom);
+	}
+	return 0;
+}
+
+int pa_menu_edit_multilayer_delete(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+	char undo_path[1024];
+	int i;
+
+	t3f_debug_message("Enter pa_menu_edit_delete()\n");
+	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0)
+	{
+		pa_get_undo_path("undo", app->canvas_editor->undo_count, undo_path, 1024);
+		if(!app->canvas_editor->selection.bitmap)
+		{
+			if(pa_make_tool_undo(app->canvas_editor, "Delete Selection", app->canvas_editor->current_layer, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, app->canvas_editor->selection.box.width, app->canvas_editor->selection.box.height, undo_path))
+			{
+				pa_finalize_undo(app->canvas_editor);
+			}
+			for(i = 0; i < app->canvas->layer_max; i++)
+			{
+				pa_draw_primitive_to_canvas(app->canvas_editor->canvas, i, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, app->canvas_editor->selection.box.end_x, app->canvas_editor->selection.box.end_y, NULL, al_map_rgba_f(0.0, 0.0, 0.0, 0.0), PA_RENDER_COPY, NULL,  pa_draw_filled_rectangle);
+			}
+			pa_clear_canvas_editor_selection(app->canvas_editor);
+			app->canvas_editor->modified++;
+		}
+		else
+		{
+			pa_clear_canvas_editor_selection(app->canvas_editor);
+		}
+		t3f_refresh_menus();
+	}
+	t3f_debug_message("Exit pa_menu_edit_delete()\n");
+
+	return 0;
+}
+
+int pa_menu_edit_multilayer_float_selection(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0)
+	{
+		pa_float_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box, true);
 		t3f_refresh_menus();
 	}
 	return 0;
