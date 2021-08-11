@@ -40,7 +40,7 @@ Pixelacrity 0.2.7 Issues
          Holding shift while dragging a selection will cause it to float the
          current selection as multi-layer.
 
-   [ ]Modify the selection and clipboard when layers are added or removed. The
+   [X]Modify the selection and clipboard when layers are added or removed. The
       bitmap arrays need to stay synchronized with the canvas.
 
    [ ]Ctrl+Shift+C should make a multi-layer copy of the current selection if it
@@ -55,7 +55,7 @@ Pixelacrity 0.2.7 Issues
 
       [X]This is implemented, but it seems to be a bit buggy.
 
-   [ ]Add menu options related to multi-layer selections.
+   [X]Add menu options related to multi-layer selections.
 
 [ ]Consider making selections always floating.
 
