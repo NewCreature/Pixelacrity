@@ -114,6 +114,8 @@ static void paste_helper(PA_CANVAS_EDITOR * cep, int pos, int ox, int oy)
 	int x, y, i, c = -1;
 
 	t3f_debug_message("Enter pa_menu_edit_paste()\n");
+
+	printf("paste_helper(%d, %d, %d)\n", pos, ox, oy);
 	if(cep->clipboard.bitmap)
 	{
 		al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);
@@ -176,6 +178,7 @@ int pa_menu_edit_paste(int id, void * data)
 	int ox = 0;
 	int oy = 0;
 
+	printf("paste %d\n", id);
 	if(id < 0)
 	{
 		pos = 2;
@@ -191,6 +194,7 @@ int pa_menu_edit_paste_in_place(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
+	printf("paste in place\n");
 	paste_helper(app->canvas_editor, 1, 0, 0);
 
 	return 0;
