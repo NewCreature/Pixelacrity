@@ -43,6 +43,7 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 		if(canvas_editor->selection.bitmap)
 		{
 			pa_tool_selection_render_layer(canvas_editor, canvas_editor->current_layer);
+			al_use_shader(canvas_editor->premultiplied_alpha_shader);
 			al_draw_bitmap(canvas_editor->scratch_bitmap, d->x, d->y, 0);
 		}
 		else if(canvas_editor->tool_state == PA_TOOL_STATE_DRAWING)
