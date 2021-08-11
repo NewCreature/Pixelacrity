@@ -63,6 +63,8 @@ Pixelacrity 0.2.7 Issues
 
 [ ]Add ability to scroll by the size of the view.
 
+[ ]Clear selection when creating/loading a canvas.
+
 
 Pixelacrity 0.3 Issues
 ----------------------
