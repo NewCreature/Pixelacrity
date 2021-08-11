@@ -33,8 +33,6 @@ Pixelacrity 0.2.8 Issues
 
 [ ]Canvas is not marked as modified when floating a blank selection.
 
-[ ]Clear selection when creating/loading a canvas.
-
 
 Pixelacrity 0.3 Issues
 ----------------------
@@ -556,3 +554,5 @@ Closed Issues
    [X]Add menu options related to multi-layer selections.
 
 [X]Add ability to scroll by the size of the view.
+
+[X]Clear selection when creating/loading a canvas.
