@@ -33,8 +33,6 @@ Pixelacrity 0.2.8 Issues
 
 [ ]Canvas is not marked as modified when floating a blank selection.
 
-[ ]Add ability to scroll by the size of the view.
-
 [ ]Clear selection when creating/loading a canvas.
 
 
@@ -556,3 +554,5 @@ Closed Issues
       [X]This is implemented, but it seems to be a bit buggy.
 
    [X]Add menu options related to multi-layer selections.
+
+[X]Add ability to scroll by the size of the view.
