@@ -25,6 +25,7 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 		for(i = 0; i < canvas_editor->canvas->layer_max; i++)
 		{
 			pa_tool_selection_render_layer(canvas_editor, i);
+			al_use_shader(canvas_editor->premultiplied_alpha_shader);
 			al_draw_bitmap(canvas_editor->scratch_bitmap, d->x, d->y, 0);
 		}
 	}
