@@ -31,34 +31,6 @@ Pixelacrity 0.2.7 Issues
 
 [ ]Make cut undoable.
 
-[ ]Allow selections to be multi-layered.
-
-   [X]Holding Shift while the mouse button is released should cause the
-      selection to become multi-layered.
-
-      [X]Decided to make the multi-layer aspect part of the float functionality.
-         Holding shift while dragging a selection will cause it to float the
-         current selection as multi-layer.
-
-   [X]Modify the selection and clipboard when layers are added or removed. The
-      bitmap arrays need to stay synchronized with the canvas.
-
-   [ ]Ctrl+Shift+C should make a multi-layer copy of the current selection if it
-      isn't floating.
-
-   [X]The main canvas editor rendering code will need to handle rendering the
-      current selection. The scratch bitmap is only a single layer, so we will
-      need to iterate through each layer, render that layer to scratch, and
-      render scratch to the screen. This should allow us to utilize the
-      conditional copy shader per layer with each layer finally composited to
-      the backbuffer giving the expected result.
-
-      [X]This is implemented, but it seems to be a bit buggy.
-
-   [X]Add menu options related to multi-layer selections.
-
-[ ]Consider making selections always floating.
-
 [ ]Canvas is not marked as modified when floating a blank selection.
 
 [ ]Add ability to scroll by the size of the view.
@@ -558,3 +530,29 @@ Closed Issues
       being rendered to the screen. The pixels rendered with the conditional
       copy shader are copied verbatim to the screen which, I believe, ends up
       throwing out the alpha value (the backbuffer can't contain alpha).
+
+[X]Allow selections to be multi-layered.
+
+   [X]Holding Shift while the mouse button is released should cause the
+      selection to become multi-layered.
+
+      [X]Decided to make the multi-layer aspect part of the float functionality.
+         Holding shift while dragging a selection will cause it to float the
+         current selection as multi-layer.
+
+   [X]Modify the selection and clipboard when layers are added or removed. The
+      bitmap arrays need to stay synchronized with the canvas.
+
+   [X]Ctrl+Shift+C should make a multi-layer copy of the current selection if it
+      isn't floating.
+
+   [X]The main canvas editor rendering code will need to handle rendering the
+      current selection. The scratch bitmap is only a single layer, so we will
+      need to iterate through each layer, render that layer to scratch, and
+      render scratch to the screen. This should allow us to utilize the
+      conditional copy shader per layer with each layer finally composited to
+      the backbuffer giving the expected result.
+
+      [X]This is implemented, but it seems to be a bit buggy.
+
+   [X]Add menu options related to multi-layer selections.
