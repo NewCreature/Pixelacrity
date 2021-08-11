@@ -31,16 +31,15 @@ void pa_tool_selection_render_layer(PA_CANVAS_EDITOR * cep, int layer)
 
 	al_store_state(&old_state, ALLEGRO_STATE_BLENDER | ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_TRANSFORM);
 	al_set_target_bitmap(cep->scratch_bitmap);
+	al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
 	al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
 	al_identity_transform(&identity);
 	al_use_transform(&identity);
 	cep->scratch_offset_x = cep->view_x;
 	cep->scratch_offset_y = cep->view_y;
-	al_use_shader(cep->standard_shader);
 	pa_render_canvas_layer(cep->canvas, layer, cep->view_x, cep->view_y, cep->view_zoom, 0, 0, cep->editor_element->w, cep->editor_element->h);
 
 	al_use_shader(cep->conditional_copy_shader);
-	al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
 	i = cep->selection.layer < 0 ? layer : cep->selection.layer;
 	if(cep->selection.bitmap[i])
 	{
