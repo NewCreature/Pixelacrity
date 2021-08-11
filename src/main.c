@@ -14,6 +14,7 @@ void app_event_handler(ALLEGRO_EVENT * event, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 	ALLEGRO_STATE old_state;
+	int i;
 
 	switch(event->type)
 	{
@@ -46,6 +47,14 @@ void app_event_handler(ALLEGRO_EVENT * event, void * data)
 			t3f_debug_message("Display close event start\n");
 			pa_menu_file_exit(0, data);
 			t3f_debug_message("Display close event custom handling done\n");
+			break;
+		}
+		case ALLEGRO_EVENT_DISPLAY_SWITCH_OUT:
+		{
+			for(i = 0; i < ALLEGRO_KEY_MAX; i++)
+			{
+				t3f_key[i] = 0;
+			}
 			break;
 		}
 		default:
