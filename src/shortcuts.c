@@ -10,10 +10,20 @@ void pa_handle_shortcuts(APP_INSTANCE * app)
 {
 	int x, y, width, height;
 
-	if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && t3f_key[ALLEGRO_KEY_X])
+	if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && (t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT]) && t3f_key[ALLEGRO_KEY_X])
+	{
+		pa_menu_edit_multilayer_cut(0, app);
+		t3f_key[ALLEGRO_KEY_X] = 0;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && t3f_key[ALLEGRO_KEY_X])
 	{
 		pa_menu_edit_cut(0, app);
 		t3f_key[ALLEGRO_KEY_X] = 0;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && (t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT]) && t3f_key[ALLEGRO_KEY_C])
+	{
+		pa_menu_edit_multilayer_copy(0, app);
+		t3f_key[ALLEGRO_KEY_C] = 0;
 	}
 	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && t3f_key[ALLEGRO_KEY_C])
 	{
@@ -29,6 +39,12 @@ void pa_handle_shortcuts(APP_INSTANCE * app)
 	{
 		pa_menu_edit_paste(-1, app);
 		t3f_key[ALLEGRO_KEY_V] = 0;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT]) && (t3f_key[ALLEGRO_KEY_DELETE] || t3f_key[ALLEGRO_KEY_BACKSPACE]))
+	{
+		pa_menu_edit_multilayer_delete(0, app);
+		t3f_key[ALLEGRO_KEY_DELETE] = 0;
+		t3f_key[ALLEGRO_KEY_BACKSPACE] = 0;
 	}
 	else if(t3f_key[ALLEGRO_KEY_DELETE] || t3f_key[ALLEGRO_KEY_BACKSPACE])
 	{
