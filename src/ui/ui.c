@@ -1,6 +1,7 @@
 #include "t3f/t3f.h"
 #include "t3gui/t3gui.h"
 #include "ui.h"
+#include "window.h"
 #include "menu/menu.h"
 #include "menu/menu_file_proc.h"
 #include "menu/menu_edit_proc.h"
@@ -440,6 +441,7 @@ void pa_process_ui(PA_UI * uip)
 	{
 		pa_select_canvas_editor_layer(cep, cep->canvas->layer_max - uip->element[PA_UI_ELEMENT_LAYER_LIST]->d1 - 1);
 	}
+	pa_update_window_title(cep);
 }
 
 void pa_render_ui(PA_UI * uip)

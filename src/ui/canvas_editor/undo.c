@@ -9,6 +9,7 @@
 #include "undo_layer.h"
 #include "undo_flood_fill.h"
 #include "undo_import.h"
+#include "ui/window.h"
 
 bool pa_write_undo_header(ALLEGRO_FILE * fp, int type, const char * name)
 {
@@ -210,7 +211,7 @@ bool pa_apply_undo(PA_CANVAS_EDITOR * cep, const char * fn, bool revert)
 	if(ret)
 	{
 		cep->modified--;
-		cep->update_title = true;
+		pa_set_window_message(NULL);
 	}
 	al_fclose(fp);
 	t3f_debug_message("Exit pa_apply_undo()\n");
@@ -240,7 +241,7 @@ bool pa_apply_redo(PA_CANVAS_EDITOR * cep, const char * fn)
 	if(ret)
 	{
 		cep->modified++;
-		cep->update_title = true;
+		pa_set_window_message(NULL);
 	}
 	al_fclose(fp);
 	t3f_debug_message("Exit pa_apply_redo()\n");

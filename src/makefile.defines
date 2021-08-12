@@ -28,6 +28,7 @@ APP_MODULE_OBJECTS = modules/box.o\
                      modules/canvas/flood_fill.o
 
 APP_UI_OBJECTS =     ui/ui.o\
+                     ui/window.o\
                      ui/canvas_editor/canvas_editor.o\
                      ui/canvas_editor/undo.o\
                      ui/canvas_editor/undo_tool.o\

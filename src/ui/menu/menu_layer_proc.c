@@ -2,6 +2,7 @@
 #include "modules/canvas/canvas.h"
 #include "ui/canvas_editor/undo.h"
 #include "ui/canvas_editor/undo_layer.h"
+#include "ui/window.h"
 
 int pa_menu_layer_add(int id, void * data)
 {
@@ -21,7 +22,7 @@ int pa_menu_layer_add(int id, void * data)
 	{
 		pa_select_canvas_editor_layer(app->canvas_editor, app->canvas_editor->canvas->layer_max - 1);
 		app->canvas_editor->modified++;
-		app->canvas_editor->update_title = true;
+		pa_set_window_message(NULL);
 		t3f_refresh_menus();
 	}
 	t3f_debug_message("Exit pa_menu_layer_add()\n");
@@ -54,7 +55,7 @@ int pa_menu_layer_delete(int id, void * data)
 			}
 		}
 		app->canvas_editor->modified++;
-		app->canvas_editor->update_title = true;
+		pa_set_window_message(NULL);
 		t3f_refresh_menus();
 	}
 	t3f_debug_message("Exit pa_menu_layer_delete()\n");

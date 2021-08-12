@@ -15,6 +15,7 @@
 #include "ui/canvas_editor/tools/tool_dropper.h"
 #include "ui/canvas_editor/tools/tool_selection.h"
 #include "ui/canvas_editor/selection.h"
+#include "ui/window.h"
 
 static bool create_undo(PA_CANVAS_EDITOR * cep, const char * action, int x, int y, int width, int height)
 {
@@ -78,7 +79,7 @@ void pa_canvas_editor_MSG_MOUSEUP(T3GUI_ELEMENT * d, int c)
 					pa_finalize_undo(canvas_editor);
 				}
 				canvas_editor->modified++;
-				canvas_editor->update_title = true;
+				pa_set_window_message(NULL);
 				canvas_editor->tool_state = PA_TOOL_STATE_OFF;
 			}
 			break;
@@ -105,7 +106,7 @@ void pa_canvas_editor_MSG_MOUSEUP(T3GUI_ELEMENT * d, int c)
 					pa_finalize_undo(canvas_editor);
 				}
 				canvas_editor->modified++;
-				canvas_editor->update_title = true;
+				pa_set_window_message(NULL);
 				canvas_editor->tool_state = PA_TOOL_STATE_OFF;
 			}
 			break;
@@ -132,7 +133,7 @@ void pa_canvas_editor_MSG_MOUSEUP(T3GUI_ELEMENT * d, int c)
 					pa_finalize_undo(canvas_editor);
 				}
 				canvas_editor->modified++;
-				canvas_editor->update_title = true;
+				pa_set_window_message(NULL);
 				canvas_editor->tool_state = PA_TOOL_STATE_OFF;
 			}
 			break;
@@ -159,7 +160,7 @@ void pa_canvas_editor_MSG_MOUSEUP(T3GUI_ELEMENT * d, int c)
 					pa_finalize_undo(canvas_editor);
 				}
 				canvas_editor->modified++;
-				canvas_editor->update_title = true;
+				pa_set_window_message(NULL);
 				canvas_editor->tool_state = PA_TOOL_STATE_OFF;
 			}
 			break;
@@ -186,7 +187,7 @@ void pa_canvas_editor_MSG_MOUSEUP(T3GUI_ELEMENT * d, int c)
 					pa_finalize_undo(canvas_editor);
 				}
 				canvas_editor->modified++;
-				canvas_editor->update_title = true;
+				pa_set_window_message(NULL);
 				canvas_editor->tool_state = PA_TOOL_STATE_OFF;
 			}
 			break;
@@ -213,7 +214,7 @@ void pa_canvas_editor_MSG_MOUSEUP(T3GUI_ELEMENT * d, int c)
 					pa_finalize_undo(canvas_editor);
 				}
 				canvas_editor->modified++;
-				canvas_editor->update_title = true;
+				pa_set_window_message(NULL);
 				canvas_editor->tool_state = PA_TOOL_STATE_OFF;
 			}
 			break;

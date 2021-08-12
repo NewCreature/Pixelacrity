@@ -2,6 +2,7 @@
 #include "t3f/file_utils.h"
 #include "instance.h"
 #include "ui/ui.h"
+#include "ui/window.h"
 #include "modules/canvas/canvas_file.h"
 #include "modules/canvas/canvas_helpers.h"
 #include "menu_file_proc.h"
@@ -72,7 +73,7 @@ int pa_menu_file_new(int id, void * data)
 		{
 			pa_reset_canvas_editor(app->canvas_editor);
 			app->canvas_editor->canvas = app->canvas;
-			app->canvas_editor->update_title = true;
+			pa_set_window_message(NULL);
 			pa_center_canvas_editor(app->canvas_editor, 0);
 		}
 	}
@@ -179,11 +180,10 @@ int pa_menu_file_load(int id, void * data)
 							app->canvas = new_canvas;
 							app->canvas_editor->canvas = app->canvas;
 							app->canvas_editor->modified = 0;
-							app->canvas_editor->update_title = true;
 							pa_reset_canvas_editor(app->canvas_editor);
 							pa_center_canvas_editor(app->canvas_editor, 0);
 							strcpy(app->canvas_editor->canvas_path, file_path);
-							app->canvas_editor->update_title = true;
+							pa_set_window_message(NULL);
 							pp = al_create_path(file_path);
 							if(pp)
 							{
@@ -245,10 +245,10 @@ int pa_menu_file_save(int id, void * data)
 		bp = pa_get_bitmap_from_canvas(app->canvas, 0, app->canvas->layer_max, 0);
 		if(bp)
 		{
+			pa_set_window_message("Saving...");
 			al_save_bitmap(app->canvas_editor->canvas_path, bp);
 			al_destroy_bitmap(bp);
 			app->canvas_editor->modified = 0;
-			app->canvas_editor->update_title = true;
 		}
 	}
 	else
@@ -259,10 +259,10 @@ int pa_menu_file_save(int id, void * data)
 		}
 		else
 		{
+			pa_set_window_message("Saving...");
 			if(pa_save_canvas(app->canvas, app->canvas_editor->canvas_path, ".png", PA_CANVAS_SAVE_AUTO))
 			{
 				app->canvas_editor->modified = 0;
-				app->canvas_editor->update_title = true;
 			}
 		}
 	}
@@ -365,7 +365,7 @@ int pa_menu_file_import(int id, void * data)
 							al_destroy_path(pp);
 						}
 						app->canvas_editor->modified++;
-						app->canvas_editor->update_title = true;
+						pa_set_window_message(NULL);
 					}
 				}
 			}

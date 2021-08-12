@@ -8,6 +8,7 @@
 #include "ui/menu/menu.h"
 #include "ui/menu/menu_file_proc.h"
 #include "ui/menu/menu_edit_proc.h"
+#include "ui/window.h"
 #include "shortcuts.h"
 
 void app_event_handler(ALLEGRO_EVENT * event, void * data)
@@ -149,7 +150,7 @@ bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 		t3f_debug_message("Failed to create canvas editor\n");
 		return false;
 	}
-	app->canvas_editor->update_title = true;
+	pa_set_window_message(NULL);
 
 	t3f_debug_message("Create UI\n");
 	app->ui = pa_create_ui(app->canvas_editor);

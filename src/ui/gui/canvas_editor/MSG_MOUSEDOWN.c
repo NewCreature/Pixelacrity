@@ -15,6 +15,7 @@
 #include "ui/canvas_editor/undo_flood_fill.h"
 #include "ui/canvas_editor/undo.h"
 #include "ui/canvas_editor/selection.h"
+#include "ui/window.h"
 
 static int mouse_button = 0;
 
@@ -115,6 +116,7 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 			}
 			case PA_TOOL_FLOOD_FILL:
 			{
+				pa_set_window_message("Processing flood fill...");
 				tx = canvas_editor->hover_x / canvas_editor->canvas->bitmap_size;
 				ty = canvas_editor->hover_y / canvas_editor->canvas->bitmap_size;
 				if(tx >= 0 && tx < canvas_editor->canvas->layer_width && ty >= 0 && ty < canvas_editor->canvas->layer_height && canvas_editor->canvas->layer[canvas_editor->current_layer]->bitmap[ty][tx])
@@ -131,7 +133,6 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 								pa_finalize_undo(canvas_editor);
 							}
 							canvas_editor->modified++;
-							canvas_editor->update_title = true;
 						}
 						pa_destroy_queue(flood_fill_queue);
 					}

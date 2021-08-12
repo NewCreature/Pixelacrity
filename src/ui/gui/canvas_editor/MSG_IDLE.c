@@ -22,26 +22,6 @@ static bool save_backup(PA_CANVAS * cp)
 	}
 	return false;
 }
-static void update_window_title(PA_CANVAS_EDITOR * cep)
-{
-	char buf[1024];
-	const char * fn;
-
-	if(cep->update_title)
-	{
-		fn = t3f_get_path_filename(cep->canvas_path);
-		if(fn)
-		{
-			sprintf(buf, T3F_APP_TITLE " - %s%s", fn, cep->modified ? "*" : "");
-		}
-		else
-		{
-			sprintf(buf, T3F_APP_TITLE " - Untitled%s", cep->modified ? "*" : "");
-		}
-		al_set_window_title(t3f_display, buf);
-		cep->update_title = false;
-	}
-}
 
 static void update_color_selections(PA_CANVAS_EDITOR * canvas_editor)
 {
@@ -131,7 +111,6 @@ void pa_canvas_editor_MSG_IDLE(T3GUI_ELEMENT * d, int c)
 		save_backup(canvas_editor->canvas);
 		canvas_editor->backup_tick = PA_BACKUP_INTERVAL;
 	}
-	update_window_title(canvas_editor);
 //			update_cursor(canvas_editor);
 	update_color_selections(canvas_editor);
 	canvas_editor->view_x = canvas_editor->view_fx;

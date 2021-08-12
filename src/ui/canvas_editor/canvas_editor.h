@@ -107,7 +107,6 @@ typedef struct
 	int tool_state;
 	PA_SELECTION_DATA selection;
 	int modified;
-	bool update_title;
 	PA_COLOR_INFO left_color;
 	PA_COLOR_INFO right_color;
 	ALLEGRO_COLOR pick_color[PA_COLOR_PICKER_SHADES];
