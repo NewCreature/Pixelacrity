@@ -31,8 +31,6 @@ Pixelacrity 0.2.8 Issues
 
 [ ]Make cut undoable.
 
-[ ]Canvas is not marked as modified when floating a blank selection.
-
 
 Pixelacrity 0.3 Issues
 ----------------------
@@ -556,3 +554,5 @@ Closed Issues
 [X]Add ability to scroll by the size of the view.
 
 [X]Clear selection when creating/loading a canvas.
+
+[X]Canvas is not marked as modified when floating a blank selection.
