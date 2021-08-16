@@ -28,10 +28,12 @@ static void click_on_canvas(PA_CANVAS_EDITOR * cep, int button, int x, int y)
 	if(button == 1)
 	{
 		cep->click_color = cep->left_color.color;
+		cep->click_outline_color = cep->right_color.color;
 	}
 	else
 	{
 		cep->click_color = cep->right_color.color;
+		cep->click_outline_color = cep->left_color.color;
 	}
 }
 
