@@ -74,6 +74,9 @@ Pixelacrity 0.3 Issues
       restored at any time. Custom color palettes should be able to be saved and
       reloaded.
 
+[ ]Drawing snapped shapes causes undo to not work properly. Undo bases the area
+   to save on the mouse click/release coordinates, not the final shape.
+
 [ ]Improve image export options.
 
    [ ]Export current frame to specified file.
