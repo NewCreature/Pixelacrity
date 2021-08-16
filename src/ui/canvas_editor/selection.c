@@ -6,6 +6,7 @@
 #include "modules/dynamic_array.h"
 #include "clipboard.h"
 #include "undo_selection.h"
+#include "ui/window.h"
 
 void pa_free_selection(PA_CANVAS_EDITOR * cep)
 {
@@ -136,6 +137,7 @@ bool pa_handle_float_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp
 		}
 	}
 	cep->modified++;
+	pa_set_window_message(NULL);
 	t3f_debug_message("Exit pa_handle_float_canvas_editor_selection()\n");
 
 	return true;
