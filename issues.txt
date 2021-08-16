@@ -6,8 +6,6 @@ Pixelacrity 0.2.8 Issues
 [ ]Allow scrolling the canvas by holding the mouse wheel button and moving the
    mouse.
 
-[ ]Add a way to have filled shapes use the other color for outline.
-
 [ ]Selection should be unfloated any time we are performing an action that
    would cause a selection to be discarded.
 
@@ -556,3 +554,5 @@ Closed Issues
 [X]Clear selection when creating/loading a canvas.
 
 [X]Canvas is not marked as modified when floating a blank selection.
+
+[X]Add a way to have filled shapes use the other color for outline.
