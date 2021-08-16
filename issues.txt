@@ -25,6 +25,14 @@ Pixelacrity 0.2.9 Issues
 
 [ ]Ensure undo is working properly for all functions that are undoable.
 
+[ ]Drawing snapped shapes causes undo to not work properly. Undo bases the area
+   to save on the mouse click/release coordinates, not the final shape.
+
+[ ]Begin implementing custom brushes.
+
+   [ ]We should add a Brush menu which we can use to reset the brush to default
+      or create a brush from a selection.
+
 [ ]Add preview map UI element. The map will draw two rectangles representing
    the total canvas and the current view. The element should allow the user to
    adjust the view by clicking and dragging the view rectangle.
@@ -73,9 +81,6 @@ Pixelacrity 0.3 Issues
    [ ]Make colors configurable. The default palette should be able to be
       restored at any time. Custom color palettes should be able to be saved and
       reloaded.
-
-[ ]Drawing snapped shapes causes undo to not work properly. Undo bases the area
-   to save on the mouse click/release coordinates, not the final shape.
 
 [ ]Improve image export options.
 
