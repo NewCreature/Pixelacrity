@@ -290,6 +290,11 @@ void pa_draw_oval(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_C
 	ry = (float)(y2 - y1) / 2.0;
 	cx = x1 + rx + 0.5;
 	cy = y1 + ry + 0.5;
+	if(!bp || (al_get_bitmap_width(bp) < 2 && al_get_bitmap_height(bp) < 2))
+	{
+		al_draw_ellipse(cx, cy, rx, ry, color, 0.0);
+		return;
+	}
 	al_hold_bitmap_drawing(true);
 	if(x1 == x2 || y1 == y2)
 	{
@@ -337,7 +342,7 @@ void pa_draw_filled_oval(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, AL
 	}
 	else
 	{
-		al_draw_ellipse(cx, cy, rx, ry, color, 1.0);
+		al_draw_ellipse(cx, cy, rx, ry, color, 0.0);
 		al_draw_filled_ellipse(cx, cy, rx, ry, color);
 	}
 }
