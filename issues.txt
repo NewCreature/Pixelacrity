@@ -1,7 +1,5 @@
-Pixelacrity 0.2.8 Issues
+Pixelacrity 0.2.9 Issues
 ------------------------
-
-[ ]Fix oval tool missing pixels on slim ovals.
 
 [ ]Allow scrolling the canvas by holding the mouse wheel button and moving the
    mouse.
@@ -10,8 +8,6 @@ Pixelacrity 0.2.8 Issues
    would cause a selection to be discarded.
 
    [ ]Importing an image should unfloat the selection.
-
-[ ]Make layer swapping undoable.
 
 [ ]Make selections rotatable and scaleable.
 
@@ -27,11 +23,21 @@ Pixelacrity 0.2.8 Issues
 
 [ ]Implement full screen preview.
 
-[ ]Make cut undoable.
+[ ]Ensure undo is working properly for all functions that are undoable.
+
+[ ]Add preview map UI element. The map will draw two rectangles representing
+   the total canvas and the current view. The element should allow the user to
+   adjust the view by clicking and dragging the view rectangle.
+
+   [ ]This will require implementing canvas layer size tracking. When the user
+      performs any action that modifies the canvas, the canvas size should be
+      updated.
 
 
 Pixelacrity 0.3 Issues
 ----------------------
+
+[ ]Fix oval tool missing pixels on slim ovals.
 
 [ ]Crash when resizing on M1 Macbook Air.
 
