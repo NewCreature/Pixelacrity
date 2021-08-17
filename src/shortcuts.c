@@ -1,9 +1,9 @@
 #include "t3f/t3f.h"
 #include "instance.h"
-#include "ui/menu/menu_file_proc.h"
-#include "ui/menu/menu_edit_proc.h"
-#include "ui/menu/menu_layer_proc.h"
-#include "ui/menu/menu_frame_proc.h"
+#include "ui/menu/file_proc.h"
+#include "ui/menu/edit_proc.h"
+#include "ui/menu/layer_proc.h"
+#include "ui/menu/frame_proc.h"
 #include "modules/canvas/canvas_helpers.h"
 
 void pa_handle_shortcuts(APP_INSTANCE * app)

@@ -3,7 +3,7 @@
 #include "ui/canvas_editor/canvas_editor.h"
 #include "modules/canvas/canvas_helpers.h"
 #include "modules/primitives.h"
-#include "ui/menu/menu_layer_proc.h"
+#include "ui/menu/layer_proc.h"
 
 int pa_tool_pixel_button_proc(T3GUI_ELEMENT * d, void *dp3)
 {

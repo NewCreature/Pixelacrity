@@ -5,7 +5,7 @@
 #include "ui/window.h"
 #include "modules/canvas/canvas_file.h"
 #include "modules/canvas/canvas_helpers.h"
-#include "menu_file_proc.h"
+#include "file_proc.h"
 #include "ui/canvas_editor/undo.h"
 #include "ui/canvas_editor/undo_import.h"
 
