@@ -77,7 +77,7 @@ static void update_color_selections(PA_CANVAS_EDITOR * canvas_editor)
 	/* handle changing the right base color */
 	if(!pa_color_equal(canvas_editor->right_color.base_color, canvas_editor->right_color.last_base_color))
 	{
-		pa_set_color(&canvas_editor->left_color, canvas_editor->left_color.base_color);
+		pa_set_color(&canvas_editor->right_color, canvas_editor->right_color.base_color);
 		pa_canvas_editor_update_pick_colors(canvas_editor);
 	}
 
