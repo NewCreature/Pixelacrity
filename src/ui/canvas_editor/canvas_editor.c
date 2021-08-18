@@ -96,9 +96,9 @@ PA_CANVAS_EDITOR * pa_create_canvas_editor(PA_CANVAS * cp)
 	{
 		goto fail;
 	}
-	cep->scratch_bitmap = al_create_bitmap(al_get_display_width(t3f_display), al_get_display_height(t3f_display));
+	cep->tool_bitmap = al_create_bitmap(al_get_display_width(t3f_display), al_get_display_height(t3f_display));
 	al_restore_state(&old_state);
-	if(!cep->scratch_bitmap)
+	if(!cep->tool_bitmap)
 	{
 		goto fail;
 	}
@@ -146,9 +146,9 @@ void pa_destroy_canvas_editor(PA_CANVAS_EDITOR * cep)
 	{
 		al_destroy_bitmap(cep->peg_bitmap);
 	}
-	if(cep->scratch_bitmap)
+	if(cep->tool_bitmap)
 	{
-		al_destroy_bitmap(cep->scratch_bitmap);
+		al_destroy_bitmap(cep->tool_bitmap);
 	}
 	free(cep);
 }

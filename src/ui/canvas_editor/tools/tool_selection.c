@@ -30,7 +30,7 @@ void pa_tool_selection_render_layer(PA_CANVAS_EDITOR * cep, int layer)
 	int i;
 
 	al_store_state(&old_state, ALLEGRO_STATE_BLENDER | ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_TRANSFORM);
-	al_set_target_bitmap(cep->scratch_bitmap);
+	al_set_target_bitmap(cep->tool_bitmap);
 	al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
 	al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
 	al_identity_transform(&identity);

@@ -19,7 +19,7 @@ static void render_queued_lines(PA_CANVAS_EDITOR * cep)
 	int count = 0;
 
 	al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_TRANSFORM | ALLEGRO_STATE_BLENDER);
-	al_set_target_bitmap(cep->scratch_bitmap);
+	al_set_target_bitmap(cep->tool_bitmap);
 	al_identity_transform(&identity);
 	al_use_transform(&identity);
 	al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
