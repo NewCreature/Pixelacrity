@@ -33,6 +33,8 @@ Pixelacrity 0.2.9 Issues
    [ ]We should add a Brush menu which we can use to reset the brush to default
       or create a brush from a selection.
 
+[ ]Right-clicked colors don't show up in the color panel part of the UI.
+
 [ ]Add preview map UI element. The map will draw two rectangles representing
    the total canvas and the current view. The element should allow the user to
    adjust the view by clicking and dragging the view rectangle.
