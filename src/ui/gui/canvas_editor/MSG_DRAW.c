@@ -11,22 +11,27 @@ static void generate_brush_hint(PA_CANVAS_EDITOR * cep)
 	ALLEGRO_TRANSFORM identity;
 	int w, h;
 
-	/* build hint bitmap */
-/*	al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_TRANSFORM | ALLEGRO_STATE_BLENDER);
+	al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_TRANSFORM | ALLEGRO_STATE_BLENDER);
 	al_set_target_bitmap(cep->scratch_bitmap);
 	al_identity_transform(&identity);
 	al_use_transform(&identity);
 	al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_INVERSE_ALPHA);
+	al_use_shader(cep->conditional_copy_shader);
 	al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
 	w = al_get_bitmap_width(cep->brush);
 	h = al_get_bitmap_height(cep->brush);
+	al_draw_tinted_scaled_bitmap(cep->brush, al_map_rgba_f(0.0, 0.0, 0.0, 1.0), 0, 0, w, h, 0.0, 0.0, w * cep->view_zoom, h * cep->view_zoom, 0);
 	al_draw_tinted_scaled_bitmap(cep->brush, al_map_rgba_f(0.0, 0.0, 0.0, 1.0), 0, 0, w, h, 1.0, 0.0, w * cep->view_zoom, h * cep->view_zoom, 0);
-	al_draw_tinted_scaled_bitmap(cep->brush, al_map_rgba_f(0.0, 0.0, 0.0, 1.0), 0, 0, w, h, 1.0, 2.0, w * cep->view_zoom, h * cep->view_zoom, 0);
+	al_draw_tinted_scaled_bitmap(cep->brush, al_map_rgba_f(0.0, 0.0, 0.0, 1.0), 0, 0, w, h, 2.0, 0.0, w * cep->view_zoom, h * cep->view_zoom, 0);
 	al_draw_tinted_scaled_bitmap(cep->brush, al_map_rgba_f(0.0, 0.0, 0.0, 1.0), 0, 0, w, h, 0.0, 1.0, w * cep->view_zoom, h * cep->view_zoom, 0);
+	al_draw_tinted_scaled_bitmap(cep->brush, al_map_rgba_f(0.0, 0.0, 0.0, 1.0), 0, 0, w, h, 1.0, 1.0, w * cep->view_zoom, h * cep->view_zoom, 0);
+	al_draw_tinted_scaled_bitmap(cep->brush, al_map_rgba_f(0.0, 0.0, 0.0, 1.0), 0, 0, w, h, 1.0, 2.0, w * cep->view_zoom, h * cep->view_zoom, 0);
 	al_draw_tinted_scaled_bitmap(cep->brush, al_map_rgba_f(0.0, 0.0, 0.0, 1.0), 0, 0, w, h, 2.0, 1.0, w * cep->view_zoom, h * cep->view_zoom, 0);
+	al_draw_tinted_scaled_bitmap(cep->brush, al_map_rgba_f(0.0, 0.0, 0.0, 1.0), 0, 0, w, h, 2.0, 1.0, w * cep->view_zoom, h * cep->view_zoom, 0);
+	al_draw_tinted_scaled_bitmap(cep->brush, al_map_rgba_f(0.0, 0.0, 0.0, 1.0), 0, 0, w, h, 2.0, 2.0, w * cep->view_zoom, h * cep->view_zoom, 0);
 	al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
 	al_draw_tinted_scaled_bitmap(cep->brush, al_map_rgba_f(0.0, 0.0, 0.0, 0.0), 0, 0, w, h, 1.0, 1.0, w * cep->view_zoom, h * cep->view_zoom, 0);
-	al_restore_state(&old_state); */
+	al_restore_state(&old_state);
 }
 
 void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
@@ -87,8 +92,8 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 				pa_render_canvas_layer(canvas_editor->canvas, i, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, d->w, d->h);
 			}
 		}
-/*		generate_brush_hint(canvas_editor);
-		al_draw_bitmap(canvas_editor->scratch_bitmap, ((int)(t3f_mouse_x - d->x) / canvas_editor->view_zoom) * canvas_editor->view_zoom + d->x - (al_get_bitmap_width(canvas_editor->brush) / 2) * canvas_editor->view_zoom - 1.0, ((int)(t3f_mouse_y - d->y) / canvas_editor->view_zoom) * canvas_editor->view_zoom + d->y - (al_get_bitmap_height(canvas_editor->brush) / 2) * canvas_editor->view_zoom - 1.0, 0); */
+		generate_brush_hint(canvas_editor);
+		al_draw_bitmap(canvas_editor->scratch_bitmap, ((int)(t3f_mouse_x - d->x) / canvas_editor->view_zoom) * canvas_editor->view_zoom + d->x - (al_get_bitmap_width(canvas_editor->brush) / 2) * canvas_editor->view_zoom - 1.0, ((int)(t3f_mouse_y - d->y) / canvas_editor->view_zoom) * canvas_editor->view_zoom + d->y - (al_get_bitmap_height(canvas_editor->brush) / 2) * canvas_editor->view_zoom - 1.0, 0);
 	}
 
 	/* render frames */

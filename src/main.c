@@ -35,6 +35,18 @@ void app_event_handler(ALLEGRO_EVENT * event, void * data)
 					app->canvas_editor->tool_bitmap = al_create_bitmap(al_get_display_width(t3f_display), al_get_display_height(t3f_display));
 					if(!app->canvas_editor->tool_bitmap)
 					{
+						printf("Could not resize tool bitmap!");
+					}
+					al_restore_state(&old_state);
+				}
+				if(app->canvas_editor->scratch_bitmap)
+				{
+					al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);
+					al_set_new_bitmap_flags(0);
+					al_destroy_bitmap(app->canvas_editor->scratch_bitmap);
+					app->canvas_editor->scratch_bitmap = al_create_bitmap(al_get_display_width(t3f_display), al_get_display_height(t3f_display));
+					if(!app->canvas_editor->scratch_bitmap)
+					{
 						printf("Could not resize scratch bitmap!");
 					}
 					al_restore_state(&old_state);
