@@ -22,6 +22,7 @@ APP_MODULE_OBJECTS = modules/box.o\
                      modules/snap.o\
                      modules/dynamic_array.o\
                      modules/multi_layer_bitmap.o\
+                     modules/mouse_cursor.o\
                      modules/canvas/canvas.o\
                      modules/canvas/canvas_helpers.o\
                      modules/canvas/canvas_file.o\

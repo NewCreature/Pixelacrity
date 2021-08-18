@@ -3,6 +3,7 @@
 #include "modules/canvas/canvas_file.h"
 #include "modules/pixel_shader.h"
 #include "modules/date.h"
+#include "modules/mouse_cursor.h"
 #include "ui/canvas_editor/canvas_editor.h"
 #include "ui/canvas_editor/undo.h"
 #include "ui/menu/menu.h"
@@ -69,6 +70,17 @@ void app_event_handler(ALLEGRO_EVENT * event, void * data)
 			{
 				t3f_key[i] = 0;
 			}
+			break;
+		}
+		case ALLEGRO_EVENT_MOUSE_ENTER_DISPLAY:
+		{
+			pa_allow_mouse_cursor_changes(true);
+			break;
+		}
+		case ALLEGRO_EVENT_MOUSE_LEAVE_DISPLAY:
+		{
+			pa_set_mouse_cursor(ALLEGRO_SYSTEM_MOUSE_CURSOR_ARROW);
+			pa_allow_mouse_cursor_changes(false);
 			break;
 		}
 		default:

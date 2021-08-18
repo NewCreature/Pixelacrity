@@ -6,6 +6,7 @@
 #include "menu/file_proc.h"
 #include "menu/edit_proc.h"
 #include "gui/button_proc.h"
+#include "modules/mouse_cursor.h"
 #include "modules/canvas/canvas.h"
 #include "modules/canvas/canvas_file.h"
 #include "modules/canvas/canvas_helpers.h"
@@ -378,6 +379,15 @@ void pa_process_ui(PA_UI * uip)
 	else
 	{
 		uip->element[PA_UI_ELEMENT_BUTTON_REMOVE_LAYER]->flags = D_DISABLED;
+	}
+
+	if(t3f_mouse_x >= uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->x && t3f_mouse_x < uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->x + uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->w && t3f_mouse_y >= uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->y && t3f_mouse_y < uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->y + uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->h)
+	{
+		pa_set_mouse_cursor(ALLEGRO_SYSTEM_MOUSE_CURSOR_PRECISION);
+	}
+	else
+	{
+		pa_set_mouse_cursor(ALLEGRO_SYSTEM_MOUSE_CURSOR_ARROW);
 	}
 
 	t3gui_logic();
