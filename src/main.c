@@ -136,14 +136,6 @@ bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 	t3f_get_filename(t3f_data_path, date_string, debug_fn, 1024);
 	t3f_open_debug_log(debug_fn);
 
-	#ifdef ALLEGRO_LINUX
-		app->icon = al_load_bitmap("data/graphics/icon_64.png");
-		if(app->icon)
-		{
-			al_set_display_icon(t3f_display, app->icon);
-		}
-	#endif
-
 	t3f_debug_message("Create starting canvas\n");
 	pa_menu_file_new(0, app);
 	if(!app->canvas)
