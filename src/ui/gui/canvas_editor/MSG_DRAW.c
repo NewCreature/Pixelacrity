@@ -92,8 +92,11 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 				pa_render_canvas_layer(canvas_editor->canvas, i, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, d->w, d->h);
 			}
 		}
-		generate_brush_hint(canvas_editor);
-		al_draw_bitmap(canvas_editor->scratch_bitmap, ((int)(t3f_mouse_x - d->x) / canvas_editor->view_zoom) * canvas_editor->view_zoom + d->x - (al_get_bitmap_width(canvas_editor->brush) / 2) * canvas_editor->view_zoom - 1.0, ((int)(t3f_mouse_y - d->y) / canvas_editor->view_zoom) * canvas_editor->view_zoom + d->y - (al_get_bitmap_height(canvas_editor->brush) / 2) * canvas_editor->view_zoom - 1.0, 0);
+		if(canvas_editor->current_tool != PA_TOOL_DROPPER && canvas_editor->current_tool != PA_TOOL_FLOOD_FILL && canvas_editor->current_tool != PA_TOOL_SELECTION)
+		{
+			generate_brush_hint(canvas_editor);
+			al_draw_bitmap(canvas_editor->scratch_bitmap, ((int)(t3f_mouse_x - d->x) / canvas_editor->view_zoom) * canvas_editor->view_zoom + d->x - (al_get_bitmap_width(canvas_editor->brush) / 2) * canvas_editor->view_zoom - 1.0, ((int)(t3f_mouse_y - d->y) / canvas_editor->view_zoom) * canvas_editor->view_zoom + d->y - (al_get_bitmap_height(canvas_editor->brush) / 2) * canvas_editor->view_zoom - 1.0, 0);
+		}
 	}
 
 	/* render frames */
