@@ -57,7 +57,7 @@ ALLEGRO_MENU * pa_create_layer_menu(void)
 	{
 		return NULL;
 	}
-	t3f_add_menu_item(mp, "Add", 0, NULL, pa_menu_layer_add, menu_base_update_proc);
+	t3f_add_menu_item(mp, "Add", 0, NULL, pa_menu_layer_add, pa_menu_base_update_proc);
 	t3f_add_menu_item(mp, "Delete", ALLEGRO_MENU_ITEM_DISABLED, NULL, pa_menu_layer_delete, menu_layer_delete_update_proc);
 	t3f_add_menu_item(mp, NULL, 0, NULL, NULL, NULL);
 	t3f_add_menu_item(mp, "Move Up", ALLEGRO_MENU_ITEM_DISABLED, NULL, pa_menu_layer_move_up, menu_layer_move_up_update_proc);

@@ -3,7 +3,7 @@
 
 #include "ui/ui.h"
 
-int menu_base_update_proc(ALLEGRO_MENU * mp, int item, void * data);
+int pa_menu_base_update_proc(ALLEGRO_MENU * mp, int item, void * data);
 
 bool pa_setup_menus(PA_UI * uip);
 void pa_destroy_menus(PA_UI * uip);

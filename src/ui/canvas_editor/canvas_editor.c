@@ -339,6 +339,7 @@ void pa_select_canvas_editor_tool(PA_CANVAS_EDITOR * cep, int tool)
 		pa_clear_canvas_editor_selection(cep);
 	}
 	cep->current_tool = tool;
+	t3f_refresh_menus();
 }
 
 void pa_select_canvas_editor_layer(PA_CANVAS_EDITOR * cep, int layer)

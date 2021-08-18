@@ -32,19 +32,19 @@ ALLEGRO_MENU * pa_create_file_menu(void)
 	{
 		return NULL;
 	}
-	t3f_add_menu_item(mp, "New", 0, NULL, pa_menu_file_new, menu_base_update_proc);
-	t3f_add_menu_item(mp, "Load", 0, NULL, pa_menu_file_load, menu_base_update_proc);
-	t3f_add_menu_item(mp, "Save", 0, NULL, pa_menu_file_save, menu_base_update_proc);
-	t3f_add_menu_item(mp, "Save As", 0, NULL, pa_menu_file_save_as, menu_base_update_proc);
+	t3f_add_menu_item(mp, "New", 0, NULL, pa_menu_file_new, pa_menu_base_update_proc);
+	t3f_add_menu_item(mp, "Load", 0, NULL, pa_menu_file_load, pa_menu_base_update_proc);
+	t3f_add_menu_item(mp, "Save", 0, NULL, pa_menu_file_save, pa_menu_base_update_proc);
+	t3f_add_menu_item(mp, "Save As", 0, NULL, pa_menu_file_save_as, pa_menu_base_update_proc);
 	t3f_add_menu_item(mp, NULL, 0, NULL, NULL, NULL);
-	t3f_add_menu_item(mp, "Import", 0, NULL, pa_menu_file_import, menu_base_update_proc);
+	t3f_add_menu_item(mp, "Import", 0, NULL, pa_menu_file_import, pa_menu_base_update_proc);
 	t3f_add_menu_item(mp, NULL, 0, NULL, NULL, NULL);
-	t3f_add_menu_item(mp, "Export", 0, NULL, pa_menu_file_export, menu_base_update_proc);
+	t3f_add_menu_item(mp, "Export", 0, NULL, pa_menu_file_export, pa_menu_base_update_proc);
 	t3f_add_menu_item(mp, "Export All", 0, NULL, pa_menu_file_export_all, menu_export_all_update_proc);
-	t3f_add_menu_item(mp, "Export As", 0, NULL, pa_menu_file_export_as, menu_base_update_proc);
+	t3f_add_menu_item(mp, "Export As", 0, NULL, pa_menu_file_export_as, pa_menu_base_update_proc);
 	#ifndef ALLEGRO_MACOSX
 		t3f_add_menu_item(mp, NULL, 0, NULL, NULL, NULL);
-		t3f_add_menu_item(mp, "Exit", 0, NULL, pa_menu_file_exit, menu_base_update_proc);
+		t3f_add_menu_item(mp, "Exit", 0, NULL, pa_menu_file_exit, pa_menu_base_update_proc);
 	#endif
 
 	return mp;

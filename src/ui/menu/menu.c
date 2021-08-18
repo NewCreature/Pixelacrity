@@ -1,16 +1,13 @@
 #include "t3f/t3f.h"
 #include "ui/ui.h"
 #include "file.h"
-#include "file_proc.h"
 #include "edit.h"
-#include "edit_proc.h"
 #include "frame.h"
-#include "frame_proc.h"
 #include "layer.h"
-#include "layer_proc.h"
+#include "tool.h"
 #include "instance.h"
 
-int menu_base_update_proc(ALLEGRO_MENU * mp, int item, void * data)
+int pa_menu_base_update_proc(ALLEGRO_MENU * mp, int item, void * data)
 {
 	return 0;
 }
@@ -71,10 +68,23 @@ bool pa_setup_menus(PA_UI * uip)
 		return false;
 	}
 
+	uip->menu[PA_UI_MENU_TOOL_BRUSH] = pa_create_tool_brush_menu();
+	if(!uip->menu[PA_UI_MENU_TOOL_BRUSH])
+	{
+		return false;
+	}
+
+	uip->menu[PA_UI_MENU_TOOL] = pa_create_tool_menu(uip->menu[PA_UI_MENU_TOOL_BRUSH], uip->tool_menu_item);
+	if(!uip->menu[PA_UI_MENU_TOOL])
+	{
+		return false;
+	}
+
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_MAIN], "File", 0, uip->menu[PA_UI_MENU_FILE], NULL, NULL);
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_MAIN], "Edit", 0, uip->menu[PA_UI_MENU_EDIT], NULL, NULL);
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_MAIN], "Frame", 0, uip->menu[PA_UI_MENU_FRAME], NULL, NULL);
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_MAIN], "Layer", 0, uip->menu[PA_UI_MENU_LAYER], NULL, NULL);
+	t3f_add_menu_item(uip->menu[PA_UI_MENU_MAIN], "Tool", 0, uip->menu[PA_UI_MENU_TOOL], NULL, NULL);
 	t3f_refresh_menus();
 
 	return true;
