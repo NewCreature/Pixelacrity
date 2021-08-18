@@ -77,6 +77,7 @@ typedef struct
 	ALLEGRO_SHADER * standard_shader;
 	ALLEGRO_SHADER * premultiplied_alpha_shader;
 	ALLEGRO_SHADER * conditional_copy_shader;
+	ALLEGRO_SHADER * solid_shader;
 	ALLEGRO_BITMAP * scratch_bitmap;
 	ALLEGRO_BITMAP * peg_bitmap;
 	ALLEGRO_BITMAP * multilayer_bitmap;

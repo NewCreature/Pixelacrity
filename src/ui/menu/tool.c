@@ -3,10 +3,23 @@
 #include "menu.h"
 #include "tool_proc.h"
 
+int menu_grab_brush_update_proc(ALLEGRO_MENU * mp, int item, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0)
+	{
+		t3f_set_menu_item_flags(mp, item, 0);
+	}
+	else
+	{
+		t3f_set_menu_item_flags(mp, item, ALLEGRO_MENU_ITEM_DISABLED);
+	}
+}
+
 int menu_tool_update_proc(ALLEGRO_MENU * mp, int item, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
-	int selected_item = app->canvas_editor->current_tool + 2;
 	int i;
 
 	for(i = 0; i < 16; i++)
@@ -38,8 +51,10 @@ ALLEGRO_MENU * pa_create_tool_brush_menu(void)
 		return NULL;
 	}
 	t3f_add_menu_item(mp, "Reset", 0, NULL, pa_menu_tool_brush_reset, pa_menu_base_update_proc);
-	t3f_add_menu_item(mp, "Grab from Selection", 0, NULL, pa_menu_tool_brush_grab_from_selection, pa_menu_base_update_proc);
+	t3f_add_menu_item(mp, "Grab from Selection", 0, NULL, pa_menu_tool_brush_grab_from_selection, menu_grab_brush_update_proc);
+	t3f_add_menu_item(mp, "Grab from Selection Multicolor", 0, NULL, pa_menu_tool_brush_grab_from_selection_multicolor, menu_grab_brush_update_proc);
 	t3f_add_menu_item(mp, "Load", 0, NULL, pa_menu_tool_brush_load, pa_menu_base_update_proc);
+	t3f_add_menu_item(mp, "Load Multicolor", 0, NULL, pa_menu_tool_brush_load_multicolor, pa_menu_base_update_proc);
 
 	return mp;
 }

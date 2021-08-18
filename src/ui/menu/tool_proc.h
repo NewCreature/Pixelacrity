@@ -3,7 +3,9 @@
 
 int pa_menu_tool_brush_reset(int id, void * data);
 int pa_menu_tool_brush_grab_from_selection(int id, void * data);
+int pa_menu_tool_brush_grab_from_selection_multicolor(int id, void * data);
 int pa_menu_tool_brush_load(int id, void * data);
+int pa_menu_tool_brush_load_multicolor(int id, void * data);
 
 int pa_menu_tool_pixel(int id, void * data);
 int pa_menu_tool_line(int id, void * data);

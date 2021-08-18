@@ -1,6 +1,7 @@
 #include "t3f/t3f.h"
 #include "t3gui/t3gui.h"
 #include "canvas_editor.h"
+#include "brush.h"
 #include "modules/canvas/canvas_helpers.h"
 #include "modules/primitives.h"
 #include "modules/pixel_shader.h"
@@ -29,23 +30,6 @@ static void set_config_val(ALLEGRO_CONFIG * cp, const char * section, const char
 
 	sprintf(buf, "%d", val);
 	al_set_config_value(cp, section, key, buf);
-}
-
-static ALLEGRO_BITMAP * create_default_brush(void)
-{
-	ALLEGRO_BITMAP * bp;
-	ALLEGRO_STATE old_state;
-
-	al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);
-	al_set_new_bitmap_flags(0);
-	bp = al_create_bitmap(1, 1);
-	if(bp)
-	{
-		al_set_target_bitmap(bp);
-		al_clear_to_color(t3f_color_white);
-	}
-	al_restore_state(&old_state);
-	return bp;
 }
 
 void pa_reset_canvas_editor(PA_CANVAS_EDITOR * cep)
@@ -95,12 +79,19 @@ PA_CANVAS_EDITOR * pa_create_canvas_editor(PA_CANVAS * cp)
 		printf("Error initializing conditional copy shader!\n");
 		return false;
 	}
+	t3f_debug_message("Create solid shader\n");
+	cep->solid_shader = pa_create_pixel_shader("data/shaders/solid_shader.glsl");
+	if(!cep->solid_shader)
+	{
+		printf("Error initializing solid shader!\n");
+		return false;
+	}
 	t3f_debug_message("Use alpha blend shader\n");
 	al_use_shader(cep->standard_shader);
 
 	al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);
 	al_set_new_bitmap_flags(0);
-	cep->brush = create_default_brush();
+	cep->brush = pa_create_default_brush();
 	if(!cep->brush)
 	{
 		goto fail;
