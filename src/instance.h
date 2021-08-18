@@ -14,6 +14,7 @@ typedef struct
 	PA_UI * ui;
 	PA_CANVAS_EDITOR * canvas_editor;
 	bool restart_ui;
+	ALLEGRO_BITMAP * icon;
 
 } APP_INSTANCE;
 
