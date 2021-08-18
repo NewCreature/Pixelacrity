@@ -6,8 +6,8 @@
 #include "ui/canvas_editor/canvas_editor.h"
 #include "ui/canvas_editor/undo.h"
 #include "ui/menu/menu.h"
-#include "ui/menu/menu_file_proc.h"
-#include "ui/menu/menu_edit_proc.h"
+#include "ui/menu/file_proc.h"
+#include "ui/menu/edit_proc.h"
 #include "ui/window.h"
 #include "shortcuts.h"
 
