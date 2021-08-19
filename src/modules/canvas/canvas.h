@@ -10,6 +10,10 @@ typedef struct
 {
 
 	ALLEGRO_BITMAP *** bitmap;
+	int offset_x;
+	int offset_y;
+	int width;
+	int height;
 	int flags;
 
 } PA_CANVAS_LAYER;

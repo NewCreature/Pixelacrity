@@ -4,14 +4,13 @@
 #include "modules/pixel_shader.h"
 #include "modules/primitives.h"
 
-/* assume all canvas bitmaps are already locked */
-static int get_canvas_alpha(PA_CANVAS * cp, int x, int y, int flags_filter)
+void pa_get_canvas_dimensions(PA_CANVAS * cp, int * offset_x, int * offset_y, int * width, int * height, int flags_filter)
 {
-	ALLEGRO_COLOR color;
 	int i;
-	int offset_x, offset_y;
-	int tile_x, tile_y;
-	unsigned char r, a;
+	int left_x = 1000000;
+	int right_x = 0;
+	int top_y = 1000000;
+	int bottom_y = 0;
 	int flags;
 
 	for(i = 0; i < cp->layer_max; i++)
@@ -19,91 +18,21 @@ static int get_canvas_alpha(PA_CANVAS * cp, int x, int y, int flags_filter)
 		flags = cp->layer[i]->flags & ~flags_filter;
 		if(!(flags & PA_CANVAS_FLAG_HIDDEN))
 		{
-			tile_x = x / cp->bitmap_size;
-			tile_y = y / cp->bitmap_size;
-			if(cp->layer[i]->bitmap[tile_y][tile_x])
+			if(cp->layer[i]->offset_x < left_x)
 			{
-				offset_x = cp->bitmap_size * tile_x;
-				offset_y = cp->bitmap_size * tile_y;
-				color = al_get_pixel(cp->layer[i]->bitmap[y / cp->bitmap_size][x / cp->bitmap_size], x - offset_x, y - offset_y);
-				al_unmap_rgba(color, &r, &r, &r, &a);
-				if(a > 0)
-				{
-					return a;
-				}
+				left_x = cp->layer[i]->offset_x;
 			}
-		}
-	}
-	return 0;
-}
-
-void pa_get_canvas_dimensions(PA_CANVAS * cp, int * offset_x, int * offset_y, int * width, int * height, int flags_filter)
-{
-	int i, j, k, l, m, x, y;
-	int left_x = 1000000;
-	int right_x = 0;
-	int top_y = 1000000;
-	int bottom_y = 0;
-	bool need_check;
-	int flags;
-
-	for(j = 0; j < cp->layer_height; j++)
-	{
-		for(k = 0; k < cp->layer_width; k++)
-		{
-			need_check = false;
-			for(i = 0; i < cp->layer_max; i++)
+			if(cp->layer[i]->offset_x + cp->layer[i]->width > right_x)
 			{
-				flags = cp->layer[i]->flags & ~flags_filter;
-				if(!(flags & PA_CANVAS_FLAG_HIDDEN))
-				{
-					if(cp->layer[i]->bitmap[j][k])
-					{
-						al_lock_bitmap(cp->layer[i]->bitmap[j][k], ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_READONLY);
-						need_check = true;
-					}
-				}
+				right_x = cp->layer[i]->offset_x + cp->layer[i]->width;
 			}
-			if(need_check)
+			if(cp->layer[i]->offset_y < top_y)
 			{
-				for(l = 0; l < cp->bitmap_size; l++)
-				{
-					for(m = 0; m < cp->bitmap_size; m++)
-					{
-						x = k * cp->bitmap_size + m;
-						y = j * cp->bitmap_size + l;
-						if(get_canvas_alpha(cp, x, y, flags_filter))
-						{
-							if(x < left_x)
-							{
-								left_x = x;
-							}
-							if(x > right_x)
-							{
-								right_x = x;
-							}
-							if(y < top_y)
-							{
-								top_y = y;
-							}
-							if(y > bottom_y)
-							{
-								bottom_y = y;
-							}
-						}
-					}
-				}
+				top_y = cp->layer[i]->offset_y;
 			}
-			for(i = 0; i < cp->layer_max; i++)
+			if(cp->layer[i]->offset_y + cp->layer[i]->height > bottom_y)
 			{
-				flags = cp->layer[i]->flags & ~flags_filter;
-				if(!(flags & PA_CANVAS_FLAG_HIDDEN))
-				{
-					if(cp->layer[i]->bitmap[j][k])
-					{
-						al_unlock_bitmap(cp->layer[i]->bitmap[j][k]);
-					}
-				}
+				bottom_y = cp->layer[i]->offset_y + cp->layer[i]->height;
 			}
 		}
 	}

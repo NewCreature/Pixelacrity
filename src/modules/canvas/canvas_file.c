@@ -1,12 +1,111 @@
 #include "canvas.h"
 #include "canvas_helpers.h"
 #include "canvas_file.h"
+#include "ui/window.h"
 
-static const char canvas_header[4] = {'Q', 'X', 'L', 1};
+static const char canvas_header[4] = {'Q', 'X', 'L', 2};
 
-static bool load_canvas_full_f(PA_CANVAS * cp, ALLEGRO_FILE * fp, const char * format)
+/* assume all canvas bitmaps are already locked */
+static int get_canvas_alpha(PA_CANVAS * cp, int layer, int x, int y)
 {
-	int max_layers, max_width, max_height;
+	ALLEGRO_COLOR color;
+	int offset_x, offset_y;
+	int tile_x, tile_y;
+	unsigned char r, a;
+
+	tile_x = x / cp->bitmap_size;
+	tile_y = y / cp->bitmap_size;
+	if(cp->layer[layer]->bitmap[tile_y][tile_x])
+	{
+		offset_x = cp->bitmap_size * tile_x;
+		offset_y = cp->bitmap_size * tile_y;
+		color = al_get_pixel(cp->layer[layer]->bitmap[y / cp->bitmap_size][x / cp->bitmap_size], x - offset_x, y - offset_y);
+		al_unmap_rgba(color, &r, &r, &r, &a);
+		if(a > 0)
+		{
+			return a;
+		}
+	}
+	return 0;
+}
+
+static void get_canvas_layer_dimensions(PA_CANVAS * cp, int layer, int * offset_x, int * offset_y, int * width, int * height)
+{
+	int i, j, k, l, m, x, y;
+	int left_x = 1000000;
+	int right_x = 0;
+	int top_y = 1000000;
+	int bottom_y = 0;
+	bool need_check;
+
+	for(j = 0; j < cp->layer_height; j++)
+	{
+		for(k = 0; k < cp->layer_width; k++)
+		{
+			need_check = false;
+			for(i = 0; i < cp->layer_max; i++)
+			if(cp->layer[layer]->bitmap[j][k])
+			{
+				al_lock_bitmap(cp->layer[layer]->bitmap[j][k], ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_READONLY);
+				need_check = true;
+			}
+			if(need_check)
+			{
+				for(l = 0; l < cp->bitmap_size; l++)
+				{
+					for(m = 0; m < cp->bitmap_size; m++)
+					{
+						x = k * cp->bitmap_size + m;
+						y = j * cp->bitmap_size + l;
+						if(get_canvas_alpha(cp, layer, x, y))
+						{
+							if(x < left_x)
+							{
+								left_x = x;
+							}
+							if(x > right_x)
+							{
+								right_x = x;
+							}
+							if(y < top_y)
+							{
+								top_y = y;
+							}
+							if(y > bottom_y)
+							{
+								bottom_y = y;
+							}
+						}
+					}
+				}
+			}
+			if(cp->layer[layer]->bitmap[j][k])
+			{
+				al_unlock_bitmap(cp->layer[layer]->bitmap[j][k]);
+			}
+		}
+	}
+	if(offset_x)
+	{
+		*offset_x = left_x;
+	}
+	if(offset_y)
+	{
+		*offset_y = top_y;
+	}
+	if(width)
+	{
+		*width = (right_x - left_x) + 1;
+	}
+	if(height)
+	{
+		*height = (bottom_y - top_y) + 1;
+	}
+}
+
+static bool load_canvas_full_f_1(PA_CANVAS * cp, ALLEGRO_FILE * fp, const char * format)
+{
+	int max_layers;
 	int i, j, k;
 	char load;
 
@@ -21,6 +120,91 @@ static bool load_canvas_full_f(PA_CANVAS * cp, ALLEGRO_FILE * fp, const char * f
 			goto fail;
 		}
 		cp->layer[i]->flags = al_fread32le(fp);
+		for(j = 0; j < cp->layer_height; j++)
+		{
+			for(k = 0; k < cp->layer_width; k++)
+			{
+				load = al_fgetc(fp);
+				if(load)
+				{
+					cp->layer[i]->bitmap[j][k] = al_load_bitmap_flags_f(fp, format, ALLEGRO_NO_PREMULTIPLIED_ALPHA);
+					if(!cp->layer[i]->bitmap[j][k])
+					{
+						goto fail;
+					}
+					get_canvas_layer_dimensions(cp, i, &cp->layer[i]->offset_x, &cp->layer[i]->offset_y, &cp->layer[i]->width, &cp->layer[i]->height);
+				}
+			}
+		}
+	}
+	t3f_debug_message("Exit load_canvas_fill_f()\n");
+	return true;
+
+	fail:
+	{
+		t3f_debug_message("Fail load_canvas_fill_f()\n");
+		return false;
+	}
+}
+
+static bool load_canvas_minimal_f_1(PA_CANVAS * cp, ALLEGRO_FILE * fp, const char * format)
+{
+	ALLEGRO_BITMAP * bp;
+	int max_layers;
+	int i;
+
+	t3f_debug_message("Enter load_canvas_minimal_f()\n");
+	max_layers = al_fread32le(fp);
+	for(i = 0; i < max_layers; i++)
+	{
+		if(!pa_add_canvas_layer(cp, -1))
+		{
+			goto fail;
+		}
+		cp->layer[i]->flags = al_fread32le(fp);
+		cp->export_offset_x = al_fread32le(fp);
+		cp->export_offset_y = al_fread32le(fp);
+		bp = al_load_bitmap_flags_f(fp, format, ALLEGRO_NO_PREMULTIPLIED_ALPHA);
+		if(!bp)
+		{
+			goto fail;
+		}
+		pa_import_bitmap_to_canvas(cp, bp, i, cp->export_offset_x, cp->export_offset_y);
+		al_destroy_bitmap(bp);
+		get_canvas_layer_dimensions(cp, i, &cp->layer[i]->offset_x, &cp->layer[i]->offset_y, &cp->layer[i]->width, &cp->layer[i]->height);
+	}
+	t3f_debug_message("Exit load_canvas_minimal_f()\n");
+	return true;
+
+	fail:
+	{
+		t3f_debug_message("Fail load_canvas_minimal_f()\n");
+		return false;
+	}
+}
+
+static bool load_canvas_full_f(PA_CANVAS * cp, ALLEGRO_FILE * fp, const char * format)
+{
+	int max_layers;
+	int i, j, k;
+	char load;
+
+	t3f_debug_message("Enter load_canvas_fill_f()\n");
+	cp->layer_width = al_fread32le(fp);
+	cp->layer_height = al_fread32le(fp);
+	max_layers = al_fread32le(fp);
+	pa_set_window_message("Updating layers...");
+	for(i = 0; i < max_layers; i++)
+	{
+		if(!pa_add_canvas_layer(cp, -1))
+		{
+			goto fail;
+		}
+		cp->layer[i]->flags = al_fread32le(fp);
+		cp->layer[i]->offset_x = al_fread32le(fp);
+		cp->layer[i]->offset_y = al_fread32le(fp);
+		cp->layer[i]->width = al_fread32le(fp);
+		cp->layer[i]->height = al_fread32le(fp);
 		for(j = 0; j < cp->layer_height; j++)
 		{
 			for(k = 0; k < cp->layer_width; k++)
@@ -55,6 +239,7 @@ static bool load_canvas_minimal_f(PA_CANVAS * cp, ALLEGRO_FILE * fp, const char 
 
 	t3f_debug_message("Enter load_canvas_minimal_f()\n");
 	max_layers = al_fread32le(fp);
+	pa_set_window_message("Updating layers...");
 	for(i = 0; i < max_layers; i++)
 	{
 		if(!pa_add_canvas_layer(cp, -1))
@@ -62,8 +247,10 @@ static bool load_canvas_minimal_f(PA_CANVAS * cp, ALLEGRO_FILE * fp, const char 
 			goto fail;
 		}
 		cp->layer[i]->flags = al_fread32le(fp);
-		cp->export_offset_x = al_fread32le(fp);
-		cp->export_offset_y = al_fread32le(fp);
+		cp->layer[i]->offset_x = al_fread32le(fp);
+		cp->layer[i]->offset_y = al_fread32le(fp);
+		cp->layer[i]->width = al_fread32le(fp);
+		cp->layer[i]->height = al_fread32le(fp);
 		bp = al_load_bitmap_flags_f(fp, format, ALLEGRO_NO_PREMULTIPLIED_ALPHA);
 		if(!bp)
 		{
@@ -98,7 +285,7 @@ static PA_CANVAS * pa_load_canvas_f(ALLEGRO_FILE * fp, int bitmap_max)
 	al_set_new_bitmap_flags(0);
 
 	al_fread(fp, header, 4);
-	if(memcmp(header, canvas_header, 4))
+	if(memcmp(header, canvas_header, 3))
 	{
 		goto fail;
 	}
@@ -107,54 +294,115 @@ static PA_CANVAS * pa_load_canvas_f(ALLEGRO_FILE * fp, int bitmap_max)
 	{
 		goto fail;
 	}
-	frame_count = al_fread32le(fp);
-	for(i = 0; i < frame_count; i++)
+	switch(header[3])
 	{
-		l = al_fread32le(fp);
-		if(l > 0)
+		case 1:
 		{
-			frame_name_buf = malloc(l + 1);
-			memset(frame_name_buf, 0, l + 1);
-			al_fread(fp, frame_name_buf, l);
-		}
-		x = al_fread32le(fp);
-		y = al_fread32le(fp);
-		w = al_fread32le(fp);
-		h = al_fread32le(fp);
-		if(!pa_add_canvas_frame(cp, frame_name_buf, x, y, w, h))
-		{
-			goto fail;
-		}
-		if(frame_name_buf)
-		{
-			free(frame_name_buf);
-			frame_name_buf = NULL;
-		}
-	}
+			frame_count = al_fread32le(fp);
+			for(i = 0; i < frame_count; i++)
+			{
+				l = al_fread32le(fp);
+				if(l > 0)
+				{
+					frame_name_buf = malloc(l + 1);
+					memset(frame_name_buf, 0, l + 1);
+					al_fread(fp, frame_name_buf, l);
+				}
+				x = al_fread32le(fp);
+				y = al_fread32le(fp);
+				w = al_fread32le(fp);
+				h = al_fread32le(fp);
+				if(!pa_add_canvas_frame(cp, frame_name_buf, x, y, w, h))
+				{
+					goto fail;
+				}
+				if(frame_name_buf)
+				{
+					free(frame_name_buf);
+					frame_name_buf = NULL;
+				}
+			}
 
-	al_fread(fp, format, 16);
-	method = al_fread32le(fp);
-	switch(method)
-	{
-		case PA_CANVAS_SAVE_FULL:
-		{
-			if(!load_canvas_full_f(cp, fp, format))
+			al_fread(fp, format, 16);
+			method = al_fread32le(fp);
+			switch(method)
 			{
-				goto fail;
+				case PA_CANVAS_SAVE_FULL:
+				{
+					if(!load_canvas_full_f_1(cp, fp, format))
+					{
+						goto fail;
+					}
+					break;
+				}
+				case PA_CANVAS_SAVE_MINIMAL:
+				{
+					if(!load_canvas_minimal_f_1(cp, fp, format))
+					{
+						goto fail;
+					}
+					break;
+				}
+				default:
+				{
+					goto fail;
+				}
 			}
 			break;
 		}
-		case PA_CANVAS_SAVE_MINIMAL:
+		case 2:
 		{
-			if(!load_canvas_minimal_f(cp, fp, format))
+			frame_count = al_fread32le(fp);
+			for(i = 0; i < frame_count; i++)
 			{
-				goto fail;
+				l = al_fread32le(fp);
+				if(l > 0)
+				{
+					frame_name_buf = malloc(l + 1);
+					memset(frame_name_buf, 0, l + 1);
+					al_fread(fp, frame_name_buf, l);
+				}
+				x = al_fread32le(fp);
+				y = al_fread32le(fp);
+				w = al_fread32le(fp);
+				h = al_fread32le(fp);
+				if(!pa_add_canvas_frame(cp, frame_name_buf, x, y, w, h))
+				{
+					goto fail;
+				}
+				if(frame_name_buf)
+				{
+					free(frame_name_buf);
+					frame_name_buf = NULL;
+				}
+			}
+
+			al_fread(fp, format, 16);
+			method = al_fread32le(fp);
+			switch(method)
+			{
+				case PA_CANVAS_SAVE_FULL:
+				{
+					if(!load_canvas_full_f(cp, fp, format))
+					{
+						goto fail;
+					}
+					break;
+				}
+				case PA_CANVAS_SAVE_MINIMAL:
+				{
+					if(!load_canvas_minimal_f(cp, fp, format))
+					{
+						goto fail;
+					}
+					break;
+				}
+				default:
+				{
+					goto fail;
+				}
 			}
 			break;
-		}
-		default:
-		{
-			goto fail;
 		}
 	}
 	al_restore_state(&old_state);
@@ -229,6 +477,22 @@ static bool save_canvas_full_f(PA_CANVAS * cp, ALLEGRO_FILE * fp, const char * f
 		{
 			goto fail;
 		}
+		if(!al_fwrite32le(fp, cp->layer[i]->offset_x))
+		{
+			goto fail;
+		}
+		if(!al_fwrite32le(fp, cp->layer[i]->offset_y))
+		{
+			goto fail;
+		}
+		if(!al_fwrite32le(fp, cp->layer[i]->width))
+		{
+			goto fail;
+		}
+		if(!al_fwrite32le(fp, cp->layer[i]->height))
+		{
+			goto fail;
+		}
 		for(j = 0; j < cp->layer_height; j++)
 		{
 			for(k = 0; k < cp->layer_width; k++)
@@ -280,16 +544,24 @@ static bool save_canvas_minimal_f(PA_CANVAS * cp, ALLEGRO_FILE * fp, const char 
 		{
 			goto fail;
 		}
+		if(!al_fwrite32le(fp, cp->layer[i]->offset_x))
+		{
+			goto fail;
+		}
+		if(!al_fwrite32le(fp, cp->layer[i]->offset_y))
+		{
+			goto fail;
+		}
+		if(!al_fwrite32le(fp, cp->layer[i]->width))
+		{
+			goto fail;
+		}
+		if(!al_fwrite32le(fp, cp->layer[i]->height))
+		{
+			goto fail;
+		}
 		bp = pa_get_bitmap_from_canvas(cp, i, i + 1, 0);
 		if(!bp)
-		{
-			goto fail;
-		}
-		if(!al_fwrite32le(fp, cp->export_offset_x))
-		{
-			goto fail;
-		}
-		if(!al_fwrite32le(fp, cp->export_offset_y))
 		{
 			goto fail;
 		}
