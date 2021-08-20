@@ -15,6 +15,7 @@ int menu_grab_brush_update_proc(ALLEGRO_MENU * mp, int item, void * data)
 	{
 		t3f_set_menu_item_flags(mp, item, ALLEGRO_MENU_ITEM_DISABLED);
 	}
+	return 0;
 }
 
 int menu_tool_update_proc(ALLEGRO_MENU * mp, int item, void * data)
