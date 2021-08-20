@@ -387,23 +387,27 @@ bool pa_import_image(PA_CANVAS_EDITOR * cep, const char * fn)
 
 void pa_update_tool_variables(PA_CANVAS_EDITOR * cep)
 {
+	int w, h;
+
 	cep->scratch_offset_x = cep->view_x;
 	cep->scratch_offset_y = cep->view_y;
-	if(cep->hover_x < cep->tool_left)
+	w = al_get_bitmap_width(cep->brush);
+	h = al_get_bitmap_height(cep->brush);
+	if(cep->hover_x - w / 2 < cep->tool_left)
 	{
-		cep->tool_left = cep->hover_x;
+		cep->tool_left = cep->hover_x - w / 2;
 	}
-	if(cep->hover_x > cep->tool_right)
+	if(cep->hover_x + w / 2 + w % 2 > cep->tool_right)
 	{
-		cep->tool_right = cep->hover_x;
+		cep->tool_right = cep->hover_x + w / 2 + w % 2;
 	}
-	if(cep->hover_y < cep->tool_top)
+	if(cep->hover_y - h / 2 < cep->tool_top)
 	{
-		cep->tool_top = cep->hover_y;
+		cep->tool_top = cep->hover_y - h / 2;
 	}
-	if(cep->hover_y > cep->tool_bottom)
+	if(cep->hover_y + h / 2 + h % 2 > cep->tool_bottom)
 	{
-		cep->tool_bottom = cep->hover_y;
+		cep->tool_bottom = cep->hover_y + h / 2 + h % 2;
 	}
 }
 
