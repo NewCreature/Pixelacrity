@@ -28,6 +28,8 @@ Pixelacrity 0.2.9 Issues
 [ ]Drawing snapped shapes causes undo to not work properly. Undo bases the area
    to save on the mouse click/release coordinates, not the final shape.
 
+[ ]Crash when drawing with large brush in certain circumstances.
+
 [ ]Add preview map UI element. The map will draw two rectangles representing
    the total canvas and the current view. The element should allow the user to
    adjust the view by clicking and dragging the view rectangle.
