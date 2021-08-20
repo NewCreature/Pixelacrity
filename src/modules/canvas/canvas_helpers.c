@@ -233,6 +233,7 @@ void pa_draw_primitive_to_canvas(PA_CANVAS * cp, int layer, int x1, int y1, int 
 	int x_dir, y_dir;
 	int i, j, offset_x, offset_y;
 	int w = 0, h = 0;
+	int left, top, right, bottom;
 
 	al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_BLENDER | ALLEGRO_STATE_TRANSFORM);
 	al_identity_transform(&identity);
@@ -241,10 +242,14 @@ void pa_draw_primitive_to_canvas(PA_CANVAS * cp, int layer, int x1, int y1, int 
 		w = al_get_bitmap_width(bp);
 		h	= al_get_bitmap_height(bp);
 	}
-	start_bitmap_x = (x1 - w / 2) / cp->bitmap_size;
-	start_bitmap_y = (y1 - h / 2) / cp->bitmap_size;
-	end_bitmap_x = (x2 + w / 2 + w % 2) / cp->bitmap_size;
-	end_bitmap_y = (y2 + h / 2 + h % 2) / cp->bitmap_size;
+	left = x1 - w / 2;
+	top = y1 - h / 2;
+	right = x2 + w / 2 + w % 2;
+	bottom = x2 + h / 2 + h % 2;
+	start_bitmap_x = left / cp->bitmap_size;
+	start_bitmap_y = top / cp->bitmap_size;
+	end_bitmap_x = right / cp->bitmap_size;
+	end_bitmap_y = bottom / cp->bitmap_size;
 	if(start_bitmap_x < end_bitmap_x)
 	{
 		x_dir = 1;
@@ -275,7 +280,7 @@ void pa_draw_primitive_to_canvas(PA_CANVAS * cp, int layer, int x1, int y1, int 
 	use_bitmap[end_bitmap_y][end_bitmap_x] = true;
 	while(loop_break_test(start_bitmap_y, end_bitmap_y, y_dir))
 	{
-		start_bitmap_x = (x1 - w / 2) / cp->bitmap_size;
+		start_bitmap_x = left / cp->bitmap_size;
 		while(loop_break_test(start_bitmap_x, end_bitmap_x, x_dir))
 		{
 			use_bitmap[start_bitmap_y][start_bitmap_x] = true;
