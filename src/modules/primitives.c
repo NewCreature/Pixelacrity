@@ -256,7 +256,7 @@ static void brush_draw(int x, int y, int cx, int cy, void * dp)
 	al_draw_tinted_bitmap(brush_data->bitmap, brush_data->color, x - cx , y - cy, 0);
 }
 
-void pa_draw_line(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_COLOR color)
+void pa_draw_line(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_COLOR color, ALLEGRO_BITMAP * texture)
 {
 	BRUSH_DATA brush_data;
 
@@ -276,17 +276,17 @@ void pa_draw_line(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_C
 	}
 }
 
-void pa_draw_rectangle(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_COLOR color)
+void pa_draw_rectangle(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_COLOR color, ALLEGRO_BITMAP * texture)
 {
 	pa_sort_coordinates(&x1, &x2);
 	pa_sort_coordinates(&y1, &y2);
-	pa_draw_line(x1, y1, x2, y1, bp, color);
-	pa_draw_line(x2, y1, x2, y2, bp, color);
-	pa_draw_line(x2, y2, x1, y2, bp, color);
-	pa_draw_line(x1, y2, x1, y1, bp, color);
+	pa_draw_line(x1, y1, x2, y1, bp, color, texture);
+	pa_draw_line(x2, y1, x2, y2, bp, color, texture);
+	pa_draw_line(x2, y2, x1, y2, bp, color, texture);
+	pa_draw_line(x1, y2, x1, y1, bp, color, texture);
 }
 
-void pa_draw_filled_rectangle(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_COLOR color)
+void pa_draw_filled_rectangle(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_COLOR color, ALLEGRO_BITMAP * texture)
 {
 	pa_sort_coordinates(&x1, &x2);
 	pa_sort_coordinates(&y1, &y2);
@@ -294,7 +294,7 @@ void pa_draw_filled_rectangle(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * b
 	al_draw_filled_rectangle((float)x1 + 0.5, (float)y1 + 0.5, (float)x2 + 0.5, (float)y2 + 0.5, color);
 }
 
-void pa_draw_oval(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_COLOR color)
+void pa_draw_oval(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_COLOR color, ALLEGRO_BITMAP * texture)
 {
 	BRUSH_DATA brush_data;
 	float cx, cy, rx, ry;
@@ -313,11 +313,11 @@ void pa_draw_oval(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_C
 	al_hold_bitmap_drawing(true);
 	if(x1 == x2 || y1 == y2)
 	{
-		pa_draw_line(x1, y1, x2, y2, bp, color);
+		pa_draw_line(x1, y1, x2, y2, bp, color, texture);
 	}
 	else if(abs(x1 - x2) < 2 || abs(y1 - y2) < 2)
 	{
-		pa_draw_rectangle(x1, y1, x2, y2, bp, color);
+		pa_draw_rectangle(x1, y1, x2, y2, bp, color, texture);
 	}
 	else
 	{
@@ -335,7 +335,7 @@ void pa_draw_oval(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_C
 	al_hold_bitmap_drawing(false);
 }
 
-void pa_draw_filled_oval(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_COLOR color)
+void pa_draw_filled_oval(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_COLOR color, ALLEGRO_BITMAP * texture)
 {
 	float cx, cy, rx, ry;
 
@@ -362,9 +362,9 @@ void pa_draw_filled_oval(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, AL
 	}
 }
 
-void pa_draw_quad(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_COLOR color)
+void pa_draw_quad(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_COLOR color, ALLEGRO_BITMAP * texture)
 {
 	pa_sort_coordinates(&x1, &x2);
 	pa_sort_coordinates(&y1, &y2);
-	al_draw_bitmap_region(bp, 0, 0, x2 - x1, y2 - y1, x1, y1, 0);
+	al_draw_bitmap_region(texture, 0, 0, x2 - x1, y2 - y1, x1, y1, 0);
 }

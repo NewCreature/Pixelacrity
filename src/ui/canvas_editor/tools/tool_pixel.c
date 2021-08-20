@@ -48,7 +48,7 @@ static void render_queued_lines(PA_CANVAS_EDITOR * cep)
 			start_y = current_y - cep->view_y;
 			end_x = old_x - cep->view_x;
 			end_y = old_y - cep->view_y;
-			pa_draw_line(start_x, start_y, end_x, end_y, cep->brush, cep->click_color);
+			pa_draw_line(start_x, start_y, end_x, end_y, cep->brush, cep->click_color, NULL);
 		}
 		else
 		{
@@ -116,7 +116,7 @@ void pa_tool_pixel_finish(PA_CANVAS_EDITOR * cep)
 			old_y = current_y;
 			current_x = current_node->x + cep->shift_x * cep->canvas->bitmap_size;
 			current_y = current_node->y + cep->shift_y * cep->canvas->bitmap_size;
-			pa_draw_primitive_to_canvas(cep->canvas, cep->current_layer, current_x, current_y, old_x, old_y, cep->brush, cep->click_color, PA_RENDER_COPY, cep->conditional_copy_shader, pa_draw_line);
+			pa_draw_primitive_to_canvas(cep->canvas, cep->current_layer, current_x, current_y, old_x, old_y, cep->brush, cep->click_color, NULL, PA_RENDER_COPY, cep->conditional_copy_shader, pa_draw_line);
 			al_use_shader(cep->standard_shader);
 		}
 		else
