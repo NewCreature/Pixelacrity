@@ -16,12 +16,12 @@ void pa_canvas_editor_MSG_MOUSEMOVE(T3GUI_ELEMENT * d, int c)
 {
 	PA_CANVAS_EDITOR * canvas_editor = (PA_CANVAS_EDITOR *)d->dp;
 
-	pa_update_tool_variables(canvas_editor);
 	switch(canvas_editor->current_tool)
 	{
 		case PA_TOOL_PIXEL:
 		case PA_TOOL_ERASER:
 		{
+			pa_update_tool_variables(canvas_editor);
 			if(canvas_editor->tool_state == PA_TOOL_STATE_DRAWING || canvas_editor->tool_state == PA_TOOL_STATE_EDITING)
 			{
 				pa_tool_pixel_logic(canvas_editor);

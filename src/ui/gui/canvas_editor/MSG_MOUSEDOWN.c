@@ -66,42 +66,42 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 		{
 			case PA_TOOL_PIXEL:
 			{
-				pa_update_tool_variables(canvas_editor);
+				pa_initialize_tool_variables(canvas_editor);
 				pa_tool_pixel_start(canvas_editor);
 				canvas_editor->tool_state = PA_TOOL_STATE_DRAWING;
 				break;
 			}
 			case PA_TOOL_LINE:
 			{
-				pa_update_tool_variables(canvas_editor);
+				pa_initialize_tool_variables(canvas_editor);
 				pa_tool_line_logic(canvas_editor);
 				canvas_editor->tool_state = PA_TOOL_STATE_DRAWING;
 				break;
 			}
 			case PA_TOOL_RECTANGLE:
 			{
-				pa_update_tool_variables(canvas_editor);
+				pa_initialize_tool_variables(canvas_editor);
 				pa_tool_rectangle_logic(canvas_editor);
 				canvas_editor->tool_state = PA_TOOL_STATE_DRAWING;
 				break;
 			}
 			case PA_TOOL_FILLED_RECTANGLE:
 			{
-				pa_update_tool_variables(canvas_editor);
+				pa_initialize_tool_variables(canvas_editor);
 				pa_tool_filled_rectangle_logic(canvas_editor);
 				canvas_editor->tool_state = PA_TOOL_STATE_DRAWING;
 				break;
 			}
 			case PA_TOOL_OVAL:
 			{
-				pa_update_tool_variables(canvas_editor);
+				pa_initialize_tool_variables(canvas_editor);
 				pa_tool_oval_logic(canvas_editor);
 				canvas_editor->tool_state = PA_TOOL_STATE_DRAWING;
 				break;
 			}
 			case PA_TOOL_FILLED_OVAL:
 			{
-				pa_update_tool_variables(canvas_editor);
+				pa_initialize_tool_variables(canvas_editor);
 				pa_tool_filled_oval_logic(canvas_editor);
 				canvas_editor->tool_state = PA_TOOL_STATE_DRAWING;
 				break;
@@ -139,7 +139,7 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 			case PA_TOOL_ERASER:
 			{
 				canvas_editor->click_color = al_map_rgba_f(0.0, 0.0, 0.0, 0.0);
-				pa_update_tool_variables(canvas_editor);
+				pa_initialize_tool_variables(canvas_editor);
 				pa_tool_pixel_start(canvas_editor);
 				canvas_editor->tool_state = PA_TOOL_STATE_DRAWING;
 				break;

@@ -385,6 +385,20 @@ bool pa_import_image(PA_CANVAS_EDITOR * cep, const char * fn)
 
 }
 
+void pa_initialize_tool_variables(PA_CANVAS_EDITOR * cep)
+{
+	int w, h;
+
+	cep->scratch_offset_x = cep->view_x;
+	cep->scratch_offset_y = cep->view_y;
+	w = al_get_bitmap_width(cep->brush);
+	h = al_get_bitmap_height(cep->brush);
+	cep->tool_left = cep->hover_x - w / 2;
+	cep->tool_right = cep->hover_x + w / 2 + w % 2;
+	cep->tool_top = cep->hover_y - h / 2;
+	cep->tool_bottom = cep->hover_y + h / 2 + h % 2;
+}
+
 void pa_update_tool_variables(PA_CANVAS_EDITOR * cep)
 {
 	int w, h;
