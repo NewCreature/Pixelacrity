@@ -153,84 +153,13 @@ void pa_import_bitmap_to_canvas(PA_CANVAS * cp, ALLEGRO_BITMAP * bp, int layer, 
 	pa_draw_primitive_to_canvas(cp, layer, x, y, x + al_get_bitmap_width(bp), y + al_get_bitmap_height(bp), NULL, t3f_color_white, bp, PA_RENDER_COPY, NULL, pa_draw_quad);
 }
 
-static bool loop_break_test(int i1, int i2, int dir)
-{
-	if(dir < 0)
-	{
-		if(i2 <= i1)
-		{
-			return true;
-		}
-	}
-	else
-	{
-		if(i1 <= i2)
-		{
-			return true;
-		}
-	}
-	return false;
-}
-
-static void free_use_array(bool ** use_bitmap, int layer_width, int layer_height)
-{
-	int i;
-
-	if(use_bitmap)
-	{
-		for(i = 0; i < layer_height; i++)
-		{
-			if(use_bitmap[i])
-			{
-				free(use_bitmap[i]);
-			}
-		}
-		free(use_bitmap);
-	}
-}
-
-static bool ** make_use_array(int layer_width, int layer_height)
-{
-	bool ** use_bitmap;
-	int i;
-
-	if(layer_width < 1 || layer_height < 1)
-	{
-		return NULL;
-	}
-	use_bitmap = malloc(sizeof(bool *) * layer_height);
-	if(!use_bitmap)
-	{
-		goto fail;
-	}
-	memset(use_bitmap, 0, sizeof(bool *) * layer_height);
-	for(i = 0; i < layer_height; i++)
-	{
-		use_bitmap[i] = malloc(sizeof(bool) * layer_width);
-		if(!use_bitmap[i])
-		{
-			goto fail;
-		}
-		memset(use_bitmap[i], 0, sizeof(bool) * layer_width);
-	}
-
-	return use_bitmap;
-
-	fail:
-	{
-		free_use_array(use_bitmap, layer_width, layer_height);
-		return NULL;
-	}
-}
-
 void pa_draw_primitive_to_canvas(PA_CANVAS * cp, int layer, int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_COLOR color, ALLEGRO_BITMAP * texture, int mode, ALLEGRO_SHADER * shader, void (*primitive_proc)(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_COLOR color, ALLEGRO_BITMAP * texture))
 {
 	ALLEGRO_STATE old_state;
 	ALLEGRO_TRANSFORM identity;
-	bool ** use_bitmap;
+	int start_x, start_y, end_x, end_y;
 	int start_bitmap_x, start_bitmap_y;
 	int end_bitmap_x, end_bitmap_y;
-	int x_dir, y_dir;
 	int i, j, offset_x, offset_y;
 	int w = 0, h = 0;
 	int left, top, right, bottom;
@@ -242,86 +171,51 @@ void pa_draw_primitive_to_canvas(PA_CANVAS * cp, int layer, int x1, int y1, int 
 		w = al_get_bitmap_width(bp);
 		h	= al_get_bitmap_height(bp);
 	}
-	left = x1 - w / 2;
-	top = y1 - h / 2;
-	right = x2 + w / 2 + w % 2;
-	bottom = x2 + h / 2 + h % 2;
-	start_bitmap_x = left / cp->bitmap_size;
-	start_bitmap_y = top / cp->bitmap_size;
-	end_bitmap_x = right / cp->bitmap_size;
-	end_bitmap_y = bottom / cp->bitmap_size;
-	if(start_bitmap_x < end_bitmap_x)
-	{
-		x_dir = 1;
-	}
-	else
-	{
-		x_dir = -1;
-	}
-	if(start_bitmap_y < end_bitmap_y)
-	{
-		y_dir = 1;
-	}
-	else
-	{
-		y_dir = -1;
-	}
+	start_x = x1;
+	start_y = y1;
+	end_x = x2;
+	end_y = y2;
+	pa_sort_coordinates(&start_x, &end_x);
+	pa_sort_coordinates(&start_y, &end_y);
+	left = start_x - w / 2;
+	top = start_y - h / 2;
+	right = end_x + w / 2 + w % 2;
+	bottom = end_y + h / 2 + h % 2;
 	if(cp->layer_width <= 0 || cp->layer_height <= 0)
 	{
 		return;
 	}
-	use_bitmap = make_use_array(cp->layer_width, cp->layer_height);
-	if(!use_bitmap)
+	start_bitmap_x = left / cp->bitmap_size;
+	start_bitmap_y = top / cp->bitmap_size;
+	end_bitmap_x = right / cp->bitmap_size;
+	end_bitmap_y = bottom / cp->bitmap_size;
+	for(i = start_bitmap_y; i <= end_bitmap_y; i++)
 	{
-		printf("can't allocate memory!\n");
-		return;
-	}
-	use_bitmap[start_bitmap_y][start_bitmap_x] = true;
-	use_bitmap[end_bitmap_y][end_bitmap_x] = true;
-	while(loop_break_test(start_bitmap_y, end_bitmap_y, y_dir))
-	{
-		start_bitmap_x = left / cp->bitmap_size;
-		while(loop_break_test(start_bitmap_x, end_bitmap_x, x_dir))
+		for(j = start_bitmap_x; j <= end_bitmap_x; j++)
 		{
-			use_bitmap[start_bitmap_y][start_bitmap_x] = true;
-			start_bitmap_x += x_dir;
-		}
-		start_bitmap_y += y_dir;
-	}
-	for(i = 0; i < cp->layer_height; i++)
-	{
-		for(j = 0; j < cp->layer_width; j++)
-		{
-			if(use_bitmap[i][j])
+			pa_expand_canvas(cp, layer, j * cp->bitmap_size, i * cp->bitmap_size);
+			al_set_target_bitmap(cp->layer[layer]->bitmap[i][j]);
+			if(shader)
 			{
-				pa_expand_canvas(cp, layer, j * cp->bitmap_size, i * cp->bitmap_size);
-				al_set_target_bitmap(cp->layer[layer]->bitmap[i][j]);
-				if(shader)
-				{
-					al_use_shader(shader);
-				}
-				al_use_transform(&identity);
-				if(mode == PA_RENDER_COPY)
-				{
-					al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
-				}
-				offset_x = j * cp->bitmap_size;
-				offset_y = i * cp->bitmap_size;
-				primitive_proc(x1 - offset_x, y1 - offset_y, x2 - offset_x, y2 - offset_y, bp, color, texture);
+				al_use_shader(shader);
 			}
-		}
-	}
-	for(i = 0; i < cp->layer_height; i++)
-	{
-		for(j = 0; j < cp->layer_width; j++)
-		{
-			if(use_bitmap[i][j])
+			al_use_transform(&identity);
+			if(mode == PA_RENDER_COPY)
 			{
-				pa_set_target_pixel_shader(NULL);
+				al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
 			}
+			offset_x = j * cp->bitmap_size;
+			offset_y = i * cp->bitmap_size;
+			primitive_proc(x1 - offset_x, y1 - offset_y, x2 - offset_x, y2 - offset_y, bp, color, texture);
 		}
 	}
-	free_use_array(use_bitmap, cp->layer_width, cp->layer_height);
+	for(i = start_bitmap_y; i <= end_bitmap_y; i++)
+	{
+		for(j = start_bitmap_x; j <= end_bitmap_x; j++)
+		{
+			pa_set_target_pixel_shader(NULL);
+		}
+	}
 	al_restore_state(&old_state);
 }
 
