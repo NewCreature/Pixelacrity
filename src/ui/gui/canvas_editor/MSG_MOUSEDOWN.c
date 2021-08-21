@@ -37,16 +37,6 @@ static void click_on_canvas(PA_CANVAS_EDITOR * cep, int button, int x, int y)
 	}
 }
 
-static void set_up_tool_variables(PA_CANVAS_EDITOR * cep)
-{
-	cep->scratch_offset_x = cep->view_x;
-	cep->scratch_offset_y = cep->view_y;
-	cep->tool_top = cep->hover_y;
-	cep->tool_bottom = cep->hover_y;
-	cep->tool_left = cep->hover_x;
-	cep->tool_right = cep->hover_x;
-}
-
 static bool create_flood_fill_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_COLOR color, PA_QUEUE * qp)
 {
 	char undo_path[1024];
@@ -76,42 +66,42 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 		{
 			case PA_TOOL_PIXEL:
 			{
-				set_up_tool_variables(canvas_editor);
+				pa_update_tool_variables(canvas_editor);
 				pa_tool_pixel_start(canvas_editor);
 				canvas_editor->tool_state = PA_TOOL_STATE_DRAWING;
 				break;
 			}
 			case PA_TOOL_LINE:
 			{
-				set_up_tool_variables(canvas_editor);
+				pa_update_tool_variables(canvas_editor);
 				pa_tool_line_logic(canvas_editor);
 				canvas_editor->tool_state = PA_TOOL_STATE_DRAWING;
 				break;
 			}
 			case PA_TOOL_RECTANGLE:
 			{
-				set_up_tool_variables(canvas_editor);
+				pa_update_tool_variables(canvas_editor);
 				pa_tool_rectangle_logic(canvas_editor);
 				canvas_editor->tool_state = PA_TOOL_STATE_DRAWING;
 				break;
 			}
 			case PA_TOOL_FILLED_RECTANGLE:
 			{
-				set_up_tool_variables(canvas_editor);
+				pa_update_tool_variables(canvas_editor);
 				pa_tool_filled_rectangle_logic(canvas_editor);
 				canvas_editor->tool_state = PA_TOOL_STATE_DRAWING;
 				break;
 			}
 			case PA_TOOL_OVAL:
 			{
-				set_up_tool_variables(canvas_editor);
+				pa_update_tool_variables(canvas_editor);
 				pa_tool_oval_logic(canvas_editor);
 				canvas_editor->tool_state = PA_TOOL_STATE_DRAWING;
 				break;
 			}
 			case PA_TOOL_FILLED_OVAL:
 			{
-				set_up_tool_variables(canvas_editor);
+				pa_update_tool_variables(canvas_editor);
 				pa_tool_filled_oval_logic(canvas_editor);
 				canvas_editor->tool_state = PA_TOOL_STATE_DRAWING;
 				break;
@@ -149,7 +139,7 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 			case PA_TOOL_ERASER:
 			{
 				canvas_editor->click_color = al_map_rgba_f(0.0, 0.0, 0.0, 0.0);
-				set_up_tool_variables(canvas_editor);
+				pa_update_tool_variables(canvas_editor);
 				pa_tool_pixel_start(canvas_editor);
 				canvas_editor->tool_state = PA_TOOL_STATE_DRAWING;
 				break;
