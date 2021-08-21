@@ -1,4 +1,4 @@
-Pixelacrity 0.2.9 Issues
+Pixelacrity 0.2.10 Issues
 ------------------------
 
 [ ]Allow scrolling the canvas by holding the mouse wheel button and moving the
@@ -27,8 +27,6 @@ Pixelacrity 0.2.9 Issues
 
 [ ]Drawing snapped shapes causes undo to not work properly. Undo bases the area
    to save on the mouse click/release coordinates, not the final shape.
-
-[ ]Crash when drawing with large brush in certain circumstances.
 
 [ ]Add preview map UI element. The map will draw two rectangles representing
    the total canvas and the current view. The element should allow the user to
@@ -574,3 +572,5 @@ Closed Issues
 
    [X]We should add a Brush menu which we can use to reset the brush to default
       or create a brush from a selection.
+
+[X]Crash when drawing with large brush in certain circumstances.
