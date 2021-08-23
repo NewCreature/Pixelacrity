@@ -1,9 +1,6 @@
 Pixelacrity 0.2.10 Issues
 ------------------------
 
-[ ]Allow scrolling the canvas by holding the mouse wheel button and moving the
-   mouse.
-
 [ ]Selection should be unfloated any time we are performing an action that
    would cause a selection to be discarded.
 
@@ -23,9 +20,6 @@ Pixelacrity 0.2.10 Issues
 
 [ ]Ensure undo is working properly for all functions that are undoable.
 
-[ ]Drawing snapped shapes causes undo to not work properly. Undo bases the area
-   to save on the mouse click/release coordinates, not the final shape.
-
 [ ]Add preview map UI element. The map will draw two rectangles representing
    the total canvas and the current view. The element should allow the user to
    adjust the view by clicking and dragging the view rectangle.
@@ -37,6 +31,9 @@ Pixelacrity 0.2.10 Issues
 
 Pixelacrity 0.3 Issues
 ----------------------
+
+[ ]Allow scrolling the canvas by holding the mouse wheel button and moving the
+   mouse.
 
 [ ]Make selections rotatable and scaleable.
 
@@ -574,3 +571,6 @@ Closed Issues
       or create a brush from a selection.
 
 [X]Crash when drawing with large brush in certain circumstances.
+
+[X]Drawing snapped shapes causes undo to not work properly. Undo bases the area
+   to save on the mouse click/release coordinates, not the final shape.
