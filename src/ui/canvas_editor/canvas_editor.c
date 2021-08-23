@@ -425,6 +425,16 @@ void pa_update_tool_variables(PA_CANVAS_EDITOR * cep)
 	}
 }
 
+void pa_set_tool_boundaries(PA_CANVAS_EDITOR * cep, int start_x, int start_y, int end_x, int end_y)
+{
+	cep->tool_left = start_x;
+	cep->tool_right = end_x;
+	pa_sort_coordinates(&cep->tool_left, &cep->tool_right);
+	cep->tool_top = start_y;
+	cep->tool_bottom = end_y;
+	pa_sort_coordinates(&cep->tool_top, &cep->tool_bottom);
+}
+
 void pa_canvas_editor_update_pick_colors(PA_CANVAS_EDITOR * cep)
 {
 	float new_l, step;

@@ -153,6 +153,7 @@ void pa_select_canvas_editor_layer(PA_CANVAS_EDITOR * cep, int layer);
 bool pa_import_image(PA_CANVAS_EDITOR * cep, const char * fn);
 void pa_initialize_tool_variables(PA_CANVAS_EDITOR * cep);
 void pa_update_tool_variables(PA_CANVAS_EDITOR * cep);
+void pa_set_tool_boundaries(PA_CANVAS_EDITOR * cep, int start_x, int start_y, int end_x, int end_y);
 void pa_canvas_editor_update_pick_colors(PA_CANVAS_EDITOR * cep);
 
 #endif
