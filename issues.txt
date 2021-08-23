@@ -9,8 +9,6 @@ Pixelacrity 0.2.10 Issues
 
    [ ]Importing an image should unfloat the selection.
 
-[ ]Make selections rotatable and scaleable.
-
 [ ]Implement frame editing.
 
    [ ]There should be handles on the corners of each frame so we can edit them
@@ -39,6 +37,8 @@ Pixelacrity 0.2.10 Issues
 
 Pixelacrity 0.3 Issues
 ----------------------
+
+[ ]Make selections rotatable and scaleable.
 
 [ ]Fix oval tool missing pixels on slim ovals.
 
