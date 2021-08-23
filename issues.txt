@@ -1,11 +1,6 @@
 Pixelacrity 0.2.10 Issues
 ------------------------
 
-[ ]Selection should be unfloated any time we are performing an action that
-   would cause a selection to be discarded.
-
-   [ ]Importing an image should unfloat the selection.
-
 [ ]Implement frame editing.
 
    [ ]There should be handles on the corners of each frame so we can edit them
@@ -574,3 +569,8 @@ Closed Issues
 
 [X]Drawing snapped shapes causes undo to not work properly. Undo bases the area
    to save on the mouse click/release coordinates, not the final shape.
+
+[X]Selection should be unfloated any time we are performing an action that
+   would cause a selection to be discarded.
+
+   [X]Importing an image should unfloat the selection.
