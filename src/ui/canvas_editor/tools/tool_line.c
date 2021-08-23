@@ -19,6 +19,7 @@ void pa_tool_line_logic(PA_CANVAS_EDITOR * cep)
 	if(t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL])
 	{
 		pa_snap_coordinates(start_x, start_y, &end_x, &end_y, 0, ALLEGRO_PI / 16.0);
+		pa_set_tool_boundaries(cep, start_x, start_y, end_x, end_y);
 	}
 
 	cep->scratch_offset_x = cep->view_x;
