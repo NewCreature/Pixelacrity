@@ -1,15 +1,6 @@
 Pixelacrity 0.2.10 Issues
 ------------------------
 
-[ ]Update canvas dimensions when applying an undo/redo.
-
-   [ ]I think we can store the current dimensions as part of the header and just
-      read those back in with every undo/redo. We'll meed to update the
-      dimensions after we draw the primitive so the erasing primitive doesn't
-      cause the canvas to expand. Alternatively, we can require explicitly
-      updating the dimensions instead of implicitly doing it during the
-      primitive rendering.
-
 [ ]Implement frame editing.
 
    [ ]There should be handles on the corners of each frame so we can edit them
@@ -583,3 +574,12 @@ Closed Issues
    would cause a selection to be discarded.
 
    [X]Importing an image should unfloat the selection.
+
+[X]Update canvas dimensions when applying an undo/redo.
+
+   [X]I think we can store the current dimensions as part of the header and just
+      read those back in with every undo/redo. We'll meed to update the
+      dimensions after we draw the primitive so the erasing primitive doesn't
+      cause the canvas to expand. Alternatively, we can require explicitly
+      updating the dimensions instead of implicitly doing it during the
+      primitive rendering.
