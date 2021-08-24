@@ -110,12 +110,6 @@ PA_CANVAS * pa_create_canvas(int bitmap_max)
 		}
 	}
 	return cp;
-
-	fail:
-	{
-		pa_destroy_canvas(cp);
-		return NULL;
-	}
 }
 
 void pa_destroy_canvas(PA_CANVAS * cp)

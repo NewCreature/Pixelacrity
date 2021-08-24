@@ -34,14 +34,6 @@ static bool create_primitive_undo(PA_CANVAS_EDITOR * cep)
 	return create_undo(cep, NULL, cep->tool_left, cep->tool_top, cep->tool_right - cep->tool_left + 1, cep->tool_bottom - cep->tool_top + 1);
 }
 
-static void revert_undo(PA_CANVAS_EDITOR * cep)
-{
-	char undo_path[1024];
-
-	pa_get_undo_path("undo", cep->undo_count, undo_path, 1024);
-	pa_apply_undo(cep, undo_path, true);
-}
-
 static bool handle_canvas_expansion(PA_CANVAS_EDITOR * cep)
 {
 	bool ret;

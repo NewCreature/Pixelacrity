@@ -99,7 +99,6 @@ static void update_color_selections(PA_CANVAS_EDITOR * canvas_editor)
 void pa_canvas_editor_MSG_IDLE(T3GUI_ELEMENT * d, int c)
 {
 	PA_CANVAS_EDITOR * canvas_editor = (PA_CANVAS_EDITOR *)d->dp;
-	bool simulate_mouse_move = false;
 	int frame_x, frame_y, frame_width, frame_height;
 
 	if(canvas_editor->backup_tick > 0)

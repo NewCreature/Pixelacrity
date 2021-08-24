@@ -8,21 +8,6 @@
 #include "clipboard.h"
 #include "selection.h"
 
-static void copy_bitmap_to_target(ALLEGRO_BITMAP * bp, ALLEGRO_BITMAP * target_bp)
-{
-	ALLEGRO_STATE old_state;
-	ALLEGRO_TRANSFORM identity;
-
-	al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_TRANSFORM | ALLEGRO_STATE_BLENDER);
-	al_identity_transform(&identity);
-	al_set_target_bitmap(target_bp);
-	al_use_transform(&identity);
-	al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
-	al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
-	al_draw_bitmap(bp, 0, 0, 0);
-	al_restore_state(&old_state);
-}
-
 bool pa_make_unfloat_selection_undo(PA_CANVAS_EDITOR * cep, const char * fn)
 {
 	ALLEGRO_STATE old_state;
@@ -98,7 +83,6 @@ bool pa_make_unfloat_selection_undo(PA_CANVAS_EDITOR * cep, const char * fn)
 
 bool pa_make_unfloat_selection_redo(PA_CANVAS_EDITOR * cep, const char * fn)
 {
-	ALLEGRO_STATE old_state;
 	ALLEGRO_BITMAP * bp = NULL;
 	ALLEGRO_FILE * fp = NULL;
 

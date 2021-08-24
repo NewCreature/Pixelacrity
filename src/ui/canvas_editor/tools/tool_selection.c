@@ -23,10 +23,6 @@ void pa_tool_selection_render_layer(PA_CANVAS_EDITOR * cep, int layer)
 {
 	ALLEGRO_TRANSFORM identity;
 	ALLEGRO_STATE old_state;
-	int current_x, current_y;
-	int old_x, old_y;
-	float start_x, start_y, end_x, end_y;
-	int count = 0;
 	int i;
 
 	al_store_state(&old_state, ALLEGRO_STATE_BLENDER | ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_TRANSFORM);

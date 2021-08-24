@@ -22,7 +22,6 @@ static void grab_brush(PA_CANVAS_EDITOR * cep, ALLEGRO_BITMAP * bp, bool multi)
 {
 	ALLEGRO_STATE old_state;
 	ALLEGRO_TRANSFORM identity;
-	int i;
 
 	al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP |  ALLEGRO_STATE_BLENDER | ALLEGRO_STATE_TRANSFORM);
 	al_set_target_bitmap(bp);

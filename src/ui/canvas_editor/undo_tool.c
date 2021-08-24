@@ -308,7 +308,6 @@ bool pa_apply_tool_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, const char * 
 
 bool pa_apply_tool_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, const char * action)
 {
-	int i, j, l;
 	char undo_path[1024];
 	ALLEGRO_BITMAP * bp = NULL;
 	int layer, x, y;

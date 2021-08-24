@@ -278,7 +278,6 @@ void pa_center_canvas_editor(PA_CANVAS_EDITOR * cep, int frame)
 void pa_set_canvas_editor_zoom(PA_CANVAS_EDITOR * cep, int level)
 {
 	int cx, cy;
-	int amount = cep->view_zoom - level;
 
 	if(level > 0)
 	{
