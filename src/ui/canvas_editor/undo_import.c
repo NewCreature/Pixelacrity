@@ -17,7 +17,7 @@ bool pa_make_import_undo(PA_CANVAS_EDITOR * cep, int layer, const char * import_
 		printf("fail: %s\n", fn);
 		goto fail;
 	}
-	pa_write_undo_header(fp, PA_UNDO_TYPE_IMPORT_IMAGE, "Import Image");
+	pa_write_undo_header(fp, cep, PA_UNDO_TYPE_IMPORT_IMAGE, "Import Image");
 	al_fwrite32le(fp, layer);
 	t3f_save_string_f(fp, import_fn);
 	al_fclose(fp);

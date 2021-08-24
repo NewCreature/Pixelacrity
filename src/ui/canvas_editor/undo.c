@@ -11,15 +11,111 @@
 #include "undo_import.h"
 #include "ui/window.h"
 
-bool pa_write_undo_header(ALLEGRO_FILE * fp, int type, const char * name)
+bool pa_write_undo_header(ALLEGRO_FILE * fp, PA_CANVAS_EDITOR * cep, int type, const char * name)
 {
+	int i;
+
 	t3f_debug_message("Write undo (%d): %s\n", type, name);
 	al_fputc(fp, type);
 	al_fwrite16le(fp, strlen(name));
 	al_fwrite(fp, name, strlen(name));
+	al_fwrite32le(fp, cep->canvas->layer_max);
+	for(i = 0; i < cep->canvas->layer_max; i++)
+	{
+		al_fwrite32le(fp, cep->canvas->layer[i]->offset_x);
+		al_fwrite32le(fp, cep->canvas->layer[i]->offset_y);
+		al_fwrite32le(fp, cep->canvas->layer[i]->width);
+		al_fwrite32le(fp, cep->canvas->layer[i]->height);
+	}
 
 	return true;
 }
+
+static void destroy_undo_header(PA_UNDO_HEADER * hp)
+{
+	if(hp)
+	{
+		if(hp->layer_height)
+		{
+			free(hp->layer_height);
+		}
+		if(hp->layer_width)
+		{
+			free(hp->layer_width);
+		}
+		if(hp->layer_offset_y)
+		{
+			free(hp->layer_offset_y);
+		}
+		if(hp->layer_offset_x)
+		{
+			free(hp->layer_offset_x);
+		}
+		if(hp->name)
+		{
+			free(hp->name);
+		}
+		free(hp);
+	}
+}
+
+PA_UNDO_HEADER * pa_read_undo_header(ALLEGRO_FILE * fp)
+{
+	PA_UNDO_HEADER * hp;
+	int i, l;
+
+	hp = malloc(sizeof(PA_UNDO_HEADER));
+	if(!hp)
+	{
+		goto fail;
+	}
+	memset(hp, 0, sizeof(PA_UNDO_HEADER));
+	hp->type = al_fgetc(fp);
+	l = al_fread16le(fp);
+	hp->name = malloc(l + 1);
+	if(!hp->name)
+	{
+		goto fail;
+	}
+	al_fread(fp, hp->name, l);
+	hp->name[l] = 0;
+	hp->layer_max = al_fread32le(fp);
+	hp->layer_offset_x = malloc(sizeof(int) * hp->layer_max);
+	if(!hp->layer_offset_x)
+	{
+		goto fail;
+	}
+	hp->layer_offset_y = malloc(sizeof(int) * hp->layer_max);
+	if(!hp->layer_offset_y)
+	{
+		goto fail;
+	}
+	hp->layer_width = malloc(sizeof(int) * hp->layer_max);
+	if(!hp->layer_width)
+	{
+		goto fail;
+	}
+	hp->layer_height = malloc(sizeof(int) * hp->layer_max);
+	if(!hp->layer_height)
+	{
+		goto fail;
+	}
+	for(i = 0; i < hp->layer_max; i++)
+	{
+		hp->layer_offset_x[i] = al_fread32le(fp);
+		hp->layer_offset_y[i] = al_fread32le(fp);
+		hp->layer_width[i] = al_fread32le(fp);
+		hp->layer_height[i] = al_fread32le(fp);
+	}
+	return hp;
+
+	fail:
+	{
+		destroy_undo_header(hp);
+	}
+	return NULL;
+}
+
 
 const char * pa_get_undo_name(const char * fn, char * out, int out_size)
 {
@@ -188,13 +284,24 @@ static bool apply_redo_type(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, int type,
 	return false;
 }
 
+static void update_canvas_size(PA_CANVAS_EDITOR * cep, PA_UNDO_HEADER * hp)
+{
+	int i;
+
+	for(i = 0; i < hp->layer_max; i++)
+	{
+		cep->canvas->layer[i]->offset_x = hp->layer_offset_x[i];
+		cep->canvas->layer[i]->offset_y = hp->layer_offset_y[i];
+		cep->canvas->layer[i]->width = hp->layer_width[i];
+		cep->canvas->layer[i]->height = hp->layer_height[i];
+	}
+}
+
 bool pa_apply_undo(PA_CANVAS_EDITOR * cep, const char * fn, bool revert)
 {
 	ALLEGRO_FILE * fp = NULL;
-	int type;
-	int l;
-	char buf[1024];
-	bool ret;
+	bool ret = false;
+	PA_UNDO_HEADER * hp;
 
 	t3f_debug_message("Enter pa_apply_undo(cep, %s, %d)\n", fn, revert);
 	fp = al_fopen(fn, "rb");
@@ -203,28 +310,27 @@ bool pa_apply_undo(PA_CANVAS_EDITOR * cep, const char * fn, bool revert)
 		t3f_debug_message("Failed to open undo file\n");
 		return false;
 	}
-	type = al_fgetc(fp);
-	l = al_fread16le(fp);
-	al_fread(fp, buf, l);
-	buf[l] = 0;
-	ret = apply_undo_type(cep, fp, type, buf, revert);
-	if(ret)
+	hp = pa_read_undo_header(fp);
+	if(hp)
 	{
-		cep->modified--;
-		pa_set_window_message(NULL);
+		ret = apply_undo_type(cep, fp, hp->type, hp->name, revert);
+		if(ret)
+		{
+			update_canvas_size(cep, hp);
+			cep->modified--;
+			pa_set_window_message(NULL);
+		}
+		t3f_debug_message("Exit pa_apply_undo()\n");
 	}
 	al_fclose(fp);
-	t3f_debug_message("Exit pa_apply_undo()\n");
-	return true;
+	return ret;
 }
 
 bool pa_apply_redo(PA_CANVAS_EDITOR * cep, const char * fn)
 {
 	ALLEGRO_FILE * fp = NULL;
-	int type;
-	int l;
-	char buf[1024];
-	bool ret;
+	bool ret = false;
+	PA_UNDO_HEADER * hp;
 
 	t3f_debug_message("Enter pa_apply_redo(cep, %s)\n", fn);
 	fp = al_fopen(fn, "rb");
@@ -233,19 +339,20 @@ bool pa_apply_redo(PA_CANVAS_EDITOR * cep, const char * fn)
 		t3f_debug_message("Failed to open redo file\n");
 		return false;
 	}
-	type = al_fgetc(fp);
-	l = al_fread16le(fp);
-	al_fread(fp, buf, l);
-	buf[l] = 0;
-	ret = apply_redo_type(cep, fp, type, buf);
-	if(ret)
+	hp = pa_read_undo_header(fp);
+	if(hp)
 	{
-		cep->modified++;
-		pa_set_window_message(NULL);
+		ret = apply_redo_type(cep, fp, hp->type, hp->name);
+		if(ret)
+		{
+			update_canvas_size(cep, hp);
+			cep->modified++;
+			pa_set_window_message(NULL);
+		}
+		t3f_debug_message("Exit pa_apply_redo()\n");
 	}
 	al_fclose(fp);
-	t3f_debug_message("Exit pa_apply_redo()\n");
-	return true;
+	return ret;
 }
 
 void pa_undo_clean_up(PA_CANVAS_EDITOR * cep)

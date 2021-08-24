@@ -30,7 +30,7 @@ bool pa_make_flood_fill_undo(PA_CANVAS_EDITOR * cep, int layer, ALLEGRO_COLOR co
 		printf("fail: %s\n", fn);
 		goto fail;
 	}
-	pa_write_undo_header(fp, PA_UNDO_TYPE_FLOOD_FILL, "Flood Fill");
+	pa_write_undo_header(fp, cep, PA_UNDO_TYPE_FLOOD_FILL, "Flood Fill");
 	al_fwrite16le(fp, cep->current_tool);
 	al_fwrite32le(fp, layer);
 	write_color(fp, color);

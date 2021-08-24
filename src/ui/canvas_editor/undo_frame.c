@@ -17,7 +17,7 @@ bool pa_make_frame_undo(PA_CANVAS_EDITOR * cep, const char * action, const char 
 		printf("fail: %s\n", fn);
 		goto fail;
 	}
-	pa_write_undo_header(fp, PA_UNDO_TYPE_FRAME, action ? action : action_name);
+	pa_write_undo_header(fp, cep, PA_UNDO_TYPE_FRAME, action ? action : action_name);
 	al_fwrite32le(fp, cep->canvas->frame_max);
 	for(i = 0; i < cep->canvas->frame_max; i++)
 	{

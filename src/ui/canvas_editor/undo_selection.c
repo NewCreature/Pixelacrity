@@ -47,7 +47,7 @@ bool pa_make_unfloat_selection_undo(PA_CANVAS_EDITOR * cep, const char * fn)
 		printf("fail: %s\n", fn);
 		goto fail;
 	}
-	pa_write_undo_header(fp, PA_UNDO_TYPE_UNFLOAT_SELECTION, "Unfloat Selection");
+	pa_write_undo_header(fp, cep, PA_UNDO_TYPE_UNFLOAT_SELECTION, "Unfloat Selection");
 	al_fwrite32le(fp, cep->current_layer);
 	al_fwrite32le(fp, cep->selection.box.start_x);
 	al_fwrite32le(fp, cep->selection.box.start_y);
@@ -114,7 +114,7 @@ bool pa_make_unfloat_selection_redo(PA_CANVAS_EDITOR * cep, const char * fn)
 		printf("fail: %s\n", fn);
 		goto fail;
 	}
-	pa_write_undo_header(fp, PA_REDO_TYPE_UNFLOAT_SELECTION, "Unfloat Selection");
+	pa_write_undo_header(fp, cep, PA_REDO_TYPE_UNFLOAT_SELECTION, "Unfloat Selection");
 	al_fwrite32le(fp, cep->current_layer);
 	al_fwrite32le(fp, cep->selection.box.start_x);
 	al_fwrite32le(fp, cep->selection.box.start_y);
@@ -167,7 +167,7 @@ bool pa_make_float_selection_undo(PA_CANVAS_EDITOR * cep, PA_BOX * box, const ch
 		printf("fail: %s\n", fn);
 		goto fail;
 	}
-	pa_write_undo_header(fp, PA_UNDO_TYPE_FLOAT_SELECTION, "Float Selection");
+	pa_write_undo_header(fp, cep, PA_UNDO_TYPE_FLOAT_SELECTION, "Float Selection");
 	al_fwrite32le(fp, cep->current_layer);
 	al_fwrite32le(fp, box->start_x);
 	al_fwrite32le(fp, box->start_y);
@@ -210,7 +210,7 @@ bool pa_make_float_selection_redo(PA_CANVAS_EDITOR * cep, int new_x, int new_y, 
 		printf("fail: %s\n", fn);
 		goto fail;
 	}
-	pa_write_undo_header(fp, PA_REDO_TYPE_FLOAT_SELECTION, "Float Selection");
+	pa_write_undo_header(fp, cep, PA_REDO_TYPE_FLOAT_SELECTION, "Float Selection");
 	al_fwrite32le(fp, cep->current_layer);
 	al_fwrite32le(fp, new_x);
 	al_fwrite32le(fp, new_y);

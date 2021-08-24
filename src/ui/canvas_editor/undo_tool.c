@@ -85,7 +85,7 @@ bool pa_make_tool_undo(PA_CANVAS_EDITOR * cep, const char * action, int layer, i
 			break;
 		}
 	}
-	pa_write_undo_header(fp, PA_UNDO_TYPE_TOOL, action ? action : action_name);
+	pa_write_undo_header(fp, cep, PA_UNDO_TYPE_TOOL, action ? action : action_name);
 	al_fwrite16le(fp, cep->current_tool);
 	al_fwrite32le(fp, layer);
 	if(width < 0 || height < 0)
@@ -200,7 +200,7 @@ bool pa_make_tool_redo(PA_CANVAS_EDITOR * cep, const char * action, int tool, in
 			break;
 		}
 	}
-	pa_write_undo_header(fp, PA_UNDO_TYPE_TOOL, action ? action : action_name);
+	pa_write_undo_header(fp, cep, PA_UNDO_TYPE_TOOL, action ? action : action_name);
 	al_fwrite16le(fp, tool);
 	al_fwrite32le(fp, layer);
 	al_fwrite32le(fp, x);

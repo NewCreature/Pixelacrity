@@ -14,7 +14,7 @@ bool pa_make_add_layer_undo(PA_CANVAS_EDITOR * cep, const char * fn)
 	{
 		goto fail;
 	}
-	pa_write_undo_header(fp, PA_UNDO_TYPE_ADD_LAYER, "Add Layer");
+	pa_write_undo_header(fp, cep, PA_UNDO_TYPE_ADD_LAYER, "Add Layer");
 	al_fclose(fp);
 	t3f_debug_message("Exit pa_make_add_layer_undo()\n");
 	return true;
@@ -40,7 +40,7 @@ bool pa_make_add_layer_redo(PA_CANVAS_EDITOR * cep, const char * fn)
 	{
 		goto fail;
 	}
-	pa_write_undo_header(fp, PA_REDO_TYPE_ADD_LAYER, "Add Layer");
+	pa_write_undo_header(fp, cep, PA_REDO_TYPE_ADD_LAYER, "Add Layer");
 	al_fclose(fp);
 	t3f_debug_message("Exit pa_make_add_layer_redo()\n");
 	return true;
@@ -82,7 +82,7 @@ bool pa_make_remove_layer_undo(PA_CANVAS_EDITOR * cep, int layer, const char * f
 	{
 		goto fail;
 	}
-	pa_write_undo_header(fp, PA_UNDO_TYPE_REMOVE_LAYER, "Remove Layer");
+	pa_write_undo_header(fp, cep, PA_UNDO_TYPE_REMOVE_LAYER, "Remove Layer");
 	al_fwrite16le(fp, layer);
 	if(width < 0 || height < 0)
 	{
@@ -132,7 +132,7 @@ bool pa_make_remove_layer_redo(PA_CANVAS_EDITOR * cep, int layer, const char * f
 	{
 		goto fail;
 	}
-	pa_write_undo_header(fp, PA_REDO_TYPE_REMOVE_LAYER, "Remove Layer");
+	pa_write_undo_header(fp, cep, PA_REDO_TYPE_REMOVE_LAYER, "Remove Layer");
 	al_fwrite16le(fp, layer);
 	al_fclose(fp);
 
