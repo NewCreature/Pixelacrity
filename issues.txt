@@ -5,6 +5,8 @@ Pixelacrity 0.2.10 Issues
 
 [ ]Multi-layer moving a selection caused a freeze.
 
+[ ]Freeze after drawing line.
+
 [ ]Implement frame editing.
 
    [ ]There should be handles on the corners of each frame so we can edit them
