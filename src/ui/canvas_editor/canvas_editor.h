@@ -105,8 +105,6 @@ typedef struct
 	int current_layer;
 	int current_frame;
 	int current_tool;
-	ALLEGRO_SYSTEM_MOUSE_CURSOR old_cursor;
-	ALLEGRO_SYSTEM_MOUSE_CURSOR current_cursor;
 	int tool_state;
 	PA_SELECTION_DATA selection;
 	int modified;
