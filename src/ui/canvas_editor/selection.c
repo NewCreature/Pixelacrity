@@ -224,6 +224,26 @@ void pa_update_selection(PA_CANVAS_EDITOR * canvas_editor, T3GUI_ELEMENT * d)
 			multilayer = true;
 		}
 		pa_box_logic(&canvas_editor->selection.box, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, snap);
+		if(canvas_editor->selection.box.state == PA_BOX_STATE_HOVER)
+		{
+			canvas_editor->want_cursor = ALLEGRO_SYSTEM_MOUSE_CURSOR_LINK;
+		}
+		else if(canvas_editor->selection.box.state == PA_BOX_STATE_HOVER_HANDLE)
+		{
+			canvas_editor->want_cursor = ALLEGRO_SYSTEM_MOUSE_CURSOR_LINK;
+		}
+		else if(canvas_editor->selection.box.state == PA_BOX_STATE_MOVING)
+		{
+			canvas_editor->want_cursor = ALLEGRO_SYSTEM_MOUSE_CURSOR_MOVE;
+		}
+		else if(canvas_editor->selection.box.state == PA_BOX_STATE_RESIZING)
+		{
+			canvas_editor->want_cursor = ALLEGRO_SYSTEM_MOUSE_CURSOR_LINK;
+		}
+		else
+		{
+			canvas_editor->want_cursor = ALLEGRO_SYSTEM_MOUSE_CURSOR_PRECISION;
+		}
 		if(!canvas_editor->selection.bitmap && (canvas_editor->selection.box.start_x != old_box.start_x || canvas_editor->selection.box.start_y != old_box.start_y))
 		{
 			if(canvas_editor->selection.box.state == PA_BOX_STATE_MOVING)

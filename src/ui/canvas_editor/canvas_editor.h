@@ -74,6 +74,7 @@ typedef struct
 typedef struct
 {
 
+	ALLEGRO_SYSTEM_MOUSE_CURSOR want_cursor;
 	ALLEGRO_SHADER * standard_shader;
 	ALLEGRO_SHADER * premultiplied_alpha_shader;
 	ALLEGRO_SHADER * conditional_copy_shader;

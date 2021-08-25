@@ -263,6 +263,7 @@ void pa_box_logic(PA_BOX * bp, int view_x, int view_y, int view_zoom, int offset
 			bp->click_tick++;
 			break;
 		}
+		case PA_BOX_STATE_DRAWING:
 		case PA_BOX_STATE_RESIZING:
 		{
 			if(bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_TOP_LEFT || bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_TOP_RIGHT || bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_BOTTOM_LEFT || bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_BOTTOM_RIGHT || bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_LEFT || bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_RIGHT)

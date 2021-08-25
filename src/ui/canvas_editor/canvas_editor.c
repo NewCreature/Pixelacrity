@@ -34,6 +34,7 @@ static void set_config_val(ALLEGRO_CONFIG * cp, const char * section, const char
 
 void pa_reset_canvas_editor(PA_CANVAS_EDITOR * cep)
 {
+	cep->want_cursor = ALLEGRO_SYSTEM_MOUSE_CURSOR_PRECISION;
 	cep->view_x = 0;
 	cep->view_y = 0;
 	cep->view_fx = 0.0;

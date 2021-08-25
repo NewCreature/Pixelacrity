@@ -21,6 +21,7 @@
 #define PA_BOX_STATE_HOVER_HANDLE       2
 #define PA_BOX_STATE_MOVING             3
 #define PA_BOX_STATE_RESIZING           4
+#define PA_BOX_STATE_DRAWING            5
 
 typedef struct
 {
