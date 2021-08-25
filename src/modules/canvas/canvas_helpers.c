@@ -18,39 +18,56 @@ void pa_get_canvas_dimensions(PA_CANVAS * cp, int * offset_x, int * offset_y, in
 		flags = cp->layer[i]->flags & ~flags_filter;
 		if(!(flags & PA_CANVAS_FLAG_HIDDEN))
 		{
-			if(cp->layer[i]->offset_x < left_x)
+			if(cp->layer[i]->width > 0 && cp->layer[i]->height > 0)
 			{
-				left_x = cp->layer[i]->offset_x;
-			}
-			if(cp->layer[i]->offset_x + cp->layer[i]->width > right_x)
-			{
-				right_x = cp->layer[i]->offset_x + cp->layer[i]->width;
-			}
-			if(cp->layer[i]->offset_y < top_y)
-			{
-				top_y = cp->layer[i]->offset_y;
-			}
-			if(cp->layer[i]->offset_y + cp->layer[i]->height > bottom_y)
-			{
-				bottom_y = cp->layer[i]->offset_y + cp->layer[i]->height;
+				if(cp->layer[i]->offset_x < left_x)
+				{
+					left_x = cp->layer[i]->offset_x;
+				}
+				if(cp->layer[i]->offset_x + cp->layer[i]->width > right_x)
+				{
+					right_x = cp->layer[i]->offset_x + cp->layer[i]->width;
+				}
+				if(cp->layer[i]->offset_y < top_y)
+				{
+					top_y = cp->layer[i]->offset_y;
+				}
+				if(cp->layer[i]->offset_y + cp->layer[i]->height > bottom_y)
+				{
+					bottom_y = cp->layer[i]->offset_y + cp->layer[i]->height;
+				}
 			}
 		}
 	}
-	if(offset_x)
+	if(right_x >= left_x && bottom_y >= top_y)
 	{
-		*offset_x = left_x;
+		if(offset_x)
+		{
+			*offset_x = left_x;
+		}
+		if(offset_y)
+		{
+			*offset_y = top_y;
+		}
+		if(width)
+		{
+			*width = (right_x - left_x) + 1;
+		}
+		if(height)
+		{
+			*height = (bottom_y - top_y) + 1;
+		}
 	}
-	if(offset_y)
+	else
 	{
-		*offset_y = top_y;
-	}
-	if(width)
-	{
-		*width = (right_x - left_x) + 1;
-	}
-	if(height)
-	{
-		*height = (bottom_y - top_y) + 1;
+		if(width)
+		{
+			*width = 0;
+		}
+		if(height)
+		{
+			*height = 0;
+		}
 	}
 }
 
@@ -155,22 +172,52 @@ void pa_import_bitmap_to_canvas(PA_CANVAS * cp, ALLEGRO_BITMAP * bp, int layer, 
 
 static void update_canvas_dimensions(PA_CANVAS * cp, int layer, int left, int top, int right, int bottom)
 {
-	if(left < cp->layer[layer]->offset_x)
+	int real_left, real_top, real_right, real_bottom;
+
+	if(cp->layer[layer]->width < 1)
 	{
 		cp->layer[layer]->offset_x = left;
 	}
-	if(right - left > cp->layer[layer]->width)
+	if(left < cp->layer[layer]->offset_x)
 	{
-		cp->layer[layer]->width = right - left + 1;
+		real_left = left;
 	}
-	if(top < cp->layer[layer]->offset_y)
+	else
+	{
+		real_left = cp->layer[layer]->offset_x;
+	}
+	if(right > cp->layer[layer]->offset_x + cp->layer[layer]->width)
+	{
+		real_right = right;
+	}
+	else
+	{
+		real_right = cp->layer[layer]->offset_x + cp->layer[layer]->width;
+	}
+	if(cp->layer[layer]->height < 1)
 	{
 		cp->layer[layer]->offset_y = top;
 	}
-	if(bottom - top > cp->layer[layer]->height)
+	if(top < cp->layer[layer]->offset_y)
 	{
-		cp->layer[layer]->height = bottom - top + 1;
+		real_top = top;
 	}
+	else
+	{
+		real_top = cp->layer[layer]->offset_y;
+	}
+	if(bottom > cp->layer[layer]->offset_y + cp->layer[layer]->height)
+	{
+		real_bottom = bottom;
+	}
+	else
+	{
+		real_bottom = cp->layer[layer]->offset_y + cp->layer[layer]->height;
+	}
+	cp->layer[layer]->offset_x = real_left;
+	cp->layer[layer]->offset_y = real_top;
+	cp->layer[layer]->width = real_right - real_left;
+	cp->layer[layer]->height = real_bottom - real_top;
 }
 
 void pa_draw_primitive_to_canvas(PA_CANVAS * cp, int layer, int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_COLOR color, ALLEGRO_BITMAP * texture, int mode, ALLEGRO_SHADER * shader, void (*primitive_proc)(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_COLOR color, ALLEGRO_BITMAP * texture))
