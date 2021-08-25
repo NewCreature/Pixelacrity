@@ -95,7 +95,7 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 		if(canvas_editor->current_tool != PA_TOOL_DROPPER && canvas_editor->current_tool != PA_TOOL_FLOOD_FILL && canvas_editor->current_tool != PA_TOOL_SELECTION)
 		{
 			generate_brush_hint(canvas_editor);
-			al_draw_bitmap(canvas_editor->scratch_bitmap, ((int)(t3f_mouse_x - d->x) / canvas_editor->view_zoom) * canvas_editor->view_zoom + d->x - (al_get_bitmap_width(canvas_editor->brush) / 2) * canvas_editor->view_zoom - 1.0, ((int)(t3f_mouse_y - d->y) / canvas_editor->view_zoom) * canvas_editor->view_zoom + d->y - (al_get_bitmap_height(canvas_editor->brush) / 2) * canvas_editor->view_zoom - 1.0, 0);
+			al_draw_bitmap(canvas_editor->scratch_bitmap, ((int)(t3gui_get_mouse_x() - d->x) / canvas_editor->view_zoom) * canvas_editor->view_zoom + d->x - (al_get_bitmap_width(canvas_editor->brush) / 2) * canvas_editor->view_zoom - 1.0, ((int)(t3gui_get_mouse_y() - d->y) / canvas_editor->view_zoom) * canvas_editor->view_zoom + d->y - (al_get_bitmap_height(canvas_editor->brush) / 2) * canvas_editor->view_zoom - 1.0, 0);
 		}
 	}
 
@@ -137,8 +137,8 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 
 	if(t3f_key[ALLEGRO_KEY_G])
 	{
-		tx = ((int)(t3f_mouse_x - d->x) / canvas_editor->view_zoom) * canvas_editor->view_zoom + canvas_editor->view_zoom / 2 + d->x;
-		ty = ((int)(t3f_mouse_y - d->y) / canvas_editor->view_zoom) * canvas_editor->view_zoom + canvas_editor->view_zoom / 2 + d->y;
+		tx = ((int)(t3gui_get_mouse_x() - d->x) / canvas_editor->view_zoom) * canvas_editor->view_zoom + canvas_editor->view_zoom / 2 + d->x;
+		ty = ((int)(t3gui_get_mouse_y() - d->y) / canvas_editor->view_zoom) * canvas_editor->view_zoom + canvas_editor->view_zoom / 2 + d->y;
 		al_draw_line(d->x, ty + 0.5, d->x + d->w, ty + 0.5, t3f_color_black, 0.0);
 		al_draw_line(tx + 0.5, d->y, tx + 0/5, d->y + d->h, t3f_color_black, 0.0);
 	}

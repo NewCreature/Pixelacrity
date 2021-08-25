@@ -74,15 +74,15 @@ int pa_gui_palette_proc(int msg, T3GUI_ELEMENT * d, int c)
 			mouse_button = c;
 			if(d->dp)
 			{
-				if(t3f_mouse_x - d->x >= 0 && t3f_mouse_x - d->x < al_get_bitmap_width(_palette_bitmap) && t3f_mouse_y - d->y >= 0 && t3f_mouse_y - d->y < al_get_bitmap_height(_palette_bitmap))
+				if(t3gui_get_mouse_x() - d->x >= 0 && t3gui_get_mouse_x() - d->x < al_get_bitmap_width(_palette_bitmap) && t3gui_get_mouse_y() - d->y >= 0 && t3gui_get_mouse_y() - d->y < al_get_bitmap_height(_palette_bitmap))
 				{
 					if(c == 1)
 					{
-						*(ALLEGRO_COLOR *)d->dp = al_get_pixel(_palette_bitmap, t3f_mouse_x - d->x, t3f_mouse_y - d->y);
+						*(ALLEGRO_COLOR *)d->dp = al_get_pixel(_palette_bitmap, t3gui_get_mouse_x() - d->x, t3gui_get_mouse_y() - d->y);
 					}
 					else
 					{
-						*(ALLEGRO_COLOR *)d->dp2 = al_get_pixel(_palette_bitmap, t3f_mouse_x - d->x, t3f_mouse_y - d->y);
+						*(ALLEGRO_COLOR *)d->dp2 = al_get_pixel(_palette_bitmap, t3gui_get_mouse_x() - d->x, t3gui_get_mouse_y() - d->y);
 					}
 				}
 			}

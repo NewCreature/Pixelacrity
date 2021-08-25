@@ -155,8 +155,8 @@ static void paste_helper(PA_CANVAS_EDITOR * cep, int pos, int ox, int oy)
 					}
 					case 2:
 					{
-						x = cep->view_x + (t3f_mouse_x + ox) / cep->view_zoom - al_get_bitmap_width(cep->selection.bitmap[c]) / 2;
-						y = cep->view_y + (t3f_mouse_y + oy) / cep->view_zoom - al_get_bitmap_height(cep->selection.bitmap[c]) / 2;
+						x = cep->view_x + (t3gui_get_mouse_x() + ox) / cep->view_zoom - al_get_bitmap_width(cep->selection.bitmap[c]) / 2;
+						y = cep->view_y + (t3gui_get_mouse_y() + oy) / cep->view_zoom - al_get_bitmap_height(cep->selection.bitmap[c]) / 2;
 						break;
 					}
 				}

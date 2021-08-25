@@ -381,7 +381,7 @@ void pa_process_ui(PA_UI * uip)
 		uip->element[PA_UI_ELEMENT_BUTTON_REMOVE_LAYER]->flags = D_DISABLED;
 	}
 
-	if(t3f_mouse_x >= uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->x && t3f_mouse_x < uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->x + uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->w && t3f_mouse_y >= uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->y && t3f_mouse_y < uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->y + uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->h)
+	if(t3gui_get_mouse_x() >= uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->x && t3gui_get_mouse_x() < uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->x + uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->w && t3gui_get_mouse_y() >= uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->y && t3gui_get_mouse_y() < uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->y + uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->h)
 	{
 		pa_set_mouse_cursor(cep->want_cursor);
 	}

@@ -1,4 +1,5 @@
 #include "t3f/t3f.h"
+#include "t3gui/t3gui.h"
 #include "box.h"
 #include "snap.h"
 
@@ -187,8 +188,8 @@ void pa_box_logic(PA_BOX * bp, int view_x, int view_y, int view_zoom, int offset
 	int i;
 	float start_x, start_y, end_x, end_y;
 
-	bp->hover_x = (t3f_mouse_x - offset_x) / view_zoom + view_x;
-	bp->hover_y = (t3f_mouse_y - offset_y) / view_zoom + view_y;
+	bp->hover_x = (t3gui_get_mouse_x() - offset_x) / view_zoom + view_x;
+	bp->hover_y = (t3gui_get_mouse_y() - offset_y) / view_zoom + view_y;
 	switch(bp->state)
 	{
 		case PA_BOX_STATE_IDLE:
@@ -198,7 +199,7 @@ void pa_box_logic(PA_BOX * bp, int view_x, int view_y, int view_zoom, int offset
 			{
 				if(bp->handle[i].type != PA_BOX_HANDLE_TYPE_NONE)
 				{
-					if(t3f_mouse_x >= bp->handle[i].screen_x - peg_offset + offset_x && t3f_mouse_x <= bp->handle[i].screen_x + peg_offset + offset_x && t3f_mouse_y >= bp->handle[i].screen_y - peg_offset + offset_y && t3f_mouse_y <= bp->handle[i].screen_y + peg_offset + offset_y)
+					if(t3gui_get_mouse_x() >= bp->handle[i].screen_x - peg_offset + offset_x && t3gui_get_mouse_x() <= bp->handle[i].screen_x + peg_offset + offset_x && t3gui_get_mouse_y() >= bp->handle[i].screen_y - peg_offset + offset_y && t3gui_get_mouse_y() <= bp->handle[i].screen_y + peg_offset + offset_y)
 					{
 						bp->hover_handle = i;
 					}
@@ -206,7 +207,7 @@ void pa_box_logic(PA_BOX * bp, int view_x, int view_y, int view_zoom, int offset
 			}
 			if(bp->hover_handle < 0)
 			{
-				if(t3f_mouse_x >= bp->handle[0].screen_x - peg_offset + offset_x && t3f_mouse_x <= bp->handle[1].screen_x + peg_offset + offset_x && t3f_mouse_y >= bp->handle[0].screen_y - peg_offset + offset_y && t3f_mouse_y <= bp->handle[2].screen_y + peg_offset + offset_y)
+				if(t3gui_get_mouse_x() >= bp->handle[0].screen_x - peg_offset + offset_x && t3gui_get_mouse_x() <= bp->handle[1].screen_x + peg_offset + offset_x && t3gui_get_mouse_y() >= bp->handle[0].screen_y - peg_offset + offset_y && t3gui_get_mouse_y() <= bp->handle[2].screen_y + peg_offset + offset_y)
 				{
 					bp->state = PA_BOX_STATE_HOVER;
 				}
@@ -224,7 +225,7 @@ void pa_box_logic(PA_BOX * bp, int view_x, int view_y, int view_zoom, int offset
 			{
 				if(bp->handle[i].type != PA_BOX_HANDLE_TYPE_NONE)
 				{
-					if(t3f_mouse_x >= bp->handle[i].screen_x - peg_offset + offset_x && t3f_mouse_x <= bp->handle[i].screen_x + peg_offset + offset_x && t3f_mouse_y >= bp->handle[i].screen_y - peg_offset + offset_y && t3f_mouse_y <= bp->handle[i].screen_y + peg_offset + offset_y)
+					if(t3gui_get_mouse_x() >= bp->handle[i].screen_x - peg_offset + offset_x && t3gui_get_mouse_x() <= bp->handle[i].screen_x + peg_offset + offset_x && t3gui_get_mouse_y() >= bp->handle[i].screen_y - peg_offset + offset_y && t3gui_get_mouse_y() <= bp->handle[i].screen_y + peg_offset + offset_y)
 					{
 						bp->hover_handle = i;
 					}
@@ -234,7 +235,7 @@ void pa_box_logic(PA_BOX * bp, int view_x, int view_y, int view_zoom, int offset
 			{
 				bp->state = PA_BOX_STATE_HOVER_HANDLE;
 			}
-			else if(t3f_mouse_x < bp->handle[0].screen_x - peg_offset + offset_x || t3f_mouse_x > bp->handle[1].screen_x + peg_offset + offset_x || t3f_mouse_y < bp->handle[0].screen_y - peg_offset + offset_y || t3f_mouse_y > bp->handle[2].screen_y + peg_offset + offset_y)
+			else if(t3gui_get_mouse_x() < bp->handle[0].screen_x - peg_offset + offset_x || t3gui_get_mouse_x() > bp->handle[1].screen_x + peg_offset + offset_x || t3gui_get_mouse_y() < bp->handle[0].screen_y - peg_offset + offset_y || t3gui_get_mouse_y() > bp->handle[2].screen_y + peg_offset + offset_y)
 			{
 				bp->state = PA_BOX_STATE_IDLE;
 			}
@@ -242,7 +243,7 @@ void pa_box_logic(PA_BOX * bp, int view_x, int view_y, int view_zoom, int offset
 		}
 		case PA_BOX_STATE_HOVER_HANDLE:
 		{
-			if(t3f_mouse_x < bp->handle[bp->hover_handle].screen_x - peg_offset + offset_x || t3f_mouse_x > bp->handle[bp->hover_handle].screen_x + peg_offset + offset_x || t3f_mouse_y < bp->handle[bp->hover_handle].screen_y - peg_offset + offset_y || t3f_mouse_y > bp->handle[bp->hover_handle].screen_y + peg_offset + offset_y)
+			if(t3gui_get_mouse_x() < bp->handle[bp->hover_handle].screen_x - peg_offset + offset_x || t3gui_get_mouse_x() > bp->handle[bp->hover_handle].screen_x + peg_offset + offset_x || t3gui_get_mouse_y() < bp->handle[bp->hover_handle].screen_y - peg_offset + offset_y || t3gui_get_mouse_y() > bp->handle[bp->hover_handle].screen_y + peg_offset + offset_y)
 			{
 				bp->hover_handle = -1;
 				bp->state = PA_BOX_STATE_IDLE;
@@ -268,13 +269,13 @@ void pa_box_logic(PA_BOX * bp, int view_x, int view_y, int view_zoom, int offset
 		{
 			if(bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_TOP_LEFT || bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_TOP_RIGHT || bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_BOTTOM_LEFT || bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_BOTTOM_RIGHT || bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_LEFT || bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_RIGHT)
 			{
-				bp->handle[bp->hover_handle].screen_x = t3f_mouse_x - peg_offset - offset_x;
+				bp->handle[bp->hover_handle].screen_x = t3gui_get_mouse_x() - peg_offset - offset_x;
 				*bp->handle[bp->hover_handle].link_x = (bp->handle[bp->hover_handle].screen_x) / view_zoom + view_x;
 				bp->handle[bp->hover_handle].screen_x = (*bp->handle[bp->hover_handle].link_x - view_x) * view_zoom + bp->handle[bp->hover_handle].offset_x;
 			}
 			if(bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_TOP_LEFT || bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_TOP_RIGHT || bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_BOTTOM_LEFT || bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_BOTTOM_RIGHT || bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_TOP || bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_BOTTOM)
 			{
-				bp->handle[bp->hover_handle].screen_y = t3f_mouse_y - peg_offset - offset_y;
+				bp->handle[bp->hover_handle].screen_y = t3gui_get_mouse_y() - peg_offset - offset_y;
 				*bp->handle[bp->hover_handle].link_y = (bp->handle[bp->hover_handle].screen_y) / view_zoom + view_y;
 				bp->handle[bp->hover_handle].screen_y = (*bp->handle[bp->hover_handle].link_y - view_y) * view_zoom + bp->handle[bp->hover_handle].offset_y;
 			}
