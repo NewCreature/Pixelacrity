@@ -116,11 +116,6 @@ void pa_handle_shortcuts(APP_INSTANCE * app)
 		}
 		t3f_key[ALLEGRO_KEY_PGDN] = 0;
 	}
-	else if(t3f_key[ALLEGRO_KEY_H])
-	{
-		app->canvas_editor->canvas->layer[app->canvas_editor->current_layer]->flags ^= PA_CANVAS_FLAG_HIDDEN;
-		t3f_key[ALLEGRO_KEY_H] = 0;
-	}
 	else if(t3f_key[ALLEGRO_KEY_1])
 	{
 		pa_select_canvas_editor_tool(app->canvas_editor, 0);
@@ -250,11 +245,6 @@ void pa_handle_shortcuts(APP_INSTANCE * app)
 			pa_set_canvas_editor_zoom(app->canvas_editor, app->canvas_editor->view_zoom + 1);
 			app->canvas_editor->simulate_mouse_move = true;
 			t3f_key[ALLEGRO_KEY_EQUALS] = 0;
-		}
-		if(t3f_key[ALLEGRO_KEY_H])
-		{
-			app->canvas_editor->canvas->layer[app->canvas_editor->current_layer]->flags ^= PA_CANVAS_FLAG_HIDDEN;
-			t3f_key[ALLEGRO_KEY_H] = 0;
 		}
 	}
 }
