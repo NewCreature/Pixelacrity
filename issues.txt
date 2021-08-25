@@ -19,14 +19,6 @@ Pixelacrity 0.2.10 Issues
 
 [ ]Ensure undo is working properly for all functions that are undoable.
 
-[ ]Add preview map UI element. The map will draw two rectangles representing
-   the total canvas and the current view. The element should allow the user to
-   adjust the view by clicking and dragging the view rectangle.
-
-   [ ]This will require implementing canvas layer size tracking. When the user
-      performs any action that modifies the canvas, the canvas size should be
-      updated.
-
 
 Pixelacrity 0.3 Issues
 ----------------------
@@ -594,3 +586,11 @@ Closed Issues
    tool.
 
 [X]Change mouse cursor to hand when hovering over selection or handles.
+
+[X]Add preview map UI element. The map will draw two rectangles representing
+   the total canvas and the current view. The element should allow the user to
+   adjust the view by clicking and dragging the view rectangle.
+
+   [X]This will require implementing canvas layer size tracking. When the user
+      performs any action that modifies the canvas, the canvas size should be
+      updated.
