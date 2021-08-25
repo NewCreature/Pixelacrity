@@ -89,6 +89,46 @@ void pa_handle_shortcuts(APP_INSTANCE * app)
 		pa_menu_file_load(0, app);
 		t3f_key[ALLEGRO_KEY_O] = 0;
 	}
+	else if((t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT]) && t3f_key[ALLEGRO_KEY_H])
+	{
+		pa_menu_edit_multilayer_flip_horizontal(0, app);
+		t3f_key[ALLEGRO_KEY_H] = 0;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT]) && t3f_key[ALLEGRO_KEY_V])
+	{
+		pa_menu_edit_multilayer_flip_vertical(0, app);
+		t3f_key[ALLEGRO_KEY_V] = 0;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT]) && t3f_key[ALLEGRO_KEY_FULLSTOP])
+	{
+		pa_menu_edit_multilayer_turn_clockwise(0, app);
+		t3f_key[ALLEGRO_KEY_FULLSTOP] = 0;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT]) && t3f_key[ALLEGRO_KEY_COMMA])
+	{
+		pa_menu_edit_multilayer_turn_counter_clockwise(0, app);
+		t3f_key[ALLEGRO_KEY_COMMA] = 0;
+	}
+	else if(t3f_key[ALLEGRO_KEY_H])
+	{
+		pa_menu_edit_flip_horizontal(0, app);
+		t3f_key[ALLEGRO_KEY_H] = 0;
+	}
+	else if(t3f_key[ALLEGRO_KEY_V])
+	{
+		pa_menu_edit_flip_vertical(0, app);
+		t3f_key[ALLEGRO_KEY_V] = 0;
+	}
+	else if(t3f_key[ALLEGRO_KEY_FULLSTOP])
+	{
+		pa_menu_edit_turn_clockwise(0, app);
+		t3f_key[ALLEGRO_KEY_FULLSTOP] = 0;
+	}
+	else if(t3f_key[ALLEGRO_KEY_COMMA])
+	{
+		pa_menu_edit_turn_counter_clockwise(0, app);
+		t3f_key[ALLEGRO_KEY_COMMA] = 0;
+	}
 	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && t3f_key[ALLEGRO_KEY_F])
 	{
 		pa_menu_frame_add_from_selection(0, app);
