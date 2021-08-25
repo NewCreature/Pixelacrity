@@ -327,6 +327,11 @@ void pa_shift_canvas_editor_variables(PA_CANVAS_EDITOR * cep, int ox, int oy)
 		cep->canvas->frame[i]->box.start_x += ox;
 		cep->canvas->frame[i]->box.start_y += oy;
 	}
+	for(i = 0; i < cep->canvas->layer_max; i++)
+	{
+		cep->canvas->layer[i]->offset_x += ox;
+		cep->canvas->layer[i]->offset_y += oy;
+	}
 }
 
 void pa_select_canvas_editor_tool(PA_CANVAS_EDITOR * cep, int tool)
