@@ -155,6 +155,7 @@ bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 	}
 	al_set_new_bitmap_flags(0);
 	memset(app, 0, sizeof(APP_INSTANCE));
+	app->last_cursor = ALLEGRO_SYSTEM_MOUSE_CURSOR_ARROW;
 	t3f_set_event_handler(app_event_handler);
 
 	pa_get_date_string(date_string, 256);
