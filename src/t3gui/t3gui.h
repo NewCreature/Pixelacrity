@@ -34,5 +34,9 @@ bool t3gui_close_dialog_by_element(T3GUI_ELEMENT * ep);
 void t3gui_logic(void);
 void t3gui_render(void);
 int t3gui_get_active_dialogs(void);
+int t3gui_get_mouse_x(void);
+int t3gui_get_mouse_y(void);
+int t3gui_get_mouse_z(void);
+int t3gui_get_mouse_button(int button);
 
 #endif

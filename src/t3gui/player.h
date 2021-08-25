@@ -13,6 +13,8 @@ typedef struct T3GUI_PLAYER
     int keyboard_obj;
     int stick, x_axis, y_axis;
     int joy_x, joy_y, joy_b;
+    int mouse_x, mouse_y, mouse_z;
+    int mouse_button[32];
     bool redraw;
     bool draw_veto;
     bool focus_follows_mouse;

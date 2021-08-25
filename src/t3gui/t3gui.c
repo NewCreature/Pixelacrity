@@ -347,3 +347,39 @@ int t3gui_get_active_dialogs(void)
 {
 	return t3gui_dialog_players;
 }
+
+int t3gui_get_mouse_x(void)
+{
+	if(t3gui_dialog_players)
+	{
+		return t3gui_dialog_player[t3gui_dialog_players - 1]->mouse_x;
+	}
+	return 0;
+}
+
+int t3gui_get_mouse_y(void)
+{
+	if(t3gui_dialog_players)
+	{
+		return t3gui_dialog_player[t3gui_dialog_players - 1]->mouse_y;
+	}
+	return 0;
+}
+
+int t3gui_get_mouse_z(void)
+{
+	if(t3gui_dialog_players)
+	{
+		return t3gui_dialog_player[t3gui_dialog_players - 1]->mouse_z;
+	}
+	return 0;
+}
+
+int t3gui_get_mouse_button(int button)
+{
+	if(t3gui_dialog_players)
+	{
+		return t3gui_dialog_player[t3gui_dialog_players - 1]->mouse_button[button];
+	}
+	return 0;
+}
