@@ -13,8 +13,6 @@ Pixelacrity 0.2.10 Issues
 
    [X]Need controls for adding and removing frames (menu items, etc.).
 
-[ ]Implement full screen preview.
-
 [ ]Ensure undo is working properly for all functions that are undoable.
 
 [ ]Add preview map UI element. The map will draw two rectangles representing
@@ -28,6 +26,8 @@ Pixelacrity 0.2.10 Issues
 
 Pixelacrity 0.3 Issues
 ----------------------
+
+[ ]Implement full screen preview.
 
 [ ]Allow scrolling the canvas by holding the mouse wheel button and moving the
    mouse.
