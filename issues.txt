@@ -1,6 +1,8 @@
 Pixelacrity 0.2.10 Issues
 ------------------------
 
+[ ]Default to not using outline for filled shapes.
+
 [ ]Implement frame editing.
 
    [ ]There should be handles on the corners of each frame so we can edit them
