@@ -57,6 +57,8 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 	ALLEGRO_COLOR color = t3f_color_black;
 	bool made_undo = false;
 
+	pa_update_mouse_variables(canvas_editor);
+
 	d->flags |= D_TRACKMOUSE;
 	if(canvas_editor->tool_state == PA_TOOL_STATE_OFF)
 	{

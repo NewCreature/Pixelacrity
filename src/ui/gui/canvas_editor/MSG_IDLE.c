@@ -114,10 +114,7 @@ void pa_canvas_editor_MSG_IDLE(T3GUI_ELEMENT * d, int c)
 	update_color_selections(canvas_editor);
 	canvas_editor->view_x = canvas_editor->view_fx;
 	canvas_editor->view_y = canvas_editor->view_fy;
-	canvas_editor->last_hover_x = canvas_editor->hover_x;
-	canvas_editor->hover_x = canvas_editor->view_x + (t3gui_get_mouse_x() - d->x) / canvas_editor->view_zoom;
-	canvas_editor->last_hover_y = canvas_editor->hover_y;
-	canvas_editor->hover_y = canvas_editor->view_y + (t3gui_get_mouse_y() - d->y) / canvas_editor->view_zoom;
+	pa_update_mouse_variables(canvas_editor);
 	if(canvas_editor->simulate_mouse_move)
 	{
 		t3gui_object_message(d, MSG_MOUSEMOVE, 0);

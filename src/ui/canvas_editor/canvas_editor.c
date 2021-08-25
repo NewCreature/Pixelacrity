@@ -385,6 +385,14 @@ bool pa_import_image(PA_CANVAS_EDITOR * cep, const char * fn)
 
 }
 
+void pa_update_mouse_variables(PA_CANVAS_EDITOR * cep)
+{
+	cep->last_hover_x = cep->hover_x;
+	cep->hover_x = cep->view_x + (t3gui_get_mouse_x() - cep->editor_element->x) / cep->view_zoom;
+	cep->last_hover_y = cep->hover_y;
+	cep->hover_y = cep->view_y + (t3gui_get_mouse_y() - cep->editor_element->y) / cep->view_zoom;
+}
+
 void pa_initialize_tool_variables(PA_CANVAS_EDITOR * cep)
 {
 	int w, h;

@@ -7,6 +7,8 @@ void pa_canvas_editor_MSG_WHEEL(T3GUI_ELEMENT * d, int c)
 {
 	PA_CANVAS_EDITOR * canvas_editor = (PA_CANVAS_EDITOR *)d->dp;
 
+	pa_update_mouse_variables(canvas_editor);
+
 	if(c < 0)
 	{
 		if(canvas_editor->view_zoom > 1)

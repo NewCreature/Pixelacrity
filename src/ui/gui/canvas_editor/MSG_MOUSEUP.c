@@ -49,6 +49,7 @@ void pa_canvas_editor_MSG_MOUSEUP(T3GUI_ELEMENT * d, int c)
 	PA_CANVAS_EDITOR * canvas_editor = (PA_CANVAS_EDITOR *)d->dp;
 	bool made_undo = false;
 
+	pa_update_mouse_variables(canvas_editor);
 	pa_update_tool_variables(canvas_editor);
 	canvas_editor->release_x = canvas_editor->hover_x;
 	canvas_editor->release_y = canvas_editor->hover_y;

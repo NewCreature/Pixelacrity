@@ -16,6 +16,8 @@ void pa_canvas_editor_MSG_MOUSEMOVE(T3GUI_ELEMENT * d, int c)
 {
 	PA_CANVAS_EDITOR * canvas_editor = (PA_CANVAS_EDITOR *)d->dp;
 
+	pa_update_mouse_variables(canvas_editor);
+
 	switch(canvas_editor->current_tool)
 	{
 		case PA_TOOL_PIXEL:
