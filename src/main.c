@@ -75,10 +75,12 @@ void app_event_handler(ALLEGRO_EVENT * event, void * data)
 		case ALLEGRO_EVENT_MOUSE_ENTER_DISPLAY:
 		{
 			pa_allow_mouse_cursor_changes(true);
+			pa_set_mouse_cursor(app->last_cursor);
 			break;
 		}
 		case ALLEGRO_EVENT_MOUSE_LEAVE_DISPLAY:
 		{
+			app->last_cursor = pa_get_mouse_cursor();
 			pa_set_mouse_cursor(ALLEGRO_SYSTEM_MOUSE_CURSOR_ARROW);
 			pa_allow_mouse_cursor_changes(false);
 			break;
