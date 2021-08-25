@@ -23,9 +23,6 @@ Pixelacrity 0.2.10 Issues
       performs any action that modifies the canvas, the canvas size should be
       updated.
 
-[ ]Look into the preview not matching the final rendering when using the line
-   tool.
-
 
 Pixelacrity 0.3 Issues
 ----------------------
@@ -588,3 +585,6 @@ Closed Issues
       cause the canvas to expand. Alternatively, we can require explicitly
       updating the dimensions instead of implicitly doing it during the
       primitive rendering.
+
+[X]Look into the preview not matching the final rendering when using the line
+   tool.
