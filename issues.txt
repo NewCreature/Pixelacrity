@@ -1,8 +1,6 @@
 Pixelacrity 0.2.11 Issues
 ------------------------
 
-[ ]Canvas dimensions seem to be to big by 1 pixel when calculated.
-
 [ ]Mouse cursor doesn't update properly after resizing the window.
 
 [ ]Mouse cursor doesn't update properly after switching away from selection
@@ -610,3 +608,5 @@ Closed Issues
 [X]Add mechanism for remembering the debug filename and whether or not the
    program exited successfully. If the program did not successfully exit, open
    the debug log on next start.
+
+[X]Canvas dimensions seem to be to big by 1 pixel when calculated.
