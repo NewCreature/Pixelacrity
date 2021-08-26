@@ -146,12 +146,26 @@ bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 {
 	char date_string[256];
 	char debug_fn[1024];
+	const char * val;
 
 	/* initialize T3F */
 	if(!t3f_initialize(T3F_APP_TITLE, 640, 480, 60.0, app_logic, app_render, T3F_DEFAULT | T3F_USE_MENU | T3F_RESIZABLE | T3F_NO_SCALE | T3F_USE_OPENGL, app))
 	{
 		printf("Error initializing T3F\n");
 		return false;
+	}
+	val = al_get_config_value(t3f_config, "Debug", "clean_exit");
+	if(val)
+	{
+		if(!strcmp(val, "false"))
+		{
+			val = al_get_config_value(t3f_config, "Debug", "log_path");
+			if(val)
+			{
+				sprintf(debug_fn, "\"%s\"", val);
+				t3f_open_url(debug_fn);
+			}
+		}
 	}
 	al_set_new_bitmap_flags(0);
 	memset(app, 0, sizeof(APP_INSTANCE));
@@ -161,6 +175,9 @@ bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 	pa_get_date_string(date_string, 256);
 	strcat(date_string, ".log");
 	t3f_get_filename(t3f_data_path, date_string, debug_fn, 1024);
+	al_set_config_value(t3f_config, "Debug", "log_path", debug_fn);
+	al_set_config_value(t3f_config, "Debug", "clean_exit", "false");
+	t3f_save_config();
 	t3f_open_debug_log(debug_fn);
 
 	t3f_debug_message("Create starting canvas\n");
@@ -214,6 +231,7 @@ void app_exit(APP_INSTANCE * app)
 		pa_destroy_canvas(app->canvas);
 	}
 	t3f_close_debug_log();
+	al_set_config_value(t3f_config, "Debug", "clean_exit", "true");
 }
 
 int main(int argc, char * argv[])
@@ -229,6 +247,7 @@ int main(int argc, char * argv[])
 		printf("Error: could not initialize T3F!\n");
 	}
 	app_exit(&app);
+	t3f_finish();
 
 	return 0;
 }
