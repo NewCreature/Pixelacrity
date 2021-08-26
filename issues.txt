@@ -24,6 +24,8 @@ Pixelacrity 0.2.11 Issues
 
 [ ]Ensure undo is working properly for all functions that are undoable.
 
+[ ]Recalculate canvas layer sizes when exporting a canvas without a frame.
+
 
 Pixelacrity 0.3 Issues
 ----------------------
