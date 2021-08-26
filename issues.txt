@@ -1,9 +1,14 @@
-Pixelacrity 0.2.10 Issues
+Pixelacrity 0.2.11 Issues
 ------------------------
+
+[ ]Mouse cursor doesn't update properly after resizing the window.
 
 [ ]Default to not using outline for filled shapes.
 
 [ ]Multi-layer moving a selection caused a freeze.
+
+[ ]Multi-layer selection shouldn't be able to paste into canvas with different
+   number of layers.
 
 [ ]Freeze after drawing line.
 
