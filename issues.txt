@@ -31,8 +31,6 @@ Pixelacrity 0.2.11 Issues
 
 [ ]Ensure undo is working properly for all functions that are undoable.
 
-[ ]Recalculate canvas layer sizes when exporting a canvas without a frame.
-
 
 Pixelacrity 0.3 Issues
 ----------------------
@@ -608,3 +606,5 @@ Closed Issues
    [X]This will require implementing canvas layer size tracking. When the user
       performs any action that modifies the canvas, the canvas size should be
       updated.
+
+[X]Recalculate canvas layer sizes when exporting a canvas without a frame.
