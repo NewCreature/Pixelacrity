@@ -1,6 +1,10 @@
 Pixelacrity 0.2.11 Issues
 ------------------------
 
+[ ]Add mechanism for remembering the debug filename and whether or not the
+   program exited successfully. If the program did not successfully exit, open
+   the debug log on next start.
+
 [ ]Mouse cursor doesn't update properly after resizing the window.
 
 [ ]Mouse cursor doesn't update properly after switching away from selection
