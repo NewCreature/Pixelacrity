@@ -15,6 +15,7 @@ void pa_set_mouse_cursor(ALLEGRO_SYSTEM_MOUSE_CURSOR cursor_id)
 		if(cursor_id != current_cursor_id)
 		{
 			al_set_system_mouse_cursor(t3f_display, cursor_id);
+			current_cursor_id = cursor_id;
 		}
 	}
 }
