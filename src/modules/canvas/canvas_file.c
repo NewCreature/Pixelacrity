@@ -5,104 +5,6 @@
 
 static const char canvas_header[4] = {'Q', 'X', 'L', 2};
 
-/* assume all canvas bitmaps are already locked */
-static int get_canvas_alpha(PA_CANVAS * cp, int layer, int x, int y)
-{
-	ALLEGRO_COLOR color;
-	int offset_x, offset_y;
-	int tile_x, tile_y;
-	unsigned char r, a;
-
-	tile_x = x / cp->bitmap_size;
-	tile_y = y / cp->bitmap_size;
-	if(cp->layer[layer]->bitmap[tile_y][tile_x])
-	{
-		offset_x = cp->bitmap_size * tile_x;
-		offset_y = cp->bitmap_size * tile_y;
-		color = al_get_pixel(cp->layer[layer]->bitmap[y / cp->bitmap_size][x / cp->bitmap_size], x - offset_x, y - offset_y);
-		al_unmap_rgba(color, &r, &r, &r, &a);
-		if(a > 0)
-		{
-			return a;
-		}
-	}
-	return 0;
-}
-
-static void get_canvas_layer_dimensions(PA_CANVAS * cp, int layer, int * offset_x, int * offset_y, int * width, int * height)
-{
-	int i, j, k, l, m, x, y;
-	int left_x = 1000000;
-	int right_x = 0;
-	int top_y = 1000000;
-	int bottom_y = 0;
-	bool need_check;
-
-	for(j = 0; j < cp->layer_height; j++)
-	{
-		for(k = 0; k < cp->layer_width; k++)
-		{
-			need_check = false;
-			for(i = 0; i < cp->layer_max; i++)
-			if(cp->layer[layer]->bitmap[j][k])
-			{
-				al_lock_bitmap(cp->layer[layer]->bitmap[j][k], ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_READONLY);
-				need_check = true;
-			}
-			if(need_check)
-			{
-				for(l = 0; l < cp->bitmap_size; l++)
-				{
-					for(m = 0; m < cp->bitmap_size; m++)
-					{
-						x = k * cp->bitmap_size + m;
-						y = j * cp->bitmap_size + l;
-						if(get_canvas_alpha(cp, layer, x, y))
-						{
-							if(x < left_x)
-							{
-								left_x = x;
-							}
-							if(x > right_x)
-							{
-								right_x = x;
-							}
-							if(y < top_y)
-							{
-								top_y = y;
-							}
-							if(y > bottom_y)
-							{
-								bottom_y = y;
-							}
-						}
-					}
-				}
-			}
-			if(cp->layer[layer]->bitmap[j][k])
-			{
-				al_unlock_bitmap(cp->layer[layer]->bitmap[j][k]);
-			}
-		}
-	}
-	if(offset_x)
-	{
-		*offset_x = left_x;
-	}
-	if(offset_y)
-	{
-		*offset_y = top_y;
-	}
-	if(width)
-	{
-		*width = (right_x - left_x) + 1;
-	}
-	if(height)
-	{
-		*height = (bottom_y - top_y) + 1;
-	}
-}
-
 static bool load_canvas_full_f_1(PA_CANVAS * cp, ALLEGRO_FILE * fp, const char * format)
 {
 	int max_layers;
@@ -135,7 +37,7 @@ static bool load_canvas_full_f_1(PA_CANVAS * cp, ALLEGRO_FILE * fp, const char *
 				}
 			}
 		}
-		get_canvas_layer_dimensions(cp, i, &cp->layer[i]->offset_x, &cp->layer[i]->offset_y, &cp->layer[i]->width, &cp->layer[i]->height);
+		pa_calculate_canvas_layer_dimensions(cp, i, &cp->layer[i]->offset_x, &cp->layer[i]->offset_y, &cp->layer[i]->width, &cp->layer[i]->height);
 	}
 	t3f_debug_message("Exit load_canvas_fill_f()\n");
 	return true;
@@ -171,7 +73,7 @@ static bool load_canvas_minimal_f_1(PA_CANVAS * cp, ALLEGRO_FILE * fp, const cha
 		}
 		pa_import_bitmap_to_canvas(cp, bp, i, cp->export_offset_x, cp->export_offset_y);
 		al_destroy_bitmap(bp);
-		get_canvas_layer_dimensions(cp, i, &cp->layer[i]->offset_x, &cp->layer[i]->offset_y, &cp->layer[i]->width, &cp->layer[i]->height);
+		pa_calculate_canvas_layer_dimensions(cp, i, &cp->layer[i]->offset_x, &cp->layer[i]->offset_y, &cp->layer[i]->width, &cp->layer[i]->height);
 	}
 	t3f_debug_message("Exit load_canvas_minimal_f()\n");
 	return true;
@@ -220,7 +122,7 @@ static bool load_canvas_full_f(PA_CANVAS * cp, ALLEGRO_FILE * fp, const char * f
 				}
 			}
 		}
-		get_canvas_layer_dimensions(cp, i, &cp->layer[i]->offset_x, &cp->layer[i]->offset_y, &cp->layer[i]->width, &cp->layer[i]->height);
+		pa_calculate_canvas_layer_dimensions(cp, i, &cp->layer[i]->offset_x, &cp->layer[i]->offset_y, &cp->layer[i]->width, &cp->layer[i]->height);
 	}
 	t3f_debug_message("Exit load_canvas_fill_f()\n");
 	return true;
@@ -259,7 +161,7 @@ static bool load_canvas_minimal_f(PA_CANVAS * cp, ALLEGRO_FILE * fp, const char 
 		}
 		pa_import_bitmap_to_canvas(cp, bp, i, cp->export_offset_x, cp->export_offset_y);
 		al_destroy_bitmap(bp);
-		get_canvas_layer_dimensions(cp, i, &cp->layer[i]->offset_x, &cp->layer[i]->offset_y, &cp->layer[i]->width, &cp->layer[i]->height);
+		pa_calculate_canvas_layer_dimensions(cp, i, &cp->layer[i]->offset_x, &cp->layer[i]->offset_y, &cp->layer[i]->width, &cp->layer[i]->height);
 	}
 	t3f_debug_message("Exit load_canvas_minimal_f()\n");
 	return true;
