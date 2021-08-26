@@ -126,17 +126,17 @@ void pa_get_canvas_dimensions(PA_CANVAS * cp, int * offset_x, int * offset_y, in
 				{
 					left_x = cp->layer[i]->offset_x;
 				}
-				if(cp->layer[i]->offset_x + cp->layer[i]->width > right_x)
+				if(cp->layer[i]->offset_x + cp->layer[i]->width >= right_x)
 				{
-					right_x = cp->layer[i]->offset_x + cp->layer[i]->width;
+					right_x = cp->layer[i]->offset_x + cp->layer[i]->width - 1;
 				}
 				if(cp->layer[i]->offset_y < top_y)
 				{
 					top_y = cp->layer[i]->offset_y;
 				}
-				if(cp->layer[i]->offset_y + cp->layer[i]->height > bottom_y)
+				if(cp->layer[i]->offset_y + cp->layer[i]->height >= bottom_y)
 				{
-					bottom_y = cp->layer[i]->offset_y + cp->layer[i]->height;
+					bottom_y = cp->layer[i]->offset_y + cp->layer[i]->height - 1;
 				}
 			}
 		}
