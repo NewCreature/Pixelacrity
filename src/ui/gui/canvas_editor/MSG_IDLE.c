@@ -7,12 +7,14 @@
 #include "modules/canvas/canvas_file.h"
 #include "modules/color.h"
 #include "ui/canvas_editor/selection.h"
+#include "ui/window.h"
 
 static bool save_backup(PA_CANVAS * cp)
 {
 	char backup_path[1024];
 	char backup_fn[256];
 
+	pa_set_window_message("Saving backup...");
 	pa_get_date_string(backup_fn, 256);
 	strcat(backup_fn, ".qcanvas");
 	t3f_get_filename(t3f_data_path, backup_fn, backup_path, 1024);
