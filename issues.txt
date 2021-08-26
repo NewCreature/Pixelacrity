@@ -3,6 +3,9 @@ Pixelacrity 0.2.11 Issues
 
 [ ]Mouse cursor doesn't update properly after resizing the window.
 
+[ ]Mouse cursor doesn't update properly after switching away from selection
+   tool.
+
 [ ]Default to not using outline for filled shapes.
 
 [ ]Multi-layer moving a selection caused a freeze.
