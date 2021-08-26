@@ -102,7 +102,7 @@ void pa_calculate_canvas_layer_dimensions(PA_CANVAS * cp, int layer, int * offse
 	}
 }
 
-void pa_get_canvas_dimensions(PA_CANVAS * cp, int * offset_x, int * offset_y, int * width, int * height, int flags_filter)
+void pa_get_canvas_dimensions(PA_CANVAS * cp, int * offset_x, int * offset_y, int * width, int * height, int flags_filter, bool calculate)
 {
 	int i;
 	int left_x = 1000000;
@@ -113,6 +113,10 @@ void pa_get_canvas_dimensions(PA_CANVAS * cp, int * offset_x, int * offset_y, in
 
 	for(i = 0; i < cp->layer_max; i++)
 	{
+		if(calculate)
+		{
+			pa_calculate_canvas_layer_dimensions(cp, i, &cp->layer[i]->offset_x, &cp->layer[i]->offset_y, &cp->layer[i]->width, &cp->layer[i]->height);
+		}
 		flags = cp->layer[i]->flags & ~flags_filter;
 		if(!(flags & PA_CANVAS_FLAG_HIDDEN))
 		{
@@ -233,14 +237,14 @@ void pa_render_canvas_to_bitmap(PA_CANVAS * cp, int start_layer, int end_layer, 
 	al_restore_state(&old_state);
 }
 
-ALLEGRO_BITMAP * pa_get_bitmap_from_canvas(PA_CANVAS * cp, int start_layer, int end_layer, int flags_filter)
+ALLEGRO_BITMAP * pa_get_bitmap_from_canvas(PA_CANVAS * cp, int start_layer, int end_layer, int flags_filter, bool calculate)
 {
 	ALLEGRO_BITMAP * bp;
 	ALLEGRO_STATE old_state;
 	int w, h;
 
 	al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);
-	pa_get_canvas_dimensions(cp, &cp->export_offset_x, &cp->export_offset_y, &w, &h, flags_filter);
+	pa_get_canvas_dimensions(cp, &cp->export_offset_x, &cp->export_offset_y, &w, &h, flags_filter, calculate);
 	al_set_new_bitmap_flags(ALLEGRO_MEMORY_BITMAP);
 	bp = al_create_bitmap(w, h);
 	al_restore_state(&old_state);

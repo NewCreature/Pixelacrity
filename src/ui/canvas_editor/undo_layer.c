@@ -64,7 +64,7 @@ bool pa_make_remove_layer_undo(PA_CANVAS_EDITOR * cep, int layer, const char * f
 	ALLEGRO_STATE old_state;
 
 	t3f_debug_message("Enter pa_make_remove_layer_undo()\n");
-	pa_get_canvas_dimensions(cep->canvas, &x, &y, &width, &height, 0);
+	pa_get_canvas_dimensions(cep->canvas, &x, &y, &width, &height, 0, false);
 	if(width > 0 && height > 0)
 	{
 		al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);

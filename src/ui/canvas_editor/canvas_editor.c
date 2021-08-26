@@ -268,7 +268,7 @@ void pa_center_canvas_editor(PA_CANVAS_EDITOR * cep, int frame)
 	}
 	else
 	{
-		pa_get_canvas_dimensions(cep->canvas, &x, &y, &w, &h, 0);
+		pa_get_canvas_dimensions(cep->canvas, &x, &y, &w, &h, 0, false);
 		cep->view_x = x + w / 2 - (cep->editor_element->w / cep->view_zoom) / 2;
 		cep->view_y = y + h / 2 - (cep->editor_element->h / cep->view_zoom) / 2;
 	}

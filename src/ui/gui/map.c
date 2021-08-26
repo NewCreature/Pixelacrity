@@ -11,7 +11,7 @@ static void render_map(PA_CANVAS_EDITOR * cep, int x, int y, int width, int heig
 	int left, top, right, bottom;
 	int offset_x, offset_y;
 
-	pa_get_canvas_dimensions(cep->canvas, &cx, &cy, &cwidth, &cheight, 0);
+	pa_get_canvas_dimensions(cep->canvas, &cx, &cy, &cwidth, &cheight, 0, false);
 	if(cwidth > 0 && cheight > 0)
 	{
 		scale = (float)width / (float)cwidth;

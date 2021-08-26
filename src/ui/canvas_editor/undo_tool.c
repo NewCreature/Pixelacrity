@@ -14,7 +14,7 @@ bool pa_make_tool_undo(PA_CANVAS_EDITOR * cep, const char * action, int layer, i
 	t3f_debug_message("Enter pa_make_tool_undo()\n");
 	if(width <= 0 || height <= 0)
 	{
-		pa_get_canvas_dimensions(cep->canvas, &x, &y, &width, &height, 0);
+		pa_get_canvas_dimensions(cep->canvas, &x, &y, &width, &height, 0, false);
 	}
 	if(width > 0 && height > 0)
 	{
@@ -263,7 +263,7 @@ bool pa_apply_tool_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, const char * 
 	}
 	else
 	{
-		pa_get_canvas_dimensions(cep->canvas, &x, &y, &width, &height, 0);
+		pa_get_canvas_dimensions(cep->canvas, &x, &y, &width, &height, 0, false);
 		al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);
 		al_set_new_bitmap_flags(ALLEGRO_MEMORY_BITMAP);
 		bp = al_create_bitmap(width, height);

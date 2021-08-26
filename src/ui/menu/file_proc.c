@@ -223,7 +223,7 @@ static bool resave_allowed(PA_CANVAS_EDITOR * cep)
 	{
 		if(!strcasecmp(extension, ".png") || !strcasecmp(extension, ".tga"))
 		{
-			pa_get_canvas_dimensions(cep->canvas, &offset_x, &offset_y, &width, &height, 0);
+			pa_get_canvas_dimensions(cep->canvas, &offset_x, &offset_y, &width, &height, 0, false);
 			if(offset_x >= cep->canvas->frame[0]->box.start_x && offset_x + width <= cep->canvas->frame[0]->box.start_x + cep->canvas->frame[0]->box.width && offset_y >= cep->canvas->frame[0]->box.start_y && offset_y + height <= cep->canvas->frame[0]->box.start_y + cep->canvas->frame[0]->box.height)
 			{
 				return true;
@@ -242,7 +242,7 @@ int pa_menu_file_save(int id, void * data)
 	t3f_debug_message("Enter pa_menu_file_save()\n");
 	if(resave_allowed(app->canvas_editor))
 	{
-		bp = pa_get_bitmap_from_canvas(app->canvas, 0, app->canvas->layer_max, 0);
+		bp = pa_get_bitmap_from_canvas(app->canvas, 0, app->canvas->layer_max, 0, false);
 		if(bp)
 		{
 			pa_set_window_message("Saving...");
@@ -417,7 +417,7 @@ int pa_menu_file_export(int id, void * data)
 	else
 	{
 		export_path = app->canvas_editor->export_path;
-		pa_get_canvas_dimensions(app->canvas, &x, &y, &w, &h, 0);
+		pa_get_canvas_dimensions(app->canvas, &x, &y, &w, &h, 0, true);
 	}
 	if(export_path)
 	{

@@ -464,7 +464,7 @@ static bool save_canvas_minimal_f(PA_CANVAS * cp, ALLEGRO_FILE * fp, const char 
 		{
 			goto fail;
 		}
-		bp = pa_get_bitmap_from_canvas(cp, i, i + 1, 0);
+		bp = pa_get_bitmap_from_canvas(cp, i, i + 1, 0, false);
 		if(!bp)
 		{
 			goto fail;

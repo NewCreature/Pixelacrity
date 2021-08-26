@@ -136,7 +136,7 @@ void pa_handle_shortcuts(APP_INSTANCE * app)
 	}
 	else if(t3f_key[ALLEGRO_KEY_C])
 	{
-		pa_get_canvas_dimensions(app->canvas_editor->canvas, &x, &y, &width, &height, 0);
+		pa_get_canvas_dimensions(app->canvas_editor->canvas, &x, &y, &width, &height, 0, false);
 		app->canvas_editor->view_x = x + width / 2 - (app->canvas_editor->editor_element->w / 2) / app->canvas_editor->view_zoom;
 		app->canvas_editor->view_y = y + height / 2 - (app->canvas_editor->editor_element->h / 2) / app->canvas_editor->view_zoom;
 		app->canvas_editor->view_fx = app->canvas_editor->view_x;
