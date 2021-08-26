@@ -32,7 +32,8 @@ void pa_tool_filled_rectangle_logic(PA_CANVAS_EDITOR * cep)
 	al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
 	pa_render_canvas_layer(cep->canvas, cep->current_layer, cep->view_x, cep->view_y, 1, 0, 0, cep->editor_element->w, cep->editor_element->h);
 	pa_draw_filled_rectangle(start_x, start_y, end_x, end_y, NULL, cep->click_color, NULL);
-	pa_draw_rectangle(start_x, start_y, end_x, end_y, cep->brush, cep->click_outline_color, NULL);
+	pa_draw_rectangle(start_x, start_y, end_x, end_y, NULL, cep->click_color, NULL);
+//	pa_draw_rectangle(start_x, start_y, end_x, end_y, cep->brush, cep->click_outline_color, NULL);
 	al_restore_state(&old_state);
 }
 

@@ -147,7 +147,7 @@ void pa_canvas_editor_MSG_MOUSEUP(T3GUI_ELEMENT * d, int c)
 				made_undo = create_primitive_undo(canvas_editor);
 				handle_canvas_expansion(canvas_editor);
 				pa_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, start_x, start_y, end_x, end_y, NULL, canvas_editor->click_color, NULL, PA_RENDER_COPY, canvas_editor->conditional_copy_shader, pa_draw_filled_rectangle);
-				pa_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, start_x, start_y, end_x, end_y, canvas_editor->brush, canvas_editor->click_outline_color, NULL, PA_RENDER_COPY, canvas_editor->conditional_copy_shader, pa_draw_rectangle);
+//				pa_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, start_x, start_y, end_x, end_y, canvas_editor->brush, canvas_editor->click_outline_color, NULL, PA_RENDER_COPY, canvas_editor->conditional_copy_shader, pa_draw_rectangle);
 				al_use_shader(canvas_editor->standard_shader);
 				if(made_undo)
 				{
@@ -202,7 +202,8 @@ void pa_canvas_editor_MSG_MOUSEUP(T3GUI_ELEMENT * d, int c)
 				made_undo = create_primitive_undo(canvas_editor);
 				handle_canvas_expansion(canvas_editor);
 				pa_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, start_x, start_y, end_x, end_y, NULL, canvas_editor->click_color, NULL, PA_RENDER_COPY, canvas_editor->conditional_copy_shader, pa_draw_filled_oval);
-				pa_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, start_x, start_y, end_x, end_y, canvas_editor->brush, canvas_editor->click_outline_color, NULL, PA_RENDER_COPY, canvas_editor->conditional_copy_shader, pa_draw_oval);
+				pa_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, start_x, start_y, end_x, end_y, canvas_editor->brush, canvas_editor->click_color, NULL, PA_RENDER_COPY, canvas_editor->conditional_copy_shader, pa_draw_oval);
+//				pa_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, start_x, start_y, end_x, end_y, canvas_editor->brush, canvas_editor->click_outline_color, NULL, PA_RENDER_COPY, canvas_editor->conditional_copy_shader, pa_draw_oval);
 				al_use_shader(canvas_editor->standard_shader);
 				if(made_undo)
 				{
