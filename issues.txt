@@ -1,9 +1,6 @@
 Pixelacrity 0.2.11 Issues
 ------------------------
 
-[ ]Mouse cursor doesn't update properly after switching away from selection
-   tool.
-
 [ ]Multi-layer moving a selection caused a freeze.
 
 [ ]Multi-layer selection shouldn't be able to paste into canvas with different
@@ -613,3 +610,6 @@ Closed Issues
 [X]Canvas dimensions seem to be to big by 1 pixel when calculated.
 
 [X]Default to not using outline for filled shapes.
+
+[X]Mouse cursor doesn't update properly after switching away from selection
+   tool.
