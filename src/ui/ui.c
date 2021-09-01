@@ -366,7 +366,10 @@ static void select_button(PA_UI * uip, int button)
 	uip->element[PA_UI_ELEMENT_BUTTON_FLOOD_FILL]->flags &= ~D_SELECTED;
 	uip->element[PA_UI_ELEMENT_BUTTON_DROPPER]->flags &= ~D_SELECTED;
 	uip->element[PA_UI_ELEMENT_BUTTON_SELECTION]->flags &= ~D_SELECTED;
-	uip->element[button]->flags |= D_SELECTED;
+	if(button >= 0)
+	{
+		uip->element[button]->flags |= D_SELECTED;
+	}
 }
 
 void pa_process_ui(PA_UI * uip)
@@ -452,6 +455,10 @@ void pa_process_ui(PA_UI * uip)
 		{
 			select_button(uip, PA_UI_ELEMENT_BUTTON_SELECTION);
 			break;
+		}
+		default:
+		{
+			select_button(uip, -1);
 		}
 	}
 

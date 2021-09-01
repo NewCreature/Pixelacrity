@@ -8,6 +8,7 @@
 #include "modules/color.h"
 #include "modules/box.h"
 #include "ui/canvas_editor/selection.h"
+#include "ui/canvas_editor/frame.h"
 #include "ui/window.h"
 
 static bool save_backup(PA_CANVAS * cp)
@@ -99,45 +100,6 @@ static void update_color_selections(PA_CANVAS_EDITOR * canvas_editor)
 	canvas_editor->right_color.old_alpha_slider_d2 = canvas_editor->right_color.alpha_slider_element->d2;
 }
 
-static void update_hover_frame(PA_CANVAS_EDITOR * cep)
-{
-	int i;
-	int old_hover_frame = cep->hover_frame;
-
-	cep->hover_frame = -1;
-	for(i = 0; i < cep->canvas->frame_max; i++)
-	{
-		pa_setup_box(&cep->canvas->frame[i]->box, cep->canvas->frame[i]->box.start_x, cep->canvas->frame[i]->box.start_y, cep->canvas->frame[i]->box.width, cep->canvas->frame[i]->box.height);
-		if(cep->hover_x >= cep->canvas->frame[i]->box.start_x && cep->hover_x <= cep->canvas->frame[i]->box.end_x && cep->hover_y >= cep->canvas->frame[i]->box.start_y && cep->hover_y <= cep->canvas->frame[i]->box.end_y)
-		{
-			cep->hover_frame = i;
-		}
-	}
-	if(cep->hover_frame >= 0)
-	{
-		pa_update_box_handles(&cep->canvas->frame[cep->hover_frame]->box, cep->view_x, cep->view_y, cep->view_zoom);
-		if(cep->hover_frame == old_hover_frame)
-		{
-			if(cep->hover_frame_time < PA_FRAME_HOVER_THRESHOLD)
-			{
-				cep->hover_frame_time++;
-			}
-			else
-			{
-				cep->hover_frame_time = PA_FRAME_DEHOVER_THRESHOLD;
-			}
-		}
-	}
-	else
-	{
-		if(cep->hover_frame_time > 0)
-		{
-			cep->hover_frame = old_hover_frame;
-			cep->hover_frame_time--;
-		}
-	}
-}
-
 void pa_canvas_editor_MSG_IDLE(T3GUI_ELEMENT * d, int c)
 {
 	PA_CANVAS_EDITOR * canvas_editor = (PA_CANVAS_EDITOR *)d->dp;
@@ -195,6 +157,6 @@ void pa_canvas_editor_MSG_IDLE(T3GUI_ELEMENT * d, int c)
 	}
 	else
 	{
-		update_hover_frame(canvas_editor);
+		pa_update_hover_frame(canvas_editor, d);
 	}
 }

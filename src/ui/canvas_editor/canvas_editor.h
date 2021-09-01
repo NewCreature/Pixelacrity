@@ -20,6 +20,7 @@
 #define PA_TOOL_ERASER           7
 #define PA_TOOL_DROPPER          8
 #define PA_TOOL_SELECTION        9
+#define PA_TOOL_FRAME_EDIT      10
 
 #define PA_TOOL_STATE_OFF        0
 #define PA_TOOL_STATE_DRAWING    1
@@ -111,6 +112,7 @@ typedef struct
 	int current_layer;
 	int current_frame;
 	int current_tool;
+	int last_tool;
 	int tool_state;
 	PA_SELECTION_DATA selection;
 	int modified;
