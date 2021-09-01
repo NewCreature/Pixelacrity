@@ -22,9 +22,15 @@ Pixelacrity 0.2.11 Issues
 
 [ ]Ensure undo is working properly for all functions that are undoable.
 
+   [ ]Undo unfloat multi-layer selection not working.
+
+   [ ]Add undo for layer swaps.
+
 
 Pixelacrity 0.3 Issues
 ----------------------
+
+[ ]Add 3D layer breakout view.
 
 [ ]Add fallback software rendering method for exporting canvas so we can render
    it to a memory bitmap without relying on pre-multiplied alpha. We can't use
