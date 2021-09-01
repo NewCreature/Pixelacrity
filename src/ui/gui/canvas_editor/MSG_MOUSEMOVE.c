@@ -11,6 +11,7 @@
 #include "ui/canvas_editor/tools/tool_dropper.h"
 #include "ui/canvas_editor/tools/tool_selection.h"
 #include "ui/canvas_editor/selection.h"
+#include "ui/canvas_editor/frame.h"
 
 void pa_canvas_editor_MSG_MOUSEMOVE(T3GUI_ELEMENT * d, int c)
 {
@@ -81,6 +82,11 @@ void pa_canvas_editor_MSG_MOUSEMOVE(T3GUI_ELEMENT * d, int c)
 		case PA_TOOL_SELECTION:
 		{
 			pa_update_selection(canvas_editor, d);
+			break;
+		}
+		case PA_TOOL_FRAME_EDIT:
+		{
+			pa_update_hover_frame(canvas_editor, d);
 			break;
 		}
 	}

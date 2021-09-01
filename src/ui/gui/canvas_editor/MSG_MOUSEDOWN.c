@@ -188,6 +188,20 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 				canvas_editor->tool_state = PA_TOOL_STATE_EDITING;
 				break;
 			}
+			case PA_TOOL_FRAME_EDIT:
+			{
+				switch(canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.state)
+				{
+					/* set box resizing logic in motion */
+					case PA_BOX_STATE_HOVER_HANDLE:
+					{
+						canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.state = PA_BOX_STATE_RESIZING;
+						break;
+					}
+				}
+				canvas_editor->tool_state = PA_TOOL_STATE_EDITING;
+				break;
+			}
 		}
 	}
 }
