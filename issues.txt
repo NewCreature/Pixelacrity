@@ -10,13 +10,15 @@ Pixelacrity 0.2.11 Issues
 
 [ ]Implement frame editing.
 
-   [ ]There should be handles on the corners of each frame so we can edit them
+   [X]There should be handles on the corners of each frame so we can edit them
       by dragging the handles.
 
    [ ]There should be a special handle on the top edge to make a frame the
       current frame.
 
    [X]Need controls for adding and removing frames (menu items, etc.).
+
+   [ ]Don't allow hover frame to be changed if while the frame is being edited.
 
 [ ]Ensure undo is working properly for all functions that are undoable.
 
