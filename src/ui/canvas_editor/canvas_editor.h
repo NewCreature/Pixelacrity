@@ -30,6 +30,9 @@
 
 #define PA_COLOR_PALETTE_MAX  128
 
+#define PA_FRAME_HOVER_THRESHOLD   30
+#define PA_FRAME_DEHOVER_THRESHOLD 60
+
 typedef struct
 {
 
@@ -102,6 +105,8 @@ typedef struct
 	ALLEGRO_COLOR click_color;
 	ALLEGRO_COLOR click_outline_color;
 	int release_x, release_y;
+	int hover_frame;
+	int hover_frame_time;
 	int shift_x, shift_y;
 	int current_layer;
 	int current_frame;

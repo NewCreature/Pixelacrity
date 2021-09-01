@@ -26,10 +26,9 @@ void pa_setup_box(PA_BOX * bp, int x, int y, int width, int height)
 	bp->middle_y = bp->start_y + bp->height / 2;
 }
 
-void pa_initialize_box(PA_BOX * bp, int x, int y, int width, int height, ALLEGRO_BITMAP * handle_bitmap)
+void pa_initialize_box(PA_BOX * bp, int x, int y, int width, int height)
 {
 	memset(bp, 0, sizeof(PA_BOX));
-	bp->bitmap = handle_bitmap;
 	pa_setup_box(bp, x, y, width, height);
 }
 
@@ -181,9 +180,9 @@ void pa_update_box_handles(PA_BOX * bp, int view_x, int view_y, int view_zoom)
 }
 
 /* handle user interaction with boxes */
-void pa_box_logic(PA_BOX * bp, int view_x, int view_y, int view_zoom, int offset_x, int offset_y, bool snap)
+void pa_box_logic(PA_BOX * bp, int view_x, int view_y, int view_zoom, int offset_x, int offset_y, bool snap, ALLEGRO_BITMAP * handle_bitmap)
 {
-	int peg_size = al_get_bitmap_width(bp->bitmap);
+	int peg_size = handle_bitmap ? al_get_bitmap_width(handle_bitmap) : 0;
 	int peg_offset = peg_size / 2;
 	int i;
 	float start_x, start_y, end_x, end_y;
@@ -286,16 +285,16 @@ void pa_box_logic(PA_BOX * bp, int view_x, int view_y, int view_zoom, int offset
 	}
 }
 
-void pa_box_render(PA_BOX * bp, int style, int view_x, int view_y, int view_zoom, int offset_x, int offset_y)
+void pa_box_render(PA_BOX * bp, int style, int view_x, int view_y, int view_zoom, int offset_x, int offset_y, ALLEGRO_BITMAP * handle_bitmap)
 {
 	int i;
 	int peg_size = 8;
 	int peg_offset = peg_size / 2;
 	int start_x, start_y, end_x, end_y;
 
-	if(bp->bitmap)
+	if(handle_bitmap)
 	{
-		peg_size = al_get_bitmap_width(bp->bitmap);
+		peg_size = al_get_bitmap_width(handle_bitmap);
 	}
 	peg_offset = peg_size / 2;
 	if(bp->width > 0 && bp->height > 0)
@@ -309,11 +308,11 @@ void pa_box_render(PA_BOX * bp, int style, int view_x, int view_y, int view_zoom
 		{
 			if(bp->handle[i].type != PA_BOX_HANDLE_TYPE_NONE)
 			{
-				if(bp->bitmap)
+				if(handle_bitmap)
 				{
 					start_x = (*bp->handle[i].link_x - view_x) * view_zoom;
 					start_y = (*bp->handle[i].link_y - view_y) * view_zoom;
-					t3f_draw_bitmap(bp->bitmap, t3f_color_white, bp->handle[i].screen_x + offset_x - peg_offset, bp->handle[i].screen_y + offset_y - peg_offset, 0, 0);
+					t3f_draw_bitmap(handle_bitmap, t3f_color_white, bp->handle[i].screen_x + offset_x - peg_offset, bp->handle[i].screen_y + offset_y - peg_offset, 0, 0);
 				}
 			}
 		}

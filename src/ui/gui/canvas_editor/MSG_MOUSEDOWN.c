@@ -158,7 +158,7 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 						{
 							pa_unfloat_canvas_editor_selection(canvas_editor, &canvas_editor->selection.box);
 						}
-						pa_initialize_box(&canvas_editor->selection.box, canvas_editor->click_x, canvas_editor->click_y, 1, 1, canvas_editor->peg_bitmap);
+						pa_initialize_box(&canvas_editor->selection.box, canvas_editor->click_x, canvas_editor->click_y, 1, 1);
 						canvas_editor->selection.box.hover_handle = 0;
 						canvas_editor->selection.box.state = PA_BOX_STATE_DRAWING;
 						canvas_editor->selection.layer = canvas_editor->current_layer;

@@ -44,7 +44,6 @@ typedef struct
 	int middle_x, middle_y;
 	int end_x, end_y;
 	int width, height;
-	ALLEGRO_BITMAP * bitmap;
 	PA_BOX_HANDLE handle[9];
 	int hover_tick; // goes up each tick that the mouse is hovering over this box
 	int hover_handle;
@@ -56,9 +55,10 @@ typedef struct
 
 } PA_BOX;
 
-void pa_initialize_box(PA_BOX * bp, int x, int y, int width, int height, ALLEGRO_BITMAP * handle_bitmap);
+void pa_initialize_box(PA_BOX * bp, int x, int y, int width, int height);
+void pa_setup_box(PA_BOX * bp, int x, int y, int width, int height);
 void pa_update_box_handles(PA_BOX * bp, int view_x, int view_y, int view_zoom);
-void pa_box_logic(PA_BOX * bp, int view_x, int view_y, int view_zoom, int offset_x, int offset_y, bool snap);
-void pa_box_render(PA_BOX * bp, int style, int view_x, int view_y, int view_zoom, int offset_x, int offset_y);
+void pa_box_logic(PA_BOX * bp, int view_x, int view_y, int view_zoom, int offset_x, int offset_y, bool snap, ALLEGRO_BITMAP * handle_bitmap);
+void pa_box_render(PA_BOX * bp, int style, int view_x, int view_y, int view_zoom, int offset_x, int offset_y, ALLEGRO_BITMAP * handle_bitmap);
 
 #endif

@@ -223,7 +223,7 @@ void pa_update_selection(PA_CANVAS_EDITOR * canvas_editor, T3GUI_ELEMENT * d)
 		{
 			multilayer = true;
 		}
-		pa_box_logic(&canvas_editor->selection.box, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, snap);
+		pa_box_logic(&canvas_editor->selection.box, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, snap, canvas_editor->peg_bitmap);
 		if(canvas_editor->selection.box.state == PA_BOX_STATE_HOVER)
 		{
 			canvas_editor->want_cursor = ALLEGRO_SYSTEM_MOUSE_CURSOR_LINK;
