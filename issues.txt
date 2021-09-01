@@ -24,6 +24,10 @@ Pixelacrity 0.2.11 Issues
 Pixelacrity 0.3 Issues
 ----------------------
 
+[ ]Add fallback software rendering method for exporting canvas so we can render
+   it to a memory bitmap without relying on pre-multiplied alpha. We can't use
+   the pre-multiplied alpha shader when the target it a memory bitmap.
+
 [ ]Mouse cursor doesn't update properly after resizing the window.
 
    [ ]This is an Allegro bug. Will look into getting them to fix it on their
