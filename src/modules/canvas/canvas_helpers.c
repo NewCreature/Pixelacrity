@@ -223,12 +223,13 @@ static void draw_canvas_layers(PA_CANVAS * cp, int start_layer, int end_layer, i
 	}
 }
 
-void pa_render_canvas_to_bitmap(PA_CANVAS * cp, int start_layer, int end_layer, int x, int y, int w, int h, int flags_filter, ALLEGRO_BITMAP * bp)
+void pa_render_canvas_to_bitmap(PA_CANVAS * cp, int start_layer, int end_layer, int x, int y, int w, int h, int flags_filter, ALLEGRO_BITMAP * bp, ALLEGRO_SHADER * shader)
 {
 	ALLEGRO_STATE old_state;
 
 	al_store_state(&old_state, ALLEGRO_STATE_TRANSFORM | ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_BLENDER);
 	al_set_target_bitmap(bp);
+	pa_set_target_pixel_shader(shader);
 	al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
 	if(start_layer < cp->layer_max && end_layer <= cp->layer_max)
 	{
@@ -252,7 +253,7 @@ ALLEGRO_BITMAP * pa_get_bitmap_from_canvas(PA_CANVAS * cp, int start_layer, int 
 	{
 		goto fail;
 	}
-	pa_render_canvas_to_bitmap(cp, start_layer, end_layer, cp->export_offset_x, cp->export_offset_y, w, h, flags_filter, bp);
+	pa_render_canvas_to_bitmap(cp, start_layer, end_layer, cp->export_offset_x, cp->export_offset_y, w, h, flags_filter, bp, NULL);
 	return bp;
 
 	fail:

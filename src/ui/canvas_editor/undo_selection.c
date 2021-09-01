@@ -24,7 +24,7 @@ bool pa_make_unfloat_selection_undo(PA_CANVAS_EDITOR * cep, const char * fn)
 	{
 		goto fail;
 	}
-	pa_render_canvas_to_bitmap(cep->canvas, cep->current_layer, cep->current_layer + 1, cep->selection.box.start_x, cep->selection.box.start_y, cep->selection.box.width, cep->selection.box.height, 0, bp);
+	pa_render_canvas_to_bitmap(cep->canvas, cep->current_layer, cep->current_layer + 1, cep->selection.box.start_x, cep->selection.box.start_y, cep->selection.box.width, cep->selection.box.height, 0, bp, NULL);
 	pa_get_canvas_shift(cep->canvas, cep->tool_left, cep->tool_top, &cep->shift_x, &cep->shift_y);
 	fp = al_fopen(fn, "wb");
 	if(!fp)
@@ -144,7 +144,7 @@ bool pa_make_float_selection_undo(PA_CANVAS_EDITOR * cep, PA_BOX * box, const ch
 	{
 		goto fail;
 	}
-	pa_render_canvas_to_bitmap(cep->canvas, cep->current_layer, cep->current_layer + 1, box->start_x, box->start_y, box->width, box->height, 0, bp);
+	pa_render_canvas_to_bitmap(cep->canvas, cep->current_layer, cep->current_layer + 1, box->start_x, box->start_y, box->width, box->height, 0, bp, NULL);
 	fp = al_fopen(fn, "wb");
 	if(!fp)
 	{

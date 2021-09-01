@@ -377,18 +377,18 @@ int pa_menu_file_import(int id, void * data)
 	return 0;
 }
 
-static bool export(PA_CANVAS * cp, int x, int y, int width, int height, const char * fn)
+static bool export(PA_CANVAS * cp, int x, int y, int width, int height, const char * fn, ALLEGRO_SHADER * shader)
 {
 	ALLEGRO_BITMAP * bp;
 	ALLEGRO_STATE old_state;
 
 	al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);
-	al_set_new_bitmap_flags(ALLEGRO_MEMORY_BITMAP);
+//	al_set_new_bitmap_flags(ALLEGRO_MEMORY_BITMAP);
 	bp = al_create_bitmap(width, height);
 	al_restore_state(&old_state);
 	if(bp)
 	{
-		pa_render_canvas_to_bitmap(cp, 0, cp->layer_max, x, y, width, height, 0, bp);
+		pa_render_canvas_to_bitmap(cp, 0, cp->layer_max, x, y, width, height, 0, bp, shader);
 		al_save_bitmap(fn, bp);
 		al_destroy_bitmap(bp);
 		return true;
@@ -421,7 +421,7 @@ int pa_menu_file_export(int id, void * data)
 	}
 	if(export_path)
 	{
-		export(app->canvas, x, y, w, h, export_path);
+		export(app->canvas, x, y, w, h, export_path, app->canvas_editor->premultiplied_alpha_shader);
 	}
 	else
 	{
@@ -439,7 +439,7 @@ int pa_menu_file_export_all(int id, void * data)
 	{
 		if(app->canvas->frame[i]->export_path)
 		{
-			export(app->canvas, app->canvas->frame[i]->box.start_x, app->canvas->frame[i]->box.start_y, app->canvas->frame[i]->box.width, app->canvas->frame[i]->box.height, app->canvas->frame[i]->export_path);
+			export(app->canvas, app->canvas->frame[i]->box.start_x, app->canvas->frame[i]->box.start_y, app->canvas->frame[i]->box.width, app->canvas->frame[i]->box.height, app->canvas->frame[i]->export_path, app->canvas_editor->premultiplied_alpha_shader);
 		}
 	}
 	return 0;

@@ -71,13 +71,13 @@ bool pa_copy_canvas_to_clipboard(PA_CANVAS_EDITOR * cep, int layer, int x, int y
 			for(i = 0; i < cep->canvas->layer_max; i++)
 			{
 				cep->clipboard.bitmap[i] = al_create_bitmap(width, height);
-				pa_render_canvas_to_bitmap(cep->canvas, i, i + 1, x, y, width, height, 0, cep->clipboard.bitmap[i]);
+				pa_render_canvas_to_bitmap(cep->canvas, i, i + 1, x, y, width, height, 0, cep->clipboard.bitmap[i], NULL);
 			}
 		}
 		else
 		{
 			cep->clipboard.bitmap[layer] = al_create_bitmap(width, height);
-			pa_render_canvas_to_bitmap(cep->canvas, layer, layer + 1, x, y, width, height, 0, cep->clipboard.bitmap[layer]);
+			pa_render_canvas_to_bitmap(cep->canvas, layer, layer + 1, x, y, width, height, 0, cep->clipboard.bitmap[layer], NULL);
 		}
 		cep->clipboard.x = x, cep->clipboard.y = y;
 		ret = true;

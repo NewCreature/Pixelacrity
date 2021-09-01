@@ -75,7 +75,7 @@ bool pa_make_remove_layer_undo(PA_CANVAS_EDITOR * cep, int layer, const char * f
 		{
 			goto fail;
 		}
-		pa_render_canvas_to_bitmap(cep->canvas, layer, layer + 1, x, y, width, height, 0, bp);
+		pa_render_canvas_to_bitmap(cep->canvas, layer, layer + 1, x, y, width, height, 0, bp, NULL);
 	}
 	fp = al_fopen(fn, "wb");
 	if(!fp)

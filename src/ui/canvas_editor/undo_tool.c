@@ -29,7 +29,7 @@ bool pa_make_tool_undo(PA_CANVAS_EDITOR * cep, const char * action, int layer, i
 	}
 	if(width > 0 && height > 0)
 	{
-		pa_render_canvas_to_bitmap(cep->canvas, layer, layer + 1, x, y, width, height, 0, bp);
+		pa_render_canvas_to_bitmap(cep->canvas, layer, layer + 1, x, y, width, height, 0, bp, NULL);
 	}
 	fp = al_fopen(fn, "wb");
 	if(!fp)
@@ -145,7 +145,7 @@ bool pa_make_tool_redo(PA_CANVAS_EDITOR * cep, const char * action, int tool, in
 		printf("bitmap fail\n");
 		goto fail;
 	}
-	pa_render_canvas_to_bitmap(cep->canvas, layer, layer + 1, x + shift_x * cep->canvas->bitmap_size, y + shift_y * cep->canvas->bitmap_size, width, height, 0, bp);
+	pa_render_canvas_to_bitmap(cep->canvas, layer, layer + 1, x + shift_x * cep->canvas->bitmap_size, y + shift_y * cep->canvas->bitmap_size, width, height, 0, bp, NULL);
 	fp = al_fopen(fn, "wb");
 	if(!fp)
 	{
@@ -272,7 +272,7 @@ bool pa_apply_tool_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, const char * 
 		{
 			goto fail;
 		}
-		pa_render_canvas_to_bitmap(cep->canvas, layer, layer + 1, x, y, width, height, 0, bp);
+		pa_render_canvas_to_bitmap(cep->canvas, layer, layer + 1, x, y, width, height, 0, bp, NULL);
 		pa_make_tool_redo(cep, action, tool, layer, x, y, width, height, pa_get_undo_path("redo", cep->redo_count, undo_path, 1024));
 		for(i = 0; i < cep->canvas->layer_height; i++)
 		{
