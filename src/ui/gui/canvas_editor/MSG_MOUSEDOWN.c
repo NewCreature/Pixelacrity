@@ -56,6 +56,7 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 	PA_QUEUE * flood_fill_queue = NULL;
 	ALLEGRO_COLOR color = t3f_color_black;
 	bool made_undo = false;
+	char buf[64];
 
 	pa_update_mouse_variables(canvas_editor);
 
@@ -188,10 +189,36 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 				canvas_editor->tool_state = PA_TOOL_STATE_EDITING;
 				break;
 			}
-			case PA_TOOL_FRAME_EDIT:
+			case PA_TOOL_FRAME:
 			{
+				if(canvas_editor->hover_frame < 0)
+				{
+					sprintf(buf, "Frame %d", canvas_editor->frame_id);
+					canvas_editor->frame_id++;
+					pa_add_canvas_frame(canvas_editor->canvas, buf, canvas_editor->hover_x, canvas_editor->hover_y, 1, 1);
+					canvas_editor->hover_frame = canvas_editor->canvas->frame_max - 1;
+				}
 				switch(canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.state)
 				{
+					/* start creating a new selection if we are not currently
+						 interacting with an existing selection */
+					case PA_BOX_STATE_IDLE:
+					{
+						pa_initialize_box(&canvas_editor->canvas->frame[canvas_editor->hover_frame]->box, canvas_editor->click_x, canvas_editor->click_y, 1, 1);
+						canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.hover_handle = 0;
+						canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.state = PA_BOX_STATE_DRAWING;
+						break;
+					}
+					/* set box moving logic in motion */
+					case PA_BOX_STATE_HOVER:
+					{
+						canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.click_start_x = canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.start_x;
+						canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.click_start_y = canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.start_y;
+						canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.click_x = canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.hover_x;
+						canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.click_y = canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.hover_y;
+						canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.state = PA_BOX_STATE_MOVING;
+						break;
+					}
 					/* set box resizing logic in motion */
 					case PA_BOX_STATE_HOVER_HANDLE:
 					{

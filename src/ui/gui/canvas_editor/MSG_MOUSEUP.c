@@ -239,7 +239,7 @@ void pa_canvas_editor_MSG_MOUSEUP(T3GUI_ELEMENT * d, int c)
 			t3f_refresh_menus();
 			break;
 		}
-		case PA_TOOL_FRAME_EDIT:
+		case PA_TOOL_FRAME:
 		{
 			switch(canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.state)
 			{
@@ -250,8 +250,17 @@ void pa_canvas_editor_MSG_MOUSEUP(T3GUI_ELEMENT * d, int c)
 					canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.state = PA_BOX_STATE_IDLE;
 					break;
 				}
+				default:
+				{
+					canvas_editor->selection.layer = canvas_editor->current_layer;
+				}
 			}
 			canvas_editor->tool_state = PA_TOOL_STATE_OFF;
+			if(canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.width < 2 && canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.height < 2)
+			{
+//				pa_clear_canvas_editor_selection(canvas_editor);
+			}
+			t3f_refresh_menus();
 			break;
 		}
 	}

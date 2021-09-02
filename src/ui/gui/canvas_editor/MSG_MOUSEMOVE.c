@@ -84,7 +84,7 @@ void pa_canvas_editor_MSG_MOUSEMOVE(T3GUI_ELEMENT * d, int c)
 			pa_update_selection(canvas_editor, d);
 			break;
 		}
-		case PA_TOOL_FRAME_EDIT:
+		case PA_TOOL_FRAME:
 		{
 			pa_update_hover_frame(canvas_editor, d);
 			break;

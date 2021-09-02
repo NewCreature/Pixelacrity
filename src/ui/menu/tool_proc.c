@@ -168,7 +168,7 @@ int pa_menu_tool_pixel(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	pa_select_canvas_editor_tool(app->canvas_editor, 0);
+	pa_select_canvas_editor_tool(app->canvas_editor, PA_TOOL_PIXEL);
 
 	return 0;
 }
@@ -177,7 +177,7 @@ int pa_menu_tool_line(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	pa_select_canvas_editor_tool(app->canvas_editor, 1);
+	pa_select_canvas_editor_tool(app->canvas_editor, PA_TOOL_LINE);
 
 	return 0;
 }
@@ -186,7 +186,7 @@ int pa_menu_tool_rectangle(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	pa_select_canvas_editor_tool(app->canvas_editor, 2);
+	pa_select_canvas_editor_tool(app->canvas_editor, PA_TOOL_RECTANGLE);
 
 	return 0;
 }
@@ -195,7 +195,7 @@ int pa_menu_tool_filled_rectangle(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	pa_select_canvas_editor_tool(app->canvas_editor, 3);
+	pa_select_canvas_editor_tool(app->canvas_editor, PA_TOOL_FILLED_RECTANGLE);
 
 	return 0;
 }
@@ -204,7 +204,7 @@ int pa_menu_tool_oval(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	pa_select_canvas_editor_tool(app->canvas_editor, 4);
+	pa_select_canvas_editor_tool(app->canvas_editor, PA_TOOL_OVAL);
 
 	return 0;
 }
@@ -213,7 +213,7 @@ int pa_menu_tool_filled_oval(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	pa_select_canvas_editor_tool(app->canvas_editor, 5);
+	pa_select_canvas_editor_tool(app->canvas_editor, PA_TOOL_FILLED_OVAL);
 
 	return 0;
 }
@@ -222,7 +222,7 @@ int pa_menu_tool_flood_fill(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	pa_select_canvas_editor_tool(app->canvas_editor, 6);
+	pa_select_canvas_editor_tool(app->canvas_editor, PA_TOOL_FLOOD_FILL);
 
 	return 0;
 }
@@ -231,7 +231,7 @@ int pa_menu_tool_eraser(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	pa_select_canvas_editor_tool(app->canvas_editor, 7);
+	pa_select_canvas_editor_tool(app->canvas_editor, PA_TOOL_ERASER);
 
 	return 0;
 }
@@ -240,7 +240,7 @@ int pa_menu_tool_dropper(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	pa_select_canvas_editor_tool(app->canvas_editor, 8);
+	pa_select_canvas_editor_tool(app->canvas_editor, PA_TOOL_DROPPER);
 
 	return 0;
 }
@@ -249,7 +249,16 @@ int pa_menu_tool_selector(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	pa_select_canvas_editor_tool(app->canvas_editor, 9);
+	pa_select_canvas_editor_tool(app->canvas_editor, PA_TOOL_SELECTION);
+
+	return 0;
+}
+
+int pa_menu_tool_frame(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	pa_select_canvas_editor_tool(app->canvas_editor, PA_TOOL_FRAME);
 
 	return 0;
 }

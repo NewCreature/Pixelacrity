@@ -20,7 +20,7 @@
 #define PA_TOOL_ERASER           7
 #define PA_TOOL_DROPPER          8
 #define PA_TOOL_SELECTION        9
-#define PA_TOOL_FRAME_EDIT      10
+#define PA_TOOL_FRAME           10
 
 #define PA_TOOL_STATE_OFF        0
 #define PA_TOOL_STATE_DRAWING    1
@@ -107,7 +107,7 @@ typedef struct
 	ALLEGRO_COLOR click_outline_color;
 	int release_x, release_y;
 	int hover_frame;
-	int hover_frame_time;
+	int frame_id;
 	int shift_x, shift_y;
 	int current_layer;
 	int current_frame;

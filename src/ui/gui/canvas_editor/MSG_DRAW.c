@@ -115,13 +115,14 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 		{
 			al_draw_text(theme->state[0].font[0], color, d->x + (canvas_editor->canvas->frame[i]->box.start_x - canvas_editor->view_x) * canvas_editor->view_zoom, d->y + (canvas_editor->canvas->frame[i]->box.start_y - canvas_editor->view_y) * canvas_editor->view_zoom - al_get_font_line_height(theme->state[0].font[0]) - PA_UI_ELEMENT_SPACE, 0, canvas_editor->canvas->frame[i]->name);
 		}
-		al_draw_rectangle(d->x + (canvas_editor->canvas->frame[i]->box.start_x - canvas_editor->view_x) * canvas_editor->view_zoom - 1.0 + 0.5, d->y + (canvas_editor->canvas->frame[i]->box.start_y - canvas_editor->view_y) * canvas_editor->view_zoom - 1.0 + 0.5, d->x + (canvas_editor->canvas->frame[i]->box.start_x + canvas_editor->canvas->frame[i]->box.width - canvas_editor->view_x) * canvas_editor->view_zoom + 0.5, d->y + (canvas_editor->canvas->frame[i]->box.start_y + canvas_editor->canvas->frame[i]->box.height - canvas_editor->view_y) * canvas_editor->view_zoom + 0.5, color, 1.0);
-	}
-
-	/* render frame box */
-	if(canvas_editor->hover_frame >= 0 && canvas_editor->hover_frame_time >= PA_FRAME_HOVER_THRESHOLD)
-	{
-		pa_box_render(&canvas_editor->canvas->frame[canvas_editor->hover_frame]->box, 0, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, canvas_editor->peg_bitmap);
+		if(canvas_editor->current_tool == PA_TOOL_FRAME && i == canvas_editor->hover_frame)
+		{
+			pa_box_render(&canvas_editor->canvas->frame[i]->box, 0, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, canvas_editor->peg_bitmap);
+		}
+		else
+		{
+			al_draw_rectangle(d->x + (canvas_editor->canvas->frame[i]->box.start_x - canvas_editor->view_x) * canvas_editor->view_zoom - 1.0 + 0.5, d->y + (canvas_editor->canvas->frame[i]->box.start_y - canvas_editor->view_y) * canvas_editor->view_zoom - 1.0 + 0.5, d->x + (canvas_editor->canvas->frame[i]->box.start_x + canvas_editor->canvas->frame[i]->box.width - canvas_editor->view_x) * canvas_editor->view_zoom + 0.5, d->y + (canvas_editor->canvas->frame[i]->box.start_y + canvas_editor->canvas->frame[i]->box.height - canvas_editor->view_y) * canvas_editor->view_zoom + 0.5, color, 1.0);
+		}
 	}
 
 	/* render selection box */

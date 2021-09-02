@@ -81,6 +81,7 @@ ALLEGRO_MENU * pa_create_tool_menu(ALLEGRO_MENU * brush_mp, int * item_array)
 	item_array[PA_TOOL_ERASER] = t3f_add_menu_item(mp, "Eraser", ALLEGRO_MENU_ITEM_CHECKBOX, NULL, pa_menu_tool_eraser, menu_tool_update_proc);
 	item_array[PA_TOOL_DROPPER] = t3f_add_menu_item(mp, "Dropper", ALLEGRO_MENU_ITEM_CHECKBOX, NULL, pa_menu_tool_dropper, menu_tool_update_proc);
 	item_array[PA_TOOL_SELECTION] = t3f_add_menu_item(mp, "Selector", ALLEGRO_MENU_ITEM_CHECKBOX, NULL, pa_menu_tool_selector, menu_tool_update_proc);
+	item_array[PA_TOOL_FRAME] = t3f_add_menu_item(mp, "Frame", ALLEGRO_MENU_ITEM_CHECKBOX, NULL, pa_menu_tool_frame, menu_tool_update_proc);
 
 	return mp;
 }

@@ -17,5 +17,6 @@ int pa_menu_tool_flood_fill(int id, void * data);
 int pa_menu_tool_eraser(int id, void * data);
 int pa_menu_tool_dropper(int id, void * data);
 int pa_menu_tool_selector(int id, void * data);
+int pa_menu_tool_frame(int id, void * data);
 
 #endif

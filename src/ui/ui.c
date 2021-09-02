@@ -177,6 +177,8 @@ void pa_resize_ui(PA_UI * uip)
 	pos_y += 32;
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_SELECTION], t3f_default_view->width - right_pane_width, pos_y, right_pane_width, 32);
 	pos_y += 32;
+	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_FRAME], t3f_default_view->width - right_pane_width, pos_y, right_pane_width, 32);
+	pos_y += 32;
 	resize_element(uip->element[PA_UI_ELEMENT_LAYER_LIST], t3f_default_view->width - right_pane_width, pos_y, right_pane_width, 128);
 	pos_y += 128;
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_ADD_LAYER], t3f_default_view->width - right_pane_width, pos_y, right_pane_width / 2, 32);
@@ -282,6 +284,7 @@ PA_UI * pa_create_ui(PA_CANVAS_EDITOR * cep)
 		uip->element[PA_UI_ELEMENT_BUTTON_ERASER] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 0, 0, "Eraser", pa_tool_eraser_button_proc, NULL);
 		uip->element[PA_UI_ELEMENT_BUTTON_DROPPER] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 0, 0, "Dropper", pa_tool_dropper_button_proc, NULL);
 		uip->element[PA_UI_ELEMENT_BUTTON_SELECTION] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 0, 0, "Selection", pa_tool_selection_button_proc, NULL);
+		uip->element[PA_UI_ELEMENT_BUTTON_FRAME] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 0, 0, "Frame", pa_tool_frame_button_proc, NULL);
 		uip->element[PA_UI_ELEMENT_LAYER_LIST] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, pa_list_proc, 0, 0, 0, 0, 0, D_SETFOCUS, 0, 0, pa_layer_list_proc, NULL, cep);
 		uip->element[PA_UI_ELEMENT_BUTTON_ADD_LAYER] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 0, 0, "+", pa_layer_add_button_proc, NULL);
 		uip->element[PA_UI_ELEMENT_BUTTON_REMOVE_LAYER] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 0, 0, "-", pa_layer_remove_button_proc, NULL);
@@ -366,6 +369,7 @@ static void select_button(PA_UI * uip, int button)
 	uip->element[PA_UI_ELEMENT_BUTTON_FLOOD_FILL]->flags &= ~D_SELECTED;
 	uip->element[PA_UI_ELEMENT_BUTTON_DROPPER]->flags &= ~D_SELECTED;
 	uip->element[PA_UI_ELEMENT_BUTTON_SELECTION]->flags &= ~D_SELECTED;
+	uip->element[PA_UI_ELEMENT_BUTTON_FRAME]->flags &= ~D_SELECTED;
 	if(button >= 0)
 	{
 		uip->element[button]->flags |= D_SELECTED;
@@ -454,6 +458,11 @@ void pa_process_ui(PA_UI * uip)
 		case PA_TOOL_SELECTION:
 		{
 			select_button(uip, PA_UI_ELEMENT_BUTTON_SELECTION);
+			break;
+		}
+		case PA_TOOL_FRAME:
+		{
+			select_button(uip, PA_UI_ELEMENT_BUTTON_FRAME);
 			break;
 		}
 		default:
