@@ -10,7 +10,7 @@ static void update_hover_frame(PA_CANVAS_EDITOR * cep)
 	for(i = 0; i < cep->canvas->frame_max; i++)
 	{
 		pa_setup_box(&cep->canvas->frame[i]->box, cep->canvas->frame[i]->box.start_x, cep->canvas->frame[i]->box.start_y, cep->canvas->frame[i]->box.width, cep->canvas->frame[i]->box.height);
-		pa_update_box_handles(&cep->canvas->frame[cep->hover_frame]->box, cep->view_x, cep->view_y, cep->view_zoom);
+		pa_update_box_handles(&cep->canvas->frame[i]->box, cep->view_x, cep->view_y, cep->view_zoom);
 		if(cep->hover_x >= cep->canvas->frame[i]->box.start_x && cep->hover_x <= cep->canvas->frame[i]->box.end_x && cep->hover_y >= cep->canvas->frame[i]->box.start_y && cep->hover_y <= cep->canvas->frame[i]->box.end_y)
 		{
 			cep->hover_frame = i;
@@ -23,7 +23,10 @@ void pa_update_hover_frame(PA_CANVAS_EDITOR * cep, T3GUI_ELEMENT * d)
 	PA_BOX old_box;
 	bool snap = false;
 
-	update_hover_frame(cep);
+	if(cep->current_tool == PA_TOOL_FRAME && cep->tool_state == PA_TOOL_STATE_OFF)
+	{
+		update_hover_frame(cep);
+	}
 	if(cep->hover_frame >= 0)
 	{
 		if(cep->canvas->frame[cep->hover_frame]->box.width > 0 && cep->canvas->frame[cep->hover_frame]->box.height > 0)

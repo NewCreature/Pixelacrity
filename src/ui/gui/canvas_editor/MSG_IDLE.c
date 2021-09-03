@@ -114,7 +114,6 @@ void pa_canvas_editor_MSG_IDLE(T3GUI_ELEMENT * d, int c)
 		save_backup(canvas_editor->canvas);
 		canvas_editor->backup_tick = PA_BACKUP_INTERVAL;
 	}
-//			update_cursor(canvas_editor);
 	update_color_selections(canvas_editor);
 	canvas_editor->view_x = canvas_editor->view_fx;
 	canvas_editor->view_y = canvas_editor->view_fy;

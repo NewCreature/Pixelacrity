@@ -28,10 +28,7 @@ static PA_CANVAS_FRAME * pa_create_canvas_frame(const char * name, int x, int y,
 	{
 		goto fail;
 	}
-	fp->box.start_x = x;
-	fp->box.start_y = y;
-	fp->box.width = width;
-	fp->box.height = height;
+	pa_initialize_box(&fp->box, x, y, width, height);
 
 	return fp;
 
