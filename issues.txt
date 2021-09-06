@@ -12,7 +12,7 @@ Pixelacrity 0.2.11 Issues
 
    [X]Crash when clicking on the canvas with frame tool selected.
 
-   [ ]Show handles for all frames while frame tool is selected.
+   [X]Show handles for all frames while frame tool is selected.
 
    [X]Allow frames to be moved by clicking within the frame similar to how we
       can move selections.
