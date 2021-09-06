@@ -14,6 +14,8 @@ Pixelacrity 0.2.11 Issues
 
    [ ]Add undo for layer swaps.
 
+[ ]Allow interacting with frame handles without hovering over the frame.
+
 [ ]Add grid.
 
 
