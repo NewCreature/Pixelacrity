@@ -392,7 +392,7 @@ void pa_process_ui(PA_UI * uip)
 		uip->element[PA_UI_ELEMENT_BUTTON_REMOVE_LAYER]->flags = D_DISABLED;
 	}
 
-	if(cep->current_tool != PA_TOOL_SELECTION)
+	if(cep->current_tool != PA_TOOL_SELECTION && cep->current_tool != PA_TOOL_FRAME)
 	{
 		cep->want_cursor = ALLEGRO_SYSTEM_MOUSE_CURSOR_PRECISION;
 	}

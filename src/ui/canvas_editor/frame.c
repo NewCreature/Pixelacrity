@@ -60,4 +60,8 @@ void pa_update_hover_frame(PA_CANVAS_EDITOR * cep, T3GUI_ELEMENT * d)
 			}
 		}
 	}
+	else
+	{
+		cep->want_cursor = ALLEGRO_SYSTEM_MOUSE_CURSOR_PRECISION;
+	}
 }
