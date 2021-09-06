@@ -8,19 +8,6 @@ Pixelacrity 0.2.11 Issues
 
 [ ]Freeze after drawing line.
 
-[ ]Finish implementing frame tool.
-
-   [X]Crash when clicking on the canvas with frame tool selected.
-
-   [X]Show handles for all frames while frame tool is selected.
-
-   [X]Allow frames to be moved by clicking within the frame similar to how we
-      can move selections.
-
-   [ ]Allow contents of frame to be moved along with frame if Shift key is held
-      when frame is first dragged. We can probably do this by piggybacking off
-      of the floating selection code.
-
 [ ]Ensure undo is working properly for all functions that are undoable.
 
    [ ]Undo unfloat multi-layer selection not working.
@@ -30,6 +17,10 @@ Pixelacrity 0.2.11 Issues
 
 Pixelacrity 0.3 Issues
 ----------------------
+
+[ ]Allow contents of frame to be moved along with frame if Shift key is held
+   when frame is first dragged. We can probably do this by piggybacking off
+   of the floating selection code.
 
 [ ]Add 3D layer breakout view.
 
@@ -626,3 +617,12 @@ Closed Issues
 
 [X]Mouse cursor doesn't update properly after switching away from selection
    tool.
+
+[X]Finish implementing frame tool.
+
+   [X]Crash when clicking on the canvas with frame tool selected.
+
+   [X]Show handles for all frames while frame tool is selected.
+
+   [X]Allow frames to be moved by clicking within the frame similar to how we
+      can move selections.
