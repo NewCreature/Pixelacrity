@@ -222,6 +222,7 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 							canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.click_x = canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.hover_x;
 							canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.click_y = canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.hover_y;
 							canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.state = PA_BOX_STATE_MOVING;
+							canvas_editor->current_frame = canvas_editor->hover_frame;
 							break;
 						}
 						/* set box resizing logic in motion */
