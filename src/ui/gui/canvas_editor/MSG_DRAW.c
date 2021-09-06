@@ -41,6 +41,7 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 	ALLEGRO_COLOR color = t3f_color_black;
 	int tx, ty;
 	ALLEGRO_BITMAP * peg_bitmap;
+	char buf[256];
 
 	ALLEGRO_STATE old_state;
 	ALLEGRO_TRANSFORM identity;
@@ -129,7 +130,8 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 		}
 		if(theme)
 		{
-			al_draw_text(theme->state[0].font[0], color, d->x + (canvas_editor->canvas->frame[i]->box.start_x - canvas_editor->view_x) * canvas_editor->view_zoom, d->y + (canvas_editor->canvas->frame[i]->box.start_y - canvas_editor->view_y) * canvas_editor->view_zoom - al_get_font_line_height(theme->state[0].font[0]) - PA_UI_ELEMENT_SPACE, 0, canvas_editor->canvas->frame[i]->name);
+			sprintf(buf, "%s (%dx%d)", canvas_editor->canvas->frame[i]->name, canvas_editor->canvas->frame[i]->box.width, canvas_editor->canvas->frame[i]->box.height);
+			al_draw_text(theme->state[0].font[0], color, d->x + (canvas_editor->canvas->frame[i]->box.start_x - canvas_editor->view_x) * canvas_editor->view_zoom, d->y + (canvas_editor->canvas->frame[i]->box.start_y - canvas_editor->view_y) * canvas_editor->view_zoom - al_get_font_line_height(theme->state[0].font[0]) - PA_UI_ELEMENT_SPACE, 0, buf);
 		}
 		pa_box_render(&canvas_editor->canvas->frame[i]->box, 0, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, color, peg_bitmap);
 	}
