@@ -40,6 +40,7 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 	T3GUI_THEME * theme;
 	ALLEGRO_COLOR color = t3f_color_black;
 	int tx, ty;
+	ALLEGRO_BITMAP * peg_bitmap;
 
 	ALLEGRO_STATE old_state;
 	ALLEGRO_TRANSFORM identity;
@@ -101,34 +102,42 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 
 	/* render frames */
 	theme = t3gui_get_default_theme();
+	if(canvas_editor->current_tool == PA_TOOL_FRAME)
+	{
+		peg_bitmap = canvas_editor->peg_bitmap;
+	}
+	else
+	{
+		peg_bitmap = NULL;
+	}
 	for(i = 0; i < canvas_editor->canvas->frame_max; i++)
 	{
-		if(i == canvas_editor->current_frame)
+		if(i == canvas_editor->current_frame && canvas_editor->current_tool != PA_TOOL_FRAME)
 		{
 			color = t3f_color_black;
 		}
 		else
 		{
-			color = al_map_rgba_f(0.0, 0.0, 0.0, 0.25);
+			if(i == canvas_editor->hover_frame)
+			{
+				color = t3f_color_black;
+			}
+			else
+			{
+				color = al_map_rgba_f(0.0, 0.0, 0.0, 0.25);
+			}
 		}
 		if(theme)
 		{
 			al_draw_text(theme->state[0].font[0], color, d->x + (canvas_editor->canvas->frame[i]->box.start_x - canvas_editor->view_x) * canvas_editor->view_zoom, d->y + (canvas_editor->canvas->frame[i]->box.start_y - canvas_editor->view_y) * canvas_editor->view_zoom - al_get_font_line_height(theme->state[0].font[0]) - PA_UI_ELEMENT_SPACE, 0, canvas_editor->canvas->frame[i]->name);
 		}
-		if(canvas_editor->current_tool == PA_TOOL_FRAME && i == canvas_editor->hover_frame)
-		{
-			pa_box_render(&canvas_editor->canvas->frame[i]->box, 0, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, canvas_editor->peg_bitmap);
-		}
-		else
-		{
-			al_draw_rectangle(d->x + (canvas_editor->canvas->frame[i]->box.start_x - canvas_editor->view_x) * canvas_editor->view_zoom - 1.0 + 0.5, d->y + (canvas_editor->canvas->frame[i]->box.start_y - canvas_editor->view_y) * canvas_editor->view_zoom - 1.0 + 0.5, d->x + (canvas_editor->canvas->frame[i]->box.start_x + canvas_editor->canvas->frame[i]->box.width - canvas_editor->view_x) * canvas_editor->view_zoom + 0.5, d->y + (canvas_editor->canvas->frame[i]->box.start_y + canvas_editor->canvas->frame[i]->box.height - canvas_editor->view_y) * canvas_editor->view_zoom + 0.5, color, 1.0);
-		}
+		pa_box_render(&canvas_editor->canvas->frame[i]->box, 0, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, color, peg_bitmap);
 	}
 
 	/* render selection box */
 	if(canvas_editor->selection.box.width > 0 && canvas_editor->selection.box.height > 0)
 	{
-		pa_box_render(&canvas_editor->selection.box, 0, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, canvas_editor->peg_bitmap);
+		pa_box_render(&canvas_editor->selection.box, 0, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, t3f_color_black, canvas_editor->peg_bitmap);
 		if(canvas_editor->selection.bitmap)
 		{
 			if(canvas_editor->selection.layer < 0)
