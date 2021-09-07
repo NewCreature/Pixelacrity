@@ -14,8 +14,6 @@ Pixelacrity 0.2.11 Issues
 
    [ ]Add undo for layer swaps.
 
-[ ]Add grid.
-
 
 Pixelacrity 0.3 Issues
 ----------------------
@@ -630,3 +628,5 @@ Closed Issues
       can move selections.
 
 [X]Allow interacting with frame handles without hovering over the frame.
+
+[X]Add grid.
