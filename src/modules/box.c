@@ -179,6 +179,23 @@ void pa_update_box_handles(PA_BOX * bp, int view_x, int view_y, int view_zoom)
 	}
 }
 
+void pa_get_box_hover_handle(PA_BOX * bp, int offset_x, int offset_y, int peg_offset)
+{
+	int i;
+
+	bp->hover_handle = -1;
+	for(i = 0; i < 10; i++)
+	{
+		if(bp->handle[i].type != PA_BOX_HANDLE_TYPE_NONE)
+		{
+			if(t3gui_get_mouse_x() >= bp->handle[i].screen_x - peg_offset + offset_x && t3gui_get_mouse_x() <= bp->handle[i].screen_x + peg_offset + offset_x && t3gui_get_mouse_y() >= bp->handle[i].screen_y - peg_offset + offset_y && t3gui_get_mouse_y() <= bp->handle[i].screen_y + peg_offset + offset_y)
+			{
+				bp->hover_handle = i;
+			}
+		}
+	}
+}
+
 /* handle user interaction with boxes */
 void pa_box_logic(PA_BOX * bp, int view_x, int view_y, int view_zoom, int offset_x, int offset_y, bool snap, ALLEGRO_BITMAP * handle_bitmap)
 {
@@ -193,17 +210,7 @@ void pa_box_logic(PA_BOX * bp, int view_x, int view_y, int view_zoom, int offset
 	{
 		case PA_BOX_STATE_IDLE:
 		{
-			bp->hover_handle = -1;
-			for(i = 0; i < 10; i++)
-			{
-				if(bp->handle[i].type != PA_BOX_HANDLE_TYPE_NONE)
-				{
-					if(t3gui_get_mouse_x() >= bp->handle[i].screen_x - peg_offset + offset_x && t3gui_get_mouse_x() <= bp->handle[i].screen_x + peg_offset + offset_x && t3gui_get_mouse_y() >= bp->handle[i].screen_y - peg_offset + offset_y && t3gui_get_mouse_y() <= bp->handle[i].screen_y + peg_offset + offset_y)
-					{
-						bp->hover_handle = i;
-					}
-				}
-			}
+			pa_get_box_hover_handle(bp, offset_x, offset_y, peg_offset);
 			if(bp->hover_handle < 0)
 			{
 				if(t3gui_get_mouse_x() >= bp->handle[0].screen_x - peg_offset + offset_x && t3gui_get_mouse_x() <= bp->handle[1].screen_x + peg_offset + offset_x && t3gui_get_mouse_y() >= bp->handle[0].screen_y - peg_offset + offset_y && t3gui_get_mouse_y() <= bp->handle[2].screen_y + peg_offset + offset_y)
