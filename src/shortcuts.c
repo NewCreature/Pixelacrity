@@ -211,6 +211,19 @@ void pa_handle_shortcuts(APP_INSTANCE * app)
 		app->canvas_editor->view_isolate = !app->canvas_editor->view_isolate;
 		t3f_key[ALLEGRO_KEY_I] = 0;
 	}
+	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && t3f_key[ALLEGRO_KEY_G])
+	{
+		if(app->canvas_editor->grid[0].space)
+		{
+			app->canvas_editor->grid[0].space = 0;
+		}
+		else
+		{
+			app->canvas_editor->grid[0].space = 1;
+			app->canvas_editor->grid[0].color = al_map_rgba_f(0.0, 0.0, 0.0, 0.5);
+		}
+		t3f_key[ALLEGRO_KEY_G] = 0;
+	}
 	else
 	{
 		speed = (8.0 / (float)app->canvas_editor->view_zoom);

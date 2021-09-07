@@ -34,6 +34,8 @@
 #define PA_FRAME_HOVER_THRESHOLD   30
 #define PA_FRAME_DEHOVER_THRESHOLD 60
 
+#define PA_MAX_GRIDS                8
+
 typedef struct
 {
 
@@ -56,6 +58,16 @@ typedef struct
 	int x, y;
 
 } PA_CLIPBOARD_DATA;
+
+typedef struct
+{
+
+	int space;
+	int offset_x;
+	int offset_y;
+	ALLEGRO_COLOR color;
+
+} PA_GRID_DATA;
 
 typedef struct
 {
@@ -90,6 +102,7 @@ typedef struct
 	ALLEGRO_BITMAP * singlelayer_bitmap;
 	ALLEGRO_BITMAP * brush;
 	PA_CLIPBOARD_DATA clipboard;
+	PA_GRID_DATA grid[PA_MAX_GRIDS];
 	int scratch_offset_x; // offset of scratch in relation to view
 	int scratch_offset_y;
 	int tool_offset_x;

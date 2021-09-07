@@ -34,6 +34,20 @@ static void generate_brush_hint(PA_CANVAS_EDITOR * cep)
 	al_restore_state(&old_state);
 }
 
+static void draw_grid(int ox, int oy, int width, int height, int space, ALLEGRO_COLOR color)
+{
+	int i;
+
+	for(i = 0; i < height; i += space)
+	{
+		al_draw_line(ox + 0.5, oy + i + 0.5, ox + width + 0.5, oy + i + 0.5, color, 0.0);
+	}
+	for(i = 0; i < width; i += space)
+	{
+		al_draw_line(ox + i + 0.5, oy + 0.5, ox + i + 0.5, oy + height + 0.5, color, 0.0);
+	}
+}
+
 void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 {
 	PA_CANVAS_EDITOR * canvas_editor = (PA_CANVAS_EDITOR *)d->dp;
@@ -94,6 +108,13 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 				pa_render_canvas_layer(canvas_editor->canvas, i, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, d->w, d->h);
 			}
 		}
+		for(i = 0; i < PA_MAX_GRIDS; i++)
+		{
+			if(canvas_editor->grid[i].space * canvas_editor->view_zoom > 1)
+			{
+				draw_grid(d->x, d->y, d->w, d->h, canvas_editor->grid[i].space * canvas_editor->view_zoom, canvas_editor->grid[i].color);
+			}
+		}
 		if(canvas_editor->current_tool != PA_TOOL_DROPPER && canvas_editor->current_tool != PA_TOOL_FLOOD_FILL && canvas_editor->current_tool != PA_TOOL_SELECTION)
 		{
 			generate_brush_hint(canvas_editor);
@@ -152,7 +173,6 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 			}
 		}
 	}
-
 	if(t3f_key[ALLEGRO_KEY_G])
 	{
 		tx = ((int)(t3gui_get_mouse_x() - d->x) / canvas_editor->view_zoom) * canvas_editor->view_zoom + canvas_editor->view_zoom / 2 + d->x;
