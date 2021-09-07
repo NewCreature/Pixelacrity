@@ -14,8 +14,6 @@ Pixelacrity 0.2.11 Issues
 
    [ ]Add undo for layer swaps.
 
-[ ]Allow interacting with frame handles without hovering over the frame.
-
 [ ]Add grid.
 
 
@@ -630,3 +628,5 @@ Closed Issues
 
    [X]Allow frames to be moved by clicking within the frame similar to how we
       can move selections.
+
+[X]Allow interacting with frame handles without hovering over the frame.
