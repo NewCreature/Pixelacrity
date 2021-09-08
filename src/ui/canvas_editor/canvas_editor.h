@@ -116,6 +116,7 @@ typedef struct
 	int hover_x, hover_y;
 	int last_hover_x, last_hover_y;
 	int click_x, click_y, click_button;
+	float snap_end_x, snap_end_y;
 	ALLEGRO_COLOR click_color;
 	ALLEGRO_COLOR click_outline_color;
 	int release_x, release_y;

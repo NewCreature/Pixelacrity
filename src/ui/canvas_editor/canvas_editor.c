@@ -315,6 +315,8 @@ void pa_shift_canvas_editor_variables(PA_CANVAS_EDITOR * cep, int ox, int oy)
 	cep->release_y += oy;
 	cep->hover_x += ox;
 	cep->hover_y += oy;
+	cep->snap_end_x += ox;
+	cep->snap_end_y += oy;
 	cep->scratch_offset_x += ox;
 	cep->scratch_offset_y += oy;
 	cep->selection.box.start_x += ox;
@@ -327,6 +329,8 @@ void pa_shift_canvas_editor_variables(PA_CANVAS_EDITOR * cep, int ox, int oy)
 	{
 		cep->canvas->frame[i]->box.start_x += ox;
 		cep->canvas->frame[i]->box.start_y += oy;
+		cep->canvas->frame[i]->box.end_x += ox;
+		cep->canvas->frame[i]->box.end_y += oy;
 	}
 	for(i = 0; i < cep->canvas->layer_max; i++)
 	{
