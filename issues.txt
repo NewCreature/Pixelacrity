@@ -21,6 +21,8 @@ Pixelacrity 0.2.13 Issues
    The floating selection was blank after undo. The crash was probably due to
    trying to delete a nonexistent bitmap.
 
+[ ]Reverse functionality of Export and Export As.
+
 
 Pixelacrity 0.3 Issues
 ----------------------
