@@ -179,6 +179,7 @@ bool pa_load_canvas_editor_state(PA_CANVAS_EDITOR * cep, const char * fn)
 		cep->view_fx = cep->view_x;
 		cep->view_fy = cep->view_y;
 		cep->view_zoom = get_config_val(cep->config, "State", "view_zoom", 8);
+		pa_set_canvas_editor_zoom(cep, cep->view_zoom);
 		cep->current_tool = get_config_val(cep->config, "State", "current_tool", 0);
 		cep->current_layer = get_config_val(cep->config, "State", "current_layer", 0);
 		val = al_get_config_value(cep->config, "State", "export_path");
