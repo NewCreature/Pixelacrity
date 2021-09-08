@@ -14,6 +14,17 @@ Pixelacrity 0.2.11 Issues
 
    [ ]Add undo for layer swaps.
 
+   [ ]Importing a bitmap should count as an undoable change without first
+      requiring the selection to be unfloated.
+
+   [ ]Frame adding, editing, deleting should be undoable.
+
+[ ]Undo after unfloating an imported image and subsequently selecting a
+   different tool causes a crash.
+
+   The floating selection was blank after undo. The crash was probably due to
+   trying to delete a nonexistent bitmap.
+
 
 Pixelacrity 0.3 Issues
 ----------------------
