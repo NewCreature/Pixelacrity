@@ -119,27 +119,21 @@ void pa_get_canvas_dimensions(PA_CANVAS * cp, int * offset_x, int * offset_y, in
 		flags = cp->layer[i]->flags & ~flags_filter;
 		if(!(flags & PA_CANVAS_FLAG_HIDDEN))
 		{
-			if(cp->layer[i]->offset_x > 0)
+			if(cp->layer[i]->offset_x < left_x)
 			{
-				if(cp->layer[i]->offset_x < left_x)
-				{
-					left_x = cp->layer[i]->offset_x;
-				}
-				if(cp->layer[i]->offset_x + cp->layer[i]->width >= right_x)
-				{
-					right_x = cp->layer[i]->offset_x + cp->layer[i]->width - 1;
-				}
+				left_x = cp->layer[i]->offset_x;
 			}
-			if(cp->layer[i]->offset_y > 0)
+			if(cp->layer[i]->offset_x + cp->layer[i]->width >= right_x)
 			{
-				if(cp->layer[i]->offset_y < top_y)
-				{
-					top_y = cp->layer[i]->offset_y;
-				}
-				if(cp->layer[i]->offset_y + cp->layer[i]->height >= bottom_y)
-				{
-					bottom_y = cp->layer[i]->offset_y + cp->layer[i]->height - 1;
-				}
+				right_x = cp->layer[i]->offset_x + cp->layer[i]->width - 1;
+			}
+			if(cp->layer[i]->offset_y < top_y)
+			{
+				top_y = cp->layer[i]->offset_y;
+			}
+			if(cp->layer[i]->offset_y + cp->layer[i]->height >= bottom_y)
+			{
+				bottom_y = cp->layer[i]->offset_y + cp->layer[i]->height - 1;
 			}
 		}
 	}
