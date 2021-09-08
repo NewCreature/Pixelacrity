@@ -1,12 +1,8 @@
 Pixelacrity 0.2.13 Issues
 ------------------------
 
-[ ]Multi-layer moving a selection caused a freeze.
-
 [ ]Multi-layer selection shouldn't be able to paste into canvas with different
    number of layers.
-
-[ ]Freeze after drawing line.
 
 [ ]Ensure undo is working properly for all functions that are undoable.
 
