@@ -37,7 +37,6 @@ static bool load_canvas_full_f_1(PA_CANVAS * cp, ALLEGRO_FILE * fp, const char *
 				}
 			}
 		}
-		pa_calculate_canvas_layer_dimensions(cp, i, &cp->layer[i]->offset_x, &cp->layer[i]->offset_y, &cp->layer[i]->width, &cp->layer[i]->height);
 	}
 	t3f_debug_message("Exit load_canvas_fill_f()\n");
 	return true;
@@ -73,7 +72,6 @@ static bool load_canvas_minimal_f_1(PA_CANVAS * cp, ALLEGRO_FILE * fp, const cha
 		}
 		pa_import_bitmap_to_canvas(cp, bp, i, cp->export_offset_x, cp->export_offset_y);
 		al_destroy_bitmap(bp);
-		pa_calculate_canvas_layer_dimensions(cp, i, &cp->layer[i]->offset_x, &cp->layer[i]->offset_y, &cp->layer[i]->width, &cp->layer[i]->height);
 	}
 	t3f_debug_message("Exit load_canvas_minimal_f()\n");
 	return true;
@@ -122,7 +120,6 @@ static bool load_canvas_full_f(PA_CANVAS * cp, ALLEGRO_FILE * fp, const char * f
 				}
 			}
 		}
-		pa_calculate_canvas_layer_dimensions(cp, i, &cp->layer[i]->offset_x, &cp->layer[i]->offset_y, &cp->layer[i]->width, &cp->layer[i]->height);
 	}
 	t3f_debug_message("Exit load_canvas_fill_f()\n");
 	return true;
@@ -161,7 +158,6 @@ static bool load_canvas_minimal_f(PA_CANVAS * cp, ALLEGRO_FILE * fp, const char 
 		}
 		pa_import_bitmap_to_canvas(cp, bp, i, cp->export_offset_x, cp->export_offset_y);
 		al_destroy_bitmap(bp);
-		pa_calculate_canvas_layer_dimensions(cp, i, &cp->layer[i]->offset_x, &cp->layer[i]->offset_y, &cp->layer[i]->width, &cp->layer[i]->height);
 	}
 	t3f_debug_message("Exit load_canvas_minimal_f()\n");
 	return true;

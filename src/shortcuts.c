@@ -224,6 +224,16 @@ void pa_handle_shortcuts(APP_INSTANCE * app)
 		}
 		t3f_key[ALLEGRO_KEY_G] = 0;
 	}
+	else if(t3f_key[ALLEGRO_KEY_F8])
+	{
+		pa_optimize_canvas(app->canvas_editor, 1, 0);
+		t3f_key[ALLEGRO_KEY_F8] = 0;
+	}
+	else if(t3f_key[ALLEGRO_KEY_F9])
+	{
+		pa_optimize_canvas(app->canvas_editor, 0, 1);
+		t3f_key[ALLEGRO_KEY_F9] = 0;
+	}
 	else
 	{
 		speed = (8.0 / (float)app->canvas_editor->view_zoom);

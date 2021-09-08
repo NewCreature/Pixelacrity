@@ -30,10 +30,10 @@ static int get_canvas_alpha(PA_CANVAS * cp, int layer, int x, int y)
 
 void pa_calculate_canvas_layer_dimensions(PA_CANVAS * cp, int layer, int * offset_x, int * offset_y, int * width, int * height)
 {
-	int i, j, k, l, m, x, y;
-	int left_x = 1000000;
+	int j, k, l, m, x, y;
+	int left_x = cp->layer_width * cp->bitmap_size;
 	int right_x = 0;
-	int top_y = 1000000;
+	int top_y = cp->layer_height * cp->bitmap_size;
 	int bottom_y = 0;
 	bool need_check;
 
@@ -42,7 +42,6 @@ void pa_calculate_canvas_layer_dimensions(PA_CANVAS * cp, int layer, int * offse
 		for(k = 0; k < cp->layer_width; k++)
 		{
 			need_check = false;
-			for(i = 0; i < cp->layer_max; i++)
 			if(cp->layer[layer]->bitmap[j][k])
 			{
 				al_lock_bitmap(cp->layer[layer]->bitmap[j][k], ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_READONLY);
@@ -105,9 +104,9 @@ void pa_calculate_canvas_layer_dimensions(PA_CANVAS * cp, int layer, int * offse
 void pa_get_canvas_dimensions(PA_CANVAS * cp, int * offset_x, int * offset_y, int * width, int * height, int flags_filter, bool calculate)
 {
 	int i;
-	int left_x = 1000000;
+	int left_x = cp->layer_width * cp->bitmap_size;
 	int right_x = 0;
-	int top_y = 1000000;
+	int top_y = cp->layer_height * cp->bitmap_size;
 	int bottom_y = 0;
 	int flags;
 
@@ -120,7 +119,7 @@ void pa_get_canvas_dimensions(PA_CANVAS * cp, int * offset_x, int * offset_y, in
 		flags = cp->layer[i]->flags & ~flags_filter;
 		if(!(flags & PA_CANVAS_FLAG_HIDDEN))
 		{
-			if(cp->layer[i]->width > 0 && cp->layer[i]->height > 0)
+			if(cp->layer[i]->offset_x > 0)
 			{
 				if(cp->layer[i]->offset_x < left_x)
 				{
@@ -130,6 +129,9 @@ void pa_get_canvas_dimensions(PA_CANVAS * cp, int * offset_x, int * offset_y, in
 				{
 					right_x = cp->layer[i]->offset_x + cp->layer[i]->width - 1;
 				}
+			}
+			if(cp->layer[i]->offset_y > 0)
+			{
 				if(cp->layer[i]->offset_y < top_y)
 				{
 					top_y = cp->layer[i]->offset_y;

@@ -193,6 +193,7 @@ int pa_menu_file_load(int id, void * data)
 								al_set_config_value(t3f_config, "App Data", "last_canvas_path", al_path_cstr(pp, '/'));
 								al_destroy_path(pp);
 							}
+							pa_optimize_canvas(app->canvas_editor, 0, 0);
 							t3f_refresh_menus();
 						}
 						else

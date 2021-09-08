@@ -468,3 +468,88 @@ void pa_canvas_editor_update_pick_colors(PA_CANVAS_EDITOR * cep)
 		cep->pick_color[i] = pa_shade_color(cep->left_color.base_color, new_l);
 	}
 }
+
+static bool blank_bitmap(ALLEGRO_BITMAP * bp)
+{
+	int i, j;
+	ALLEGRO_COLOR color;
+	unsigned char r, g, b, a;
+
+	if(bp)
+	{
+		al_lock_bitmap(bp, ALLEGRO_LOCK_READONLY, ALLEGRO_PIXEL_FORMAT_ANY);
+		for(i = 0; i < al_get_bitmap_height(bp); i++)
+		{
+			for(j = 0; j < al_get_bitmap_width(bp); j++)
+			{
+				color = al_get_pixel(bp, j, i);
+				al_unmap_rgba(color, &r, &g, &b, &a);
+				if(a > 0)
+				{
+					al_unlock_bitmap(bp);
+					return false;
+				}
+			}
+		}
+		al_unlock_bitmap(bp);
+	}
+	return true;
+}
+
+void pa_optimize_canvas(PA_CANVAS_EDITOR * cep, int skip_x, int skip_y)
+{
+	int i, j, k;
+	int left = cep->canvas->layer_width;
+	int right = 0;
+	int top = cep->canvas->layer_height;
+	int bottom = 0;
+	int width, height;
+
+	for(i = 0; i < cep->canvas->layer_max; i++)
+	{
+		for(j = skip_y; j < cep->canvas->layer_height; j++)
+		{
+			for(k = skip_x; k < cep->canvas->layer_width; k++)
+			{
+				if(!blank_bitmap(cep->canvas->layer[i]->bitmap[j][k]))
+				{
+					if(k < left)
+					{
+						left = k;
+					}
+					if(k > right)
+					{
+						right = k;
+					}
+					if(j < top)
+					{
+						top = j;
+					}
+					if(j > bottom)
+					{
+						bottom = j;
+					}
+				}
+			}
+		}
+	}
+	width = right - left + 1;
+	height = bottom - top + 1;
+	for(i = 0; i < cep->canvas->layer_max; i++)
+	{
+		for(j = 0; j < height; j++)
+		{
+			for(k = 0; k < width; k++)
+			{
+				cep->canvas->layer[i]->bitmap[j][k] = cep->canvas->layer[i]->bitmap[j + top][k + left];
+			}
+		}
+	}
+	cep->canvas->layer_width = width;
+	cep->canvas->layer_height = height;
+	pa_shift_canvas_editor_variables(cep, -left * cep->canvas->bitmap_size, -top * cep->canvas->bitmap_size);
+	for(i = 0; i < cep->canvas->layer_max; i++)
+	{
+		pa_calculate_canvas_layer_dimensions(cep->canvas, i, &cep->canvas->layer[i]->offset_x, &cep->canvas->layer[i]->offset_y, &cep->canvas->layer[i]->width, &cep->canvas->layer[i]->height);
+	}
+}
