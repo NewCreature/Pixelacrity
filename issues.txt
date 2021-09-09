@@ -15,11 +15,9 @@ Pixelacrity 0.2.13 Issues
 
    [ ]Frame adding, editing, deleting should be undoable.
 
-[ ]Undo after unfloating an imported image and subsequently selecting a
-   different tool causes a crash.
+[ ]Crash when undoing a floating selection that was an imported bitmap.
 
-   The floating selection was blank after undo. The crash was probably due to
-   trying to delete a nonexistent bitmap.
+[ ]Undoing float selection prevents undoing the previous action.
 
 
 Pixelacrity 0.3 Issues
