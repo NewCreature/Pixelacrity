@@ -401,7 +401,7 @@ static bool export(PA_CANVAS * cp, int x, int y, int width, int height, const ch
 	return false;
 }
 
-int pa_menu_file_export(int id, void * data)
+int pa_menu_file_reexport(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 	int x, y, w, h;
@@ -426,12 +426,12 @@ int pa_menu_file_export(int id, void * data)
 	}
 	else
 	{
-		pa_menu_file_export_as(id, data);
+		pa_menu_file_export(id, data);
 	}
 	return 0;
 }
 
-int pa_menu_file_export_all(int id, void * data)
+int pa_menu_file_reexport_all(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 	int i;
@@ -446,7 +446,7 @@ int pa_menu_file_export_all(int id, void * data)
 	return 0;
 }
 
-int pa_menu_file_export_as(int id, void * data)
+int pa_menu_file_export(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 	ALLEGRO_FILECHOOSER * file_chooser;
@@ -483,8 +483,9 @@ int pa_menu_file_export_as(int id, void * data)
 							app->canvas_editor->export_path = strdup(al_path_cstr(pp, '/'));
 						}
 						al_destroy_path(pp);
+						t3f_refresh_menus();
 					}
-					pa_menu_file_export(id, data);
+					pa_menu_file_reexport(id, data);
 				}
 			}
 		}
