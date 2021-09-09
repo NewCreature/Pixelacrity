@@ -21,8 +21,6 @@ Pixelacrity 0.2.13 Issues
    The floating selection was blank after undo. The crash was probably due to
    trying to delete a nonexistent bitmap.
 
-[ ]Reverse functionality of Export and Export As.
-
 
 Pixelacrity 0.3 Issues
 ----------------------
@@ -639,3 +637,5 @@ Closed Issues
 [X]Allow interacting with frame handles without hovering over the frame.
 
 [X]Add grid.
+
+[X]Reverse functionality of Export and Export As.
