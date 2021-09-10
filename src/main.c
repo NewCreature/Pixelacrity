@@ -5,7 +5,7 @@
 #include "modules/date.h"
 #include "modules/mouse_cursor.h"
 #include "ui/canvas_editor/canvas_editor.h"
-#include "ui/canvas_editor/undo.h"
+#include "ui/canvas_editor/undo/undo.h"
 #include "ui/menu/menu.h"
 #include "ui/menu/file_proc.h"
 #include "ui/menu/edit_proc.h"

@@ -12,8 +12,8 @@
 #include "ui/canvas_editor/tools/tool_filled_oval.h"
 #include "ui/canvas_editor/tools/tool_dropper.h"
 #include "ui/canvas_editor/tools/tool_selection.h"
-#include "ui/canvas_editor/undo_flood_fill.h"
-#include "ui/canvas_editor/undo.h"
+#include "ui/canvas_editor/undo/undo.h"
+#include "ui/canvas_editor/undo/flood_fill.h"
 #include "ui/canvas_editor/selection.h"
 #include "ui/window.h"
 

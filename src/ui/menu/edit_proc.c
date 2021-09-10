@@ -4,9 +4,9 @@
 #include "modules/canvas/canvas_helpers.h"
 #include "modules/primitives.h"
 #include "modules/dynamic_array.h"
-#include "ui/canvas_editor/undo.h"
-#include "ui/canvas_editor/undo_tool.h"
-#include "ui/canvas_editor/undo_selection.h"
+#include "ui/canvas_editor/undo/undo.h"
+#include "ui/canvas_editor/undo/tool.h"
+#include "ui/canvas_editor/undo/selection.h"
 #include "ui/canvas_editor/clipboard.h"
 #include "ui/canvas_editor/selection.h"
 

@@ -1,7 +1,7 @@
 #include "instance.h"
 #include "modules/canvas/canvas.h"
-#include "ui/canvas_editor/undo.h"
-#include "ui/canvas_editor/undo_layer.h"
+#include "ui/canvas_editor/undo/undo.h"
+#include "ui/canvas_editor/undo/layer.h"
 #include "ui/window.h"
 
 int pa_menu_layer_add(int id, void * data)

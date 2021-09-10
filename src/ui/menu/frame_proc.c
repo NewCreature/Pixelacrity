@@ -1,7 +1,7 @@
 #include "instance.h"
 #include "modules/canvas/canvas.h"
-#include "ui/canvas_editor/undo.h"
-#include "ui/canvas_editor/undo_frame.h"
+#include "ui/canvas_editor/undo/undo.h"
+#include "ui/canvas_editor/undo/frame.h"
 
 static void make_frame_undo(PA_CANVAS_EDITOR * cep)
 {

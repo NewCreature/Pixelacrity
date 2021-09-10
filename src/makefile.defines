@@ -31,13 +31,13 @@ APP_MODULE_OBJECTS = modules/box.o\
 APP_UI_OBJECTS =     ui/ui.o\
                      ui/window.o\
                      ui/canvas_editor/canvas_editor.o\
-                     ui/canvas_editor/undo.o\
-                     ui/canvas_editor/undo_tool.o\
-                     ui/canvas_editor/undo_frame.o\
-                     ui/canvas_editor/undo_selection.o\
-                     ui/canvas_editor/undo_layer.o\
-                     ui/canvas_editor/undo_flood_fill.o\
-                     ui/canvas_editor/undo_import.o\
+                     ui/canvas_editor/undo/undo.o\
+                     ui/canvas_editor/undo/tool.o\
+                     ui/canvas_editor/undo/frame.o\
+                     ui/canvas_editor/undo/selection.o\
+                     ui/canvas_editor/undo/layer.o\
+                     ui/canvas_editor/undo/flood_fill.o\
+                     ui/canvas_editor/undo/import.o\
                      ui/canvas_editor/clipboard.o\
                      ui/canvas_editor/selection.o\
                      ui/canvas_editor/brush.o\

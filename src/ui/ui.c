@@ -17,7 +17,7 @@
 #include "modules/ega_palette.h"
 #include "gui/list_proc.h"
 #include "gui/layer_list_proc.h"
-#include "ui/canvas_editor/undo.h"
+#include "ui/canvas_editor/undo/undo.h"
 
 static ALLEGRO_BITMAP * make_checkerboard_bitmap(ALLEGRO_COLOR c1, ALLEGRO_COLOR c2)
 {

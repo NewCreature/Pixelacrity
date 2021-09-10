@@ -7,8 +7,8 @@
 #include "modules/pixel_shader.h"
 #include "modules/color.h"
 #include "modules/dynamic_array.h"
-#include "undo.h"
-#include "undo_selection.h"
+#include "undo/undo.h"
+#include "selection.h"
 #include "clipboard.h"
 #include "selection.h"
 

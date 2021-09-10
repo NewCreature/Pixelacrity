@@ -6,8 +6,8 @@
 #include "modules/canvas/canvas_file.h"
 #include "modules/canvas/canvas_helpers.h"
 #include "file_proc.h"
-#include "ui/canvas_editor/undo.h"
-#include "ui/canvas_editor/undo_import.h"
+#include "ui/canvas_editor/undo/undo.h"
+#include "ui/canvas_editor/undo/import.h"
 
 static bool close_canvas(APP_INSTANCE * app)
 {

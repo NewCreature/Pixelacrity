@@ -1,11 +1,11 @@
 #include "t3f/t3f.h"
 #include "canvas_editor.h"
-#include "undo.h"
+#include "undo/undo.h"
 #include "modules/canvas/canvas_helpers.h"
 #include "modules/primitives.h"
 #include "modules/dynamic_array.h"
 #include "clipboard.h"
-#include "undo_selection.h"
+#include "undo/selection.h"
 #include "ui/window.h"
 
 void pa_free_selection(PA_CANVAS_EDITOR * cep)
