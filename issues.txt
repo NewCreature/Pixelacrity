@@ -15,8 +15,6 @@ Pixelacrity 0.2.13 Issues
 
    [ ]Frame adding, editing, deleting should be undoable.
 
-[ ]Crash when undoing a floating selection that was an imported bitmap.
-
 [ ]Undoing float selection prevents undoing the previous action.
 
 
@@ -637,3 +635,5 @@ Closed Issues
 [X]Add grid.
 
 [X]Reverse functionality of Export and Export As.
+
+[X]Crash when undoing a floating selection that was an imported bitmap.
