@@ -12,8 +12,6 @@ Pixelacrity 0.2.13 Issues
 
    [ ]Frame adding, editing, deleting should be undoable.
 
-[ ]Undoing float selection prevents undoing the previous action.
-
 
 Pixelacrity 0.3 Issues
 ----------------------
@@ -637,3 +635,5 @@ Closed Issues
 
 [X]Multi-layer selection shouldn't be able to paste into canvas with different
    number of layers.
+
+[X]Undoing float selection prevents undoing the previous action.
