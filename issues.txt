@@ -1,9 +1,6 @@
 Pixelacrity 0.2.13 Issues
 ------------------------
 
-[ ]Multi-layer selection shouldn't be able to paste into canvas with different
-   number of layers.
-
 [ ]Ensure undo is working properly for all functions that are undoable.
 
    [ ]Undo unfloat multi-layer selection not working.
@@ -637,3 +634,6 @@ Closed Issues
 [X]Reverse functionality of Export and Export As.
 
 [X]Crash when undoing a floating selection that was an imported bitmap.
+
+[X]Multi-layer selection shouldn't be able to paste into canvas with different
+   number of layers.
