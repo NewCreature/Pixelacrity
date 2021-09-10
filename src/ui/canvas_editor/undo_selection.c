@@ -317,6 +317,7 @@ bool pa_apply_float_selection_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, co
 		pa_shift_canvas_bitmap_array(cep->canvas, -shift_x, -shift_y);
 	}
 	pa_free_clipboard(cep);
+	pa_free_selection(cep);
 	pa_initialize_box(&cep->selection.box, new_x, new_y, new_width, new_height);
 	pa_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom);
 	t3f_debug_message("Exit pa_apply_float_selection_undo()\n");
