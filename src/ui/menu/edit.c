@@ -53,7 +53,7 @@ static int menu_edit_paste_update_proc(ALLEGRO_MENU * mp, int item, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	if(app->canvas_editor->clipboard.bitmap)
+	if(app->canvas_editor->clipboard.bitmap && (app->canvas_editor->clipboard.layer >= 0 || app->canvas_editor->clipboard.layer_max == app->canvas->layer_max))
 	{
 		t3f_set_menu_item_flags(mp, item, 0);
 	}

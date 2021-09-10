@@ -116,7 +116,7 @@ static void paste_helper(PA_CANVAS_EDITOR * cep, int pos, int ox, int oy)
 	t3f_debug_message("Enter pa_menu_edit_paste()\n");
 
 	printf("paste_helper(%d, %d, %d)\n", pos, ox, oy);
-	if(cep->clipboard.bitmap)
+	if(cep->clipboard.bitmap && (cep->clipboard.layer >= 0 || cep->clipboard.layer_max == cep->canvas->layer_max))
 	{
 		al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);
 		al_set_new_bitmap_flags(ALLEGRO_NO_PREMULTIPLIED_ALPHA);
