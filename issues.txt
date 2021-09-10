@@ -3,7 +3,7 @@ Pixelacrity 0.2.13 Issues
 
 [ ]Ensure undo is working properly for all functions that are undoable.
 
-   [ ]Undo unfloat multi-layer selection not working.
+   [X]Undo unfloat multi-layer selection not working.
 
    [ ]Add undo for layer swaps.
 
@@ -11,6 +11,8 @@ Pixelacrity 0.2.13 Issues
       requiring the selection to be unfloated.
 
    [ ]Frame adding, editing, deleting should be undoable.
+
+   [ ]Redo a float selection crashes.
 
 
 Pixelacrity 0.3 Issues
