@@ -5,9 +5,9 @@ Pixelacrity 0.2.13 Issues
 
    [X]Undo unfloat multi-layer selection not working.
 
-   [ ]Add undo for layer swaps.
+   [X]Add undo for layer swaps.
 
-   [ ]Importing a bitmap should count as an undoable change without first
+   [X]Importing a bitmap should count as an undoable change without first
       requiring the selection to be unfloated.
 
    [ ]Frame adding, editing, deleting should be undoable.
