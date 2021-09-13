@@ -1,5 +1,6 @@
 #include "instance.h"
 #include "modules/canvas/canvas.h"
+#include "modules/canvas/canvas_helpers.h"
 #include "ui/canvas_editor/undo/undo.h"
 #include "ui/canvas_editor/undo/layer.h"
 #include "ui/window.h"
@@ -65,13 +66,20 @@ int pa_menu_layer_delete(int id, void * data)
 int pa_menu_layer_move_up(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
-	PA_CANVAS_LAYER * old_layer;
+	char undo_path[1024];
 
+	printf("up %d %d\n", app->canvas_editor->current_layer, app->canvas->layer_max - 1);
 	if(app->canvas_editor->current_layer < app->canvas->layer_max - 1)
 	{
-		old_layer = app->canvas->layer[app->canvas_editor->current_layer];
-		app->canvas->layer[app->canvas_editor->current_layer] = app->canvas->layer[app->canvas_editor->current_layer + 1];
-		app->canvas->layer[app->canvas_editor->current_layer + 1] = old_layer;
+		pa_get_undo_path("undo", app->canvas_editor->undo_count, undo_path, 1024);
+		if(pa_make_swap_layer_undo(app->canvas_editor, app->canvas_editor->current_layer, app->canvas_editor->current_layer + 1, undo_path))
+		{
+			app->canvas_editor->undo_count++;
+			app->canvas_editor->redo_count = 0;
+			pa_update_undo_name(app->canvas_editor);
+			pa_update_redo_name(app->canvas_editor);
+		}
+		pa_swap_canvas_layer(app->canvas, app->canvas_editor->current_layer, app->canvas_editor->current_layer + 1);
 		app->canvas_editor->current_layer++;
 		t3f_refresh_menus();
 	}
@@ -82,13 +90,19 @@ int pa_menu_layer_move_up(int id, void * data)
 int pa_menu_layer_move_down(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
-	PA_CANVAS_LAYER * old_layer;
+	char undo_path[1024];
 
 	if(app->canvas_editor->current_layer > 0)
 	{
-		old_layer = app->canvas->layer[app->canvas_editor->current_layer];
-		app->canvas->layer[app->canvas_editor->current_layer] = app->canvas->layer[app->canvas_editor->current_layer - 1];
-		app->canvas->layer[app->canvas_editor->current_layer - 1] = old_layer;
+		pa_get_undo_path("undo", app->canvas_editor->undo_count, undo_path, 1024);
+		if(pa_make_swap_layer_undo(app->canvas_editor, app->canvas_editor->current_layer - 1, app->canvas_editor->current_layer, undo_path))
+		{
+			app->canvas_editor->undo_count++;
+			app->canvas_editor->redo_count = 0;
+			pa_update_undo_name(app->canvas_editor);
+			pa_update_redo_name(app->canvas_editor);
+		}
+		pa_swap_canvas_layer(app->canvas, app->canvas_editor->current_layer, app->canvas_editor->current_layer - 1);
 		app->canvas_editor->current_layer--;
 		t3f_refresh_menus();
 	}

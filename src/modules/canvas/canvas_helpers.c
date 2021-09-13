@@ -463,3 +463,12 @@ bool pa_handle_canvas_expansion(PA_CANVAS * cp, int left, int top, int right, in
 	}
 	return true;
 }
+
+void pa_swap_canvas_layer(PA_CANVAS * cp, int layer1, int layer2)
+{
+	PA_CANVAS_LAYER * temp_layer;
+
+	temp_layer = cp->layer[layer2];
+	cp->layer[layer2] = cp->layer[layer1];
+	cp->layer[layer1] = temp_layer;
+}

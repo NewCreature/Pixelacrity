@@ -369,6 +369,7 @@ void pa_select_canvas_editor_layer(PA_CANVAS_EDITOR * cep, int layer)
 			}
 		}
 		cep->current_layer = layer;
+		t3f_refresh_menus();
 	}
 }
 

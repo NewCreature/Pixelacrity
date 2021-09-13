@@ -13,6 +13,7 @@
 #define PA_REDO_TYPE_REMOVE_LAYER      9
 #define PA_UNDO_TYPE_FLOOD_FILL       10
 #define PA_UNDO_TYPE_IMPORT_IMAGE     11
+#define PA_UNDO_TYPE_SWAP_LAYER       12
 
 typedef struct
 {

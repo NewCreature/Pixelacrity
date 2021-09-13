@@ -150,6 +150,64 @@ bool pa_make_remove_layer_redo(PA_CANVAS_EDITOR * cep, int layer, const char * f
 	}
 }
 
+bool pa_make_swap_layer_undo(PA_CANVAS_EDITOR * cep, int layer1, int layer2, const char * fn)
+{
+	ALLEGRO_FILE * fp = NULL;
+
+	t3f_debug_message("Enter pa_make_swap_layer_undo()\n");
+	fp = al_fopen(fn, "wb");
+	if(!fp)
+	{
+		goto fail;
+	}
+	pa_write_undo_header(fp, cep, PA_UNDO_TYPE_SWAP_LAYER, layer1 < layer2 ? "Move Layer Down" : "Move Layer Up");
+	al_fwrite16le(fp, layer1);
+	al_fwrite16le(fp, layer2);
+	al_fclose(fp);
+
+	t3f_debug_message("Exit pa_make_swap_layer_undo()\n");
+	return true;
+
+	fail:
+	{
+		t3f_debug_message("Fail pa_make_swap_layer_undo()\n");
+		if(fp)
+		{
+			al_fclose(fp);
+		}
+		return false;
+	}
+}
+
+bool pa_make_swap_layer_redo(PA_CANVAS_EDITOR * cep, int layer1, int layer2, const char * fn)
+{
+	ALLEGRO_FILE * fp = NULL;
+
+	t3f_debug_message("Enter pa_make_swap_layer_redo()\n");
+	fp = al_fopen(fn, "wb");
+	if(!fp)
+	{
+		goto fail;
+	}
+	pa_write_undo_header(fp, cep, PA_UNDO_TYPE_SWAP_LAYER, layer1 < layer2 ? "Move Layer Up" : "Move Layer Down");
+	al_fwrite16le(fp, layer1);
+	al_fwrite16le(fp, layer2);
+	al_fclose(fp);
+
+	t3f_debug_message("Exit pa_make_swap_layer_redo()\n");
+	return true;
+
+	fail:
+	{
+		t3f_debug_message("Fail pa_make_swap_layer_redo()\n");
+		if(fp)
+		{
+			al_fclose(fp);
+		}
+		return false;
+	}
+}
+
 bool pa_apply_add_layer_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 {
 	char undo_path[1024];
@@ -236,5 +294,45 @@ bool pa_apply_remove_layer_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 	}
 
 	t3f_debug_message("Exit pa_apply_remove_layer_redo()\n");
+	return true;
+}
+
+bool pa_apply_swap_layer_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
+{
+	int layer1, layer2;
+	char undo_path[1024];
+
+	t3f_debug_message("Enter pa_apply_swap_layer_undo()\n");
+	layer1 = al_fread16le(fp);
+	layer2 = al_fread16le(fp);
+	if(pa_make_swap_layer_redo(cep, layer2, layer1, pa_get_undo_path("redo", cep->redo_count, undo_path, 1024)))
+	{
+		cep->redo_count++;
+	}
+	pa_swap_canvas_layer(cep->canvas, layer1, layer2);
+	cep->current_layer = -1;
+	pa_select_canvas_editor_layer(cep, layer2);
+
+	t3f_debug_message("Exit pa_apply_swap_layer_undo()\n");
+	return true;
+}
+
+bool pa_apply_swap_layer_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
+{
+	int layer1, layer2;
+	char undo_path[1024];
+
+	t3f_debug_message("Enter pa_apply_swap_layer_redo()\n");
+	layer1 = al_fread16le(fp);
+	layer2 = al_fread16le(fp);
+	if(pa_make_swap_layer_undo(cep, layer2, layer1, pa_get_undo_path("undo", cep->undo_count, undo_path, 1024)))
+	{
+		cep->undo_count++;
+	}
+	pa_swap_canvas_layer(cep->canvas, layer1, layer2);
+	cep->current_layer = -1;
+	pa_select_canvas_editor_layer(cep, layer2);
+
+	t3f_debug_message("Exit pa_apply_swap_layer_redo()\n");
 	return true;
 }
