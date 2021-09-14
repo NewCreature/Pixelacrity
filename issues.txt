@@ -12,6 +12,9 @@ Pixelacrity 0.2.13 Issues
 
    [ ]Frame adding, editing, deleting should be undoable.
 
+      [ ]Copy the original box and compare at MSG_MOUSEUP. Create an undo state
+         if the box differs.
+
    [ ]Redo a float selection crashes.
 
 [ ]Don't draw brush hint when using the frame tool.
