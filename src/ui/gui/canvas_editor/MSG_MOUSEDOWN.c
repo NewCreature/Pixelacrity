@@ -14,6 +14,7 @@
 #include "ui/canvas_editor/tools/tool_selection.h"
 #include "ui/canvas_editor/undo/undo.h"
 #include "ui/canvas_editor/undo/flood_fill.h"
+#include "ui/canvas_editor/undo/frame.h"
 #include "ui/canvas_editor/selection.h"
 #include "ui/window.h"
 
@@ -57,6 +58,7 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 	ALLEGRO_COLOR color = t3f_color_black;
 	bool made_undo = false;
 	char buf[64];
+	char undo_path[1024];
 
 	pa_update_mouse_variables(canvas_editor);
 
@@ -193,6 +195,11 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 			{
 				if(canvas_editor->hover_frame < 0)
 				{
+					pa_get_undo_path("undo", canvas_editor->undo_count, undo_path, 1024);
+					if(pa_make_frame_undo(canvas_editor, "Create Frame", undo_path))
+					{
+						pa_finalize_undo(canvas_editor);
+					}
 					sprintf(buf, "Frame %d", canvas_editor->frame_id);
 					canvas_editor->frame_id++;
 					if(pa_add_canvas_frame(canvas_editor->canvas, buf, canvas_editor->hover_x, canvas_editor->hover_y, 1, 1))
