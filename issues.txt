@@ -14,6 +14,8 @@ Pixelacrity 0.2.13 Issues
 
    [ ]Redo a float selection crashes.
 
+[ ]Don't draw brush hint when using the frame tool.
+
 
 Pixelacrity 0.3 Issues
 ----------------------
