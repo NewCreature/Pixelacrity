@@ -16,6 +16,11 @@ Pixelacrity 0.2.13 Issues
 
 [ ]Don't draw brush hint when using the frame tool.
 
+[ ]Pressing Del key when using frame tool should delete the currently selected
+   frame.
+
+[ ]We need a way to highlight the current frame when using the frame tool.
+
 
 Pixelacrity 0.3 Issues
 ----------------------
