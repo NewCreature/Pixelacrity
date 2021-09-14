@@ -14,10 +14,7 @@ int pa_menu_layer_add(int id, void * data)
 	pa_get_undo_path("undo", app->canvas_editor->undo_count, undo_path, 1024);
 	if(pa_make_add_layer_undo(app->canvas_editor, undo_path))
 	{
-		app->canvas_editor->undo_count++;
-		app->canvas_editor->redo_count = 0;
-		pa_update_undo_name(app->canvas_editor);
-		pa_update_redo_name(app->canvas_editor);
+		pa_finalize_undo(app->canvas_editor);
 	}
 	if(pa_add_canvas_layer(app->canvas, -1))
 	{
@@ -41,10 +38,7 @@ int pa_menu_layer_delete(int id, void * data)
 		pa_get_undo_path("undo", app->canvas_editor->undo_count, undo_path, 1024);
 		if(pa_make_remove_layer_undo(app->canvas_editor, app->canvas_editor->current_layer, undo_path))
 		{
-			app->canvas_editor->undo_count++;
-			app->canvas_editor->redo_count = 0;
-			pa_update_undo_name(app->canvas_editor);
-			pa_update_redo_name(app->canvas_editor);
+			pa_finalize_undo(app->canvas_editor);
 		}
 		pa_remove_canvas_layer(app->canvas, app->canvas_editor->current_layer);
 		if(app->canvas_editor->current_layer >= app->canvas->layer_max)
@@ -74,10 +68,7 @@ int pa_menu_layer_move_up(int id, void * data)
 		pa_get_undo_path("undo", app->canvas_editor->undo_count, undo_path, 1024);
 		if(pa_make_swap_layer_undo(app->canvas_editor, app->canvas_editor->current_layer, app->canvas_editor->current_layer + 1, undo_path))
 		{
-			app->canvas_editor->undo_count++;
-			app->canvas_editor->redo_count = 0;
-			pa_update_undo_name(app->canvas_editor);
-			pa_update_redo_name(app->canvas_editor);
+			pa_finalize_undo(app->canvas_editor);
 		}
 		pa_swap_canvas_layer(app->canvas, app->canvas_editor->current_layer, app->canvas_editor->current_layer + 1);
 		app->canvas_editor->current_layer++;
@@ -97,10 +88,7 @@ int pa_menu_layer_move_down(int id, void * data)
 		pa_get_undo_path("undo", app->canvas_editor->undo_count, undo_path, 1024);
 		if(pa_make_swap_layer_undo(app->canvas_editor, app->canvas_editor->current_layer - 1, app->canvas_editor->current_layer, undo_path))
 		{
-			app->canvas_editor->undo_count++;
-			app->canvas_editor->redo_count = 0;
-			pa_update_undo_name(app->canvas_editor);
-			pa_update_redo_name(app->canvas_editor);
+			pa_finalize_undo(app->canvas_editor);
 		}
 		pa_swap_canvas_layer(app->canvas, app->canvas_editor->current_layer, app->canvas_editor->current_layer - 1);
 		app->canvas_editor->current_layer--;

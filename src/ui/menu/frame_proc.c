@@ -10,10 +10,7 @@ static void make_frame_undo(PA_CANVAS_EDITOR * cep)
 	pa_get_undo_path("undo", cep->undo_count, undo_path, 1024);
 	if(pa_make_frame_undo(cep, "Add Frame", undo_path))
 	{
-		cep->undo_count++;
-		cep->redo_count = 0;
-		pa_update_undo_name(cep);
-		pa_update_redo_name(cep);
+		pa_finalize_undo(cep);
 	}
 }
 
