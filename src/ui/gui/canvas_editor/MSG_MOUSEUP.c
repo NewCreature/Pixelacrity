@@ -6,6 +6,7 @@
 #include "ui/canvas_editor/canvas_editor.h"
 #include "ui/canvas_editor/undo/undo.h"
 #include "ui/canvas_editor/undo/tool.h"
+#include "ui/canvas_editor/undo/frame.h"
 #include "ui/canvas_editor/tools/tool_pixel.h"
 #include "ui/canvas_editor/tools/tool_line.h"
 #include "ui/canvas_editor/tools/tool_rectangle.h"
@@ -42,6 +43,36 @@ static bool handle_canvas_expansion(PA_CANVAS_EDITOR * cep)
 	pa_shift_canvas_editor_variables(cep, cep->shift_x * cep->canvas->bitmap_size, cep->shift_y * cep->canvas->bitmap_size);
 
 	return ret;
+}
+
+static bool make_frame_undo(PA_CANVAS_EDITOR * cep, const char * name)
+{
+	char undo_path[1024];
+
+	pa_get_undo_path("undo", cep->undo_count, undo_path, 1024);
+	if(pa_make_frame_undo(cep, name, undo_path))
+	{
+		pa_finalize_undo(cep);
+		cep->modified++;
+		pa_set_window_message(NULL);
+		return true;
+	}
+	return false;
+}
+
+static bool finalize_frame_edit(PA_CANVAS_EDITOR * cep, const char * name)
+{
+	PA_BOX temp_box;
+
+	cep->canvas->frame[cep->hover_frame]->box.state = PA_BOX_STATE_IDLE;
+	if(memcmp(&cep->canvas->frame[cep->hover_frame]->box, &cep->click_box, sizeof(PA_BOX)))
+	{
+		memcpy(&temp_box, &cep->canvas->frame[cep->hover_frame]->box, sizeof(PA_BOX));
+		memcpy(&cep->canvas->frame[cep->hover_frame]->box, &cep->click_box, sizeof(PA_BOX));
+		make_frame_undo(cep, name);
+		memcpy(&cep->canvas->frame[cep->hover_frame]->box, &temp_box, sizeof(PA_BOX));
+	}
+	return true;
 }
 
 void pa_canvas_editor_MSG_MOUSEUP(T3GUI_ELEMENT * d, int c)
@@ -233,11 +264,19 @@ void pa_canvas_editor_MSG_MOUSEUP(T3GUI_ELEMENT * d, int c)
 		{
 			switch(canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.state)
 			{
-				case PA_BOX_STATE_MOVING:
 				case PA_BOX_STATE_DRAWING:
-				case PA_BOX_STATE_RESIZING:
 				{
 					canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.state = PA_BOX_STATE_IDLE;
+					break;
+				}
+				case PA_BOX_STATE_MOVING:
+				{
+					finalize_frame_edit(canvas_editor, "Move Frame");
+					break;
+				}
+				case PA_BOX_STATE_RESIZING:
+				{
+					finalize_frame_edit(canvas_editor, "Resize Frame");
 					break;
 				}
 				default:

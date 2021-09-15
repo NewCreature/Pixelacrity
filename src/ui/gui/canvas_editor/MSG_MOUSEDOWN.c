@@ -226,6 +226,7 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 						/* set box moving logic in motion */
 						case PA_BOX_STATE_HOVER:
 						{
+							memcpy(&canvas_editor->click_box, &canvas_editor->canvas->frame[canvas_editor->hover_frame]->box, sizeof(PA_BOX));
 							canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.click_start_x = canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.start_x;
 							canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.click_start_y = canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.start_y;
 							canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.click_x = canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.hover_x;
@@ -237,6 +238,7 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 						/* set box resizing logic in motion */
 						case PA_BOX_STATE_HOVER_HANDLE:
 						{
+							memcpy(&canvas_editor->click_box, &canvas_editor->canvas->frame[canvas_editor->hover_frame]->box, sizeof(PA_BOX));
 							canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.state = PA_BOX_STATE_RESIZING;
 							break;
 						}

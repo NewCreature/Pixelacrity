@@ -147,6 +147,7 @@ typedef struct
 	PA_CANVAS * canvas;
 	char canvas_path[4096];
 	char * export_path;
+	PA_BOX click_box;
 
 	int undo_count;
 	char undo_name[256];
