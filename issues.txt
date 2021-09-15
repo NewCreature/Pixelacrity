@@ -17,6 +17,9 @@ Pixelacrity 0.2.14 Issues
 
    [ ]Redo a float selection crashes.
 
+   [ ]Modified counter needs to stay synched so if we undo all the way back to
+      the last save it is counted as unmodified.
+
 [ ]Don't draw brush hint when using the frame tool.
 
 [ ]Pressing Del key when using frame tool should delete the currently selected
