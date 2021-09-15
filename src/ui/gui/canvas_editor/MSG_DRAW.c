@@ -53,6 +53,7 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 	PA_CANVAS_EDITOR * canvas_editor = (PA_CANVAS_EDITOR *)d->dp;
 	T3GUI_THEME * theme;
 	ALLEGRO_COLOR color = t3f_color_black;
+	ALLEGRO_COLOR title_color = t3f_color_black;
 	int tx, ty;
 	ALLEGRO_BITMAP * peg_bitmap;
 	char buf[256];
@@ -148,11 +149,19 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 			{
 				color = al_map_rgba_f(0.0, 0.0, 0.0, 0.25);
 			}
+			if(i == canvas_editor->current_frame)
+			{
+				title_color = t3f_color_black;
+			}
+			else
+			{
+				title_color = al_map_rgba_f(0.0, 0.0, 0.0, 0.25);
+			}
 		}
 		if(theme)
 		{
 			sprintf(buf, "%s (%dx%d)", canvas_editor->canvas->frame[i]->name, canvas_editor->canvas->frame[i]->box.width, canvas_editor->canvas->frame[i]->box.height);
-			al_draw_text(theme->state[0].font[0], color, d->x + (canvas_editor->canvas->frame[i]->box.start_x - canvas_editor->view_x) * canvas_editor->view_zoom, d->y + (canvas_editor->canvas->frame[i]->box.start_y - canvas_editor->view_y) * canvas_editor->view_zoom - al_get_font_line_height(theme->state[0].font[0]) - PA_UI_ELEMENT_SPACE, 0, buf);
+			al_draw_text(theme->state[0].font[0], title_color, d->x + (canvas_editor->canvas->frame[i]->box.start_x - canvas_editor->view_x) * canvas_editor->view_zoom, d->y + (canvas_editor->canvas->frame[i]->box.start_y - canvas_editor->view_y) * canvas_editor->view_zoom - al_get_font_line_height(theme->state[0].font[0]) - PA_UI_ELEMENT_SPACE, 0, buf);
 		}
 		pa_box_render(&canvas_editor->canvas->frame[i]->box, 0, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, color, peg_bitmap);
 	}
