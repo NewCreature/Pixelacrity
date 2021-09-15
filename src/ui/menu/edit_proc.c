@@ -319,27 +319,6 @@ int pa_menu_edit_turn_counter_clockwise(int id, void * data)
 	return 0;
 }
 
-int pa_menu_edit_delete_layer(int id, void * data)
-{
-	APP_INSTANCE * app = (APP_INSTANCE *)data;
-
-	t3f_debug_message("Enter pa_menu_edit_delete_layer()\n");
-	if(!pa_remove_canvas_layer(app->canvas, app->canvas_editor->current_layer))
-	{
-		printf("Failed to remove layer!\n");
-	}
-	if(app->canvas_editor->current_layer >= app->canvas->layer_max)
-	{
-		pa_select_canvas_editor_layer(app->canvas_editor, app->canvas_editor->canvas->layer_max - 1);
-	}
-	if(app->canvas_editor->current_layer < 0)
-	{
-		pa_select_canvas_editor_layer(app->canvas_editor, 0);
-	}
-	t3f_debug_message("Exit pa_menu_edit_delete_layer()\n");
-	return 0;
-}
-
 int pa_menu_edit_delete(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
