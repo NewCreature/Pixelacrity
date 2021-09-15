@@ -20,8 +20,6 @@ Pixelacrity 0.2.14 Issues
    [ ]Modified counter needs to stay synched so if we undo all the way back to
       the last save it is counted as unmodified.
 
-[ ]Don't draw brush hint when using the frame tool.
-
 [ ]Pressing Del key when using frame tool should delete the currently selected
    frame.
 
@@ -657,3 +655,5 @@ Closed Issues
    number of layers.
 
 [X]Undoing float selection prevents undoing the previous action.
+
+[X]Don't draw brush hint when using the frame tool.
