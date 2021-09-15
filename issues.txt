@@ -21,8 +21,6 @@ Pixelacrity 0.2.14 Issues
    [ ]Modified counter needs to stay synched so if we undo all the way back to
       the last save it is counted as unmodified.
 
-[ ]Can't paste single layer clipboard into another canvas.
-
 [ ]Don't modify clipboard/floating selection layer count when adding/removing
    layers if the layer count doesn't match.
 
