@@ -115,7 +115,7 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 				draw_grid(d->x, d->y, d->w, d->h, canvas_editor->grid[i].space * canvas_editor->view_zoom, canvas_editor->grid[i].color);
 			}
 		}
-		if(canvas_editor->current_tool != PA_TOOL_DROPPER && canvas_editor->current_tool != PA_TOOL_FLOOD_FILL && canvas_editor->current_tool != PA_TOOL_SELECTION)
+		if(canvas_editor->current_tool != PA_TOOL_DROPPER && canvas_editor->current_tool != PA_TOOL_FLOOD_FILL && canvas_editor->current_tool != PA_TOOL_SELECTION && canvas_editor->current_tool != PA_TOOL_FRAME)
 		{
 			generate_brush_hint(canvas_editor);
 			al_draw_bitmap(canvas_editor->scratch_bitmap, ((int)(t3gui_get_mouse_x() - d->x) / canvas_editor->view_zoom) * canvas_editor->view_zoom + d->x - (al_get_bitmap_width(canvas_editor->brush) / 2) * canvas_editor->view_zoom - 1.0, ((int)(t3gui_get_mouse_y() - d->y) / canvas_editor->view_zoom) * canvas_editor->view_zoom + d->y - (al_get_bitmap_height(canvas_editor->brush) / 2) * canvas_editor->view_zoom - 1.0, 0);
