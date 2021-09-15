@@ -197,125 +197,122 @@ int pa_menu_edit_paste_in_place(int id, void * data)
 	return 0;
 }
 
-int pa_menu_edit_flip_horizontal(int id, void * data)
+static void flip_horizontal(PA_CANVAS_EDITOR * cep, bool multi)
 {
-	APP_INSTANCE * app = (APP_INSTANCE *)data;
 	bool need_float = false;
 	int i;
 
-	if(!app->canvas_editor->selection.bitmap_stack)
+	if(!cep->selection.bitmap_stack)
 	{
-		pa_handle_float_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box, false);
+		pa_handle_float_canvas_editor_selection(cep, &cep->selection.box, multi);
 		need_float = true;
 	}
-	if(app->canvas_editor->selection.bitmap_stack)
+	if(cep->selection.bitmap_stack)
 	{
-		for(i = 0; i < app->canvas_editor->selection.layer_max; i++)
+		for(i = 0; i < cep->selection.layer_max; i++)
 		{
-			if(app->canvas_editor->selection.bitmap_stack->bitmap[i])
+			if(cep->selection.bitmap_stack->bitmap[i])
 			{
-				pa_flip_bitmap(app->canvas_editor->selection.bitmap_stack->bitmap[i], true, false);
+				pa_flip_bitmap(cep->selection.bitmap_stack->bitmap[i], true, false);
 			}
 		}
 	}
 	if(need_float)
 	{
-		pa_handle_unfloat_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box);
+		pa_handle_unfloat_canvas_editor_selection(cep, &cep->selection.box);
 	}
+}
+
+int pa_menu_edit_flip_horizontal(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	flip_horizontal(app->canvas_editor, false);
+
 	return 0;
+}
+
+static void flip_vertical(PA_CANVAS_EDITOR * cep, bool multi)
+{
+	bool need_float = false;
+	int i;
+
+	if(!cep->selection.bitmap_stack)
+	{
+		pa_handle_float_canvas_editor_selection(cep, &cep->selection.box, multi);
+		need_float = true;
+	}
+	if(cep->selection.bitmap_stack)
+	{
+		for(i = 0; i < cep->selection.layer_max; i++)
+		{
+			if(cep->selection.bitmap_stack->bitmap[i])
+			{
+				pa_flip_bitmap(cep->selection.bitmap_stack->bitmap[i], false, true);
+			}
+		}
+	}
+	if(need_float)
+	{
+		pa_handle_unfloat_canvas_editor_selection(cep, &cep->selection.box);
+	}
 }
 
 int pa_menu_edit_flip_vertical(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
-	bool need_float = false;
-	int i;
 
-	if(!app->canvas_editor->selection.bitmap_stack)
-	{
-		pa_handle_float_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box, false);
-		need_float = true;
-	}
-	if(app->canvas_editor->selection.bitmap_stack)
-	{
-		for(i = 0; i < app->canvas_editor->selection.layer_max; i++)
-		{
-			if(app->canvas_editor->selection.bitmap_stack->bitmap[i])
-			{
-				pa_flip_bitmap(app->canvas_editor->selection.bitmap_stack->bitmap[i], false, true);
-			}
-		}
-	}
-	if(need_float)
-	{
-		pa_handle_unfloat_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box);
-	}
+	flip_vertical(app->canvas_editor, false);
+
 	return 0;
 }
 
-int pa_menu_edit_turn_clockwise(int id, void * data)
+static void turn(PA_CANVAS_EDITOR * cep, int amount, bool multi)
 {
-	APP_INSTANCE * app = (APP_INSTANCE *)data;
 	bool need_float = false;
 	int i, c = -1;
 
-	if(!app->canvas_editor->selection.bitmap_stack)
+	if(!cep->selection.bitmap_stack)
 	{
-		pa_handle_float_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box, false);
+		pa_handle_float_canvas_editor_selection(cep, &cep->selection.box, multi);
 		need_float = true;
 	}
-	if(app->canvas_editor->selection.bitmap_stack)
+	if(cep->selection.bitmap_stack)
 	{
-		for(i = 0; i < app->canvas_editor->selection.layer_max; i++)
+		for(i = 0; i < cep->selection.layer_max; i++)
 		{
-			if(app->canvas_editor->selection.bitmap_stack->bitmap[i])
+			if(cep->selection.bitmap_stack->bitmap[i])
 			{
-				pa_turn_bitmap(&app->canvas_editor->selection.bitmap_stack->bitmap[i], 1);
+				pa_turn_bitmap(&cep->selection.bitmap_stack->bitmap[i], amount);
 				c = i;
 			}
 		}
 		if(c >= 0)
 		{
-			i = app->canvas_editor->selection.bitmap_stack->width;
-			app->canvas_editor->selection.bitmap_stack->width = app->canvas_editor->selection.bitmap_stack->height;
-			app->canvas_editor->selection.bitmap_stack->height = i;
-			pa_initialize_box(&app->canvas_editor->selection.box, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, app->canvas_editor->selection.bitmap_stack->width, app->canvas_editor->selection.bitmap_stack->height);
+			i = cep->selection.bitmap_stack->width;
+			cep->selection.bitmap_stack->width = cep->selection.bitmap_stack->height;
+			cep->selection.bitmap_stack->height = i;
+			pa_initialize_box(&cep->selection.box, cep->selection.box.start_x, cep->selection.box.start_y, cep->selection.bitmap_stack->width, cep->selection.bitmap_stack->height);
 		}
-		pa_update_box_handles(&app->canvas_editor->selection.box, app->canvas_editor->view_x, app->canvas_editor->view_y, app->canvas_editor->view_zoom);
+		pa_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom);
 	}
+}
+
+int pa_menu_edit_turn_clockwise(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	turn(app->canvas_editor, 1, false);
+
 	return 0;
 }
 
 int pa_menu_edit_turn_counter_clockwise(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
-	bool need_float = false;
-	int i, c = -1;
 
-	if(!app->canvas_editor->selection.bitmap_stack)
-	{
-		pa_handle_float_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box, false);
-		need_float = true;
-	}
-	if(app->canvas_editor->selection.bitmap_stack)
-	{
-		for(i = 0; i < app->canvas_editor->selection.layer_max; i++)
-		{
-			if(app->canvas_editor->selection.bitmap_stack->bitmap[i])
-			{
-				pa_turn_bitmap(&app->canvas_editor->selection.bitmap_stack->bitmap[i], -1);
-				c = i;
-			}
-		}
-		if(c >= 0)
-		{
-			i = app->canvas_editor->selection.bitmap_stack->width;
-			app->canvas_editor->selection.bitmap_stack->width = app->canvas_editor->selection.bitmap_stack->height;
-			app->canvas_editor->selection.bitmap_stack->height = i;
-			pa_initialize_box(&app->canvas_editor->selection.box, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, app->canvas_editor->selection.bitmap_stack->width, app->canvas_editor->selection.bitmap_stack->height);
-		}
-		pa_update_box_handles(&app->canvas_editor->selection.box, app->canvas_editor->view_x, app->canvas_editor->view_y, app->canvas_editor->view_zoom);
-	}
+	turn(app->canvas_editor, -1, false);
+
 	return 0;
 }
 
@@ -437,122 +434,36 @@ int pa_menu_edit_multilayer_copy(int id, void * data)
 int pa_menu_edit_multilayer_flip_horizontal(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
-	bool need_float = false;
-	int i;
 
-	if(!app->canvas_editor->selection.bitmap_stack)
-	{
-		pa_handle_float_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box, true);
-		need_float = true;
-	}
-	if(app->canvas_editor->selection.bitmap_stack)
-	{
-		for(i = 0; i < app->canvas_editor->selection.layer_max; i++)
-		{
-			if(app->canvas_editor->selection.bitmap_stack->bitmap[i])
-			{
-				pa_flip_bitmap(app->canvas_editor->selection.bitmap_stack->bitmap[i], true, false);
-			}
-		}
-	}
-	if(need_float)
-	{
-		pa_handle_unfloat_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box);
-	}
+	flip_horizontal(app->canvas_editor, true);
+
 	return 0;
 }
 
 int pa_menu_edit_multilayer_flip_vertical(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
-	bool need_float = false;
-	int i;
 
-	if(!app->canvas_editor->selection.bitmap_stack)
-	{
-		pa_handle_float_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box, true);
-		need_float = true;
-	}
-	if(app->canvas_editor->selection.bitmap_stack)
-	{
-		for(i = 0; i < app->canvas_editor->selection.layer_max; i++)
-		{
-			if(app->canvas_editor->selection.bitmap_stack->bitmap[i])
-			{
-				pa_flip_bitmap(app->canvas_editor->selection.bitmap_stack->bitmap[i], false, true);
-			}
-		}
-	}
-	if(need_float)
-	{
-		pa_handle_unfloat_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box);
-	}
+	flip_vertical(app->canvas_editor, true);
+
 	return 0;
 }
 
 int pa_menu_edit_multilayer_turn_clockwise(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
-	bool need_float = false;
-	int i, c = -1;
 
-	if(!app->canvas_editor->selection.bitmap_stack)
-	{
-		pa_handle_float_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box, true);
-		need_float = true;
-	}
-	if(app->canvas_editor->selection.bitmap_stack)
-	{
-		for(i = 0; i < app->canvas_editor->selection.layer_max; i++)
-		{
-			if(app->canvas_editor->selection.bitmap_stack->bitmap[i])
-			{
-				pa_turn_bitmap(&app->canvas_editor->selection.bitmap_stack->bitmap[i], 1);
-				c = i;
-			}
-		}
-		if(c >= 0)
-		{
-			i = app->canvas_editor->selection.bitmap_stack->width;
-			app->canvas_editor->selection.bitmap_stack->width = app->canvas_editor->selection.bitmap_stack->height;
-			app->canvas_editor->selection.bitmap_stack->height = i;
-			pa_initialize_box(&app->canvas_editor->selection.box, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, app->canvas_editor->selection.bitmap_stack->width, app->canvas_editor->selection.bitmap_stack->height);
-		}
-		pa_update_box_handles(&app->canvas_editor->selection.box, app->canvas_editor->view_x, app->canvas_editor->view_y, app->canvas_editor->view_zoom);
-	}
+	turn(app->canvas_editor, 1, true);
+
 	return 0;
 }
 
 int pa_menu_edit_multilayer_turn_counter_clockwise(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
-	bool need_float = false;
-	int i, c = -1;
 
-	if(!app->canvas_editor->selection.bitmap_stack)
-	{
-		pa_handle_float_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box, true);
-		need_float = true;
-	}
-	if(app->canvas_editor->selection.bitmap_stack)
-	{
-		for(i = 0; i < app->canvas_editor->selection.layer_max; i++)
-		{
-			if(app->canvas_editor->selection.bitmap_stack->bitmap[i])
-			{
-				pa_turn_bitmap(&app->canvas_editor->selection.bitmap_stack->bitmap[i], -1);
-				c = i;
-			}
-		}
-		if(c >= 0)
-		{
-			i = app->canvas_editor->selection.bitmap_stack->width;
-			app->canvas_editor->selection.bitmap_stack->width = app->canvas_editor->selection.bitmap_stack->height;
-			app->canvas_editor->selection.bitmap_stack->height = i;
-			pa_initialize_box(&app->canvas_editor->selection.box, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, app->canvas_editor->selection.bitmap_stack->width, app->canvas_editor->selection.bitmap_stack->height);
-		}
-		pa_update_box_handles(&app->canvas_editor->selection.box, app->canvas_editor->view_x, app->canvas_editor->view_y, app->canvas_editor->view_zoom);
-	}
+	turn(app->canvas_editor, -1, true);
+
 	return 0;
 }
 
