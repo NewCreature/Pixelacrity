@@ -373,6 +373,10 @@ void pa_draw_primitive_to_canvas(PA_CANVAS * cp, int layer, int x1, int y1, int 
 			{
 				al_use_shader(shader);
 			}
+			else
+			{
+				pa_set_target_pixel_shader(NULL);
+			}
 			al_use_transform(&identity);
 			if(mode == PA_RENDER_COPY)
 			{
