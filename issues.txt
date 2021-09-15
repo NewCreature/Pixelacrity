@@ -29,6 +29,8 @@ Pixelacrity 0.2.14 Issues
 
 [ ]All frame handles should be updated each tick.
 
+[ ]Shapes drawn over canvas tile border don't undo properly.
+
 
 Pixelacrity 0.3 Issues
 ----------------------
