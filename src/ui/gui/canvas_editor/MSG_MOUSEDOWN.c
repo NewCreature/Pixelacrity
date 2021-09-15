@@ -206,6 +206,8 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 					{
 						canvas_editor->hover_frame = canvas_editor->canvas->frame_max - 1;
 						canvas_editor->current_frame = canvas_editor->hover_frame;
+						canvas_editor->modified++;
+						pa_set_window_message(NULL);
 					}
 				}
 				if(canvas_editor->hover_frame >= 0)

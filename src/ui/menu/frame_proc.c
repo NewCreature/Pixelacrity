@@ -2,13 +2,14 @@
 #include "modules/canvas/canvas.h"
 #include "ui/canvas_editor/undo/undo.h"
 #include "ui/canvas_editor/undo/frame.h"
+#include "ui/window.h"
 
-static void make_frame_undo(PA_CANVAS_EDITOR * cep)
+static void make_frame_undo(PA_CANVAS_EDITOR * cep, const char * name)
 {
 	char undo_path[1024];
 
 	pa_get_undo_path("undo", cep->undo_count, undo_path, 1024);
-	if(pa_make_frame_undo(cep, "Add Frame", undo_path))
+	if(pa_make_frame_undo(cep, name, undo_path))
 	{
 		pa_finalize_undo(cep);
 	}
@@ -22,11 +23,15 @@ int pa_menu_frame_add_from_selection(int id, void * data)
 	t3f_debug_message("Enter pa_menu_frame_add_from_selection()\n");
 	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0)
 	{
-		make_frame_undo(app->canvas_editor);
+		make_frame_undo(app->canvas_editor, "Add Frame");
 		sprintf(buf, "Frame %d", app->canvas->frame_max + 1);
-		pa_add_canvas_frame(app->canvas, buf, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, app->canvas_editor->selection.box.width, app->canvas_editor->selection.box.height);
-		app->canvas_editor->current_frame = app->canvas->frame_max - 1;
-		t3f_refresh_menus();
+		if(pa_add_canvas_frame(app->canvas, buf, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, app->canvas_editor->selection.box.width, app->canvas_editor->selection.box.height))
+		{
+			app->canvas_editor->current_frame = app->canvas->frame_max - 1;
+			app->canvas_editor->modified++;
+			pa_set_window_message(NULL);
+			t3f_refresh_menus();
+		}
 	}
 	t3f_debug_message("Exit pa_menu_frame_add_from_selection()\n");
 	return 0;
@@ -38,13 +43,17 @@ static bool add_frame(PA_CANVAS_EDITOR * cep, int width, int height)
 	int x, y;
 
 	t3f_debug_message("Enter add_frame(cep, %d, %d)\n", width, height);
-	make_frame_undo(cep);
+	make_frame_undo(cep, "Add Frame");
 	sprintf(buf, "Frame %d", cep->canvas->frame_max + 1);
 	x = cep->view_x + cep->view_width / 2 - width / 2;
 	y = cep->view_y + cep->view_height / 2 - height / 2;
-	pa_add_canvas_frame(cep->canvas, buf, x, y, width, height);
-	cep->current_frame = cep->canvas->frame_max - 1;
-	t3f_refresh_menus();
+	if(pa_add_canvas_frame(cep->canvas, buf, x, y, width, height))
+	{
+		cep->current_frame = cep->canvas->frame_max - 1;
+		cep->modified++;
+		pa_set_window_message(NULL);
+		t3f_refresh_menus();
+	}
 	t3f_debug_message("Exit add_frame()\n");
 	return true;
 }
@@ -186,7 +195,7 @@ int pa_menu_frame_delete(int id, void * data)
 	t3f_debug_message("Enter pa_menu_frame_delete()\n");
 	if(app->canvas_editor->current_frame < app->canvas->frame_max)
 	{
-		make_frame_undo(app->canvas_editor);
+		make_frame_undo(app->canvas_editor, "Delete Frame");
 		pa_remove_canvas_frame(app->canvas, app->canvas_editor->current_frame);
 		if(app->canvas_editor->current_frame >= app->canvas->frame_max)
 		{
@@ -196,6 +205,8 @@ int pa_menu_frame_delete(int id, void * data)
 		{
 			app->canvas_editor->current_frame = 0;
 		}
+		app->canvas_editor->modified++;
+		pa_set_window_message(NULL);
 		t3f_refresh_menus();
 	}
 	t3f_debug_message("Exit pa_menu_frame_delete()\n");
