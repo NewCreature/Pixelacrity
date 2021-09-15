@@ -389,9 +389,9 @@ bool pa_import_image(PA_CANVAS_EDITOR * cep, const char * fn)
 		if(cep->selection.bitmap[cep->current_layer])
 		{
 			pa_select_canvas_editor_tool(cep, PA_TOOL_SELECTION);
-			x = cep->view_x + cep->view_width / 2 - al_get_bitmap_width(cep->selection.bitmap[0]) / 2;
-			y = cep->view_y + cep->view_height / 2 - al_get_bitmap_height(cep->selection.bitmap[0]) / 2;
-			pa_initialize_box(&cep->selection.box, x, y, al_get_bitmap_width(cep->selection.bitmap[0]), al_get_bitmap_height(cep->selection.bitmap[0]));
+			x = cep->view_x + cep->view_width / 2 - al_get_bitmap_width(cep->selection.bitmap[cep->current_layer]) / 2;
+			y = cep->view_y + cep->view_height / 2 - al_get_bitmap_height(cep->selection.bitmap[cep->current_layer]) / 2;
+			pa_initialize_box(&cep->selection.box, x, y, al_get_bitmap_width(cep->selection.bitmap[cep->current_layer]), al_get_bitmap_height(cep->selection.bitmap[cep->current_layer]));
 			pa_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom);
 			cep->selection.layer_max = cep->canvas->layer_max;
 			cep->selection.layer = cep->current_layer;
