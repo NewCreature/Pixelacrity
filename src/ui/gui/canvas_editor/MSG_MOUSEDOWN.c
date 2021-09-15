@@ -157,7 +157,7 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 						 interacting with an existing selection */
 					case PA_BOX_STATE_IDLE:
 					{
-						if(canvas_editor->selection.bitmap)
+						if(canvas_editor->selection.bitmap_stack)
 						{
 							pa_unfloat_canvas_editor_selection(canvas_editor, &canvas_editor->selection.box);
 						}
@@ -180,7 +180,7 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 					/* set box resizing logic in motion */
 					case PA_BOX_STATE_HOVER_HANDLE:
 					{
-						if(canvas_editor->selection.bitmap)
+						if(canvas_editor->selection.bitmap_stack)
 						{
 							pa_unfloat_canvas_editor_selection(canvas_editor, &canvas_editor->selection.box);
 						}

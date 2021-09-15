@@ -53,7 +53,7 @@ static int menu_edit_paste_update_proc(ALLEGRO_MENU * mp, int item, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	if(app->canvas_editor->clipboard.bitmap && (app->canvas_editor->clipboard.layer >= 0 || app->canvas_editor->clipboard.layer_max == app->canvas->layer_max))
+	if(app->canvas_editor->clipboard.bitmap_stack && (app->canvas_editor->clipboard.layer >= 0 || app->canvas_editor->clipboard.layer_max == app->canvas->layer_max))
 	{
 		t3f_set_menu_item_flags(mp, item, 0);
 	}
@@ -68,7 +68,7 @@ static int menu_edit_unfloat_update_proc(ALLEGRO_MENU * mp, int item, void * dat
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	if(app->canvas_editor->selection.bitmap)
+	if(app->canvas_editor->selection.bitmap_stack)
 	{
 		t3f_set_menu_item_flags(mp, item, 0);
 	}
@@ -83,7 +83,7 @@ static int menu_edit_float_update_proc(ALLEGRO_MENU * mp, int item, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0 && !app->canvas_editor->selection.bitmap)
+	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0 && !app->canvas_editor->selection.bitmap_stack)
 	{
 		t3f_set_menu_item_flags(mp, item, 0);
 	}

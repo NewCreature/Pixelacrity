@@ -4,6 +4,7 @@
 #include "t3gui/t3gui.h"
 #include "modules/canvas/canvas.h"
 #include "modules/box.h"
+#include "modules/multi_layer_bitmap.h"
 
 #define PA_CANVAS_EDITOR_SIGNAL_NONE         0
 #define PA_CANVAS_EDITOR_SIGNAL_DELETE_LAYER 1
@@ -39,7 +40,8 @@
 typedef struct
 {
 
-	ALLEGRO_BITMAP ** bitmap;
+	PA_BITMAP_STACK * bitmap_stack;
+//	ALLEGRO_BITMAP ** bitmap;
 	int layer_max;
 	int layer;
 	PA_BOX box;
@@ -52,7 +54,8 @@ typedef struct
 typedef struct
 {
 
-	ALLEGRO_BITMAP ** bitmap;
+	PA_BITMAP_STACK * bitmap_stack;
+//	ALLEGRO_BITMAP ** bitmap;
 	int layer_max;
 	int layer;
 	int x, y;

@@ -32,9 +32,9 @@ static void grab_brush(PA_CANVAS_EDITOR * cep, ALLEGRO_BITMAP * bp, bool multi)
 	{
 		al_use_shader(cep->solid_shader);
 	}
-	if(cep->selection.bitmap)
+	if(cep->selection.bitmap_stack)
 	{
-		al_draw_bitmap(cep->selection.bitmap[cep->selection.layer], 0, 0, 0);
+		al_draw_bitmap(cep->selection.bitmap_stack->bitmap[cep->selection.layer], 0, 0, 0);
 	}
 	else
 	{
@@ -51,7 +51,7 @@ int pa_menu_tool_brush_grab_from_selection(int id, void * data)
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 	ALLEGRO_BITMAP * bp;
 
-	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0 && !(app->canvas_editor->selection.bitmap && app->canvas_editor->selection.layer < 0))
+	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0 && !(app->canvas_editor->selection.bitmap_stack && app->canvas_editor->selection.layer < 0))
 	{
 		bp = al_create_bitmap(app->canvas_editor->selection.box.width, app->canvas_editor->selection.box.height);
 		if(bp)
@@ -67,7 +67,7 @@ int pa_menu_tool_brush_grab_from_selection_multicolor(int id, void * data)
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 	ALLEGRO_BITMAP * bp;
 
-	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0 && !(app->canvas_editor->selection.bitmap && app->canvas_editor->selection.layer < 0))
+	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0 && !(app->canvas_editor->selection.bitmap_stack && app->canvas_editor->selection.layer < 0))
 	{
 		bp = al_create_bitmap(app->canvas_editor->selection.box.width, app->canvas_editor->selection.box.height);
 		if(bp)

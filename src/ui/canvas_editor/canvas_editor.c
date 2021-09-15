@@ -344,7 +344,7 @@ void pa_select_canvas_editor_tool(PA_CANVAS_EDITOR * cep, int tool)
 {
 	if(cep->current_tool == PA_TOOL_SELECTION && tool != PA_TOOL_SELECTION)
 	{
-		if(cep->selection.bitmap)
+		if(cep->selection.bitmap_stack)
 		{
 			pa_unfloat_canvas_editor_selection(cep, &cep->selection.box);
 		}
@@ -363,7 +363,7 @@ void pa_select_canvas_editor_layer(PA_CANVAS_EDITOR * cep, int layer)
 	{
 		if(cep->selection.box.width > 0 && cep->selection.box.height > 0)
 		{
-			if(!cep->selection.bitmap)
+			if(!cep->selection.bitmap_stack)
 			{
 				pa_clear_canvas_editor_selection(cep);
 			}
@@ -375,23 +375,28 @@ void pa_select_canvas_editor_layer(PA_CANVAS_EDITOR * cep, int layer)
 
 bool pa_import_image(PA_CANVAS_EDITOR * cep, const char * fn)
 {
-	int x, y;
+	int i, x, y;
+	ALLEGRO_BITMAP * bp;
 
 	t3f_debug_message("Enter pa_import_image()\n");
-	if(cep->selection.bitmap)
+	if(cep->selection.bitmap_stack)
 	{
 		pa_handle_unfloat_canvas_editor_selection(cep, &cep->selection.box);
 	}
-	cep->selection.bitmap = (ALLEGRO_BITMAP **)pa_malloc(sizeof(ALLEGRO_BITMAP *), cep->canvas->layer_max);
-	if(cep->selection.bitmap)
+	bp = al_load_bitmap_flags(fn, ALLEGRO_NO_PREMULTIPLIED_ALPHA);
+	if(bp)
 	{
-		cep->selection.bitmap[cep->current_layer] = al_load_bitmap_flags(fn, ALLEGRO_NO_PREMULTIPLIED_ALPHA);
-		if(cep->selection.bitmap[cep->current_layer])
+		cep->selection.bitmap_stack = pa_create_bitmap_stack(cep->canvas->layer_max, al_get_bitmap_width(bp), al_get_bitmap_height(bp));
+		if(cep->selection.bitmap_stack)
 		{
 			pa_select_canvas_editor_tool(cep, PA_TOOL_SELECTION);
-			x = cep->view_x + cep->view_width / 2 - al_get_bitmap_width(cep->selection.bitmap[cep->current_layer]) / 2;
-			y = cep->view_y + cep->view_height / 2 - al_get_bitmap_height(cep->selection.bitmap[cep->current_layer]) / 2;
-			pa_initialize_box(&cep->selection.box, x, y, al_get_bitmap_width(cep->selection.bitmap[cep->current_layer]), al_get_bitmap_height(cep->selection.bitmap[cep->current_layer]));
+			x = cep->view_x + cep->view_width / 2 - al_get_bitmap_width(bp) / 2;
+			y = cep->view_y + cep->view_height / 2 - al_get_bitmap_height(bp) / 2;
+			pa_initialize_box(&cep->selection.box, x, y, al_get_bitmap_width(bp), al_get_bitmap_height(bp));
+			for(i = 0; i < cep->canvas->layer_max; i++)
+			{
+				pa_add_layer_to_bitmap_stack(cep->selection.bitmap_stack, i == cep->current_layer ? bp : NULL, i);
+			}
 			pa_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom);
 			cep->selection.layer_max = cep->canvas->layer_max;
 			cep->selection.layer = cep->current_layer;

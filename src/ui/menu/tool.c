@@ -7,7 +7,7 @@ int menu_grab_brush_update_proc(ALLEGRO_MENU * mp, int item, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0 && !(app->canvas_editor->selection.bitmap && app->canvas_editor->selection.layer < 0))
+	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0 && !(app->canvas_editor->selection.bitmap_stack && app->canvas_editor->selection.layer < 0))
 	{
 		t3f_set_menu_item_flags(mp, item, 0);
 	}

@@ -65,7 +65,7 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 	al_identity_transform(&identity);
 	al_use_transform(&identity);
 
-	if(canvas_editor->selection.layer < 0 && canvas_editor->selection.bitmap)
+	if(canvas_editor->selection.layer < 0 && canvas_editor->selection.bitmap_stack)
 	{
 		for(i = 0; i < canvas_editor->canvas->layer_max; i++)
 		{
@@ -85,7 +85,7 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 			}
 		}
 
-		if(canvas_editor->selection.bitmap)
+		if(canvas_editor->selection.bitmap_stack)
 		{
 			pa_tool_selection_render_layer(canvas_editor, canvas_editor->current_layer);
 			al_use_shader(canvas_editor->premultiplied_alpha_shader);
@@ -161,7 +161,7 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 	if(canvas_editor->selection.box.width > 0 && canvas_editor->selection.box.height > 0)
 	{
 		pa_box_render(&canvas_editor->selection.box, 0, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, t3f_color_black, canvas_editor->peg_bitmap);
-		if(canvas_editor->selection.bitmap)
+		if(canvas_editor->selection.bitmap_stack)
 		{
 			if(canvas_editor->selection.layer < 0)
 			{
