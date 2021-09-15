@@ -29,6 +29,8 @@ Pixelacrity 0.2.14 Issues
    [ ]We need to use the multi-layer bitmap module for the selection and
       clipboard bitmap arrays.
 
+[ ]Make a Paste Merged function.
+
 
 Pixelacrity 0.3 Issues
 ----------------------
