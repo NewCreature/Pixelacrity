@@ -140,7 +140,7 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 		}
 		else
 		{
-			if(i == canvas_editor->hover_frame)
+			if(i == canvas_editor->hover_frame || i == canvas_editor->current_frame)
 			{
 				color = t3f_color_black;
 			}
