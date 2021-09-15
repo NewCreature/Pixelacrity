@@ -20,9 +20,6 @@ Pixelacrity 0.2.14 Issues
    [ ]Modified counter needs to stay synched so if we undo all the way back to
       the last save it is counted as unmodified.
 
-[ ]Pressing Del key when using frame tool should delete the currently selected
-   frame.
-
 [ ]We need a way to highlight the current frame when using the frame tool.
 
 [ ]Can't paste single layer clipboard into another canvas.
@@ -659,3 +656,6 @@ Closed Issues
 [X]Undoing float selection prevents undoing the previous action.
 
 [X]Don't draw brush hint when using the frame tool.
+
+[X]Pressing Del key when using frame tool should delete the currently selected
+   frame.
