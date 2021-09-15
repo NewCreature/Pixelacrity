@@ -50,7 +50,14 @@ void pa_handle_shortcuts(APP_INSTANCE * app)
 	}
 	else if(t3f_key[ALLEGRO_KEY_DELETE] || t3f_key[ALLEGRO_KEY_BACKSPACE])
 	{
-		pa_menu_edit_delete(0, app);
+		if(app->canvas_editor->current_tool == PA_TOOL_FRAME)
+		{
+			pa_menu_frame_delete(0, app);
+		}
+		else if(app->canvas_editor->current_tool == PA_TOOL_SELECTION)
+		{
+			pa_menu_edit_delete(0, app);
+		}
 		t3f_key[ALLEGRO_KEY_DELETE] = 0;
 		t3f_key[ALLEGRO_KEY_BACKSPACE] = 0;
 	}
