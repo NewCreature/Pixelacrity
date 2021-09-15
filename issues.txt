@@ -31,6 +31,8 @@ Pixelacrity 0.2.14 Issues
 
 [ ]Shapes drawn over canvas tile border don't undo properly.
 
+[ ]Crash when importing.
+
 
 Pixelacrity 0.3 Issues
 ----------------------
