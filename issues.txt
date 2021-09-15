@@ -20,8 +20,6 @@ Pixelacrity 0.2.14 Issues
    [ ]Modified counter needs to stay synched so if we undo all the way back to
       the last save it is counted as unmodified.
 
-[ ]We need a way to highlight the current frame when using the frame tool.
-
 [ ]Can't paste single layer clipboard into another canvas.
 
 [ ]Don't modify clipboard/floating selection layer count when adding/removing
@@ -663,3 +661,5 @@ Closed Issues
 [X]Crash when importing.
 
 [X]All frame handles should be updated each tick.
+
+[X]We need a way to highlight the current frame when using the frame tool.
