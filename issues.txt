@@ -24,6 +24,11 @@ Pixelacrity 0.2.14 Issues
 
 [ ]We need a way to highlight the current frame when using the frame tool.
 
+[ ]Can't paste single layer clipboard into another canvas.
+
+[ ]Don't modify clipboard/floating selection layer count when adding/removing
+   layers if the layer count doesn't match.
+
 
 Pixelacrity 0.3 Issues
 ----------------------
