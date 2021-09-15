@@ -29,8 +29,6 @@ Pixelacrity 0.2.14 Issues
 
 [ ]All frame handles should be updated each tick.
 
-[ ]Shapes drawn over canvas tile border don't undo properly.
-
 [ ]Crash when importing.
 
 
@@ -663,3 +661,5 @@ Closed Issues
 
 [X]Pressing Del key when using frame tool should delete the currently selected
    frame.
+
+[X]Shapes drawn over canvas tile border don't undo properly.
