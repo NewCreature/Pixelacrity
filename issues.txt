@@ -30,6 +30,8 @@ Pixelacrity 0.2.14 Issues
 [ ]Don't modify clipboard/floating selection layer count when adding/removing
    layers if the layer count doesn't match.
 
+[ ]All frame handles should be updated each tick.
+
 
 Pixelacrity 0.3 Issues
 ----------------------
