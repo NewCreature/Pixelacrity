@@ -29,8 +29,6 @@ Pixelacrity 0.2.14 Issues
 
 [ ]All frame handles should be updated each tick.
 
-[ ]Crash when importing.
-
 
 Pixelacrity 0.3 Issues
 ----------------------
@@ -663,3 +661,5 @@ Closed Issues
    frame.
 
 [X]Shapes drawn over canvas tile border don't undo properly.
+
+[X]Crash when importing.
