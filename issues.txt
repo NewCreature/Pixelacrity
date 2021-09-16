@@ -23,13 +23,10 @@ Pixelacrity 0.2.14 Issues
 
    [ ]Flip and turn functions need to be undoable.
 
-[ ]Don't modify clipboard/floating selection layer count when adding/removing
-   layers if the layer count doesn't match.
-
-   [ ]We need to use the multi-layer bitmap module for the selection and
-      clipboard bitmap arrays.
-
 [ ]Make a Paste Merged function.
+
+[ ]Crash on exit after removing layer while a multi-layer floating selection was
+   active and then unfloating it.
 
 
 Pixelacrity 0.3 Issues
