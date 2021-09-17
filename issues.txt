@@ -23,6 +23,9 @@ Pixelacrity 0.2.14 Issues
 
    [ ]Flip and turn functions need to be undoable.
 
+      [ ]Need to factor out flip/turn operations from menu code so we can use it
+         from other modules. We can probably put it in the selection module.
+
 [ ]Make a Paste Merged function.
 
 [ ]Crash on exit after removing layer while a multi-layer floating selection was
