@@ -241,6 +241,10 @@ static bool apply_undo_type(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, int type,
 		{
 			return pa_apply_swap_layer_undo(cep, fp);
 		}
+		default:
+		{
+			printf("No handler for undo type %d!\n", type);
+		}
 	}
 	t3f_debug_message("Exit apply_undo_type()\n");
 	return false;
@@ -286,6 +290,10 @@ static bool apply_redo_type(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, int type,
 		case PA_UNDO_TYPE_SWAP_LAYER:
 		{
 			return pa_apply_swap_layer_redo(cep, fp);
+		}
+		default:
+		{
+			printf("No handler for undo type %d!\n", type);
 		}
 	}
 	t3f_debug_message("Exit apply_redo_type()\n");
