@@ -1,19 +1,23 @@
 #ifndef PA_UNDO_H
 #define PA_UNDO_H
 
-#define PA_UNDO_TYPE_TOOL              0
-#define PA_UNDO_TYPE_FRAME             1
-#define PA_UNDO_TYPE_FLOAT_SELECTION   2
-#define PA_UNDO_TYPE_UNFLOAT_SELECTION 3
-#define PA_REDO_TYPE_FLOAT_SELECTION   4
-#define PA_REDO_TYPE_UNFLOAT_SELECTION 5
-#define PA_UNDO_TYPE_ADD_LAYER         6
-#define PA_REDO_TYPE_ADD_LAYER         7
-#define PA_UNDO_TYPE_REMOVE_LAYER      8
-#define PA_REDO_TYPE_REMOVE_LAYER      9
-#define PA_UNDO_TYPE_FLOOD_FILL       10
-#define PA_UNDO_TYPE_IMPORT_IMAGE     11
-#define PA_UNDO_TYPE_SWAP_LAYER       12
+#define PA_UNDO_TYPE_TOOL                    0
+#define PA_UNDO_TYPE_FRAME                   1
+#define PA_UNDO_TYPE_FLOAT_SELECTION         2
+#define PA_UNDO_TYPE_UNFLOAT_SELECTION       3
+#define PA_REDO_TYPE_FLOAT_SELECTION         4
+#define PA_REDO_TYPE_UNFLOAT_SELECTION       5
+#define PA_UNDO_TYPE_ADD_LAYER               6
+#define PA_REDO_TYPE_ADD_LAYER               7
+#define PA_UNDO_TYPE_REMOVE_LAYER            8
+#define PA_REDO_TYPE_REMOVE_LAYER            9
+#define PA_UNDO_TYPE_FLOOD_FILL             10
+#define PA_UNDO_TYPE_IMPORT_IMAGE           11
+#define PA_UNDO_TYPE_SWAP_LAYER             12
+#define PA_UNDO_TYPE_FLIP_HORIZONTAL        13
+#define PA_UNDO_TYPE_FLIP_VERTICAL          14
+#define PA_UNDO_TYPE_TURN_CLOCKWISE         15
+#define PA_UNDO_TYPE_TURN_COUNTER_CLOCKWISE 16
 
 typedef struct
 {

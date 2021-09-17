@@ -38,6 +38,7 @@ APP_UI_OBJECTS =     ui/ui.o\
                      ui/canvas_editor/undo/layer.o\
                      ui/canvas_editor/undo/flood_fill.o\
                      ui/canvas_editor/undo/import.o\
+                     ui/canvas_editor/undo/flip.o\
                      ui/canvas_editor/clipboard.o\
                      ui/canvas_editor/selection.o\
                      ui/canvas_editor/brush.o\
