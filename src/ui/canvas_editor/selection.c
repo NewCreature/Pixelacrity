@@ -4,6 +4,7 @@
 #include "modules/canvas/canvas_helpers.h"
 #include "modules/primitives.h"
 #include "modules/dynamic_array.h"
+#include "modules/bitmap.h"
 #include "clipboard.h"
 #include "undo/selection.h"
 #include "ui/window.h"
@@ -285,5 +286,65 @@ bool pa_remove_layer_from_selection(PA_CANVAS_EDITOR * cep, int layer)
 	}
 	cep->selection.bitmap_stack = old_bitmap;
 	t3f_debug_message("pa_remove_layer_from_selection() fail\n");
+	return false;
+}
+
+bool pa_flip_selection(PA_CANVAS_EDITOR * cep, bool horizontal, bool vertical, bool multi)
+{
+	bool need_float = false;
+	int i;
+
+	if(!cep->selection.bitmap_stack)
+	{
+		pa_handle_float_canvas_editor_selection(cep, &cep->selection.box, multi);
+		need_float = true;
+	}
+	if(cep->selection.bitmap_stack)
+	{
+		for(i = 0; i < cep->selection.layer_max; i++)
+		{
+			if(cep->selection.bitmap_stack->bitmap[i])
+			{
+				pa_flip_bitmap(cep->selection.bitmap_stack->bitmap[i], horizontal, vertical);
+			}
+		}
+	}
+	if(need_float)
+	{
+		pa_handle_unfloat_canvas_editor_selection(cep, &cep->selection.box);
+	}
+
+	return true;
+}
+
+bool pa_turn_selection(PA_CANVAS_EDITOR * cep, int amount, bool multi)
+{
+	bool need_float = false;
+	int i, c = -1;
+
+	if(!cep->selection.bitmap_stack)
+	{
+		pa_handle_float_canvas_editor_selection(cep, &cep->selection.box, multi);
+		need_float = true;
+	}
+	if(cep->selection.bitmap_stack)
+	{
+		for(i = 0; i < cep->selection.layer_max; i++)
+		{
+			if(cep->selection.bitmap_stack->bitmap[i])
+			{
+				pa_turn_bitmap(&cep->selection.bitmap_stack->bitmap[i], amount);
+				c = i;
+			}
+		}
+		if(c >= 0)
+		{
+			i = cep->selection.bitmap_stack->width;
+			cep->selection.bitmap_stack->width = cep->selection.bitmap_stack->height;
+			cep->selection.bitmap_stack->height = i;
+			pa_initialize_box(&cep->selection.box, cep->selection.box.start_x, cep->selection.box.start_y, cep->selection.bitmap_stack->width, cep->selection.bitmap_stack->height);
+		}
+		pa_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom);
+	}
 	return false;
 }

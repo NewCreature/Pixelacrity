@@ -197,112 +197,29 @@ int pa_menu_edit_paste_in_place(int id, void * data)
 	return 0;
 }
 
-static void flip_horizontal(PA_CANVAS_EDITOR * cep, bool multi)
-{
-	bool need_float = false;
-	int i;
-
-	if(!cep->selection.bitmap_stack)
-	{
-		pa_handle_float_canvas_editor_selection(cep, &cep->selection.box, multi);
-		need_float = true;
-	}
-	if(cep->selection.bitmap_stack)
-	{
-		for(i = 0; i < cep->selection.layer_max; i++)
-		{
-			if(cep->selection.bitmap_stack->bitmap[i])
-			{
-				pa_flip_bitmap(cep->selection.bitmap_stack->bitmap[i], true, false);
-			}
-		}
-	}
-	if(need_float)
-	{
-		pa_handle_unfloat_canvas_editor_selection(cep, &cep->selection.box);
-	}
-}
-
 int pa_menu_edit_flip_horizontal(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	flip_horizontal(app->canvas_editor, false);
+	pa_flip_selection(app->canvas_editor, true, false, false);
 
 	return 0;
-}
-
-static void flip_vertical(PA_CANVAS_EDITOR * cep, bool multi)
-{
-	bool need_float = false;
-	int i;
-
-	if(!cep->selection.bitmap_stack)
-	{
-		pa_handle_float_canvas_editor_selection(cep, &cep->selection.box, multi);
-		need_float = true;
-	}
-	if(cep->selection.bitmap_stack)
-	{
-		for(i = 0; i < cep->selection.layer_max; i++)
-		{
-			if(cep->selection.bitmap_stack->bitmap[i])
-			{
-				pa_flip_bitmap(cep->selection.bitmap_stack->bitmap[i], false, true);
-			}
-		}
-	}
-	if(need_float)
-	{
-		pa_handle_unfloat_canvas_editor_selection(cep, &cep->selection.box);
-	}
 }
 
 int pa_menu_edit_flip_vertical(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	flip_vertical(app->canvas_editor, false);
+	pa_flip_selection(app->canvas_editor, false, true, false);
 
 	return 0;
-}
-
-static void turn(PA_CANVAS_EDITOR * cep, int amount, bool multi)
-{
-	bool need_float = false;
-	int i, c = -1;
-
-	if(!cep->selection.bitmap_stack)
-	{
-		pa_handle_float_canvas_editor_selection(cep, &cep->selection.box, multi);
-		need_float = true;
-	}
-	if(cep->selection.bitmap_stack)
-	{
-		for(i = 0; i < cep->selection.layer_max; i++)
-		{
-			if(cep->selection.bitmap_stack->bitmap[i])
-			{
-				pa_turn_bitmap(&cep->selection.bitmap_stack->bitmap[i], amount);
-				c = i;
-			}
-		}
-		if(c >= 0)
-		{
-			i = cep->selection.bitmap_stack->width;
-			cep->selection.bitmap_stack->width = cep->selection.bitmap_stack->height;
-			cep->selection.bitmap_stack->height = i;
-			pa_initialize_box(&cep->selection.box, cep->selection.box.start_x, cep->selection.box.start_y, cep->selection.bitmap_stack->width, cep->selection.bitmap_stack->height);
-		}
-		pa_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom);
-	}
 }
 
 int pa_menu_edit_turn_clockwise(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	turn(app->canvas_editor, 1, false);
+	pa_turn_selection(app->canvas_editor, 1, false);
 
 	return 0;
 }
@@ -311,7 +228,7 @@ int pa_menu_edit_turn_counter_clockwise(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	turn(app->canvas_editor, -1, false);
+	pa_turn_selection(app->canvas_editor, -1, false);
 
 	return 0;
 }
@@ -435,7 +352,7 @@ int pa_menu_edit_multilayer_flip_horizontal(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	flip_horizontal(app->canvas_editor, true);
+	pa_flip_selection(app->canvas_editor, true, false, true);
 
 	return 0;
 }
@@ -444,7 +361,7 @@ int pa_menu_edit_multilayer_flip_vertical(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	flip_vertical(app->canvas_editor, true);
+	pa_flip_selection(app->canvas_editor, false, true, true);
 
 	return 0;
 }
@@ -453,7 +370,7 @@ int pa_menu_edit_multilayer_turn_clockwise(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	turn(app->canvas_editor, 1, true);
+	pa_turn_selection(app->canvas_editor, 1, true);
 
 	return 0;
 }
@@ -462,7 +379,7 @@ int pa_menu_edit_multilayer_turn_counter_clockwise(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	turn(app->canvas_editor, -1, true);
+	pa_turn_selection(app->canvas_editor, -1, true);
 
 	return 0;
 }
