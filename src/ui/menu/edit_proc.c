@@ -121,7 +121,7 @@ static void paste_helper(PA_CANVAS_EDITOR * cep, int pos, int ox, int oy)
 		al_set_new_bitmap_flags(ALLEGRO_NO_PREMULTIPLIED_ALPHA);
 		if(cep->selection.bitmap_stack)
 		{
-			pa_handle_unfloat_canvas_editor_selection(cep, &cep->selection.box);
+			pa_handle_unfloat_canvas_editor_selection(cep, &cep->selection.box, false);
 		}
 		cep->selection.bitmap_stack = pa_create_bitmap_stack(cep->clipboard.bitmap_stack->layers, cep->clipboard.bitmap_stack->width, cep->clipboard.bitmap_stack->height);
 		if(cep->selection.bitmap_stack)

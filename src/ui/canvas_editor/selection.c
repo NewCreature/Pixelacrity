@@ -52,7 +52,7 @@ static bool create_float_undo(PA_CANVAS_EDITOR * cep, PA_BOX * bp)
 	return false;
 }
 
-bool pa_handle_float_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp, bool multilayer)
+bool pa_handle_float_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp, bool multilayer, bool nomod)
 {
 	ALLEGRO_STATE old_state;
 	ALLEGRO_TRANSFORM identity;
@@ -110,8 +110,11 @@ bool pa_handle_float_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp
 			pa_draw_primitive_to_canvas(cep->canvas, i, bp->start_x, bp->start_y, bp->start_x + bp->width - 1, bp->start_y + bp->height - 1, NULL, al_map_rgba_f(0, 0, 0, 0), NULL, PA_RENDER_COPY, NULL, pa_draw_filled_rectangle);
 		}
 	}
-	cep->modified++;
-	pa_set_window_message(NULL);
+	if(!nomod)
+	{
+		cep->modified++;
+		pa_set_window_message(NULL);
+	}
 	t3f_debug_message("Exit pa_handle_float_canvas_editor_selection()\n");
 
 	return true;
@@ -130,11 +133,11 @@ void pa_float_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp, bool 
 	t3f_debug_message("Enter pa_float_canvas_editor_selection()\n");
 	create_float_undo(cep, bp);
 	pa_finalize_undo(cep);
-	pa_handle_float_canvas_editor_selection(cep, bp, multilayer);
+	pa_handle_float_canvas_editor_selection(cep, bp, multilayer, false);
 	t3f_debug_message("Exit pa_float_canvas_editor_selection()\n");
 }
 
-void pa_handle_unfloat_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp)
+void pa_handle_unfloat_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp, bool nomod)
 {
 	int i;
 
@@ -160,7 +163,11 @@ void pa_handle_unfloat_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * 
 		}
 	}
 	pa_free_selection(cep);
-	cep->modified++;
+	if(!nomod)
+	{
+		cep->modified++;
+		pa_set_window_message(NULL);
+	}
 	t3f_debug_message("Exit pa_handle_unfloat_canvas_editor_selection()\n");
 }
 
@@ -171,7 +178,7 @@ void pa_unfloat_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp)
 	{
 		pa_finalize_undo(cep);
 	}
-	pa_handle_unfloat_canvas_editor_selection(cep, bp);
+	pa_handle_unfloat_canvas_editor_selection(cep, bp, false);
 	t3f_debug_message("Exit pa_unfloat_canvas_editor_selection()\n");
 }
 
@@ -289,14 +296,14 @@ bool pa_remove_layer_from_selection(PA_CANVAS_EDITOR * cep, int layer)
 	return false;
 }
 
-bool pa_flip_selection(PA_CANVAS_EDITOR * cep, bool horizontal, bool vertical, bool multi)
+bool pa_handle_flip_selection(PA_CANVAS_EDITOR * cep, bool horizontal, bool vertical, bool multi, bool nomod)
 {
 	bool need_float = false;
 	int i;
 
 	if(!cep->selection.bitmap_stack)
 	{
-		pa_handle_float_canvas_editor_selection(cep, &cep->selection.box, multi);
+		pa_handle_float_canvas_editor_selection(cep, &cep->selection.box, multi, true);
 		need_float = true;
 	}
 	if(cep->selection.bitmap_stack)
@@ -311,20 +318,37 @@ bool pa_flip_selection(PA_CANVAS_EDITOR * cep, bool horizontal, bool vertical, b
 	}
 	if(need_float)
 	{
-		pa_handle_unfloat_canvas_editor_selection(cep, &cep->selection.box);
+		pa_handle_unfloat_canvas_editor_selection(cep, &cep->selection.box, true);
+	}
+	if(!nomod)
+	{
+		cep->modified++;
+		pa_set_window_message(NULL);
 	}
 
 	return true;
 }
 
-bool pa_turn_selection(PA_CANVAS_EDITOR * cep, int amount, bool multi)
+bool pa_flip_selection(PA_CANVAS_EDITOR * cep, bool horizontal, bool vertical, bool multi)
+{
+	char undo_path[1024];
+
+	pa_get_undo_path("undo", cep->undo_count, undo_path, 1024);
+	if(pa_make_flip_selection_undo(cep, horizontal, vertical, multi, undo_path))
+	{
+		pa_finalize_undo(cep);
+	}
+	return pa_handle_flip_selection(cep, horizontal, vertical, multi, false);
+}
+
+bool pa_handle_turn_selection(PA_CANVAS_EDITOR * cep, int amount, bool multi, bool nomod)
 {
 	bool need_float = false;
 	int i, c = -1;
 
 	if(!cep->selection.bitmap_stack)
 	{
-		pa_handle_float_canvas_editor_selection(cep, &cep->selection.box, multi);
+		pa_handle_float_canvas_editor_selection(cep, &cep->selection.box, multi, true);
 		need_float = true;
 	}
 	if(cep->selection.bitmap_stack)
@@ -346,5 +370,22 @@ bool pa_turn_selection(PA_CANVAS_EDITOR * cep, int amount, bool multi)
 		}
 		pa_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom);
 	}
-	return false;
+	if(!nomod)
+	{
+		cep->modified++;
+		pa_set_window_message(NULL);
+	}
+	return true;
+}
+
+bool pa_turn_selection(PA_CANVAS_EDITOR * cep, int amount, bool multi)
+{
+	char undo_path[1024];
+
+	pa_get_undo_path("undo", cep->undo_count, undo_path, 1024);
+	if(pa_make_turn_selection_undo(cep, amount, multi, undo_path))
+	{
+		pa_finalize_undo(cep);
+	}
+	return pa_handle_turn_selection(cep, amount, multi, false);
 }

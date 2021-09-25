@@ -221,6 +221,52 @@ bool pa_make_float_selection_redo(PA_CANVAS_EDITOR * cep, int new_x, int new_y, 
 	}
 }
 
+bool pa_make_flip_selection_undo(PA_CANVAS_EDITOR * cep, bool horizontal, bool vertical, bool multi, const char * fn)
+{
+	ALLEGRO_FILE * fp = NULL;
+
+	t3f_debug_message("Enter pa_make_flip_selection_undo()\n");
+	fp = al_fopen(fn, "wb");
+	if(!fp)
+	{
+		printf("fail: %s\n", fn);
+		goto fail;
+	}
+	pa_write_undo_header(fp, cep, horizontal ? PA_UNDO_TYPE_FLIP_HORIZONTAL : PA_UNDO_TYPE_FLIP_VERTICAL, horizontal ? "Flip Horizontal" : "Flip Vertical");
+	al_fputc(fp, horizontal);
+	al_fputc(fp, vertical);
+	al_fputc(fp, multi);
+	al_fclose(fp);
+
+	t3f_debug_message("Exit pa_make_flip_selection_undo()\n");
+	return true;
+
+	fail:
+	{
+		t3f_debug_message("Fail pa_make_flip_selection_undo()\n");
+		if(fp)
+		{
+			al_fclose(fp);
+		}
+		return false;
+	}
+}
+
+bool pa_make_flip_selection_redo(PA_CANVAS_EDITOR * cep, bool horizontal, bool vertical, bool multi, const char * fn)
+{
+	return pa_make_flip_selection_undo(cep, horizontal, vertical, multi, fn);
+}
+
+bool pa_make_turn_selection_undo(PA_CANVAS_EDITOR * cep, int amount, bool multi, const char * fn)
+{
+	return false;
+}
+
+bool pa_make_turn_selection_redo(PA_CANVAS_EDITOR * cep, int amount, bool multi, const char * fn)
+{
+	return false;
+}
+
 bool pa_apply_unfloat_selection_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, const char * action, bool revert)
 {
 	char undo_path[1024];
@@ -432,4 +478,52 @@ bool pa_apply_float_selection_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, co
 		pa_free_clipboard(cep);
 		return false;
 	}
+}
+
+bool pa_apply_flip_selection_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
+{
+	char undo_path[1024];
+	char horizontal, vertical, multi;
+
+	t3f_debug_message("Enter pa_apply_flip_selection_undo()\n");
+	horizontal = al_fgetc(fp);
+	vertical = al_fgetc(fp);
+	multi = al_fgetc(fp);
+	if(pa_make_flip_selection_undo(cep, horizontal, vertical, multi,  pa_get_undo_path("redo", cep->redo_count, undo_path, 1024)))
+	{
+		cep->redo_count++;
+	}
+	pa_handle_flip_selection(cep, horizontal, vertical, multi, true);
+	t3f_debug_message("Exit pa_apply_flip_selection_redo()\n");
+
+	return true;
+}
+
+bool pa_apply_flip_selection_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
+{
+	char undo_path[1024];
+	char horizontal, vertical, multi;
+
+	t3f_debug_message("Enter pa_apply_flip_selection_redo()\n");
+	horizontal = al_fgetc(fp);
+	vertical = al_fgetc(fp);
+	multi = al_fgetc(fp);
+	if(pa_make_flip_selection_redo(cep, horizontal, vertical, multi,  pa_get_undo_path("undo", cep->undo_count, undo_path, 1024)))
+	{
+		cep->undo_count++;
+	}
+	pa_handle_flip_selection(cep, horizontal, vertical, multi, true);
+	t3f_debug_message("Exit pa_apply_flip_selection_redo()\n");
+
+	return true;
+}
+
+bool pa_apply_turn_selection_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
+{
+	return false;
+}
+
+bool pa_apply_turn_selection_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
+{
+	return false;
 }
