@@ -23,8 +23,12 @@ Pixelacrity 0.2.14 Issues
 
    [ ]Flip and turn functions need to be undoable.
 
-      [ ]Need to factor out flip/turn operations from menu code so we can use it
+      [X]Need to factor out flip/turn operations from menu code so we can use it
          from other modules. We can probably put it in the selection module.
+
+      [ ]We need to track if the selection was floating when the turn occurred
+         since we get an implicit float if the dimensions don't match on both
+         axes.
 
 [ ]Make a Paste Merged function.
 
