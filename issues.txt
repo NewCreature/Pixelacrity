@@ -30,6 +30,10 @@ Pixelacrity 0.2.14 Issues
          since we get an implicit float if the dimensions don't match on both
          axes.
 
+   [ ]Look at areas where floating selections are unfloated implicitly. I think
+      the desired behavior would be to have it count as an extra undoable
+      modification.
+
 [ ]Make a Paste Merged function.
 
 [ ]Crash on exit after removing layer while a multi-layer floating selection was
