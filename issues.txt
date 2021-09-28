@@ -21,16 +21,16 @@ Pixelacrity 0.2.14 Issues
    [ ]Modified counter needs to stay synched so if we undo all the way back to
       the last save it is counted as unmodified.
 
-   [ ]Flip and turn functions need to be undoable.
+   [X]Flip and turn functions need to be undoable.
 
       [X]Need to factor out flip/turn operations from menu code so we can use it
          from other modules. We can probably put it in the selection module.
 
-      [ ]We need to track if the selection was floating when the turn occurred
+      [X]We need to track if the selection was floating when the turn occurred
          since we get an implicit float if the dimensions don't match on both
          axes.
 
-         [ ]Implicitly unfloat the selection if the state was not floating when
+         [X]Implicitly unfloat the selection if the state was not floating when
             the turn operation was initiated.
 
    [ ]Look at areas where floating selections are unfloated implicitly. I think
