@@ -381,7 +381,7 @@ bool pa_import_image(PA_CANVAS_EDITOR * cep, const char * fn)
 	t3f_debug_message("Enter pa_import_image()\n");
 	if(cep->selection.bitmap_stack)
 	{
-		pa_handle_unfloat_canvas_editor_selection(cep, &cep->selection.box, false);
+		pa_unfloat_canvas_editor_selection(cep, &cep->selection.box);
 	}
 	bp = al_load_bitmap_flags(fn, ALLEGRO_NO_PREMULTIPLIED_ALPHA);
 	if(bp)
