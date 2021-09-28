@@ -532,10 +532,7 @@ bool pa_apply_flip_selection_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 	{
 		cep->redo_count++;
 	}
-	cep->selection.box.start_x = x;
-	cep->selection.box.start_y = y;
-	cep->selection.box.width = w;
-	cep->selection.box.height = h;
+	pa_initialize_box(&cep->selection.box, x, y, w, h);
 	pa_handle_flip_selection(cep, horizontal, vertical, multi, true);
 	t3f_debug_message("Exit pa_apply_flip_selection_redo()\n");
 
@@ -560,10 +557,7 @@ bool pa_apply_flip_selection_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 	{
 		cep->undo_count++;
 	}
-	cep->selection.box.start_x = x;
-	cep->selection.box.start_y = y;
-	cep->selection.box.width = w;
-	cep->selection.box.height = h;
+	pa_initialize_box(&cep->selection.box, x, y, w, h);
 	pa_handle_flip_selection(cep, horizontal, vertical, multi, true);
 	t3f_debug_message("Exit pa_apply_flip_selection_redo()\n");
 
@@ -588,11 +582,12 @@ bool pa_apply_turn_selection_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 	{
 		cep->redo_count++;
 	}
-	cep->selection.box.start_x = x;
-	cep->selection.box.start_y = y;
-	cep->selection.box.width = w;
-	cep->selection.box.height = h;
+	pa_initialize_box(&cep->selection.box, x, y, w, h);
 	pa_handle_turn_selection(cep, -amount, multi, true);
+	if(!b)
+	{
+		pa_handle_unfloat_canvas_editor_selection(cep, &cep->selection.box, true);
+	}
 	t3f_debug_message("Exit pa_apply_turn_selection_undo()\n");
 
 	return true;
@@ -616,10 +611,7 @@ bool pa_apply_turn_selection_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 	{
 		cep->undo_count++;
 	}
-	cep->selection.box.start_x = x;
-	cep->selection.box.start_y = y;
-	cep->selection.box.width = w;
-	cep->selection.box.height = h;
+	pa_initialize_box(&cep->selection.box, x, y, w, h);
 	pa_handle_turn_selection(cep, amount, multi, true);
 	t3f_debug_message("Exit pa_apply_turn_selection_redo()\n");
 
