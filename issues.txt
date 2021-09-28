@@ -33,9 +33,15 @@ Pixelacrity 0.2.14 Issues
          [X]Implicitly unfloat the selection if the state was not floating when
             the turn operation was initiated.
 
-   [ ]Look at areas where floating selections are unfloated implicitly. I think
+   [X]Look at areas where floating selections are unfloated implicitly. I think
       the desired behavior would be to have it count as an extra undoable
       modification.
+
+   [ ]Make paste undoable.
+
+   [ ]Make delete selection undoable.
+
+   [ ]Make cut selection undoable.
 
 [ ]Make a Paste Merged function.
 
