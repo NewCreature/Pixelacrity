@@ -18,6 +18,7 @@
 #define PA_UNDO_TYPE_FLIP_VERTICAL          14
 #define PA_UNDO_TYPE_TURN_CLOCKWISE         15
 #define PA_UNDO_TYPE_TURN_COUNTER_CLOCKWISE 16
+#define PA_UNDO_TYPE_DELETE_SELECTION       17
 
 typedef struct
 {

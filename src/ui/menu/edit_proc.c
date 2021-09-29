@@ -242,12 +242,12 @@ int pa_menu_edit_delete(int id, void * data)
 	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0)
 	{
 		pa_get_undo_path("undo", app->canvas_editor->undo_count, undo_path, 1024);
+		if(pa_make_delete_selection_undo(app->canvas_editor, false, undo_path))
+		{
+			pa_finalize_undo(app->canvas_editor);
+		}
 		if(!app->canvas_editor->selection.bitmap_stack)
 		{
-			if(pa_make_tool_undo(app->canvas_editor, "Delete Selection", app->canvas_editor->current_layer, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, app->canvas_editor->selection.box.width, app->canvas_editor->selection.box.height, undo_path))
-			{
-				pa_finalize_undo(app->canvas_editor);
-			}
 			pa_draw_primitive_to_canvas(app->canvas_editor->canvas, app->canvas_editor->current_layer, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, app->canvas_editor->selection.box.end_x, app->canvas_editor->selection.box.end_y, NULL, al_map_rgba_f(0.0, 0.0, 0.0, 0.0), NULL, PA_RENDER_COPY, NULL,  pa_draw_filled_rectangle);
 			pa_clear_canvas_editor_selection(app->canvas_editor);
 			app->canvas_editor->modified++;
@@ -394,12 +394,12 @@ int pa_menu_edit_multilayer_delete(int id, void * data)
 	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0)
 	{
 		pa_get_undo_path("undo", app->canvas_editor->undo_count, undo_path, 1024);
+		if(pa_make_delete_selection_undo(app->canvas_editor, true, undo_path))
+		{
+			pa_finalize_undo(app->canvas_editor);
+		}
 		if(!app->canvas_editor->selection.bitmap_stack)
 		{
-			if(pa_make_tool_undo(app->canvas_editor, "Delete Selection", app->canvas_editor->current_layer, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, app->canvas_editor->selection.box.width, app->canvas_editor->selection.box.height, undo_path))
-			{
-				pa_finalize_undo(app->canvas_editor);
-			}
 			for(i = 0; i < app->canvas->layer_max; i++)
 			{
 				pa_draw_primitive_to_canvas(app->canvas_editor->canvas, i, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, app->canvas_editor->selection.box.end_x, app->canvas_editor->selection.box.end_y, NULL, al_map_rgba_f(0.0, 0.0, 0.0, 0.0), NULL, PA_RENDER_COPY, NULL, pa_draw_filled_rectangle);

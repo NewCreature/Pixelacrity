@@ -9,6 +9,8 @@ bool pa_make_flip_selection_undo(PA_CANVAS_EDITOR * cep, bool horizontal, bool v
 bool pa_make_flip_selection_redo(PA_CANVAS_EDITOR * cep, bool horizontal, bool vertical, bool multi, const char * fn);
 bool pa_make_turn_selection_undo(PA_CANVAS_EDITOR * cep, int amount, bool multi, const char * fn);
 bool pa_make_turn_selection_redo(PA_CANVAS_EDITOR * cep, int amount, bool multi, const char * fn);
+bool pa_make_delete_selection_undo(PA_CANVAS_EDITOR * cep, bool multi, const char * fn);
+bool pa_make_delete_selection_redo(PA_CANVAS_EDITOR * cep, bool f, bool multi, const char * fn);
 bool pa_apply_unfloat_selection_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, const char * action, bool revert);
 bool pa_apply_unfloat_selection_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, const char * action);
 bool pa_apply_float_selection_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, const char * action, bool revert);
@@ -17,5 +19,7 @@ bool pa_apply_flip_selection_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp);
 bool pa_apply_flip_selection_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp);
 bool pa_apply_turn_selection_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp);
 bool pa_apply_turn_selection_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp);
+bool pa_apply_delete_selection_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp);
+bool pa_apply_delete_selection_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp);
 
 #endif

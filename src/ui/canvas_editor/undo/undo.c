@@ -251,6 +251,10 @@ static bool apply_undo_type(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, int type,
 		{
 			return pa_apply_turn_selection_undo(cep, fp);
 		}
+		case PA_UNDO_TYPE_DELETE_SELECTION:
+		{
+			return pa_apply_delete_selection_undo(cep, fp);
+		}
 		default:
 		{
 			printf("No handler for undo type %d!\n", type);
@@ -310,6 +314,10 @@ static bool apply_redo_type(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, int type,
 		case PA_UNDO_TYPE_TURN_COUNTER_CLOCKWISE:
 		{
 			return pa_apply_turn_selection_redo(cep, fp);
+		}
+		case PA_UNDO_TYPE_DELETE_SELECTION:
+		{
+			return pa_apply_delete_selection_redo(cep, fp);
 		}
 		default:
 		{
