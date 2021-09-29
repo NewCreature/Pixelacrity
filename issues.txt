@@ -41,7 +41,7 @@ Pixelacrity 0.2.15 Issues
 
    [X]Make delete selection undoable.
 
-   [ ]Make cut selection undoable.
+   [X]Make cut selection undoable.
 
 [ ]Make a Paste Merged function.
 
