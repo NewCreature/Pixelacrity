@@ -51,8 +51,6 @@ Pixelacrity 0.2.15 Issues
 [ ]Filled oval tool preview differs from final output. I think the brush outline
    was supposed to be removed.
 
-[ ]Alpha slider shouldn't always reset when adjusting the shade.
-
 
 Pixelacrity 0.3 Issues
 ----------------------
@@ -691,3 +689,5 @@ Closed Issues
 [X]All frame handles should be updated each tick.
 
 [X]We need a way to highlight the current frame when using the frame tool.
+
+[X]Alpha slider shouldn't always reset when adjusting the shade.
