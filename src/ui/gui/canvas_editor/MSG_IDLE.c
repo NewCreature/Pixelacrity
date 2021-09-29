@@ -33,7 +33,7 @@ static void update_color_selections(PA_CANVAS_EDITOR * canvas_editor)
 	if(canvas_editor->left_color.old_shade_slider_d2 != canvas_editor->left_color.shade_slider_element->d2)
 	{
 		canvas_editor->left_color.shade_color = pa_shade_color(canvas_editor->left_color.base_color, (float)canvas_editor->left_color.shade_slider_element->d2 / 1000.0);
-		canvas_editor->left_color.color = canvas_editor->left_color.shade_color;
+		canvas_editor->left_color.color = pa_alpha_color(canvas_editor->left_color.shade_color, pa_get_color_alpha(canvas_editor->left_color.color));
 		canvas_editor->left_color.last_shade_color = canvas_editor->left_color.shade_color;
 	}
 
