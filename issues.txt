@@ -39,7 +39,7 @@ Pixelacrity 0.2.15 Issues
 
    [ ]Make paste undoable.
 
-   [ ]Make delete selection undoable.
+   [X]Make delete selection undoable.
 
    [ ]Make cut selection undoable.
 

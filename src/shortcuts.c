@@ -96,6 +96,11 @@ void pa_handle_shortcuts(APP_INSTANCE * app)
 		pa_menu_file_load(0, app);
 		t3f_key[ALLEGRO_KEY_O] = 0;
 	}
+	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && t3f_key[ALLEGRO_KEY_E])
+	{
+		pa_menu_file_export(0, app);
+		t3f_key[ALLEGRO_KEY_E] = 0;
+	}
 	else if((t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT]) && t3f_key[ALLEGRO_KEY_H])
 	{
 		pa_menu_edit_multilayer_flip_horizontal(0, app);
