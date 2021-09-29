@@ -34,11 +34,14 @@ APP_UI_OBJECTS =     ui/ui.o\
                      ui/canvas_editor/undo/undo.o\
                      ui/canvas_editor/undo/tool.o\
                      ui/canvas_editor/undo/frame.o\
-                     ui/canvas_editor/undo/selection.o\
                      ui/canvas_editor/undo/layer.o\
                      ui/canvas_editor/undo/flood_fill.o\
                      ui/canvas_editor/undo/import.o\
-                     ui/canvas_editor/undo/flip.o\
+                     ui/canvas_editor/undo/selection/delete.o\
+                     ui/canvas_editor/undo/selection/flip.o\
+                     ui/canvas_editor/undo/selection/float.o\
+                     ui/canvas_editor/undo/selection/turn.o\
+                     ui/canvas_editor/undo/selection/unfloat.o\
                      ui/canvas_editor/clipboard.o\
                      ui/canvas_editor/selection.o\
                      ui/canvas_editor/brush.o\

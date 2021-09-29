@@ -6,7 +6,7 @@
 #include "modules/dynamic_array.h"
 #include "modules/bitmap.h"
 #include "clipboard.h"
-#include "undo/selection.h"
+#include "undo/selection/selection.h"
 #include "ui/window.h"
 
 void pa_free_selection(PA_CANVAS_EDITOR * cep)

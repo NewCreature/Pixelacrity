@@ -20,6 +20,7 @@
 #define PA_UNDO_TYPE_TURN_COUNTER_CLOCKWISE 16
 #define PA_UNDO_TYPE_DELETE_SELECTION       17
 #define PA_UNDO_TYPE_CUT_SELECTION          18
+#define PA_UNDO_TYPE_PASTE                  19
 
 typedef struct
 {

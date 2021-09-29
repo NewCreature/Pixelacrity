@@ -6,7 +6,7 @@
 #include "modules/dynamic_array.h"
 #include "ui/canvas_editor/undo/undo.h"
 #include "ui/canvas_editor/undo/tool.h"
-#include "ui/canvas_editor/undo/selection.h"
+#include "ui/canvas_editor/undo/selection/selection.h"
 #include "ui/canvas_editor/clipboard.h"
 #include "ui/canvas_editor/selection.h"
 

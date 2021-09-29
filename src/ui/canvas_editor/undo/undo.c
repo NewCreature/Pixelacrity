@@ -5,7 +5,7 @@
 #include "undo.h"
 #include "tool.h"
 #include "frame.h"
-#include "selection.h"
+#include "selection/selection.h"
 #include "layer.h"
 #include "flood_fill.h"
 #include "import.h"
