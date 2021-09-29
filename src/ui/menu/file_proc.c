@@ -451,9 +451,15 @@ int pa_menu_file_export(int id, void * data)
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 	ALLEGRO_FILECHOOSER * file_chooser;
 	ALLEGRO_PATH * pp;
+	int x, y, w, h;
 	const char * file_path;
 	const char * extension;
 
+	pa_get_canvas_dimensions(app->canvas, &x, &y, &w, &h, 0, false);
+	if(w <= 0 || y <= 0)
+	{
+		return 0;
+	}
 	t3f_debug_message("Enter pa_menu_file_export()\n");
 	file_chooser = al_create_native_file_dialog(NULL, "Export canvas to image file...", "*.png;*.tga;*.pcx;*.bmp;*.jpg", ALLEGRO_FILECHOOSER_SAVE);
 	if(file_chooser)
