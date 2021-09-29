@@ -48,6 +48,8 @@ Pixelacrity 0.2.15 Issues
 [ ]Crash on exit after removing layer while a multi-layer floating selection was
    active and then unfloating it.
 
+[ ]Add shortcut for export.
+
 
 Pixelacrity 0.3 Issues
 ----------------------
