@@ -55,11 +55,17 @@ int pa_menu_edit_redo(int id, void * data)
 int pa_menu_edit_cut(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
+	char undo_path[1024];
 
 	t3f_debug_message("Enter pa_menu_edit_cut()\n");
 
 	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0)
 	{
+		pa_get_undo_path("undo", app->canvas_editor->undo_count, undo_path, 1024);
+		if(pa_make_delete_selection_undo(app->canvas_editor, PA_UNDO_TYPE_CUT_SELECTION, "Cut Selection", false, undo_path))
+		{
+			pa_finalize_undo(app->canvas_editor);
+		}
 		if(!app->canvas_editor->selection.bitmap_stack)
 		{
 			pa_copy_canvas_to_clipboard(app->canvas_editor, app->canvas_editor->current_layer, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, app->canvas_editor->selection.box.width, app->canvas_editor->selection.box.height);
@@ -242,7 +248,7 @@ int pa_menu_edit_delete(int id, void * data)
 	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0)
 	{
 		pa_get_undo_path("undo", app->canvas_editor->undo_count, undo_path, 1024);
-		if(pa_make_delete_selection_undo(app->canvas_editor, false, undo_path))
+		if(pa_make_delete_selection_undo(app->canvas_editor, PA_UNDO_TYPE_DELETE_SELECTION, "Delete Selection", false, undo_path))
 		{
 			pa_finalize_undo(app->canvas_editor);
 		}
@@ -291,12 +297,18 @@ int pa_menu_edit_unfloat_selection(int id, void * data)
 int pa_menu_edit_multilayer_cut(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
+	char undo_path[1024];
 	int i;
 
 	t3f_debug_message("Enter pa_menu_edit_multilayer_cut()\n");
 
 	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0)
 	{
+		pa_get_undo_path("undo", app->canvas_editor->undo_count, undo_path, 1024);
+		if(pa_make_delete_selection_undo(app->canvas_editor, PA_UNDO_TYPE_CUT_SELECTION, "Cut Selection", true, undo_path))
+		{
+			pa_finalize_undo(app->canvas_editor);
+		}
 		if(!app->canvas_editor->selection.bitmap_stack)
 		{
 			pa_copy_canvas_to_clipboard(app->canvas_editor, -1, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, app->canvas_editor->selection.box.width, app->canvas_editor->selection.box.height);
@@ -394,7 +406,7 @@ int pa_menu_edit_multilayer_delete(int id, void * data)
 	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0)
 	{
 		pa_get_undo_path("undo", app->canvas_editor->undo_count, undo_path, 1024);
-		if(pa_make_delete_selection_undo(app->canvas_editor, true, undo_path))
+		if(pa_make_delete_selection_undo(app->canvas_editor, PA_UNDO_TYPE_DELETE_SELECTION, "Delete Selection", true, undo_path))
 		{
 			pa_finalize_undo(app->canvas_editor);
 		}

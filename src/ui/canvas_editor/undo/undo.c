@@ -253,7 +253,11 @@ static bool apply_undo_type(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, int type,
 		}
 		case PA_UNDO_TYPE_DELETE_SELECTION:
 		{
-			return pa_apply_delete_selection_undo(cep, fp);
+			return pa_apply_delete_selection_undo(cep, PA_UNDO_TYPE_DELETE_SELECTION, "Delete Selection", fp);
+		}
+		case PA_UNDO_TYPE_CUT_SELECTION:
+		{
+			return pa_apply_delete_selection_undo(cep, PA_UNDO_TYPE_CUT_SELECTION, "Cut Selection", fp);
 		}
 		default:
 		{
@@ -317,7 +321,11 @@ static bool apply_redo_type(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, int type,
 		}
 		case PA_UNDO_TYPE_DELETE_SELECTION:
 		{
-			return pa_apply_delete_selection_redo(cep, fp);
+			return pa_apply_delete_selection_redo(cep, PA_UNDO_TYPE_DELETE_SELECTION, "Delete Selection", fp);
+		}
+		case PA_UNDO_TYPE_CUT_SELECTION:
+		{
+			return pa_apply_delete_selection_redo(cep, PA_UNDO_TYPE_CUT_SELECTION, "Cut Selection", fp);
 		}
 		default:
 		{

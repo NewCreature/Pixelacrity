@@ -362,7 +362,7 @@ static bool save_selection(PA_CANVAS_EDITOR * cep, bool multi, ALLEGRO_FILE * fp
 	return true;
 }
 
-static bool load_selection(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
+static bool load_selection(PA_CANVAS_EDITOR * cep, int type, const char * action, ALLEGRO_FILE * fp)
 {
 	char undo_path[1024];
 	ALLEGRO_BITMAP * bp;
@@ -377,7 +377,7 @@ static bool load_selection(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 	b = al_fgetc(fp);
 	multi = al_fgetc(fp);
 
-	if(pa_make_delete_selection_redo(cep, b, multi, pa_get_undo_path("redo", cep->redo_count, undo_path, 1024)))
+	if(pa_make_delete_selection_redo(cep, type, action, b, multi, pa_get_undo_path("redo", cep->redo_count, undo_path, 1024)))
 	{
 		cep->redo_count++;
 	}
@@ -427,7 +427,7 @@ static bool load_selection(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 	return true;
 }
 
-bool pa_make_delete_selection_undo(PA_CANVAS_EDITOR * cep, bool multi, const char * fn)
+bool pa_make_delete_selection_undo(PA_CANVAS_EDITOR * cep, int type, const char * action, bool multi, const char * fn)
 {
 	ALLEGRO_FILE * fp = NULL;
 
@@ -438,7 +438,7 @@ bool pa_make_delete_selection_undo(PA_CANVAS_EDITOR * cep, bool multi, const cha
 		printf("fail: %s\n", fn);
 		return false;
 	}
-	pa_write_undo_header(fp, cep, PA_UNDO_TYPE_DELETE_SELECTION, "Delete Selection");
+	pa_write_undo_header(fp, cep, type, action);
 	if(!save_selection(cep, multi, fp))
 	{
 		return false;
@@ -448,7 +448,7 @@ bool pa_make_delete_selection_undo(PA_CANVAS_EDITOR * cep, bool multi, const cha
 	return true;
 }
 
-bool pa_make_delete_selection_redo(PA_CANVAS_EDITOR * cep, bool f, bool multi, const char * fn)
+bool pa_make_delete_selection_redo(PA_CANVAS_EDITOR * cep, int type, const char * action, bool f, bool multi, const char * fn)
 {
 	ALLEGRO_FILE * fp = NULL;
 
@@ -459,7 +459,7 @@ bool pa_make_delete_selection_redo(PA_CANVAS_EDITOR * cep, bool f, bool multi, c
 		printf("fail: %s\n", fn);
 		goto fail;
 	}
-	pa_write_undo_header(fp, cep, PA_UNDO_TYPE_DELETE_SELECTION, "Delete Selection");
+	pa_write_undo_header(fp, cep, type, action);
 	al_fwrite32le(fp, cep->selection.layer);
 	al_fwrite32le(fp, cep->selection.box.start_x);
 	al_fwrite32le(fp, cep->selection.box.start_y);
@@ -800,10 +800,10 @@ bool pa_apply_turn_selection_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 	return true;
 }
 
-bool pa_apply_delete_selection_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
+bool pa_apply_delete_selection_undo(PA_CANVAS_EDITOR * cep, int type, const char * action, ALLEGRO_FILE * fp)
 {
 	t3f_debug_message("Enter pa_apply_delete_selection_undo()\n");
-	if(!load_selection(cep, fp))
+	if(!load_selection(cep, type, action, fp))
 	{
 		return false;
 	}
@@ -812,7 +812,7 @@ bool pa_apply_delete_selection_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 	return true;
 }
 
-bool pa_apply_delete_selection_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
+bool pa_apply_delete_selection_redo(PA_CANVAS_EDITOR * cep, int type, const char * action, ALLEGRO_FILE * fp)
 {
 	char undo_path[1024];
 	char multi;
@@ -826,7 +826,7 @@ bool pa_apply_delete_selection_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 	h = al_fread32le(fp);
 	b = al_fgetc(fp);
 	multi = al_fgetc(fp);
-	if(pa_make_delete_selection_undo(cep, multi,  pa_get_undo_path("undo", cep->undo_count, undo_path, 1024)))
+	if(pa_make_delete_selection_undo(cep, type, action, multi, pa_get_undo_path("undo", cep->undo_count, undo_path, 1024)))
 	{
 		cep->undo_count++;
 	}
