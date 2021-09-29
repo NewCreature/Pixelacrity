@@ -40,6 +40,7 @@ APP_UI_OBJECTS =     ui/ui.o\
                      ui/canvas_editor/undo/selection/delete.o\
                      ui/canvas_editor/undo/selection/flip.o\
                      ui/canvas_editor/undo/selection/float.o\
+                     ui/canvas_editor/undo/selection/paste.o\
                      ui/canvas_editor/undo/selection/turn.o\
                      ui/canvas_editor/undo/selection/unfloat.o\
                      ui/canvas_editor/clipboard.o\
