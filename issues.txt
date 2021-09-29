@@ -48,6 +48,9 @@ Pixelacrity 0.2.15 Issues
 [ ]Crash on exit after removing layer while a multi-layer floating selection was
    active and then unfloating it.
 
+[ ]Filled oval tool preview differs from final output. I think the brush outline
+   was supposed to be removed.
+
 
 Pixelacrity 0.3 Issues
 ----------------------
