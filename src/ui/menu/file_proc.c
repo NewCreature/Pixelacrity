@@ -456,7 +456,7 @@ int pa_menu_file_export(int id, void * data)
 	const char * extension;
 
 	pa_get_canvas_dimensions(app->canvas, &x, &y, &w, &h, 0, false);
-	if(w <= 0 || y <= 0)
+	if(app->canvas->frame_max <= 0 && (w <= 0 || y <= 0))
 	{
 		return 0;
 	}
