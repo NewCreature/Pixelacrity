@@ -4,6 +4,7 @@
 #include "selection.h"
 #include "undo/undo.h"
 #include "undo/selection/selection.h"
+#include "ui/window.h"
 
 void pa_free_clipboard(PA_CANVAS_EDITOR * cep)
 {
@@ -227,5 +228,7 @@ void pa_paste_clipboard(PA_CANVAS_EDITOR * cep, int pos, int ox, int oy)
 		pa_finalize_undo(cep);
 	}
 	pa_apply_paste_clipboard(cep, pos, ox, oy);
+	cep->modified++;
+	pa_set_window_message(NULL);
 	t3f_debug_message("Exit pa_menu_edit_paste()\n");
 }
