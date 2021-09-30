@@ -40,12 +40,12 @@ static bool create_unfloat_undo(PA_CANVAS_EDITOR * cep)
 	return false;
 }
 
-static bool create_float_undo(PA_CANVAS_EDITOR * cep, PA_BOX * bp)
+static bool create_float_undo(PA_CANVAS_EDITOR * cep, PA_BOX * bp, bool multi)
 {
 	char undo_path[1024];
 
 	pa_get_undo_path("undo", cep->undo_count, undo_path, 1024);
-	if(pa_make_float_selection_undo(cep, bp, undo_path))
+	if(pa_make_float_selection_undo(cep, bp, multi, undo_path))
 	{
 		return true;
 	}
@@ -131,7 +131,7 @@ bool pa_handle_float_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp
 void pa_float_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp, bool multilayer)
 {
 	t3f_debug_message("Enter pa_float_canvas_editor_selection()\n");
-	create_float_undo(cep, bp);
+	create_float_undo(cep, bp, multilayer);
 	pa_finalize_undo(cep);
 	pa_handle_float_canvas_editor_selection(cep, bp, multilayer, false);
 	t3f_debug_message("Exit pa_float_canvas_editor_selection()\n");
