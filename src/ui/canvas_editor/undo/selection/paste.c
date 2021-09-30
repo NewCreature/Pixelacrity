@@ -78,6 +78,7 @@ bool pa_make_paste_undo(PA_CANVAS_EDITOR * cep, int pos, int x, int y, const cha
 bool pa_make_paste_redo(PA_CANVAS_EDITOR * cep, int pos, int x, int y, const char * fn)
 {
 	ALLEGRO_FILE * fp = NULL;
+	int i;
 
 	t3f_debug_message("Enter pa_make_paste_redo()\n");
 	fp = al_fopen(fn, "wb");
@@ -87,6 +88,23 @@ bool pa_make_paste_redo(PA_CANVAS_EDITOR * cep, int pos, int x, int y, const cha
 		goto fail;
 	}
 	pa_write_undo_header(fp, cep, PA_UNDO_TYPE_PASTE, "Paste");
+	al_fwrite32le(fp, pos);
+	al_fwrite32le(fp, x);
+	al_fwrite32le(fp, y);
+	al_fwrite32le(fp, cep->selection.layer);
+	al_fwrite32le(fp, cep->selection.bitmap_stack->width);
+	al_fwrite32le(fp, cep->selection.bitmap_stack->height);
+	if(cep->selection.layer < 0)
+	{
+		for(i = 0; i < cep->selection.layer_max; i++)
+		{
+			write_bitmap(fp, cep->selection.bitmap_stack->bitmap[i]);
+		}
+	}
+	else
+	{
+		write_bitmap(fp, cep->selection.bitmap_stack->bitmap[cep->selection.layer]);
+	}
 	al_fclose(fp);
 
 	t3f_debug_message("Exit pa_make_paste_redo()\n");
@@ -116,7 +134,7 @@ bool pa_apply_paste_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 	layer = al_fread32le(fp);
 	width = al_fread32le(fp);
 	height = al_fread32le(fp);
-	if(pa_make_paste_redo(cep, pos, ox, oy, pa_get_undo_path("redo", cep->redo_count, undo_path, 1024)))
+	if(pa_make_paste_redo(cep, 3, cep->selection.box.start_x, cep->selection.box.start_y, pa_get_undo_path("redo", cep->redo_count, undo_path, 1024)))
 	{
 		cep->redo_count++;
 	}
@@ -148,15 +166,38 @@ bool pa_apply_paste_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 {
 	char undo_path[1024];
 	int pos, ox, oy;
+	int layer, width, height;
+	int i;
 
 	t3f_debug_message("Enter pa_apply_paste_redo()\n");
 	pos = al_fread32le(fp);
 	ox = al_fread32le(fp);
 	oy = al_fread32le(fp);
-	if(pa_make_paste_undo(cep, pos, ox, oy, pa_get_undo_path("undo", cep->undo_count, undo_path, 1024)))
+	layer = al_fread32le(fp);
+	width = al_fread32le(fp);
+	height = al_fread32le(fp);
+	pa_free_clipboard(cep);
+	cep->clipboard.bitmap_stack = pa_create_bitmap_stack(cep->canvas->layer_max, width, height);
+	if(cep->clipboard.bitmap_stack)
+	{
+		if(layer < 0)
+		{
+			for(i = 0; i < cep->canvas->layer_max; i++)
+			{
+				cep->clipboard.bitmap_stack->bitmap[i] = read_bitmap(fp);
+			}
+		}
+		else
+		{
+			cep->clipboard.bitmap_stack->bitmap[layer] = read_bitmap(fp);
+		}
+	}
+	if(pa_make_paste_undo(cep, 1, ox, oy, pa_get_undo_path("undo", cep->undo_count, undo_path, 1024)))
 	{
 		cep->undo_count++;
 	}
+	pa_free_selection(cep);
+	pa_apply_paste_clipboard(cep, pos, ox, oy);
 	t3f_debug_message("Exit pa_apply_paste_undo()\n");
 
 	return true;

@@ -151,18 +151,11 @@ bool pa_remove_layer_from_clipboard(PA_CANVAS_EDITOR * cep, int layer)
 	return false;
 }
 
-void pa_paste_clipboard(PA_CANVAS_EDITOR * cep, int pos, int ox, int oy)
+void pa_apply_paste_clipboard(PA_CANVAS_EDITOR * cep, int pos, int ox, int oy)
 {
-	char undo_path[1024];
 	ALLEGRO_STATE old_state;
 	int x, y, i, c = -1;
 
-	t3f_debug_message("Enter pa_menu_edit_paste()\n");
-
-//	if(pa_make_paste_undo(cep, pos, ox, oy, pa_get_undo_path("undo", cep->undo_count, undo_path, 1024)))
-//	{
-//		pa_finalize_undo(cep);
-//	}
 	if(cep->clipboard.bitmap_stack && (cep->clipboard.layer >= 0 || cep->clipboard.layer_max == cep->canvas->layer_max))
 	{
 		al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);
@@ -206,6 +199,12 @@ void pa_paste_clipboard(PA_CANVAS_EDITOR * cep, int pos, int ox, int oy)
 						y = cep->view_y + (t3gui_get_mouse_y() + oy) / cep->view_zoom - cep->selection.bitmap_stack->height / 2;
 						break;
 					}
+					case 3:
+					{
+						x = ox;
+						y = oy;
+						break;
+					}
 				}
 				pa_initialize_box(&cep->selection.box, x, y, cep->selection.bitmap_stack->width, cep->selection.bitmap_stack->height);
 				pa_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom);
@@ -215,5 +214,18 @@ void pa_paste_clipboard(PA_CANVAS_EDITOR * cep, int pos, int ox, int oy)
 			t3f_refresh_menus();
 		}
 	}
+}
+
+void pa_paste_clipboard(PA_CANVAS_EDITOR * cep, int pos, int ox, int oy)
+{
+	char undo_path[1024];
+
+	t3f_debug_message("Enter pa_menu_edit_paste()\n");
+
+	if(pa_make_paste_undo(cep, pos, ox, oy, pa_get_undo_path("undo", cep->undo_count, undo_path, 1024)))
+	{
+		pa_finalize_undo(cep);
+	}
+	pa_apply_paste_clipboard(cep, pos, ox, oy);
 	t3f_debug_message("Exit pa_menu_edit_paste()\n");
 }
