@@ -37,7 +37,7 @@ Pixelacrity 0.2.15 Issues
       the desired behavior would be to have it count as an extra undoable
       modification.
 
-   [ ]Make paste undoable.
+   [X]Make paste undoable.
 
    [X]Make delete selection undoable.
 
