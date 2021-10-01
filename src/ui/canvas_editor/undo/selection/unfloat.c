@@ -80,15 +80,9 @@ bool pa_make_unfloat_selection_undo(PA_CANVAS_EDITOR * cep, const char * fn)
 
 bool pa_make_unfloat_selection_redo(PA_CANVAS_EDITOR * cep, const char * fn)
 {
-	ALLEGRO_BITMAP * bp = NULL;
 	ALLEGRO_FILE * fp = NULL;
 
 	t3f_debug_message("Enter pa_make_unfloat_selection_redo()\n");
-	bp = al_create_bitmap(cep->selection.box.width, cep->selection.box.height);
-	if(!bp)
-	{
-		goto fail;
-	}
 	fp = al_fopen(fn, "wb");
 	if(!fp)
 	{
@@ -101,12 +95,6 @@ bool pa_make_unfloat_selection_redo(PA_CANVAS_EDITOR * cep, const char * fn)
 	al_fwrite32le(fp, cep->selection.box.start_y);
 	al_fwrite32le(fp, cep->selection.box.width);
 	al_fwrite32le(fp, cep->selection.box.height);
-	if(!al_save_bitmap_f(fp, ".png", bp))
-	{
-		printf("fail: %s\n", fn);
-		goto fail;
-	}
-	al_destroy_bitmap(bp);
 	al_fclose(fp);
 	t3f_debug_message("Exit pa_make_unfloat_selection_redo()\n");
 	return true;
@@ -117,10 +105,6 @@ bool pa_make_unfloat_selection_redo(PA_CANVAS_EDITOR * cep, const char * fn)
 		if(fp)
 		{
 			al_fclose(fp);
-		}
-		if(bp)
-		{
-			al_destroy_bitmap(bp);
 		}
 		return false;
 	}
@@ -142,8 +126,10 @@ bool pa_apply_unfloat_selection_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, 
 	cep->selection.box.width = al_fread32le(fp);
 	cep->selection.box.height = al_fread32le(fp);
 	pa_get_canvas_shift(cep->canvas, cep->selection.box.start_x, cep->selection.box.start_y, &shift_x, &shift_y);
-	pa_make_unfloat_selection_redo(cep, pa_get_undo_path("redo", cep->redo_count, undo_path, 1024));
-	cep->redo_count++;
+	if(pa_make_unfloat_selection_redo(cep, pa_get_undo_path("redo", cep->redo_count, undo_path, 1024)))
+	{
+		cep->redo_count++;
+	}
 	cep->selection.layer_max = al_fread32le(fp);
 	cep->selection.layer = al_fread32le(fp);
 	cep->selection.bitmap_stack = pa_create_bitmap_stack(cep->selection.layer_max, 0, 0);
@@ -198,7 +184,6 @@ bool pa_apply_unfloat_selection_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, 
 bool pa_apply_unfloat_selection_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, const char * action)
 {
 	char undo_path[1024];
-	ALLEGRO_BITMAP * bp = NULL;
 	int layer;
 	int i;
 
@@ -206,30 +191,14 @@ bool pa_apply_unfloat_selection_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, 
 	layer = al_fread32le(fp);
 	cep->selection.box.start_x = al_fread32le(fp);
 	cep->selection.box.start_y = al_fread32le(fp);
-	cep->selection.layer_max = al_fread32le(fp);
-	cep->selection.layer = al_fread32le(fp);
-	cep->selection.bitmap_stack = pa_create_bitmap_stack(cep->selection.layer_max, 0, 0);
-	if(cep->selection.bitmap_stack)
-	{
-		for(i = 0; i < cep->selection.layer_max; i++)
-		{
-			if(al_fgetc(fp))
-			{
-				cep->selection.bitmap_stack->bitmap[i] = al_load_bitmap_flags_f(fp, ".png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
-				if(!cep->selection.bitmap_stack->bitmap[i])
-				{
-					goto fail;
-				}
-			}
-		}
-	}
 	cep->selection.box.width = al_fread32le(fp);
 	cep->selection.box.height = al_fread32le(fp);
-	pa_make_unfloat_selection_undo(cep, pa_get_undo_path("undo", cep->undo_count, undo_path, 1024));
-	cep->undo_count++;
+	if(pa_make_unfloat_selection_undo(cep, pa_get_undo_path("undo", cep->undo_count, undo_path, 1024)))
+	{
+		cep->undo_count++;
+	}
+	pa_handle_unfloat_canvas_editor_selection(cep, &cep->selection.box, true);
 	pa_shift_canvas_editor_variables(cep, cep->shift_x * cep->canvas->bitmap_size, cep->shift_y * cep->canvas->bitmap_size);
-	pa_import_bitmap_to_canvas(cep->canvas, bp, layer, cep->selection.box.start_x, cep->selection.box.start_y);
-	al_destroy_bitmap(bp);
 	pa_clear_canvas_editor_selection(cep);
 	t3f_debug_message("Exit pa_apply_unfloat_selection_redo()\n");
 	return true;
@@ -237,11 +206,7 @@ bool pa_apply_unfloat_selection_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, 
 	fail:
 	{
 		t3f_debug_message("Fail pa_apply_unfloat_selection_redo()\n");
-		if(bp)
-		{
-			al_destroy_bitmap(bp);
-		}
-		pa_free_clipboard(cep);
+		pa_free_selection(cep);
 		return false;
 	}
 }
