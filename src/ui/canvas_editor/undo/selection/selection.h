@@ -2,7 +2,7 @@
 #define PA_UNDO_SELECTION_H
 
 bool pa_make_float_selection_undo(PA_CANVAS_EDITOR * cep, PA_BOX * box, bool multi, const char * fn);
-bool pa_make_float_selection_redo(PA_CANVAS_EDITOR * cep, int new_x, int new_y, ALLEGRO_BITMAP * bp, const char * fn);
+bool pa_make_float_selection_redo(PA_CANVAS_EDITOR * cep, int layer, int new_x, int new_y, int new_widtn, int new_height, bool multi, const char * fn);
 bool pa_make_unfloat_selection_undo(PA_CANVAS_EDITOR * cep, const char * fn);
 bool pa_make_unfloat_selection_redo(PA_CANVAS_EDITOR * cep, const char * fn);
 bool pa_make_flip_selection_undo(PA_CANVAS_EDITOR * cep, bool horizontal, bool vertical, bool multi, const char * fn);
