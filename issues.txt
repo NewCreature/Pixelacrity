@@ -15,10 +15,10 @@ Pixelacrity 0.2.15 Issues
       [X]Copy the original box and compare at MSG_MOUSEUP. Create an undo state
          if the box differs.
 
-   [ ]Rewrite float/unfloat selection undo/redo to work with multi-layer
+   [X]Rewrite float/unfloat selection undo/redo to work with multi-layer
       selections.
 
-      [ ]Float selection undo crashes when attempting to create the redo state.
+      [X]Float selection undo crashes when attempting to create the redo state.
 
    [ ]Modified counter needs to stay synched so if we undo all the way back to
       the last save it is counted as unmodified.
