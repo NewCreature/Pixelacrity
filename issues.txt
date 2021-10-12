@@ -1,4 +1,4 @@
-Pixelacrity 0.2.15 Issues
+Pixelacrity 0.2.16 Issues
 ------------------------
 
 [ ]Ensure undo is working properly for all functions that are undoable.
