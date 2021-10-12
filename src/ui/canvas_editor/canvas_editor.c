@@ -91,6 +91,11 @@ PA_CANVAS_EDITOR * pa_create_canvas_editor(PA_CANVAS * cp)
 	t3f_debug_message("Use alpha blend shader\n");
 	al_use_shader(cep->standard_shader);
 
+	cep->view = t3f_create_view(0, 0, al_get_display_width(t3f_display), al_get_display_height(t3f_display), al_get_bitmap_width(t3f_display) / 2, al_get_display_height(t3f_display) / 2, T3F_NO_SCALE);
+	if(!cep->view)
+	{
+		goto fail;
+	}
 	al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);
 	al_set_new_bitmap_flags(0);
 	cep->brush = pa_create_default_brush();
@@ -161,6 +166,10 @@ void pa_destroy_canvas_editor(PA_CANVAS_EDITOR * cep)
 	if(cep->scratch_bitmap)
 	{
 		al_destroy_bitmap(cep->scratch_bitmap);
+	}
+	if(cep->view)
+	{
+		t3f_destroy_view(cep->view);
 	}
 	free(cep);
 }

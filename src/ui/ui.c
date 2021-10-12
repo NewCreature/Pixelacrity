@@ -227,6 +227,7 @@ void pa_resize_ui(PA_UI * uip)
 	resize_element(uip->element[PA_UI_ELEMENT_CANVAS_EDITOR], left_pane_width, 0, t3f_default_view->width - left_pane_width - right_pane_width, t3f_default_view->height - status_height);
 
 	canvas_editor = (PA_CANVAS_EDITOR *)uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->dp;
+	t3f_adjust_view(canvas_editor->view, 0, 0, al_get_display_width(t3f_display), al_get_display_height(t3f_display), uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->w / 2, uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->h / 2, T3F_NO_SCALE);
 	pa_set_canvas_editor_zoom(canvas_editor, canvas_editor->view_zoom);
 }
 

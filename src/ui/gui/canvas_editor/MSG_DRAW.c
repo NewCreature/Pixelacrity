@@ -64,6 +64,8 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 	ALLEGRO_TRANSFORM identity;
 	int i;
 
+	t3f_select_view(canvas_editor->view);
+	al_set_clipping_rectangle(d->x, d->y, d->w, d->h);
 	al_store_state(&old_state, ALLEGRO_STATE_TRANSFORM | ALLEGRO_STATE_BLENDER);
 	al_identity_transform(&identity);
 	al_use_transform(&identity);

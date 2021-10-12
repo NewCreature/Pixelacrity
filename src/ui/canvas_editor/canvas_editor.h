@@ -93,6 +93,7 @@ typedef struct
 typedef struct
 {
 
+	T3F_VIEW * view;
 	ALLEGRO_SYSTEM_MOUSE_CURSOR want_cursor;
 	ALLEGRO_SHADER * standard_shader;
 	ALLEGRO_SHADER * premultiplied_alpha_shader;
