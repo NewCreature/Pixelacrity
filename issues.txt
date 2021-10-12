@@ -47,6 +47,13 @@ Pixelacrity 0.2.15 Issues
 
 [ ]Make a Paste Merged function.
 
+[ ]Finish 3D layer breakout view.
+
+   [ ]Figure out why vanishing point is upper-left instead of center of the
+      screen.
+
+   [ ]Drawing tool preview doesn't work when in break out view.
+
 [ ]Crash on exit after removing layer while a multi-layer floating selection was
    active and then unfloating it.
 
@@ -57,8 +64,6 @@ Pixelacrity 0.3 Issues
 [ ]Allow contents of frame to be moved along with frame if Shift key is held
    when frame is first dragged. We can probably do this by piggybacking off
    of the floating selection code.
-
-[ ]Add 3D layer breakout view.
 
 [ ]Add fallback software rendering method for exporting canvas so we can render
    it to a memory bitmap without relying on pre-multiplied alpha. We can't use
