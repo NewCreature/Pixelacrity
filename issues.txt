@@ -47,12 +47,12 @@ Pixelacrity 0.2.15 Issues
 
 [ ]Make a Paste Merged function.
 
-[ ]Finish 3D layer breakout view.
+[X]Finish 3D layer breakout view.
 
-   [ ]Figure out why vanishing point is upper-left instead of center of the
+   [X]Figure out why vanishing point is upper-left instead of center of the
       screen.
 
-   [ ]Drawing tool preview doesn't work when in break out view.
+   [X]Drawing tool preview doesn't work when in break out view.
 
 [ ]Crash on exit after removing layer while a multi-layer floating selection was
    active and then unfloating it.
