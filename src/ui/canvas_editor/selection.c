@@ -87,7 +87,7 @@ bool pa_handle_float_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp
 		al_use_transform(&identity);
 		al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
 		al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
-		pa_render_canvas_layer(cep->canvas, cep->current_layer, bp->start_x, bp->start_y, 1, 0, 0, bp->width, bp->height);
+		pa_render_canvas_layer(cep->canvas, cep->current_layer, bp->start_x, bp->start_y, 0, t3f_color_white, 1, 0, 0, bp->width, bp->height);
 		al_restore_state(&old_state);
 		pa_draw_primitive_to_canvas(cep->canvas, cep->current_layer, bp->start_x, bp->start_y, bp->start_x + bp->width - 1, bp->start_y + bp->height - 1, NULL, al_map_rgba_f(0, 0, 0, 0), NULL, PA_RENDER_COPY, NULL, pa_draw_filled_rectangle);
 	}
@@ -105,7 +105,7 @@ bool pa_handle_float_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp
 			al_use_transform(&identity);
 			al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
 			al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
-			pa_render_canvas_layer(cep->canvas, i, bp->start_x, bp->start_y, 1, 0, 0, bp->width, bp->height);
+			pa_render_canvas_layer(cep->canvas, i, bp->start_x, bp->start_y, 0, t3f_color_white, 1, 0, 0, bp->width, bp->height);
 			al_restore_state(&old_state);
 			pa_draw_primitive_to_canvas(cep->canvas, i, bp->start_x, bp->start_y, bp->start_x + bp->width - 1, bp->start_y + bp->height - 1, NULL, al_map_rgba_f(0, 0, 0, 0), NULL, PA_RENDER_COPY, NULL, pa_draw_filled_rectangle);
 		}

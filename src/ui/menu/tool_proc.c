@@ -38,7 +38,7 @@ static void grab_brush(PA_CANVAS_EDITOR * cep, ALLEGRO_BITMAP * bp, bool multi)
 	}
 	else
 	{
-		pa_render_canvas_layer(cep->canvas, cep->current_layer, cep->selection.box.start_x, cep->selection.box.start_y, 1, 0, 0, cep->selection.box.width, cep->selection.box.height);
+		pa_render_canvas_layer(cep->canvas, cep->current_layer, cep->selection.box.start_x, cep->selection.box.start_y, 0, t3f_color_white, 1, 0, 0, cep->selection.box.width, cep->selection.box.height);
 	}
 	al_use_shader(cep->standard_shader);
 	al_restore_state(&old_state);

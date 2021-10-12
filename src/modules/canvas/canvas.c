@@ -462,7 +462,7 @@ static bool bitmap_visible(PA_CANVAS * cp, int j, int i, int x, int y, int width
 	return false;
 }
 
-void pa_render_canvas_layer(PA_CANVAS * cp, int i, int x, int y, int scale, float ox, float oy, int width, int height)
+void pa_render_canvas_layer(PA_CANVAS * cp, int i, int x, int y, int z, ALLEGRO_COLOR color, int scale, float ox, float oy, int width, int height)
 {
 	int j, k;
 
@@ -474,7 +474,7 @@ void pa_render_canvas_layer(PA_CANVAS * cp, int i, int x, int y, int scale, floa
 			{
 				if(!(cp->layer[i]->flags & PA_CANVAS_FLAG_HIDDEN) && cp->layer[i]->bitmap[j][k] && bitmap_visible(cp, k, j, x, y, width, height, scale))
 				{
-					t3f_draw_scaled_bitmap(cp->layer[i]->bitmap[j][k], t3f_color_white, ox + (k * cp->bitmap_size - x) * scale, oy + (j * cp->bitmap_size - y) * scale, 0, cp->bitmap_size * scale, cp->bitmap_size * scale, 0);
+					t3f_draw_scaled_bitmap(cp->layer[i]->bitmap[j][k], color, ox + (k * cp->bitmap_size - x) * scale, oy + (j * cp->bitmap_size - y) * scale, z, cp->bitmap_size * scale, cp->bitmap_size * scale, 0);
 				}
 			}
 		}
@@ -490,7 +490,7 @@ void pa_render_canvas(PA_CANVAS * cp, int x, int y, int scale, float ox, float o
 //	al_set_clipping_rectangle(x, y, width, height);
 	for(i = 0; i < cp->layer_max; i++)
 	{
-		pa_render_canvas_layer(cp, i, x, y, scale, ox, oy, width, height);
+		pa_render_canvas_layer(cp, i, x, y, 0, t3f_color_white, scale, ox, oy, width, height);
 	}
 //	al_set_clipping_rectangle(cx, cy, cw, ch);
 }

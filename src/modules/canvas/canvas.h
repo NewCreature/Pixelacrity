@@ -57,7 +57,7 @@ void pa_shift_canvas_bitmap_array(PA_CANVAS * cp, int shift_x, int shift_y);
 bool pa_resize_canvas_bitmap_array(PA_CANVAS * cp, int width, int height);
 bool pa_expand_canvas(PA_CANVAS * cp, int layer, int x, int y);
 
-void pa_render_canvas_layer(PA_CANVAS * cp, int i, int x, int y, int scale, float ox, float oy, int width, int height);
+void pa_render_canvas_layer(PA_CANVAS * cp, int i, int x, int y, int z, ALLEGRO_COLOR color, int scale, float ox, float oy, int width, int height);
 void pa_render_canvas(PA_CANVAS * cp, int x, int y, int scale, float ox, float oy, int width, int height);
 
 #endif

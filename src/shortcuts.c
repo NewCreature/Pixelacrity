@@ -223,6 +223,11 @@ void pa_handle_shortcuts(APP_INSTANCE * app)
 		app->canvas_editor->view_isolate = !app->canvas_editor->view_isolate;
 		t3f_key[ALLEGRO_KEY_I] = 0;
 	}
+	else if(t3f_key[ALLEGRO_KEY_B])
+	{
+		app->canvas_editor->view_break_out = !app->canvas_editor->view_break_out;
+		t3f_key[ALLEGRO_KEY_B] = 0;
+	}
 	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && t3f_key[ALLEGRO_KEY_G])
 	{
 		if(app->canvas_editor->grid[0].space)

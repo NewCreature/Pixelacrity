@@ -56,6 +56,9 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 	int tx, ty;
 	ALLEGRO_BITMAP * peg_bitmap;
 	char buf[256];
+	int current_z;
+	int vz = 8;
+	ALLEGRO_COLOR current_color;
 
 	ALLEGRO_STATE old_state;
 	ALLEGRO_TRANSFORM identity;
@@ -76,12 +79,30 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 	}
 	else
 	{
+		if(canvas_editor->view_break_out)
+		{
+			current_z = -(canvas_editor->view_zoom * vz) * (canvas_editor->current_layer + 2);
+		}
+		else
+		{
+			current_z = 0;
+		}
+
 		/* render background layers */
 		if(!canvas_editor->view_isolate)
 		{
 			for(i = 0; i < canvas_editor->current_layer; i++)
 			{
-				pa_render_canvas_layer(canvas_editor->canvas, i, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, d->w, d->h);
+				current_color = t3f_color_white;
+				if(canvas_editor->view_break_out)
+				{
+					current_z += vz * canvas_editor->view_zoom;
+					if(i != canvas_editor->current_layer)
+					{
+						current_color = al_map_rgba_f(1.0, 1.0, 1.0, 0.5);
+					}
+				}
+				pa_render_canvas_layer(canvas_editor->canvas, i, canvas_editor->view_x, canvas_editor->view_y, current_z, current_color, canvas_editor->view_zoom, d->x, d->y, d->w, d->h);
 			}
 		}
 
@@ -97,7 +118,12 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 		}
 		else
 		{
-			pa_render_canvas_layer(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, d->w, d->h);
+			current_color = t3f_color_white;
+			if(canvas_editor->view_break_out)
+			{
+				current_z += vz * canvas_editor->view_zoom;
+			}
+			pa_render_canvas_layer(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->view_x, canvas_editor->view_y, current_z, current_color, canvas_editor->view_zoom, d->x, d->y, d->w, d->h);
 		}
 
 		/* draw foreground layers */
@@ -105,7 +131,16 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 		{
 			for(i = canvas_editor->current_layer + 1; i < canvas_editor->canvas->layer_max; i++)
 			{
-				pa_render_canvas_layer(canvas_editor->canvas, i, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, d->w, d->h);
+				current_color = t3f_color_white;
+				if(canvas_editor->view_break_out)
+				{
+					current_z += vz * canvas_editor->view_zoom;
+					if(i != canvas_editor->current_layer)
+					{
+						current_color = al_map_rgba_f(1.0, 1.0, 1.0, 0.5);
+					}
+				}
+				pa_render_canvas_layer(canvas_editor->canvas, i, canvas_editor->view_x, canvas_editor->view_y, current_z, current_color, canvas_editor->view_zoom, d->x, d->y, d->w, d->h);
 			}
 		}
 		for(i = 0; i < PA_MAX_GRIDS; i++)
