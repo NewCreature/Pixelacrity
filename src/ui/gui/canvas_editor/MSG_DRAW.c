@@ -81,7 +81,7 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 	{
 		if(canvas_editor->view_break_out)
 		{
-			current_z = -(canvas_editor->view_zoom * vz) * (canvas_editor->current_layer + 2);
+			current_z = -(canvas_editor->view_zoom * vz) * (canvas_editor->current_layer + 1);
 		}
 		else
 		{
