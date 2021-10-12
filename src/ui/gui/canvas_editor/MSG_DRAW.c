@@ -24,7 +24,6 @@ static void generate_brush_hint(PA_CANVAS_EDITOR * cep)
 	al_draw_tinted_scaled_bitmap(cep->brush, al_map_rgba_f(0.0, 0.0, 0.0, 1.0), 0, 0, w, h, 1.0, 0.0, w * cep->view_zoom, h * cep->view_zoom, 0);
 	al_draw_tinted_scaled_bitmap(cep->brush, al_map_rgba_f(0.0, 0.0, 0.0, 1.0), 0, 0, w, h, 2.0, 0.0, w * cep->view_zoom, h * cep->view_zoom, 0);
 	al_draw_tinted_scaled_bitmap(cep->brush, al_map_rgba_f(0.0, 0.0, 0.0, 1.0), 0, 0, w, h, 0.0, 1.0, w * cep->view_zoom, h * cep->view_zoom, 0);
-	al_draw_tinted_scaled_bitmap(cep->brush, al_map_rgba_f(0.0, 0.0, 0.0, 1.0), 0, 0, w, h, 1.0, 1.0, w * cep->view_zoom, h * cep->view_zoom, 0);
 	al_draw_tinted_scaled_bitmap(cep->brush, al_map_rgba_f(0.0, 0.0, 0.0, 1.0), 0, 0, w, h, 2.0, 1.0, w * cep->view_zoom, h * cep->view_zoom, 0);
 	al_draw_tinted_scaled_bitmap(cep->brush, al_map_rgba_f(0.0, 0.0, 0.0, 1.0), 0, 0, w, h, 0.0, 2.0, w * cep->view_zoom, h * cep->view_zoom, 0);
 	al_draw_tinted_scaled_bitmap(cep->brush, al_map_rgba_f(0.0, 0.0, 0.0, 1.0), 0, 0, w, h, 1.0, 2.0, w * cep->view_zoom, h * cep->view_zoom, 0);
