@@ -108,6 +108,11 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 			}
 		}
 
+		current_color = t3f_color_white;
+		if(canvas_editor->view_break_out)
+		{
+			current_z += vz * canvas_editor->view_zoom;
+		}
 		if(canvas_editor->selection.bitmap_stack)
 		{
 			pa_tool_selection_render_layer(canvas_editor, canvas_editor->current_layer);
@@ -120,11 +125,6 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 		}
 		else
 		{
-			current_color = t3f_color_white;
-			if(canvas_editor->view_break_out)
-			{
-				current_z += vz * canvas_editor->view_zoom;
-			}
 			pa_render_canvas_layer(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->view_x, canvas_editor->view_y, current_z, current_color, canvas_editor->view_zoom, d->x, d->y, d->w, d->h);
 		}
 
