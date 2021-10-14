@@ -481,7 +481,6 @@ int t3gui_push_button_proc(int msg, T3GUI_ELEMENT *d, int c)
     assert(d);
 
     const char *text = d->dp;
-    const ALLEGRO_FONT *font = d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].font[0];
     if (text == NULL)
     {
         text = "";
@@ -671,9 +670,6 @@ int t3gui_check_proc(int msg, T3GUI_ELEMENT *d, int c)
    if (msg==MSG_DRAW) {
       const char *text = d->dp;
       const ALLEGRO_FONT *font = d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].font[0];
-      ALLEGRO_COLOR fg = (d->flags & D_DISABLED) ? d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].color[T3GUI_THEME_COLOR_MG] : d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].color[T3GUI_THEME_COLOR_FG];
-      ALLEGRO_COLOR bg = d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].color[T3GUI_THEME_COLOR_BG];
-      int w = max(d->w, get_nine_patch_bitmap_min_width(p9));
       int h = max(d->h, get_nine_patch_bitmap_min_height(p9));
       if(d->flags & hover)
       {
@@ -878,8 +874,8 @@ int t3gui_radio_proc(int msg, T3GUI_ELEMENT *d, int c)
  */
 int t3gui_slider_proc(int msg, T3GUI_ELEMENT *d, int c)
 {
-   ALLEGRO_BITMAP * handle_bp = NULL;
-   ALLEGRO_BITMAP * groove_bp = NULL;
+   NINE_PATCH_BITMAP * handle_bp = NULL;
+   NINE_PATCH_BITMAP * groove_bp = NULL;
    NINE_PATCH_BITMAP *p9;
    int oldpos, newpos;
    int vert = true;        /* flag: is slider vertical? */
@@ -894,7 +890,7 @@ int t3gui_slider_proc(int msg, T3GUI_ELEMENT *d, int c)
    int upkey, downkey;
    int pgupkey, pgdnkey;
    int homekey, endkey;
-   int delta;
+   int delta = 0;
    float slratio, slmax, slpos;
    int (*proc)(void *cbpointer, int d2value);
    int oldval;
@@ -1865,7 +1861,6 @@ int t3gui_list_proc(int msg, T3GUI_ELEMENT *d, int c)
 {
     int ret = D_O_K;
     assert(d);
-    int i;
 //    const char * right_text = NULL;
     int list_width = d->w;
 //    int text_width = d->w;

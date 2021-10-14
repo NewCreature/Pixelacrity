@@ -185,7 +185,6 @@ bool pa_apply_unfloat_selection_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, 
 {
 	char undo_path[1024];
 	int layer;
-	int i;
 
 	t3f_debug_message("Enter pa_apply_unfloat_selection_redo()\n");
 	layer = al_fread32le(fp);
@@ -202,11 +201,4 @@ bool pa_apply_unfloat_selection_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, 
 	pa_clear_canvas_editor_selection(cep);
 	t3f_debug_message("Exit pa_apply_unfloat_selection_redo()\n");
 	return true;
-
-	fail:
-	{
-		t3f_debug_message("Fail pa_apply_unfloat_selection_redo()\n");
-		pa_free_selection(cep);
-		return false;
-	}
 }

@@ -42,7 +42,6 @@ static int menu_reexport_all_update_proc(ALLEGRO_MENU * mp, int item, void * dat
 static int menu_export_update_proc(ALLEGRO_MENU * mp, int item, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
-	int i;
 	int x, y, w, h;
 
 	if(app->canvas->frame_max > 0)
