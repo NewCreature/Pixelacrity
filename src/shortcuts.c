@@ -226,6 +226,7 @@ void pa_handle_shortcuts(APP_INSTANCE * app)
 	else if(t3f_key[ALLEGRO_KEY_B])
 	{
 		app->canvas_editor->view_break_out = !app->canvas_editor->view_break_out;
+		app->canvas_editor->view_break_out_frame = 0;
 		t3f_key[ALLEGRO_KEY_B] = 0;
 	}
 	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && t3f_key[ALLEGRO_KEY_G])

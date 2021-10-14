@@ -109,6 +109,10 @@ void pa_canvas_editor_MSG_IDLE(T3GUI_ELEMENT * d, int c)
 	{
 		canvas_editor->backup_tick--;
 	}
+	if(canvas_editor->view_break_out_frame < PA_CANVAS_EDITOR_BREAKOUT_DISTANCE)
+	{
+		canvas_editor->view_break_out_frame++;
+	}
 	if(canvas_editor->backup_tick <= 0 && canvas_editor->tool_state == PA_TOOL_STATE_OFF)
 	{
 		save_backup(canvas_editor->canvas);

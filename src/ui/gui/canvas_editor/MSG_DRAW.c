@@ -57,7 +57,7 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 	ALLEGRO_BITMAP * peg_bitmap;
 	char buf[256];
 	int current_z;
-	int vz = 8;
+	int vz = canvas_editor->view_break_out_frame;
 	ALLEGRO_COLOR current_color;
 
 	ALLEGRO_STATE old_state;

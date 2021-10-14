@@ -37,6 +37,8 @@
 
 #define PA_MAX_GRIDS                8
 
+#define PA_CANVAS_EDITOR_BREAKOUT_DISTANCE 8
+
 typedef struct
 {
 
@@ -118,6 +120,7 @@ typedef struct
 	int view_zoom;
 	bool view_isolate;
 	bool view_break_out;
+	int view_break_out_frame;
 	int hover_x, hover_y;
 	int last_hover_x, last_hover_y;
 	int click_x, click_y, click_button;
