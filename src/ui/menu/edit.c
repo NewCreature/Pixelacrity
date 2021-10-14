@@ -64,6 +64,21 @@ static int menu_edit_paste_update_proc(ALLEGRO_MENU * mp, int item, void * data)
 	return 0;
 }
 
+static int menu_edit_paste_merged_update_proc(ALLEGRO_MENU * mp, int item, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	if(app->canvas_editor->clipboard.bitmap_stack && app->canvas_editor->clipboard.layer < 0)
+	{
+		t3f_set_menu_item_flags(mp, item, 0);
+	}
+	else
+	{
+		t3f_set_menu_item_flags(mp, item, ALLEGRO_MENU_ITEM_DISABLED);
+	}
+	return 0;
+}
+
 static int menu_edit_unfloat_update_proc(ALLEGRO_MENU * mp, int item, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
@@ -111,6 +126,7 @@ ALLEGRO_MENU * pa_create_edit_menu(ALLEGRO_MENU * multilayer_mp)
 	t3f_add_menu_item(mp, "Copy", 0, NULL, pa_menu_edit_copy, menu_edit_copy_update_proc);
 	t3f_add_menu_item(mp, "Paste", 0, NULL, pa_menu_edit_paste, menu_edit_paste_update_proc);
 	t3f_add_menu_item(mp, "Paste In Place", 0, NULL, pa_menu_edit_paste_in_place, menu_edit_paste_update_proc);
+	t3f_add_menu_item(mp, "Paste Merged", 0, NULL, pa_menu_edit_paste_merged, menu_edit_paste_merged_update_proc);
 	t3f_add_menu_item(mp, NULL, 0, NULL, NULL, NULL);
 	t3f_add_menu_item(mp, "Flip Horizontally", 0, NULL, pa_menu_edit_flip_horizontal, menu_edit_copy_update_proc);
 	t3f_add_menu_item(mp, "Flip Vertically", 0, NULL, pa_menu_edit_flip_vertical, menu_edit_copy_update_proc);

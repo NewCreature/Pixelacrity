@@ -152,7 +152,34 @@ bool pa_remove_layer_from_clipboard(PA_CANVAS_EDITOR * cep, int layer)
 	return false;
 }
 
-void pa_apply_paste_clipboard(PA_CANVAS_EDITOR * cep, int pos, int ox, int oy)
+static ALLEGRO_BITMAP * merge_clipboard(PA_CANVAS_EDITOR * cep)
+{
+	ALLEGRO_BITMAP * bp;
+	ALLEGRO_STATE old_state;
+	int i;
+
+	bp = al_create_bitmap(cep->clipboard.bitmap_stack->width, cep->clipboard.bitmap_stack->height);
+	if(bp)
+	{
+		al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_TRANSFORM | ALLEGRO_STATE_BLENDER);
+		al_set_target_bitmap(bp);
+		al_use_shader(cep->premultiplied_alpha_shader);
+		al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
+		al_draw_filled_rectangle(0, 0, al_get_bitmap_width(bp), al_get_bitmap_height(bp), al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
+		al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_INVERSE_ALPHA);
+		for(i = 0; i < cep->clipboard.layer_max; i++)
+		{
+			if(cep->clipboard.bitmap_stack->bitmap[i])
+			{
+				al_draw_bitmap(cep->clipboard.bitmap_stack->bitmap[i], 0, 0, 0);
+			}
+		}
+		al_restore_state(&old_state);
+	}
+	return bp;
+}
+
+void pa_apply_paste_clipboard(PA_CANVAS_EDITOR * cep, int pos, int ox, int oy, bool merge)
 {
 	ALLEGRO_STATE old_state;
 	int x, y, i, c = -1;
@@ -168,66 +195,72 @@ void pa_apply_paste_clipboard(PA_CANVAS_EDITOR * cep, int pos, int ox, int oy)
 		cep->selection.bitmap_stack = pa_create_bitmap_stack(cep->clipboard.bitmap_stack->layers, cep->clipboard.bitmap_stack->width, cep->clipboard.bitmap_stack->height);
 		if(cep->selection.bitmap_stack)
 		{
-			for(i = 0; i < cep->clipboard.layer_max; i++)
+			if(merge)
 			{
-				if(cep->clipboard.bitmap_stack->bitmap[i])
-				{
-					cep->selection.bitmap_stack->bitmap[i] = al_clone_bitmap(cep->clipboard.bitmap_stack->bitmap[i]);
-					c = i;
-				}
+				cep->selection.bitmap_stack->bitmap[cep->current_layer] = merge_clipboard(cep);
+				cep->selection.layer_max = cep->clipboard.layer_max;
+				cep->selection.layer = cep->current_layer;
 			}
-			cep->selection.layer_max = cep->clipboard.layer_max;
-			cep->selection.layer = cep->clipboard.layer;
-			if(cep->selection.bitmap_stack)
+			else
 			{
-				switch(pos)
+				for(i = 0; i < cep->clipboard.layer_max; i++)
 				{
-					case 0:
+					if(cep->clipboard.bitmap_stack->bitmap[i])
 					{
-						x = cep->view_x + cep->view_width / 2 - cep->selection.bitmap_stack->width / 2;
-						y = cep->view_y + cep->view_height / 2 - cep->selection.bitmap_stack->height / 2;
-						break;
-					}
-					case 1:
-					{
-						x = cep->clipboard.x;
-						y = cep->clipboard.y;
-						break;
-					}
-					case 2:
-					{
-						x = cep->view_x + (t3gui_get_mouse_x() + ox) / cep->view_zoom - cep->selection.bitmap_stack->width / 2;
-						y = cep->view_y + (t3gui_get_mouse_y() + oy) / cep->view_zoom - cep->selection.bitmap_stack->height / 2;
-						break;
-					}
-					case 3:
-					{
-						x = ox;
-						y = oy;
-						break;
+						cep->selection.bitmap_stack->bitmap[i] = al_clone_bitmap(cep->clipboard.bitmap_stack->bitmap[i]);
+						c = i;
 					}
 				}
-				pa_initialize_box(&cep->selection.box, x, y, cep->selection.bitmap_stack->width, cep->selection.bitmap_stack->height);
-				pa_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom);
-				cep->current_tool = PA_TOOL_SELECTION;
+				cep->selection.layer_max = cep->clipboard.layer_max;
+				cep->selection.layer = cep->clipboard.layer;
 			}
+			switch(pos)
+			{
+				case 0:
+				{
+					x = cep->view_x + cep->view_width / 2 - cep->selection.bitmap_stack->width / 2;
+					y = cep->view_y + cep->view_height / 2 - cep->selection.bitmap_stack->height / 2;
+					break;
+				}
+				case 1:
+				{
+					x = cep->clipboard.x;
+					y = cep->clipboard.y;
+					break;
+				}
+				case 2:
+				{
+					x = cep->view_x + (t3gui_get_mouse_x() + ox) / cep->view_zoom - cep->selection.bitmap_stack->width / 2;
+					y = cep->view_y + (t3gui_get_mouse_y() + oy) / cep->view_zoom - cep->selection.bitmap_stack->height / 2;
+					break;
+				}
+				case 3:
+				{
+					x = ox;
+					y = oy;
+					break;
+				}
+			}
+			pa_initialize_box(&cep->selection.box, x, y, cep->selection.bitmap_stack->width, cep->selection.bitmap_stack->height);
+			pa_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom);
+			cep->current_tool = PA_TOOL_SELECTION;
 			al_restore_state(&old_state);
 			t3f_refresh_menus();
 		}
 	}
 }
 
-void pa_paste_clipboard(PA_CANVAS_EDITOR * cep, int pos, int ox, int oy)
+void pa_paste_clipboard(PA_CANVAS_EDITOR * cep, int pos, int ox, int oy, bool merge)
 {
 	char undo_path[1024];
 
 	t3f_debug_message("Enter pa_menu_edit_paste()\n");
 
-	if(pa_make_paste_undo(cep, pos, ox, oy, pa_get_undo_path("undo", cep->undo_count, undo_path, 1024)))
+	if(pa_make_paste_undo(cep, pos, ox, oy, merge, pa_get_undo_path("undo", cep->undo_count, undo_path, 1024)))
 	{
 		pa_finalize_undo(cep);
 	}
-	pa_apply_paste_clipboard(cep, pos, ox, oy);
+	pa_apply_paste_clipboard(cep, pos, ox, oy, merge);
 	cep->modified++;
 	pa_set_window_message(NULL);
 	t3f_debug_message("Exit pa_menu_edit_paste()\n");

@@ -37,6 +37,11 @@ void pa_handle_shortcuts(APP_INSTANCE * app)
 		pa_menu_edit_paste_in_place(0, app);
 		t3f_key[ALLEGRO_KEY_V] = 0;
 	}
+	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && (t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT]) && t3f_key[ALLEGRO_KEY_V])
+	{
+		pa_menu_edit_paste_merged(-1, app);
+		t3f_key[ALLEGRO_KEY_V] = 0;
+	}
 	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && t3f_key[ALLEGRO_KEY_V])
 	{
 		pa_menu_edit_paste(-1, app);

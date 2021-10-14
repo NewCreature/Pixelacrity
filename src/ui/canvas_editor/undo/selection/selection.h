@@ -11,8 +11,8 @@ bool pa_make_turn_selection_undo(PA_CANVAS_EDITOR * cep, int amount, bool multi,
 bool pa_make_turn_selection_redo(PA_CANVAS_EDITOR * cep, int amount, bool multi, const char * fn);
 bool pa_make_delete_selection_undo(PA_CANVAS_EDITOR * cep, int type, const char * action, bool multi, const char * fn);
 bool pa_make_delete_selection_redo(PA_CANVAS_EDITOR * cep, int type, const char * action, bool f, bool multi, const char * fn);
-bool pa_make_paste_undo(PA_CANVAS_EDITOR * cep, int pos, int x, int y, const char * fn);
-bool pa_make_paste_redo(PA_CANVAS_EDITOR * cep, int pos, int x, int y, const char * fn);
+bool pa_make_paste_undo(PA_CANVAS_EDITOR * cep, int pos, int x, int y, bool merge, const char * fn);
+bool pa_make_paste_redo(PA_CANVAS_EDITOR * cep, int pos, int x, int y, bool merge, const char * fn);
 
 bool pa_apply_unfloat_selection_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, const char * action, bool revert);
 bool pa_apply_unfloat_selection_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, const char * action);

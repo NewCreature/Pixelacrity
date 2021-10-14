@@ -7,6 +7,7 @@ int pa_menu_edit_cut(int id, void * data);
 int pa_menu_edit_copy(int id, void * data);
 int pa_menu_edit_paste(int id, void * data);
 int pa_menu_edit_paste_in_place(int id, void * data);
+int pa_menu_edit_paste_merged(int id, void * data);
 int pa_menu_edit_flip_horizontal(int id, void * data);
 int pa_menu_edit_flip_vertical(int id, void * data);
 int pa_menu_edit_turn_clockwise(int id, void * data);
