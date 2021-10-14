@@ -45,7 +45,7 @@ Pixelacrity 0.2.16 Issues
 
    [X]Make cut selection undoable.
 
-[ ]Make a Paste Merged function.
+[X]Make a Paste Merged function.
 
 [X]Finish 3D layer breakout view.
 
