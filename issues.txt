@@ -1,65 +1,25 @@
-Pixelacrity 0.2.16 Issues
+Pixelacrity 0.3.1 Issues
 ------------------------
 
-[ ]Ensure undo is working properly for all functions that are undoable.
+[ ]Add GUI themes.
 
-   [X]Undo unfloat multi-layer selection not working.
+[ ]Make shade pickers available for left and right mouse button.
 
-   [X]Add undo for layer swaps.
+[ ]Make alpha pickers available.
 
-   [X]Importing a bitmap should count as an undoable change without first
-      requiring the selection to be unfloated.
+[ ]Add ability to load and save color palettes.
 
-   [X]Frame adding, editing, deleting should be undoable.
+[ ]Add ability to modify the color palette.
 
-      [X]Copy the original box and compare at MSG_MOUSEUP. Create an undo state
-         if the box differs.
+[ ]Save color palette to canvas editor settings.
 
-   [X]Rewrite float/unfloat selection undo/redo to work with multi-layer
-      selections.
+[ ]Add GUI elements related to the current tool configuration.
 
-      [X]Float selection undo crashes when attempting to create the redo state.
+   [ ]The current brush should be visible.
 
-   [ ]Modified counter needs to stay synched so if we undo all the way back to
-      the last save it is counted as unmodified.
+   [ ]Allow selecting between copy and composite rendering for tools.
 
-   [X]Flip and turn functions need to be undoable.
-
-      [X]Need to factor out flip/turn operations from menu code so we can use it
-         from other modules. We can probably put it in the selection module.
-
-      [X]We need to track if the selection was floating when the turn occurred
-         since we get an implicit float if the dimensions don't match on both
-         axes.
-
-         [X]Implicitly unfloat the selection if the state was not floating when
-            the turn operation was initiated.
-
-   [X]Look at areas where floating selections are unfloated implicitly. I think
-      the desired behavior would be to have it count as an extra undoable
-      modification.
-
-   [X]Make paste undoable.
-
-   [X]Make delete selection undoable.
-
-   [X]Make cut selection undoable.
-
-[X]Make a Paste Merged function.
-
-[X]Finish 3D layer breakout view.
-
-   [X]Figure out why vanishing point is upper-left instead of center of the
-      screen.
-
-   [X]Drawing tool preview doesn't work when in break out view.
-
-[X]Crash on exit after removing layer while a multi-layer floating selection was
-   active and then unfloating it.
-
-
-Pixelacrity 0.3 Issues
-----------------------
+   [ ]Allow toggling outline mode for filled tools.
 
 [ ]Allow contents of frame to be moved along with frame if Shift key is held
    when frame is first dragged. We can probably do this by piggybacking off
@@ -106,11 +66,6 @@ Pixelacrity 0.3 Issues
    [ ]Use a modifier key to enable this mode. I'm thinking Ctrl+Click to make
       the flood fill tool restrict itself to filling inside the visible part of
       the canvas.
-
-[ ]Optimize 'quixel_get_canvas_dimensions()'.
-
-   [ ]We should be able to track the dimensions as changes are made to the
-      canvas so we don't have to keep doing the pixel scanning algorithm.
 
 [ ]Finish implementing color palette.
 
@@ -700,3 +655,64 @@ Closed Issues
    was supposed to be removed.
 
 [X]Add shortcut for export.
+
+[X]Ensure undo is working properly for all functions that are undoable.
+
+   [X]Undo unfloat multi-layer selection not working.
+
+   [X]Add undo for layer swaps.
+
+   [X]Importing a bitmap should count as an undoable change without first
+      requiring the selection to be unfloated.
+
+   [X]Frame adding, editing, deleting should be undoable.
+
+      [X]Copy the original box and compare at MSG_MOUSEUP. Create an undo state
+         if the box differs.
+
+   [X]Rewrite float/unfloat selection undo/redo to work with multi-layer
+      selections.
+
+      [X]Float selection undo crashes when attempting to create the redo state.
+
+   [X]Modified counter needs to stay synched so if we undo all the way back to
+      the last save it is counted as unmodified.
+
+   [X]Flip and turn functions need to be undoable.
+
+      [X]Need to factor out flip/turn operations from menu code so we can use it
+         from other modules. We can probably put it in the selection module.
+
+      [X]We need to track if the selection was floating when the turn occurred
+         since we get an implicit float if the dimensions don't match on both
+         axes.
+
+         [X]Implicitly unfloat the selection if the state was not floating when
+            the turn operation was initiated.
+
+   [X]Look at areas where floating selections are unfloated implicitly. I think
+      the desired behavior would be to have it count as an extra undoable
+      modification.
+
+   [X]Make paste undoable.
+
+   [X]Make delete selection undoable.
+
+   [X]Make cut selection undoable.
+
+[X]Make a Paste Merged function.
+
+[X]Finish 3D layer breakout view.
+
+   [X]Figure out why vanishing point is upper-left instead of center of the
+      screen.
+
+   [X]Drawing tool preview doesn't work when in break out view.
+
+[X]Crash on exit after removing layer while a multi-layer floating selection was
+   active and then unfloating it.
+
+[X]Optimize 'quixel_get_canvas_dimensions()'.
+
+   [X]We should be able to track the dimensions as changes are made to the
+      canvas so we don't have to keep doing the pixel scanning algorithm.
