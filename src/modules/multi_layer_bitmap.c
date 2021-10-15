@@ -128,7 +128,7 @@ bool pa_remove_layer_from_bitmap_stack(PA_BITMAP_STACK * bp, int layer)
 		{
 			bp->bitmap[i] = old_bitmap[i];
 		}
-		free(old_bitmap[layer]);
+		al_destroy_bitmap(old_bitmap[layer]);
 		for(i = layer; i < bp->layers - 1; i++)
 		{
 			bp->bitmap[i] = old_bitmap[i + 1];
