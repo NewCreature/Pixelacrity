@@ -54,7 +54,7 @@ Pixelacrity 0.2.16 Issues
 
    [X]Drawing tool preview doesn't work when in break out view.
 
-[ ]Crash on exit after removing layer while a multi-layer floating selection was
+[X]Crash on exit after removing layer while a multi-layer floating selection was
    active and then unfloating it.
 
 
