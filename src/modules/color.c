@@ -59,3 +59,19 @@ void pa_print_color(ALLEGRO_COLOR color)
 	al_unmap_rgba(color, &r, &g, &b, &a);
 	printf("%d, %d, %d, %d\n", r, g, b, a);
 }
+
+ALLEGRO_COLOR pa_get_real_color(ALLEGRO_COLOR color, ALLEGRO_BITMAP * scratch)
+{
+	ALLEGRO_TRANSFORM identity;
+	ALLEGRO_STATE old_state;
+
+	al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_TRANSFORM | ALLEGRO_STATE_BLENDER);
+	al_set_target_bitmap(scratch);
+	al_identity_transform(&identity);
+	al_use_transform(&identity);
+	al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
+	al_draw_filled_rectangle(0, 0, al_get_bitmap_width(scratch), al_get_bitmap_height(scratch), color);
+	al_restore_state(&old_state);
+
+	return al_get_pixel(scratch, 0, 0);
+}

@@ -7,5 +7,6 @@ ALLEGRO_COLOR pa_alpha_color(ALLEGRO_COLOR color, float alpha);
 float pa_get_color_shade(ALLEGRO_COLOR color);
 float pa_get_color_alpha(ALLEGRO_COLOR color);
 void pa_print_color(ALLEGRO_COLOR color);
+ALLEGRO_COLOR pa_get_real_color(ALLEGRO_COLOR color, ALLEGRO_BITMAP * scratch);
 
 #endif
