@@ -1,8 +1,6 @@
 Pixelacrity 0.3.1 Issues
 ------------------------
 
-[ ]Fix GUI sliders not going all the way to the full value.
-
 [ ]Add GUI themes.
 
 [ ]Make shade pickers available for left and right mouse button.
@@ -718,3 +716,5 @@ Closed Issues
 
    [X]We should be able to track the dimensions as changes are made to the
       canvas so we don't have to keep doing the pixel scanning algorithm.
+
+[X]Fix GUI sliders not going all the way to the full value.
