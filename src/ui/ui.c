@@ -150,35 +150,97 @@ void pa_resize_ui(PA_UI * uip)
 	T3GUI_THEME * default_theme;
 	int left_pane_width;
 	int right_pane_width;
+	int pos_x;
+	int offset_x = 0;
+	int pos_vx;
 	int pos_y;
+	int pos_vy;
 	int status_height;
 
 	right_pane_width = 96;
 	resize_element(uip->element[PA_UI_ELEMENT_RIGHT_PANE], t3f_default_view->width - right_pane_width, 0, right_pane_width, t3f_default_view->height);
 
+	pos_x = t3f_default_view->width - right_pane_width;
+	pos_vx = 48;
 	pos_y = 0;
-	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_PIXEL], t3f_default_view->width - right_pane_width, pos_y, right_pane_width, 32);
-	pos_y += 32;
-	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_LINE], t3f_default_view->width - right_pane_width, pos_y, right_pane_width, 32);
-	pos_y += 32;
-	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_RECTANGLE], t3f_default_view->width - right_pane_width, pos_y, right_pane_width, 32);
-	pos_y += 32;
-	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_FILLED_RECTANGLE], t3f_default_view->width - right_pane_width, pos_y, right_pane_width, 32);
-	pos_y += 32;
-	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_OVAL], t3f_default_view->width - right_pane_width, pos_y, right_pane_width, 32);
-	pos_y += 32;
-	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_FILLED_OVAL], t3f_default_view->width - right_pane_width, pos_y, right_pane_width, 32);
-	pos_y += 32;
-	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_FLOOD_FILL], t3f_default_view->width - right_pane_width, pos_y, right_pane_width, 32);
-	pos_y += 32;
-	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_ERASER], t3f_default_view->width - right_pane_width, pos_y, right_pane_width, 32);
-	pos_y += 32;
-	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_DROPPER], t3f_default_view->width - right_pane_width, pos_y, right_pane_width, 32);
-	pos_y += 32;
-	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_SELECTION], t3f_default_view->width - right_pane_width, pos_y, right_pane_width, 32);
-	pos_y += 32;
-	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_FRAME], t3f_default_view->width - right_pane_width, pos_y, right_pane_width, 32);
-	pos_y += 32;
+	pos_vy = 48;
+	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_PIXEL], pos_x + offset_x, pos_y, pos_vx, pos_vy);
+	offset_x += pos_vx;
+	if(offset_x > pos_vx)
+	{
+		offset_x = 0;
+		pos_y += pos_vy;
+	}
+	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_LINE], pos_x + offset_x, pos_y, pos_vx, pos_vy);
+	offset_x += pos_vx;
+	if(offset_x > pos_vx)
+	{
+		offset_x = 0;
+		pos_y += pos_vy;
+	}
+	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_RECTANGLE], pos_x + offset_x, pos_y, pos_vx, pos_vy);
+	offset_x += pos_vx;
+	if(offset_x > pos_vx)
+	{
+		offset_x = 0;
+		pos_y += pos_vy;
+	}
+	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_FILLED_RECTANGLE], pos_x + offset_x, pos_y, pos_vx, pos_vy);
+	offset_x += pos_vx;
+	if(offset_x > pos_vx)
+	{
+		offset_x = 0;
+		pos_y += pos_vy;
+	}
+	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_OVAL], pos_x + offset_x, pos_y, pos_vx, pos_vy);
+	offset_x += pos_vx;
+	if(offset_x > pos_vx)
+	{
+		offset_x = 0;
+		pos_y += pos_vy;
+	}
+	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_FILLED_OVAL], pos_x + offset_x, pos_y, pos_vx, pos_vy);
+	offset_x += pos_vx;
+	if(offset_x > pos_vx)
+	{
+		offset_x = 0;
+		pos_y += pos_vy;
+	}
+	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_FLOOD_FILL], pos_x + offset_x, pos_y, pos_vx, pos_vy);
+	offset_x += pos_vx;
+	if(offset_x > pos_vx)
+	{
+		offset_x = 0;
+		pos_y += pos_vy;
+	}
+	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_ERASER], pos_x + offset_x, pos_y, pos_vx, pos_vy);
+	offset_x += pos_vx;
+	if(offset_x > pos_vx)
+	{
+		offset_x = 0;
+		pos_y += pos_vy;
+	}
+	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_DROPPER], pos_x + offset_x, pos_y, pos_vx, pos_vy);
+	offset_x += pos_vx;
+	if(offset_x > pos_vx)
+	{
+		offset_x = 0;
+		pos_y += pos_vy;
+	}
+	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_SELECTION], pos_x + offset_x, pos_y, pos_vx, pos_vy);
+	offset_x += pos_vx;
+	if(offset_x > pos_vx)
+	{
+		offset_x = 0;
+		pos_y += pos_vy;
+	}
+	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_FRAME], pos_x + offset_x, pos_y, pos_vx, pos_vy);
+	offset_x += pos_vx;
+	if(offset_x > pos_vx)
+	{
+		offset_x = 0;
+		pos_y += pos_vy;
+	}
 	resize_element(uip->element[PA_UI_ELEMENT_LAYER_LIST], t3f_default_view->width - right_pane_width, pos_y, right_pane_width, 128);
 	pos_y += 128;
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_ADD_LAYER], t3f_default_view->width - right_pane_width, pos_y, right_pane_width / 2, 32);
@@ -247,6 +309,62 @@ PA_UI * pa_create_ui(PA_CANVAS_EDITOR * cep)
 			goto fail;
 		}
 
+		uip->bitmap[PA_UI_BITMAP_TOOL_PIXEL] = al_load_bitmap_flags("data/graphics/tool_pixel.png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
+		if(!uip->bitmap[PA_UI_BITMAP_TOOL_PIXEL])
+		{
+			goto fail;
+		}
+		uip->bitmap[PA_UI_BITMAP_TOOL_LINE] = al_load_bitmap_flags("data/graphics/tool_line.png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
+		if(!uip->bitmap[PA_UI_BITMAP_TOOL_LINE])
+		{
+			goto fail;
+		}
+		uip->bitmap[PA_UI_BITMAP_TOOL_RECTANGLE] = al_load_bitmap_flags("data/graphics/tool_rectangle.png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
+		if(!uip->bitmap[PA_UI_BITMAP_TOOL_RECTANGLE])
+		{
+			goto fail;
+		}
+		uip->bitmap[PA_UI_BITMAP_TOOL_FILLED_RECTANGLE] = al_load_bitmap_flags("data/graphics/tool_filled_rectangle.png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
+		if(!uip->bitmap[PA_UI_BITMAP_TOOL_FILLED_RECTANGLE])
+		{
+			goto fail;
+		}
+		uip->bitmap[PA_UI_BITMAP_TOOL_OVAL] = al_load_bitmap_flags("data/graphics/tool_oval.png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
+		if(!uip->bitmap[PA_UI_BITMAP_TOOL_OVAL])
+		{
+			goto fail;
+		}
+		uip->bitmap[PA_UI_BITMAP_TOOL_FILLED_OVAL] = al_load_bitmap_flags("data/graphics/tool_filled_oval.png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
+		if(!uip->bitmap[PA_UI_BITMAP_TOOL_FILLED_OVAL])
+		{
+			goto fail;
+		}
+		uip->bitmap[PA_UI_BITMAP_TOOL_FLOOD] = al_load_bitmap_flags("data/graphics/tool_flood_fill.png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
+		if(!uip->bitmap[PA_UI_BITMAP_TOOL_FLOOD])
+		{
+			goto fail;
+		}
+		uip->bitmap[PA_UI_BITMAP_TOOL_ERASER] = al_load_bitmap_flags("data/graphics/tool_eraser.png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
+		if(!uip->bitmap[PA_UI_BITMAP_TOOL_ERASER])
+		{
+			goto fail;
+		}
+		uip->bitmap[PA_UI_BITMAP_TOOL_DROPPER] = al_load_bitmap_flags("data/graphics/tool_dropper.png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
+		if(!uip->bitmap[PA_UI_BITMAP_TOOL_DROPPER])
+		{
+			goto fail;
+		}
+		uip->bitmap[PA_UI_BITMAP_TOOL_SELECTION] = al_load_bitmap_flags("data/graphics/tool_selection.png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
+		if(!uip->bitmap[PA_UI_BITMAP_TOOL_SELECTION])
+		{
+			goto fail;
+		}
+		uip->bitmap[PA_UI_BITMAP_TOOL_FRAME] = al_load_bitmap_flags("data/graphics/tool_frame.png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
+		if(!uip->bitmap[PA_UI_BITMAP_TOOL_FRAME])
+		{
+			goto fail;
+		}
+
 		cep->palette[0] = al_map_rgb_f(1.0, 0.0, 0.0);
 		cep->palette[1] = al_map_rgb_f(0.0, 1.0, 0.0);
 		cep->palette[2] = al_map_rgb_f(0.0, 0.0, 1.0);
@@ -275,17 +393,17 @@ PA_UI * pa_create_ui(PA_CANVAS_EDITOR * cep)
 			goto fail;
 		}
 		uip->element[PA_UI_ELEMENT_RIGHT_PANE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_box_proc, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL);
-		uip->element[PA_UI_ELEMENT_BUTTON_PIXEL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 0, 0, "Pixel", pa_tool_pixel_button_proc, NULL);
-		uip->element[PA_UI_ELEMENT_BUTTON_LINE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 0, 0, "Line", pa_tool_line_button_proc, NULL);
-		uip->element[PA_UI_ELEMENT_BUTTON_RECTANGLE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 0, 0, "Rectangle", pa_tool_rectangle_button_proc, NULL);
-		uip->element[PA_UI_ELEMENT_BUTTON_FILLED_RECTANGLE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 0, 0, "FRectangle", pa_tool_filled_rectangle_button_proc, NULL);
-		uip->element[PA_UI_ELEMENT_BUTTON_OVAL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 0, 0, "Oval", pa_tool_oval_button_proc, NULL);
-		uip->element[PA_UI_ELEMENT_BUTTON_FILLED_OVAL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 0, 0, "FOval", pa_tool_filled_oval_button_proc, NULL);
-		uip->element[PA_UI_ELEMENT_BUTTON_FLOOD_FILL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 0, 0, "Flood", pa_tool_flood_fill_button_proc, NULL);
-		uip->element[PA_UI_ELEMENT_BUTTON_ERASER] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 0, 0, "Eraser", pa_tool_eraser_button_proc, NULL);
-		uip->element[PA_UI_ELEMENT_BUTTON_DROPPER] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 0, 0, "Dropper", pa_tool_dropper_button_proc, NULL);
-		uip->element[PA_UI_ELEMENT_BUTTON_SELECTION] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 0, 0, "Selection", pa_tool_selection_button_proc, NULL);
-		uip->element[PA_UI_ELEMENT_BUTTON_FRAME] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 0, 0, "Frame", pa_tool_frame_button_proc, NULL);
+		uip->element[PA_UI_ELEMENT_BUTTON_PIXEL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_tool_pixel_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_PIXEL]);
+		uip->element[PA_UI_ELEMENT_BUTTON_LINE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Line", pa_tool_line_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_LINE]);
+		uip->element[PA_UI_ELEMENT_BUTTON_RECTANGLE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Rectangle", pa_tool_rectangle_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_RECTANGLE]);
+		uip->element[PA_UI_ELEMENT_BUTTON_FILLED_RECTANGLE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "FRectangle", pa_tool_filled_rectangle_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_FILLED_RECTANGLE]);
+		uip->element[PA_UI_ELEMENT_BUTTON_OVAL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Oval", pa_tool_oval_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_OVAL]);
+		uip->element[PA_UI_ELEMENT_BUTTON_FILLED_OVAL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "FOval", pa_tool_filled_oval_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_FILLED_OVAL]);
+		uip->element[PA_UI_ELEMENT_BUTTON_FLOOD_FILL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Flood", pa_tool_flood_fill_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_FLOOD]);
+		uip->element[PA_UI_ELEMENT_BUTTON_ERASER] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Eraser", pa_tool_eraser_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_ERASER]);
+		uip->element[PA_UI_ELEMENT_BUTTON_DROPPER] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Dropper", pa_tool_dropper_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_DROPPER]);
+		uip->element[PA_UI_ELEMENT_BUTTON_SELECTION] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Selection", pa_tool_selection_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_SELECTION]);
+		uip->element[PA_UI_ELEMENT_BUTTON_FRAME] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Frame", pa_tool_frame_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_FRAME]);
 		uip->element[PA_UI_ELEMENT_LAYER_LIST] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, pa_list_proc, 0, 0, 0, 0, 0, D_SETFOCUS, 0, 0, pa_layer_list_proc, NULL, cep);
 		uip->element[PA_UI_ELEMENT_BUTTON_ADD_LAYER] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 0, 0, "+", pa_layer_add_button_proc, NULL);
 		uip->element[PA_UI_ELEMENT_BUTTON_REMOVE_LAYER] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 0, 0, "-", pa_layer_remove_button_proc, NULL);

@@ -6,8 +6,19 @@
 #include "modules/canvas/canvas.h"
 #include "canvas_editor/canvas_editor.h"
 
-#define PA_UI_MAX_BITMAPS 32
-#define PA_UI_BITMAP_BG    0
+#define PA_UI_MAX_BITMAPS                  32
+#define PA_UI_BITMAP_BG                     0
+#define PA_UI_BITMAP_TOOL_PIXEL             1
+#define PA_UI_BITMAP_TOOL_LINE              2
+#define PA_UI_BITMAP_TOOL_RECTANGLE         3
+#define PA_UI_BITMAP_TOOL_FILLED_RECTANGLE  4
+#define PA_UI_BITMAP_TOOL_OVAL              5
+#define PA_UI_BITMAP_TOOL_FILLED_OVAL       6
+#define PA_UI_BITMAP_TOOL_FLOOD             7
+#define PA_UI_BITMAP_TOOL_ERASER            8
+#define PA_UI_BITMAP_TOOL_DROPPER           9
+#define PA_UI_BITMAP_TOOL_SELECTION        10
+#define PA_UI_BITMAP_TOOL_FRAME            11
 
 #define PA_UI_MAX_MENUS                       32
 #define PA_UI_MENU_MAIN                        0
