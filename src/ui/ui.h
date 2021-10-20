@@ -82,6 +82,7 @@ typedef struct
 	T3GUI_DIALOG * dialog[PA_UI_MAX_DIALOGS];
 	T3GUI_THEME * theme[PA_UI_MAX_THEMES];
 	int tool_menu_item[16];
+	T3GUI_THEME * button_theme;
 
 	T3GUI_ELEMENT * element[PA_UI_MAX_DIALOG_ELEMENTS];
 	T3GUI_ELEMENT * color_picker_element[PA_UI_MAX_DIALOG_ELEMENTS];
