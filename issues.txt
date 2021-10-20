@@ -3,6 +3,14 @@ Pixelacrity 0.3.1 Issues
 
 [ ]Add GUI themes.
 
+   [ ]We need a main theme module that contains references to versious resources
+      used by the UI module. The main them module will handle loading graphical
+      resources and GUI element themes.
+
+   [ ]Add a standard UI theme.
+
+   [ ]Add a standard 2x UI theme for high resolution displays.
+
 [ ]Make shade pickers available for left and right mouse button.
 
 [ ]Make alpha pickers available.
@@ -49,11 +57,9 @@ Pixelacrity 0.3.1 Issues
 
 [ ]Investigate why pixel x-coordinate is offset by -1.
 
-   [ ]This might be a bug with Apple high resolution displays. I wasn't able to
-      replicate the issue on a normal 1080p monitor.
-
-   [ ]The mouse coordinate seems to be correct as interacting with other
-      elements of the UI work properly.
+   [ ]Mouse coordinates seem to be off when the window size requested by
+      Allegro differs from what it actually gets. This should be fixed in
+      Allegro.
 
 [ ]Consider allowing flood fill to be bound by the current frame if the user
    clicks within a frame.
