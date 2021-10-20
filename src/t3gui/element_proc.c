@@ -261,7 +261,7 @@ int t3gui_box_proc(int msg, T3GUI_ELEMENT *d, int c)
 int t3gui_button_proc(int msg, T3GUI_ELEMENT *d, int c)
 {
     int ret = D_O_K;
-    ALLEGRO_COLOR c1, c2;
+    ALLEGRO_COLOR c1, c2, c3;
     int g;
     assert(d);
 
@@ -271,6 +271,8 @@ int t3gui_button_proc(int msg, T3GUI_ELEMENT *d, int c)
 
     int select = D_INTERACT;
     int hover = D_GOTMOUSE | D_GOTFOCUS;
+
+    c3 = al_map_rgba_f(1.0, 1.0, 1.0, 1.0);
 
     switch(msg)
     {
@@ -316,7 +318,9 @@ int t3gui_button_proc(int msg, T3GUI_ELEMENT *d, int c)
             draw_nine_patch_bitmap(p9, c2, d->x, d->y, w, h);
             if(d->dp3)
             {
-                al_draw_tinted_bitmap(d->dp3, c1, d->x + d->w / 2 - al_get_bitmap_width(d->dp3) / 2 + g, d->y + d->h / 2 - al_get_bitmap_height(d->dp3) / 2 + g, 0);
+                int bw = al_get_bitmap_width(d->dp3);
+                int bh = al_get_bitmap_height(d->dp3);
+                al_draw_tinted_scaled_bitmap(d->dp3, c3, 0, 0, bw, bh, d->x + d->w / 2 - (bw * d->d1) / 2 + g, d->y + d->h / 2 - (bh * d->d1) / 2 + g, bw * d->d1, bh * d->d1, 0);
             }
             else
             {
