@@ -1,6 +1,8 @@
 Pixelacrity 0.3.1 Issues
 ------------------------
 
+[ ]Fix GUI sliders not going all the way to the full value.
+
 [ ]Add GUI themes.
 
 [ ]Make shade pickers available for left and right mouse button.
