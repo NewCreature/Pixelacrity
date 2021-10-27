@@ -483,7 +483,7 @@ void pa_canvas_editor_update_pick_colors(PA_CANVAS_EDITOR * cep)
 	for(i = 0; i < PA_COLOR_PICKER_SHADES; i++)
 	{
 		new_l = step * (float)i;
-		cep->pick_color[i] = pa_shade_color(cep->left_color.base_color, new_l);
+		cep->pick_color[i] = pa_get_real_color(pa_shade_color(cep->left_color.base_color, new_l), cep->scratch_bitmap);
 	}
 }
 
