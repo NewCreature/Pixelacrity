@@ -150,6 +150,7 @@ void pa_resize_ui(PA_UI * uip)
 	T3GUI_THEME * default_theme;
 	int left_pane_width;
 	int right_pane_width;
+	int ml, mr, mt, mb;
 	int pos_x;
 	int offset_x = 0;
 	int pos_vx;
@@ -157,123 +158,129 @@ void pa_resize_ui(PA_UI * uip)
 	int pos_vy;
 	int status_height;
 
-	right_pane_width = 96;
+	ml = pa_get_theme_int(uip->theme, "element_left_margin", 4);
+	mr = pa_get_theme_int(uip->theme, "element_right_margin", 4);
+	mt = pa_get_theme_int(uip->theme, "element_top_margin", 4);
+	mb = pa_get_theme_int(uip->theme, "element_bottom_margin", 4);
+	right_pane_width = 96 + mr + ml + mr + ml + mr + ml;
 	pos_vx = 48;
 	pos_y = 0;
 	pos_vy = 48;
 
-	pos_x = 0;
-	pos_y = 0;
-	resize_element(uip->element[PA_UI_ELEMENT_TOOLBAR], 0, 0, t3f_default_view->width, pos_vy);
+	pos_x = mr + ml;
+	pos_y = mb + mt;
+	resize_element(uip->element[PA_UI_ELEMENT_TOOLBAR], 0, 0, t3f_default_view->width, pos_vy + mt + mb + mt + mb);
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_NEW], pos_x, pos_y, pos_vx, pos_vy);
-	pos_x += pos_vx;
+	pos_x += pos_vx + mr + ml;
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_OPEN], pos_x, pos_y, pos_vx, pos_vy);
-	pos_x += pos_vx;
+	pos_x += pos_vx + mr + ml;
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_SAVE], pos_x, pos_y, pos_vx, pos_vy);
-	pos_x += pos_vx;
+	pos_x += pos_vx + mr + ml;
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_UNDO], pos_x, pos_y, pos_vx, pos_vy);
-	pos_x += pos_vx;
+	pos_x += pos_vx + mr + ml;
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_REDO], pos_x, pos_y, pos_vx, pos_vy);
-	pos_x += pos_vx;
+	pos_x += pos_vx + mr + ml;
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_CUT], pos_x, pos_y, pos_vx, pos_vy);
-	pos_x += pos_vx;
+	pos_x += pos_vx + mr + ml;
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_COPY], pos_x, pos_y, pos_vx, pos_vy);
-	pos_x += pos_vx;
+	pos_x += pos_vx + mr + ml;
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_PASTE], pos_x, pos_y, pos_vx, pos_vy);
-	pos_x += pos_vx;
+	pos_x += pos_vx + mr + ml;
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_TURN_CW], pos_x, pos_y, pos_vx, pos_vy);
-	pos_x += pos_vx;
+	pos_x += pos_vx + mr + ml;
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_TURN_CCW], pos_x, pos_y, pos_vx, pos_vy);
-	pos_x += pos_vx;
+	pos_x += pos_vx + mr + ml;
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_FLIP_HORIZONTAL], pos_x, pos_y, pos_vx, pos_vy);
-	pos_x += pos_vx;
+	pos_x += pos_vx + mr + ml;
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_FLIP_VERTICAL], pos_x, pos_y, pos_vx, pos_vy);
-	pos_y += pos_vy;
+	pos_y += pos_vy + mt + mb;
 
 	pos_x = t3f_default_view->width - right_pane_width;
 	resize_element(uip->element[PA_UI_ELEMENT_RIGHT_PANE], t3f_default_view->width - right_pane_width, pos_y, right_pane_width, t3f_default_view->height);
+	pos_y += mt + mb;
 
+	pos_x = t3f_default_view->width - right_pane_width + ml + mr;
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_PIXEL], pos_x + offset_x, pos_y, pos_vx, pos_vy);
-	offset_x += pos_vx;
-	if(offset_x > pos_vx)
+	offset_x += pos_vx + mr + ml;
+	if(offset_x > pos_vx + mr + ml + mr + ml)
 	{
-		offset_x = 0;
-		pos_y += pos_vy;
+		offset_x = mr + ml;
+		pos_y += pos_vy + mt + mb;
 	}
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_LINE], pos_x + offset_x, pos_y, pos_vx, pos_vy);
-	offset_x += pos_vx;
-	if(offset_x > pos_vx)
+	offset_x += pos_vx + mr + ml;
+	if(offset_x > pos_vx + mr + ml + mr + ml)
 	{
-		offset_x = 0;
-		pos_y += pos_vy;
+		offset_x = mr + ml;
+		pos_y += pos_vy + mt + mb;
 	}
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_RECTANGLE], pos_x + offset_x, pos_y, pos_vx, pos_vy);
-	offset_x += pos_vx;
-	if(offset_x > pos_vx)
+	offset_x += pos_vx + mr + ml;
+	if(offset_x > pos_vx + mr + ml + mr + ml)
 	{
-		offset_x = 0;
-		pos_y += pos_vy;
+		offset_x =  mr + ml;
+		pos_y += pos_vy + mt + mb;
 	}
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_FILLED_RECTANGLE], pos_x + offset_x, pos_y, pos_vx, pos_vy);
-	offset_x += pos_vx;
-	if(offset_x > pos_vx)
+	offset_x += pos_vx + mr + ml;
+	if(offset_x > pos_vx + mr + ml + mr + ml)
 	{
-		offset_x = 0;
-		pos_y += pos_vy;
+		offset_x =  mr + ml;
+		pos_y += pos_vy + mt + mb;
 	}
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_OVAL], pos_x + offset_x, pos_y, pos_vx, pos_vy);
-	offset_x += pos_vx;
-	if(offset_x > pos_vx)
+	offset_x += pos_vx + mr + ml;
+	if(offset_x > pos_vx + mr + ml + mr + ml)
 	{
-		offset_x = 0;
-		pos_y += pos_vy;
+		offset_x =  mr + ml;
+		pos_y += pos_vy + mt + mb;
 	}
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_FILLED_OVAL], pos_x + offset_x, pos_y, pos_vx, pos_vy);
-	offset_x += pos_vx;
-	if(offset_x > pos_vx)
+	offset_x += pos_vx + mr + ml;
+	if(offset_x > pos_vx + mr + ml + mr + ml)
 	{
-		offset_x = 0;
-		pos_y += pos_vy;
+		offset_x =  mr + ml;
+		pos_y += pos_vy + mt + mb;
 	}
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_FLOOD_FILL], pos_x + offset_x, pos_y, pos_vx, pos_vy);
-	offset_x += pos_vx;
-	if(offset_x > pos_vx)
+	offset_x += pos_vx + mr + ml;
+	if(offset_x > pos_vx + mr + ml + mr + ml)
 	{
-		offset_x = 0;
-		pos_y += pos_vy;
+		offset_x = mr + ml;
+		pos_y += pos_vy + mt + mb;
 	}
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_ERASER], pos_x + offset_x, pos_y, pos_vx, pos_vy);
-	offset_x += pos_vx;
-	if(offset_x > pos_vx)
+	offset_x += pos_vx + mr + ml;
+	if(offset_x > pos_vx + mr + ml + mr + ml)
 	{
-		offset_x = 0;
-		pos_y += pos_vy;
+		offset_x =  mr + ml;
+		pos_y += pos_vy + mt + mb;
 	}
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_DROPPER], pos_x + offset_x, pos_y, pos_vx, pos_vy);
-	offset_x += pos_vx;
-	if(offset_x > pos_vx)
+	offset_x += pos_vx + mr + ml;
+	if(offset_x > pos_vx + mr + ml + mr + ml)
 	{
-		offset_x = 0;
-		pos_y += pos_vy;
+		offset_x =  mr + ml;
+		pos_y += pos_vy + mt + mb;
 	}
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_SELECTION], pos_x + offset_x, pos_y, pos_vx, pos_vy);
-	offset_x += pos_vx;
-	if(offset_x > pos_vx)
+	offset_x += pos_vx + mr + ml;
+	if(offset_x > pos_vx + mr + ml + mr + ml)
 	{
-		offset_x = 0;
-		pos_y += pos_vy;
+		offset_x = mr + ml;
+		pos_y += pos_vy + mt + mb;
 	}
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_FRAME], pos_x + offset_x, pos_y, pos_vx, pos_vy);
-	pos_y += pos_vy;
-	resize_element(uip->element[PA_UI_ELEMENT_LAYER_LIST], t3f_default_view->width - right_pane_width, pos_y, right_pane_width, 128);
+	pos_y += pos_vy + mt + mb;
+	resize_element(uip->element[PA_UI_ELEMENT_LAYER_LIST], t3f_default_view->width - right_pane_width + mr + ml, pos_y, right_pane_width - mr - ml - mr - ml, 128);
 	pos_y += 128;
-	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_ADD_LAYER], t3f_default_view->width - right_pane_width, pos_y, right_pane_width / 2, 32);
-	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_REMOVE_LAYER], t3f_default_view->width - right_pane_width / 2, pos_y, right_pane_width / 2, 32);
-	pos_y += 32;
+	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_ADD_LAYER], t3f_default_view->width - right_pane_width + ml + mr, pos_y, (right_pane_width - ml - mr - ml - mr) / 2, 32);
+	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_REMOVE_LAYER], t3f_default_view->width - ml - mr - pos_vx, pos_y, (right_pane_width - ml - mr) / 2 - mr - mr, 32);
+	pos_y += 32 + mt + mb;
 	resize_element(uip->element[PA_UI_ELEMENT_MAP], t3f_default_view->width - right_pane_width, pos_y, right_pane_width, 128);
 
 	left_pane_width = PA_COLOR_PICKER_SHADES * PA_COLOR_PICKER_SCALE + PA_COLOR_PICKER_SCALE;
-	pos_y = pos_vy;
+	pos_y = pos_vy + mt + mb + mt + mb;
 	resize_element(uip->element[PA_UI_ELEMENT_LEFT_PANE], 0, pos_y, left_pane_width, t3f_default_view->height);
 	resize_element(uip->element[PA_UI_ELEMENT_LEFT_COLOR], 0, pos_y, left_pane_width / 2, 48);
 	resize_element(uip->element[PA_UI_ELEMENT_RIGHT_COLOR], left_pane_width / 2, pos_y, left_pane_width / 2, 48);
@@ -432,6 +439,14 @@ static bool load_resources(PA_UI * uip)
 	{
 		return false;
 	}
+	if(!load_bitmap(uip, PA_UI_BITMAP_LAYER_ADD, "layer_add"))
+	{
+		return false;
+	}
+	if(!load_bitmap(uip, PA_UI_BITMAP_LAYER_REMOVE, "layer_remove"))
+	{
+		return false;
+	}
 
 	return true;
 }
@@ -474,7 +489,7 @@ static void add_toolbar(PA_UI * uip, PA_CANVAS_EDITOR * cep)
 
 static void add_right_pane(PA_UI * uip, PA_CANVAS_EDITOR * cep)
 {
-	uip->element[PA_UI_ELEMENT_RIGHT_PANE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_box_proc, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL);
+	uip->element[PA_UI_ELEMENT_RIGHT_PANE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BOX], t3gui_box_proc, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL);
 	uip->element[PA_UI_ELEMENT_BUTTON_PIXEL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_tool_pixel_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_PIXEL]);
 	uip->element[PA_UI_ELEMENT_BUTTON_LINE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Line", pa_tool_line_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_LINE]);
 	uip->element[PA_UI_ELEMENT_BUTTON_RECTANGLE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Rectangle", pa_tool_rectangle_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_RECTANGLE]);
@@ -487,8 +502,8 @@ static void add_right_pane(PA_UI * uip, PA_CANVAS_EDITOR * cep)
 	uip->element[PA_UI_ELEMENT_BUTTON_SELECTION] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Selection", pa_tool_selection_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_SELECTION]);
 	uip->element[PA_UI_ELEMENT_BUTTON_FRAME] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Frame", pa_tool_frame_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_FRAME]);
 	uip->element[PA_UI_ELEMENT_LAYER_LIST] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, pa_list_proc, 0, 0, 0, 0, 0, D_SETFOCUS, 0, 0, pa_layer_list_proc, NULL, cep);
-	uip->element[PA_UI_ELEMENT_BUTTON_ADD_LAYER] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 0, 0, "+", pa_layer_add_button_proc, NULL);
-	uip->element[PA_UI_ELEMENT_BUTTON_REMOVE_LAYER] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 0, 0, "-", pa_layer_remove_button_proc, NULL);
+	uip->element[PA_UI_ELEMENT_BUTTON_ADD_LAYER] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "+", pa_layer_add_button_proc, uip->bitmap[PA_UI_BITMAP_LAYER_ADD]);
+	uip->element[PA_UI_ELEMENT_BUTTON_REMOVE_LAYER] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "-", pa_layer_remove_button_proc, uip->bitmap[PA_UI_BITMAP_LAYER_REMOVE]);
 	uip->element[PA_UI_ELEMENT_MAP] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, pa_gui_map_proc, 0, 0, 0, 0, 0, 0, 0, 0, cep, NULL, NULL);
 }
 

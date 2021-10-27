@@ -11,6 +11,7 @@ PA_UI_THEME * pa_load_theme(const char * fn)
 	{
 		goto fail;
 	}
+	memset(tp, 0, sizeof(PA_UI_THEME));
 	tp->path = al_create_path(fn);
 	if(!tp->path)
 	{
@@ -91,4 +92,16 @@ T3GUI_THEME * pa_load_theme_theme(PA_UI_THEME * tp, const char * name)
 		}
 	}
 	return ttp;
+}
+
+int pa_get_theme_int(PA_UI_THEME * tp, const char * name, int fallback)
+{
+	const char * val;
+
+	val = al_get_config_value(tp->config, "Settings", name);
+	if(val)
+	{
+		return atoi(val);
+	}
+	return fallback;
 }

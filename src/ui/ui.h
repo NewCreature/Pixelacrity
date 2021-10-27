@@ -34,6 +34,8 @@
 #define PA_UI_BITMAP_TOOLBAR_TURN_CCW      23
 #define PA_UI_BITMAP_TOOLBAR_FLIP_H        24
 #define PA_UI_BITMAP_TOOLBAR_FLIP_V        25
+#define PA_UI_BITMAP_LAYER_ADD             26
+#define PA_UI_BITMAP_LAYER_REMOVE          27
 
 #define PA_UI_MAX_MENUS                       32
 #define PA_UI_MENU_MAIN                        0

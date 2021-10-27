@@ -20,5 +20,6 @@ void pa_destroy_theme(PA_UI_THEME * tp);
 
 ALLEGRO_BITMAP * pa_load_theme_bitmap(PA_UI_THEME * tp, const char * name);
 T3GUI_THEME * pa_load_theme_theme(PA_UI_THEME * tp, const char * name);
+int pa_get_theme_int(PA_UI_THEME * tp, const char * name, int fallback);
 
 #endif
