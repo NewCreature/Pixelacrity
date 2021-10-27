@@ -317,9 +317,9 @@ void pa_resize_ui(PA_UI * uip)
 	pa_set_canvas_editor_zoom(canvas_editor, canvas_editor->view_zoom);
 }
 
-static bool load_bitmap(PA_UI * uip, int slot, const char * fn)
+static bool load_bitmap(PA_UI * uip, int slot, const char * name)
 {
-	uip->bitmap[slot] = al_load_bitmap_flags(fn, ALLEGRO_NO_PREMULTIPLIED_ALPHA);
+	uip->bitmap[slot] = pa_load_theme_bitmap(uip->theme, name);
 	if(!uip->bitmap[slot])
 	{
 		return false;
@@ -329,110 +329,106 @@ static bool load_bitmap(PA_UI * uip, int slot, const char * fn)
 
 static bool load_resources(PA_UI * uip)
 {
+	uip->theme = pa_load_theme("data/themes/standard/theme.ini");
+	if(!uip->theme)
+	{
+		return false;
+	}
 	uip->bitmap[PA_UI_BITMAP_BG] = make_checkerboard_bitmap(t3f_color_white, al_map_rgba_f(0.9, 0.9, 0.9, 1.0));
 	if(!uip->bitmap[PA_UI_BITMAP_BG])
 	{
 		return false;
 	}
 
-	if(!load_bitmap(uip, PA_UI_BITMAP_TOOL_PIXEL, "data/graphics/tool_pixel.png"))
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOL_PIXEL, "tool_pixel"))
 	{
 		return false;
 	}
-	if(!load_bitmap(uip, PA_UI_BITMAP_TOOL_LINE, "data/graphics/tool_line.png"))
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOL_LINE, "tool_line"))
 	{
 		return false;
 	}
-	if(!load_bitmap(uip, PA_UI_BITMAP_TOOL_RECTANGLE, "data/graphics/tool_rectangle.png"))
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOL_RECTANGLE, "tool_rectangle"))
 	{
 		return false;
 	}
-	if(!load_bitmap(uip, PA_UI_BITMAP_TOOL_FILLED_RECTANGLE, "data/graphics/tool_filled_rectangle.png"))
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOL_FILLED_RECTANGLE, "tool_filled_rectangle"))
 	{
 		return false;
 	}
-	if(!load_bitmap(uip, PA_UI_BITMAP_TOOL_OVAL, "data/graphics/tool_oval.png"))
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOL_OVAL, "tool_oval"))
 	{
 		return false;
 	}
-	if(!load_bitmap(uip, PA_UI_BITMAP_TOOL_FILLED_OVAL, "data/graphics/tool_filled_oval.png"))
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOL_FILLED_OVAL, "tool_filled_oval"))
 	{
 		return false;
 	}
-	if(!load_bitmap(uip, PA_UI_BITMAP_TOOL_FLOOD, "data/graphics/tool_flood_fill.png"))
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOL_FLOOD, "tool_flood_fill"))
 	{
 		return false;
 	}
-	if(!load_bitmap(uip, PA_UI_BITMAP_TOOL_ERASER, "data/graphics/tool_eraser.png"))
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOL_ERASER, "tool_eraser"))
 	{
 		return false;
 	}
-	if(!load_bitmap(uip, PA_UI_BITMAP_TOOL_DROPPER, "data/graphics/tool_dropper.png"))
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOL_DROPPER, "tool_dropper"))
 	{
 		return false;
 	}
-	if(!load_bitmap(uip, PA_UI_BITMAP_TOOL_SELECTION, "data/graphics/tool_selection.png"))
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOL_SELECTION, "tool_selection"))
 	{
 		return false;
 	}
-	if(!load_bitmap(uip, PA_UI_BITMAP_TOOL_FRAME, "data/graphics/tool_frame.png"))
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOL_FRAME, "tool_frame"))
 	{
 		return false;
 	}
-	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_NEW, "data/graphics/button_new.png"))
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_NEW, "toolbar_new"))
 	{
 		return false;
 	}
-	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_OPEN, "data/graphics/button_open.png"))
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_OPEN, "toolbar_open"))
 	{
 		return false;
 	}
-	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_SAVE, "data/graphics/button_save.png"))
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_SAVE, "toolbar_save"))
 	{
 		return false;
 	}
-	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_UNDO, "data/graphics/button_undo.png"))
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_UNDO, "toolbar_undo"))
 	{
 		return false;
 	}
-	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_REDO, "data/graphics/button_redo.png"))
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_REDO, "toolbar_redo"))
 	{
 		return false;
 	}
-	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_UNDO, "data/graphics/button_undo.png"))
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_CUT, "toolbar_cut"))
 	{
 		return false;
 	}
-	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_CUT, "data/graphics/button_cut.png"))
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_COPY, "toolbar_copy"))
 	{
 		return false;
 	}
-	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_COPY, "data/graphics/button_copy.png"))
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_PASTE, "toolbar_paste"))
 	{
 		return false;
 	}
-	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_PASTE, "data/graphics/button_paste.png"))
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_TURN_CW, "toolbar_turn_cw"))
 	{
 		return false;
 	}
-	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_TURN_CW, "data/graphics/button_turn_clockwise.png"))
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_TURN_CCW, "toolbar_turn_ccw"))
 	{
 		return false;
 	}
-	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_TURN_CCW, "data/graphics/button_turn_counter_clockwise.png"))
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_FLIP_H, "toolbar_flip_h"))
 	{
 		return false;
 	}
-	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_FLIP_H, "data/graphics/button_flip_horizontal.png"))
-	{
-		return false;
-	}
-	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_FLIP_V, "data/graphics/button_flip_vertical.png"))
-	{
-		return false;
-	}
-	uip->button_theme = t3gui_load_theme("data/themes/standard/button.ini", 0);
-	if(!uip->button_theme)
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_FLIP_V, "toolbar_flip_v"))
 	{
 		return false;
 	}
@@ -461,35 +457,35 @@ static void set_default_palette(PA_CANVAS_EDITOR * cep)
 
 static void add_toolbar(PA_UI * uip, PA_CANVAS_EDITOR * cep)
 {
-	uip->element[PA_UI_ELEMENT_TOOLBAR] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_box_proc, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL);
-	uip->element[PA_UI_ELEMENT_BUTTON_NEW] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_toolbar_new_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_NEW]);
-	uip->element[PA_UI_ELEMENT_BUTTON_OPEN] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_toolbar_open_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_OPEN]);
-	uip->element[PA_UI_ELEMENT_BUTTON_SAVE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_toolbar_save_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_SAVE]);
-	uip->element[PA_UI_ELEMENT_BUTTON_UNDO] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_toolbar_undo_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_UNDO]);
-	uip->element[PA_UI_ELEMENT_BUTTON_REDO] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_toolbar_redo_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_REDO]);
-	uip->element[PA_UI_ELEMENT_BUTTON_CUT] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_toolbar_cut_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_CUT]);
-	uip->element[PA_UI_ELEMENT_BUTTON_COPY] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_toolbar_copy_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_COPY]);
-	uip->element[PA_UI_ELEMENT_BUTTON_PASTE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_toolbar_paste_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_PASTE]);
-	uip->element[PA_UI_ELEMENT_BUTTON_TURN_CW] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_toolbar_turn_cw_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_TURN_CW]);
-	uip->element[PA_UI_ELEMENT_BUTTON_TURN_CCW] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_toolbar_turn_ccw_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_TURN_CCW]);
-	uip->element[PA_UI_ELEMENT_BUTTON_FLIP_HORIZONTAL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_toolbar_flip_h_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_FLIP_H]);
-	uip->element[PA_UI_ELEMENT_BUTTON_FLIP_VERTICAL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_toolbar_flip_v_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_FLIP_V]);
+	uip->element[PA_UI_ELEMENT_TOOLBAR] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_box_proc, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL);
+	uip->element[PA_UI_ELEMENT_BUTTON_NEW] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_toolbar_new_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_NEW]);
+	uip->element[PA_UI_ELEMENT_BUTTON_OPEN] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_toolbar_open_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_OPEN]);
+	uip->element[PA_UI_ELEMENT_BUTTON_SAVE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_toolbar_save_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_SAVE]);
+	uip->element[PA_UI_ELEMENT_BUTTON_UNDO] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_toolbar_undo_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_UNDO]);
+	uip->element[PA_UI_ELEMENT_BUTTON_REDO] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_toolbar_redo_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_REDO]);
+	uip->element[PA_UI_ELEMENT_BUTTON_CUT] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_toolbar_cut_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_CUT]);
+	uip->element[PA_UI_ELEMENT_BUTTON_COPY] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_toolbar_copy_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_COPY]);
+	uip->element[PA_UI_ELEMENT_BUTTON_PASTE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_toolbar_paste_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_PASTE]);
+	uip->element[PA_UI_ELEMENT_BUTTON_TURN_CW] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_toolbar_turn_cw_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_TURN_CW]);
+	uip->element[PA_UI_ELEMENT_BUTTON_TURN_CCW] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_toolbar_turn_ccw_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_TURN_CCW]);
+	uip->element[PA_UI_ELEMENT_BUTTON_FLIP_HORIZONTAL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_toolbar_flip_h_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_FLIP_H]);
+	uip->element[PA_UI_ELEMENT_BUTTON_FLIP_VERTICAL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_toolbar_flip_v_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_FLIP_V]);
 }
 
 static void add_right_pane(PA_UI * uip, PA_CANVAS_EDITOR * cep)
 {
 	uip->element[PA_UI_ELEMENT_RIGHT_PANE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_box_proc, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL);
-	uip->element[PA_UI_ELEMENT_BUTTON_PIXEL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_tool_pixel_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_PIXEL]);
-	uip->element[PA_UI_ELEMENT_BUTTON_LINE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Line", pa_tool_line_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_LINE]);
-	uip->element[PA_UI_ELEMENT_BUTTON_RECTANGLE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Rectangle", pa_tool_rectangle_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_RECTANGLE]);
-	uip->element[PA_UI_ELEMENT_BUTTON_FILLED_RECTANGLE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "FRectangle", pa_tool_filled_rectangle_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_FILLED_RECTANGLE]);
-	uip->element[PA_UI_ELEMENT_BUTTON_OVAL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Oval", pa_tool_oval_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_OVAL]);
-	uip->element[PA_UI_ELEMENT_BUTTON_FILLED_OVAL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "FOval", pa_tool_filled_oval_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_FILLED_OVAL]);
-	uip->element[PA_UI_ELEMENT_BUTTON_FLOOD_FILL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Flood", pa_tool_flood_fill_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_FLOOD]);
-	uip->element[PA_UI_ELEMENT_BUTTON_ERASER] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Eraser", pa_tool_eraser_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_ERASER]);
-	uip->element[PA_UI_ELEMENT_BUTTON_DROPPER] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Dropper", pa_tool_dropper_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_DROPPER]);
-	uip->element[PA_UI_ELEMENT_BUTTON_SELECTION] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Selection", pa_tool_selection_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_SELECTION]);
-	uip->element[PA_UI_ELEMENT_BUTTON_FRAME] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Frame", pa_tool_frame_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_FRAME]);
+	uip->element[PA_UI_ELEMENT_BUTTON_PIXEL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_tool_pixel_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_PIXEL]);
+	uip->element[PA_UI_ELEMENT_BUTTON_LINE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Line", pa_tool_line_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_LINE]);
+	uip->element[PA_UI_ELEMENT_BUTTON_RECTANGLE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Rectangle", pa_tool_rectangle_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_RECTANGLE]);
+	uip->element[PA_UI_ELEMENT_BUTTON_FILLED_RECTANGLE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "FRectangle", pa_tool_filled_rectangle_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_FILLED_RECTANGLE]);
+	uip->element[PA_UI_ELEMENT_BUTTON_OVAL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Oval", pa_tool_oval_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_OVAL]);
+	uip->element[PA_UI_ELEMENT_BUTTON_FILLED_OVAL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "FOval", pa_tool_filled_oval_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_FILLED_OVAL]);
+	uip->element[PA_UI_ELEMENT_BUTTON_FLOOD_FILL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Flood", pa_tool_flood_fill_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_FLOOD]);
+	uip->element[PA_UI_ELEMENT_BUTTON_ERASER] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Eraser", pa_tool_eraser_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_ERASER]);
+	uip->element[PA_UI_ELEMENT_BUTTON_DROPPER] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Dropper", pa_tool_dropper_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_DROPPER]);
+	uip->element[PA_UI_ELEMENT_BUTTON_SELECTION] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Selection", pa_tool_selection_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_SELECTION]);
+	uip->element[PA_UI_ELEMENT_BUTTON_FRAME] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Frame", pa_tool_frame_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_FRAME]);
 	uip->element[PA_UI_ELEMENT_LAYER_LIST] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, pa_list_proc, 0, 0, 0, 0, 0, D_SETFOCUS, 0, 0, pa_layer_list_proc, NULL, cep);
 	uip->element[PA_UI_ELEMENT_BUTTON_ADD_LAYER] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 0, 0, "+", pa_layer_add_button_proc, NULL);
 	uip->element[PA_UI_ELEMENT_BUTTON_REMOVE_LAYER] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 0, 0, "-", pa_layer_remove_button_proc, NULL);
@@ -601,12 +597,9 @@ void pa_destroy_ui(PA_UI * uip)
 			t3gui_destroy_dialog(uip->dialog[i]);
 		}
 	}
-	for(i = 0; i < PA_UI_MAX_THEMES; i++)
+	if(uip->theme)
 	{
-		if(uip->theme[i])
-		{
-			t3gui_destroy_theme(uip->theme[i]);
-		}
+		pa_destroy_theme(uip->theme);
 	}
 	free(uip);
 }

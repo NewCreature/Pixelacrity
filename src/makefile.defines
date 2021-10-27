@@ -30,6 +30,7 @@ APP_MODULE_OBJECTS = modules/box.o\
 
 APP_UI_OBJECTS =     ui/ui.o\
                      ui/window.o\
+                     ui/theme.o\
                      ui/canvas_editor/canvas_editor.o\
                      ui/canvas_editor/undo/undo.o\
                      ui/canvas_editor/undo/tool.o\

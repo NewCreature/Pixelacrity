@@ -5,6 +5,7 @@
 #include "t3gui/t3gui.h"
 #include "modules/canvas/canvas.h"
 #include "canvas_editor/canvas_editor.h"
+#include "theme.h"
 
 #define PA_UI_MAX_BITMAPS                  32
 #define PA_UI_BITMAP_BG                     0
@@ -109,9 +110,8 @@ typedef struct
 	ALLEGRO_BITMAP * bitmap[PA_UI_MAX_BITMAPS];
 	ALLEGRO_MENU * menu[PA_UI_MAX_MENUS];
 	T3GUI_DIALOG * dialog[PA_UI_MAX_DIALOGS];
-	T3GUI_THEME * theme[PA_UI_MAX_THEMES];
+	PA_UI_THEME * theme;
 	int tool_menu_item[16];
-	T3GUI_THEME * button_theme;
 
 	T3GUI_ELEMENT * element[PA_UI_MAX_DIALOG_ELEMENTS];
 	T3GUI_ELEMENT * color_picker_element[PA_UI_MAX_DIALOG_ELEMENTS];
