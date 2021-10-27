@@ -1,4 +1,4 @@
-Pixelacrity 0.3.1 Issues
+Pixelacrity 0.3.2 Issues
 ------------------------
 
 [ ]Add GUI themes.
