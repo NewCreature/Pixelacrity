@@ -158,12 +158,41 @@ void pa_resize_ui(PA_UI * uip)
 	int status_height;
 
 	right_pane_width = 96;
-	resize_element(uip->element[PA_UI_ELEMENT_RIGHT_PANE], t3f_default_view->width - right_pane_width, 0, right_pane_width, t3f_default_view->height);
-
-	pos_x = t3f_default_view->width - right_pane_width;
 	pos_vx = 48;
 	pos_y = 0;
 	pos_vy = 48;
+
+	pos_x = 0;
+	pos_y = 0;
+	resize_element(uip->element[PA_UI_ELEMENT_TOOLBAR], 0, 0, t3f_default_view->width, pos_vy);
+	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_NEW], pos_x, pos_y, pos_vx, pos_vy);
+	pos_x += pos_vx;
+	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_OPEN], pos_x, pos_y, pos_vx, pos_vy);
+	pos_x += pos_vx;
+	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_SAVE], pos_x, pos_y, pos_vx, pos_vy);
+	pos_x += pos_vx;
+	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_UNDO], pos_x, pos_y, pos_vx, pos_vy);
+	pos_x += pos_vx;
+	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_REDO], pos_x, pos_y, pos_vx, pos_vy);
+	pos_x += pos_vx;
+	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_CUT], pos_x, pos_y, pos_vx, pos_vy);
+	pos_x += pos_vx;
+	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_COPY], pos_x, pos_y, pos_vx, pos_vy);
+	pos_x += pos_vx;
+	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_PASTE], pos_x, pos_y, pos_vx, pos_vy);
+	pos_x += pos_vx;
+	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_TURN_CW], pos_x, pos_y, pos_vx, pos_vy);
+	pos_x += pos_vx;
+	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_TURN_CCW], pos_x, pos_y, pos_vx, pos_vy);
+	pos_x += pos_vx;
+	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_FLIP_HORIZONTAL], pos_x, pos_y, pos_vx, pos_vy);
+	pos_x += pos_vx;
+	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_FLIP_VERTICAL], pos_x, pos_y, pos_vx, pos_vy);
+	pos_y += pos_vy;
+
+	pos_x = t3f_default_view->width - right_pane_width;
+	resize_element(uip->element[PA_UI_ELEMENT_RIGHT_PANE], t3f_default_view->width - right_pane_width, pos_y, right_pane_width, t3f_default_view->height);
+
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_PIXEL], pos_x + offset_x, pos_y, pos_vx, pos_vy);
 	offset_x += pos_vx;
 	if(offset_x > pos_vx)
@@ -244,8 +273,8 @@ void pa_resize_ui(PA_UI * uip)
 	resize_element(uip->element[PA_UI_ELEMENT_MAP], t3f_default_view->width - right_pane_width, pos_y, right_pane_width, 128);
 
 	left_pane_width = PA_COLOR_PICKER_SHADES * PA_COLOR_PICKER_SCALE + PA_COLOR_PICKER_SCALE;
-	resize_element(uip->element[PA_UI_ELEMENT_LEFT_PANE], 0, 0, left_pane_width, t3f_default_view->height);
-	pos_y = 0;
+	pos_y = pos_vy;
+	resize_element(uip->element[PA_UI_ELEMENT_LEFT_PANE], 0, pos_y, left_pane_width, t3f_default_view->height);
 	resize_element(uip->element[PA_UI_ELEMENT_LEFT_COLOR], 0, pos_y, left_pane_width / 2, 48);
 	resize_element(uip->element[PA_UI_ELEMENT_RIGHT_COLOR], left_pane_width / 2, pos_y, left_pane_width / 2, 48);
 	pos_y += 48;
@@ -281,105 +310,253 @@ void pa_resize_ui(PA_UI * uip)
 	resize_element(uip->element[PA_UI_ELEMENT_STATUS_MIDDLE_MESSAGE], PA_UI_ELEMENT_SPACE, pos_y, t3f_default_view->width - PA_UI_ELEMENT_SPACE * 2, status_height);
 	resize_element(uip->element[PA_UI_ELEMENT_STATUS_RIGHT_MESSAGE], PA_UI_ELEMENT_SPACE, pos_y, t3f_default_view->width - PA_UI_ELEMENT_SPACE * 2, status_height);
 
-	resize_element(uip->element[PA_UI_ELEMENT_CANVAS_EDITOR], left_pane_width, 0, t3f_default_view->width - left_pane_width - right_pane_width, t3f_default_view->height - status_height);
+	resize_element(uip->element[PA_UI_ELEMENT_CANVAS_EDITOR], left_pane_width, pos_vy, t3f_default_view->width - left_pane_width - right_pane_width, t3f_default_view->height - status_height);
 
 	canvas_editor = (PA_CANVAS_EDITOR *)uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->dp;
 	t3f_adjust_view(canvas_editor->view, 0, 0, al_get_display_width(t3f_display), al_get_display_height(t3f_display), uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->w / 2, uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->h / 2, T3F_NO_SCALE);
 	pa_set_canvas_editor_zoom(canvas_editor, canvas_editor->view_zoom);
 }
 
+static bool load_bitmap(PA_UI * uip, int slot, const char * fn)
+{
+	uip->bitmap[slot] = al_load_bitmap_flags(fn, ALLEGRO_NO_PREMULTIPLIED_ALPHA);
+	if(!uip->bitmap[slot])
+	{
+		return false;
+	}
+	return true;
+}
+
+static bool load_resources(PA_UI * uip)
+{
+	uip->bitmap[PA_UI_BITMAP_BG] = make_checkerboard_bitmap(t3f_color_white, al_map_rgba_f(0.9, 0.9, 0.9, 1.0));
+	if(!uip->bitmap[PA_UI_BITMAP_BG])
+	{
+		return false;
+	}
+
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOL_PIXEL, "data/graphics/tool_pixel.png"))
+	{
+		return false;
+	}
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOL_LINE, "data/graphics/tool_line.png"))
+	{
+		return false;
+	}
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOL_RECTANGLE, "data/graphics/tool_rectangle.png"))
+	{
+		return false;
+	}
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOL_FILLED_RECTANGLE, "data/graphics/tool_filled_rectangle.png"))
+	{
+		return false;
+	}
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOL_OVAL, "data/graphics/tool_oval.png"))
+	{
+		return false;
+	}
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOL_FILLED_OVAL, "data/graphics/tool_filled_oval.png"))
+	{
+		return false;
+	}
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOL_FLOOD, "data/graphics/tool_flood_fill.png"))
+	{
+		return false;
+	}
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOL_ERASER, "data/graphics/tool_eraser.png"))
+	{
+		return false;
+	}
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOL_DROPPER, "data/graphics/tool_dropper.png"))
+	{
+		return false;
+	}
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOL_SELECTION, "data/graphics/tool_selection.png"))
+	{
+		return false;
+	}
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOL_FRAME, "data/graphics/tool_frame.png"))
+	{
+		return false;
+	}
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_NEW, "data/graphics/button_new.png"))
+	{
+		return false;
+	}
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_OPEN, "data/graphics/button_open.png"))
+	{
+		return false;
+	}
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_SAVE, "data/graphics/button_save.png"))
+	{
+		return false;
+	}
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_UNDO, "data/graphics/button_undo.png"))
+	{
+		return false;
+	}
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_REDO, "data/graphics/button_redo.png"))
+	{
+		return false;
+	}
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_UNDO, "data/graphics/button_undo.png"))
+	{
+		return false;
+	}
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_CUT, "data/graphics/button_cut.png"))
+	{
+		return false;
+	}
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_COPY, "data/graphics/button_copy.png"))
+	{
+		return false;
+	}
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_PASTE, "data/graphics/button_paste.png"))
+	{
+		return false;
+	}
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_TURN_CW, "data/graphics/button_turn_clockwise.png"))
+	{
+		return false;
+	}
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_TURN_CCW, "data/graphics/button_turn_counter_clockwise.png"))
+	{
+		return false;
+	}
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_FLIP_H, "data/graphics/button_flip_horizontal.png"))
+	{
+		return false;
+	}
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_FLIP_V, "data/graphics/button_flip_vertical.png"))
+	{
+		return false;
+	}
+	uip->button_theme = t3gui_load_theme("data/themes/standard/button.ini", 0);
+	if(!uip->button_theme)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+static void set_default_palette(PA_CANVAS_EDITOR * cep)
+{
+	int i;
+
+	cep->palette[0] = al_map_rgb_f(1.0, 0.0, 0.0);
+	cep->palette[1] = al_map_rgb_f(0.0, 1.0, 0.0);
+	cep->palette[2] = al_map_rgb_f(0.0, 0.0, 1.0);
+	cep->palette[3] = al_map_rgb_f(1.0, 1.0, 0.0);
+	cep->palette[4] = al_map_rgb_f(1.0, 0.0, 1.0);
+	cep->palette[5] = al_map_rgb_f(0.0, 1.0, 1.0);
+	cep->palette[6] = al_map_rgb_f(1.0, 1.0, 1.0);
+	cep->palette[7] = al_map_rgb_f(0.0, 0.0, 0.0);
+	cep->palette[8] = al_map_rgb_f(0.5, 0.5, 0.5);
+	for(i = 0; i < 64; i++)
+	{
+		cep->palette[9 + i] = pa_get_ega_palette_color(i);
+	}
+}
+
+static void add_toolbar(PA_UI * uip, PA_CANVAS_EDITOR * cep)
+{
+	uip->element[PA_UI_ELEMENT_TOOLBAR] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_box_proc, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL);
+	uip->element[PA_UI_ELEMENT_BUTTON_NEW] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_toolbar_new_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_NEW]);
+	uip->element[PA_UI_ELEMENT_BUTTON_OPEN] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_toolbar_open_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_OPEN]);
+	uip->element[PA_UI_ELEMENT_BUTTON_SAVE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_toolbar_save_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_SAVE]);
+	uip->element[PA_UI_ELEMENT_BUTTON_UNDO] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_toolbar_undo_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_UNDO]);
+	uip->element[PA_UI_ELEMENT_BUTTON_REDO] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_toolbar_redo_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_REDO]);
+	uip->element[PA_UI_ELEMENT_BUTTON_CUT] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_toolbar_cut_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_CUT]);
+	uip->element[PA_UI_ELEMENT_BUTTON_COPY] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_toolbar_copy_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_COPY]);
+	uip->element[PA_UI_ELEMENT_BUTTON_PASTE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_toolbar_paste_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_PASTE]);
+	uip->element[PA_UI_ELEMENT_BUTTON_TURN_CW] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_toolbar_turn_cw_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_TURN_CW]);
+	uip->element[PA_UI_ELEMENT_BUTTON_TURN_CCW] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_toolbar_turn_ccw_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_TURN_CCW]);
+	uip->element[PA_UI_ELEMENT_BUTTON_FLIP_HORIZONTAL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_toolbar_flip_h_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_FLIP_H]);
+	uip->element[PA_UI_ELEMENT_BUTTON_FLIP_VERTICAL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_toolbar_flip_v_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_FLIP_V]);
+}
+
+static void add_right_pane(PA_UI * uip, PA_CANVAS_EDITOR * cep)
+{
+	uip->element[PA_UI_ELEMENT_RIGHT_PANE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_box_proc, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL);
+	uip->element[PA_UI_ELEMENT_BUTTON_PIXEL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_tool_pixel_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_PIXEL]);
+	uip->element[PA_UI_ELEMENT_BUTTON_LINE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Line", pa_tool_line_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_LINE]);
+	uip->element[PA_UI_ELEMENT_BUTTON_RECTANGLE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Rectangle", pa_tool_rectangle_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_RECTANGLE]);
+	uip->element[PA_UI_ELEMENT_BUTTON_FILLED_RECTANGLE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "FRectangle", pa_tool_filled_rectangle_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_FILLED_RECTANGLE]);
+	uip->element[PA_UI_ELEMENT_BUTTON_OVAL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Oval", pa_tool_oval_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_OVAL]);
+	uip->element[PA_UI_ELEMENT_BUTTON_FILLED_OVAL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "FOval", pa_tool_filled_oval_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_FILLED_OVAL]);
+	uip->element[PA_UI_ELEMENT_BUTTON_FLOOD_FILL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Flood", pa_tool_flood_fill_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_FLOOD]);
+	uip->element[PA_UI_ELEMENT_BUTTON_ERASER] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Eraser", pa_tool_eraser_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_ERASER]);
+	uip->element[PA_UI_ELEMENT_BUTTON_DROPPER] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Dropper", pa_tool_dropper_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_DROPPER]);
+	uip->element[PA_UI_ELEMENT_BUTTON_SELECTION] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Selection", pa_tool_selection_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_SELECTION]);
+	uip->element[PA_UI_ELEMENT_BUTTON_FRAME] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Frame", pa_tool_frame_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_FRAME]);
+	uip->element[PA_UI_ELEMENT_LAYER_LIST] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, pa_list_proc, 0, 0, 0, 0, 0, D_SETFOCUS, 0, 0, pa_layer_list_proc, NULL, cep);
+	uip->element[PA_UI_ELEMENT_BUTTON_ADD_LAYER] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 0, 0, "+", pa_layer_add_button_proc, NULL);
+	uip->element[PA_UI_ELEMENT_BUTTON_REMOVE_LAYER] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 0, 0, "-", pa_layer_remove_button_proc, NULL);
+	uip->element[PA_UI_ELEMENT_MAP] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, pa_gui_map_proc, 0, 0, 0, 0, 0, 0, 0, 0, cep, NULL, NULL);
+}
+
+static void add_left_pane(PA_UI * uip, PA_CANVAS_EDITOR * cep)
+{
+	uip->element[PA_UI_ELEMENT_LEFT_PANE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_box_proc, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL);
+	uip->element[PA_UI_ELEMENT_LEFT_COLOR] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->left_color.color, NULL, NULL);
+	uip->element[PA_UI_ELEMENT_RIGHT_COLOR] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->right_color.color, NULL, NULL);
+	cep->left_color.shade_slider_element = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_slider_proc, 0, 0, 0, 0, 0, 0, 1000, 0, NULL, NULL, NULL);
+	uip->element[PA_UI_ELEMENT_LEFT_SHADE_SLIDER] = cep->left_color.shade_slider_element;
+	cep->right_color.shade_slider_element = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_slider_proc, 0, 0, 0, 0, 0, 0, 1000, 0, NULL, NULL, NULL);
+	uip->element[PA_UI_ELEMENT_RIGHT_SHADE_SLIDER] = cep->right_color.shade_slider_element;
+	cep->left_color.alpha_slider_element = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_slider_proc, 0, 0, 0, 0, 0, 0, 1000, 0, NULL, NULL, NULL);
+	uip->element[PA_UI_ELEMENT_LEFT_ALPHA_SLIDER] = cep->left_color.alpha_slider_element;
+	cep->right_color.alpha_slider_element = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_slider_proc, 0, 0, 0, 0, 0, 0, 1000, 0, NULL, NULL, NULL);
+	uip->element[PA_UI_ELEMENT_RIGHT_ALPHA_SLIDER] = cep->right_color.alpha_slider_element;
+
+	add_color_picker(uip, cep, uip->dialog[PA_UI_DIALOG_MAIN], 0, 0);
+
+	add_color_palette(uip, cep, uip->dialog[PA_UI_DIALOG_MAIN], 0, 0);
+
+	uip->element[PA_UI_ELEMENT_PALETTE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, pa_gui_palette_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->left_color.base_color, &cep->right_color.base_color, NULL);
+}
+
+static void add_status_bar(PA_UI * uip, PA_CANVAS_EDITOR * cep)
+{
+	uip->element[PA_UI_ELEMENT_STATUS_BAR] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_box_proc, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL);
+	uip->element[PA_UI_ELEMENT_STATUS_LEFT_MESSAGE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_text_proc, 0, 0, 0, 0, 0, 0, 0, 0, uip->status_left_message, NULL, NULL);
+	uip->element[PA_UI_ELEMENT_STATUS_MIDDLE_MESSAGE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_text_proc, 0, 0, 0, 0, 0, 0, 0, 0, uip->status_middle_message, NULL, NULL);
+	uip->element[PA_UI_ELEMENT_STATUS_RIGHT_MESSAGE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_text_proc, 0, 0, 0, 0, 0, 0, 0, 0, uip->status_right_message, NULL, NULL);
+}
+
+static bool create_gui(PA_UI * uip, PA_CANVAS_EDITOR * cep)
+{
+	uip->dialog[PA_UI_DIALOG_MAIN] = t3gui_create_dialog();
+	if(!uip->dialog[PA_UI_DIALOG_MAIN])
+	{
+		return false;
+	}
+	add_toolbar(uip, cep);
+	add_right_pane(uip, cep);
+	add_left_pane(uip, cep);
+	add_status_bar(uip, cep);
+
+	cep->editor_element = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, pa_gui_canvas_editor_proc, 0, 0, 0, 0, 0, 0, 0, 0, cep, NULL, NULL);
+	uip->element[PA_UI_ELEMENT_CANVAS_EDITOR] = cep->editor_element;
+
+	return true;
+}
+
 PA_UI * pa_create_ui(PA_CANVAS_EDITOR * cep)
 {
 	PA_UI * uip;
-	int i;
 
 	uip = malloc(sizeof(PA_UI));
 	if(uip)
 	{
 		memset(uip, 0, sizeof(PA_UI));
 
-		uip->bitmap[PA_UI_BITMAP_BG] = make_checkerboard_bitmap(t3f_color_white, al_map_rgba_f(0.9, 0.9, 0.9, 1.0));
-		if(!uip->bitmap[PA_UI_BITMAP_BG])
+		if(!load_resources(uip))
 		{
 			goto fail;
 		}
-
-		uip->bitmap[PA_UI_BITMAP_TOOL_PIXEL] = al_load_bitmap_flags("data/graphics/tool_pixel.png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
-		if(!uip->bitmap[PA_UI_BITMAP_TOOL_PIXEL])
-		{
-			goto fail;
-		}
-		uip->bitmap[PA_UI_BITMAP_TOOL_LINE] = al_load_bitmap_flags("data/graphics/tool_line.png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
-		if(!uip->bitmap[PA_UI_BITMAP_TOOL_LINE])
-		{
-			goto fail;
-		}
-		uip->bitmap[PA_UI_BITMAP_TOOL_RECTANGLE] = al_load_bitmap_flags("data/graphics/tool_rectangle.png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
-		if(!uip->bitmap[PA_UI_BITMAP_TOOL_RECTANGLE])
-		{
-			goto fail;
-		}
-		uip->bitmap[PA_UI_BITMAP_TOOL_FILLED_RECTANGLE] = al_load_bitmap_flags("data/graphics/tool_filled_rectangle.png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
-		if(!uip->bitmap[PA_UI_BITMAP_TOOL_FILLED_RECTANGLE])
-		{
-			goto fail;
-		}
-		uip->bitmap[PA_UI_BITMAP_TOOL_OVAL] = al_load_bitmap_flags("data/graphics/tool_oval.png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
-		if(!uip->bitmap[PA_UI_BITMAP_TOOL_OVAL])
-		{
-			goto fail;
-		}
-		uip->bitmap[PA_UI_BITMAP_TOOL_FILLED_OVAL] = al_load_bitmap_flags("data/graphics/tool_filled_oval.png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
-		if(!uip->bitmap[PA_UI_BITMAP_TOOL_FILLED_OVAL])
-		{
-			goto fail;
-		}
-		uip->bitmap[PA_UI_BITMAP_TOOL_FLOOD] = al_load_bitmap_flags("data/graphics/tool_flood_fill.png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
-		if(!uip->bitmap[PA_UI_BITMAP_TOOL_FLOOD])
-		{
-			goto fail;
-		}
-		uip->bitmap[PA_UI_BITMAP_TOOL_ERASER] = al_load_bitmap_flags("data/graphics/tool_eraser.png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
-		if(!uip->bitmap[PA_UI_BITMAP_TOOL_ERASER])
-		{
-			goto fail;
-		}
-		uip->bitmap[PA_UI_BITMAP_TOOL_DROPPER] = al_load_bitmap_flags("data/graphics/tool_dropper.png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
-		if(!uip->bitmap[PA_UI_BITMAP_TOOL_DROPPER])
-		{
-			goto fail;
-		}
-		uip->bitmap[PA_UI_BITMAP_TOOL_SELECTION] = al_load_bitmap_flags("data/graphics/tool_selection.png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
-		if(!uip->bitmap[PA_UI_BITMAP_TOOL_SELECTION])
-		{
-			goto fail;
-		}
-		uip->bitmap[PA_UI_BITMAP_TOOL_FRAME] = al_load_bitmap_flags("data/graphics/tool_frame.png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
-		if(!uip->bitmap[PA_UI_BITMAP_TOOL_FRAME])
-		{
-			goto fail;
-		}
-
-		uip->button_theme = t3gui_load_theme("data/themes/standard/button.ini", 0);
-		if(!uip->button_theme)
-		{
-			goto fail;
-		}
-
-		cep->palette[0] = al_map_rgb_f(1.0, 0.0, 0.0);
-		cep->palette[1] = al_map_rgb_f(0.0, 1.0, 0.0);
-		cep->palette[2] = al_map_rgb_f(0.0, 0.0, 1.0);
-		cep->palette[3] = al_map_rgb_f(1.0, 1.0, 0.0);
-		cep->palette[4] = al_map_rgb_f(1.0, 0.0, 1.0);
-		cep->palette[5] = al_map_rgb_f(0.0, 1.0, 1.0);
-		cep->palette[6] = al_map_rgb_f(1.0, 1.0, 1.0);
-		cep->palette[7] = al_map_rgb_f(0.0, 0.0, 0.0);
-		cep->palette[8] = al_map_rgb_f(0.5, 0.5, 0.5);
-		for(i = 0; i < 64; i++)
-		{
-			cep->palette[9 + i] = pa_get_ega_palette_color(i);
-		}
-
+		set_default_palette(cep);
 		if(!pa_setup_menus(uip))
 		{
 			goto fail;
@@ -388,53 +565,10 @@ PA_UI * pa_create_ui(PA_CANVAS_EDITOR * cep)
 		pa_update_redo_name(cep);
 		t3f_attach_menu(uip->menu[PA_UI_MENU_MAIN]);
 
-		uip->dialog[PA_UI_DIALOG_MAIN] = t3gui_create_dialog();
-		if(!uip->dialog[PA_UI_DIALOG_MAIN])
+		if(!create_gui(uip, cep))
 		{
 			goto fail;
 		}
-		uip->element[PA_UI_ELEMENT_RIGHT_PANE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_box_proc, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL);
-		uip->element[PA_UI_ELEMENT_BUTTON_PIXEL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Pixel", pa_tool_pixel_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_PIXEL]);
-		uip->element[PA_UI_ELEMENT_BUTTON_LINE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Line", pa_tool_line_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_LINE]);
-		uip->element[PA_UI_ELEMENT_BUTTON_RECTANGLE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Rectangle", pa_tool_rectangle_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_RECTANGLE]);
-		uip->element[PA_UI_ELEMENT_BUTTON_FILLED_RECTANGLE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "FRectangle", pa_tool_filled_rectangle_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_FILLED_RECTANGLE]);
-		uip->element[PA_UI_ELEMENT_BUTTON_OVAL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Oval", pa_tool_oval_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_OVAL]);
-		uip->element[PA_UI_ELEMENT_BUTTON_FILLED_OVAL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "FOval", pa_tool_filled_oval_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_FILLED_OVAL]);
-		uip->element[PA_UI_ELEMENT_BUTTON_FLOOD_FILL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Flood", pa_tool_flood_fill_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_FLOOD]);
-		uip->element[PA_UI_ELEMENT_BUTTON_ERASER] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Eraser", pa_tool_eraser_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_ERASER]);
-		uip->element[PA_UI_ELEMENT_BUTTON_DROPPER] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Dropper", pa_tool_dropper_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_DROPPER]);
-		uip->element[PA_UI_ELEMENT_BUTTON_SELECTION] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Selection", pa_tool_selection_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_SELECTION]);
-		uip->element[PA_UI_ELEMENT_BUTTON_FRAME] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->button_theme, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 3, 0, "Frame", pa_tool_frame_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_FRAME]);
-		uip->element[PA_UI_ELEMENT_LAYER_LIST] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, pa_list_proc, 0, 0, 0, 0, 0, D_SETFOCUS, 0, 0, pa_layer_list_proc, NULL, cep);
-		uip->element[PA_UI_ELEMENT_BUTTON_ADD_LAYER] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 0, 0, "+", pa_layer_add_button_proc, NULL);
-		uip->element[PA_UI_ELEMENT_BUTTON_REMOVE_LAYER] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, 0, 0, "-", pa_layer_remove_button_proc, NULL);
-		uip->element[PA_UI_ELEMENT_MAP] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, pa_gui_map_proc, 0, 0, 0, 0, 0, 0, 0, 0, cep, NULL, NULL);
-
-		uip->element[PA_UI_ELEMENT_LEFT_PANE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_box_proc, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL);
-		uip->element[PA_UI_ELEMENT_LEFT_COLOR] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->left_color.color, NULL, NULL);
-		uip->element[PA_UI_ELEMENT_RIGHT_COLOR] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->right_color.color, NULL, NULL);
-		cep->left_color.shade_slider_element = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_slider_proc, 0, 0, 0, 0, 0, 0, 1000, 0, NULL, NULL, NULL);
-		uip->element[PA_UI_ELEMENT_LEFT_SHADE_SLIDER] = cep->left_color.shade_slider_element;
-		cep->right_color.shade_slider_element = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_slider_proc, 0, 0, 0, 0, 0, 0, 1000, 0, NULL, NULL, NULL);
-		uip->element[PA_UI_ELEMENT_RIGHT_SHADE_SLIDER] = cep->right_color.shade_slider_element;
-		cep->left_color.alpha_slider_element = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_slider_proc, 0, 0, 0, 0, 0, 0, 1000, 0, NULL, NULL, NULL);
-		uip->element[PA_UI_ELEMENT_LEFT_ALPHA_SLIDER] = cep->left_color.alpha_slider_element;
-		cep->right_color.alpha_slider_element = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_slider_proc, 0, 0, 0, 0, 0, 0, 1000, 0, NULL, NULL, NULL);
-		uip->element[PA_UI_ELEMENT_RIGHT_ALPHA_SLIDER] = cep->right_color.alpha_slider_element;
-
-		add_color_picker(uip, cep, uip->dialog[PA_UI_DIALOG_MAIN], 0, 0);
-
-		add_color_palette(uip, cep, uip->dialog[PA_UI_DIALOG_MAIN], 0, 0);
-
-		uip->element[PA_UI_ELEMENT_PALETTE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, pa_gui_palette_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->left_color.base_color, &cep->right_color.base_color, NULL);
-
-		uip->element[PA_UI_ELEMENT_STATUS_BAR] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_box_proc, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL);
-		uip->element[PA_UI_ELEMENT_STATUS_LEFT_MESSAGE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_text_proc, 0, 0, 0, 0, 0, 0, 0, 0, uip->status_left_message, NULL, NULL);
-		uip->element[PA_UI_ELEMENT_STATUS_MIDDLE_MESSAGE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_text_proc, 0, 0, 0, 0, 0, 0, 0, 0, uip->status_middle_message, NULL, NULL);
-		uip->element[PA_UI_ELEMENT_STATUS_RIGHT_MESSAGE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_text_proc, 0, 0, 0, 0, 0, 0, 0, 0, uip->status_right_message, NULL, NULL);
-
-		cep->editor_element = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, pa_gui_canvas_editor_proc, 0, 0, 0, 0, 0, 0, 0, 0, cep, NULL, NULL);
-		uip->element[PA_UI_ELEMENT_CANVAS_EDITOR] = cep->editor_element;
 		pa_set_color(&cep->left_color, al_map_rgba_f(1.0, 0.0, 0.0, 1.0));
 		pa_set_color(&cep->right_color, al_map_rgba_f(0.0, 0.0, 0.0, 1.0));
 		pa_canvas_editor_update_pick_colors(cep);

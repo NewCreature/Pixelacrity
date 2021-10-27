@@ -3,6 +3,20 @@
 
 #include "t3gui/t3gui.h"
 
+int pa_toolbar_new_button_proc(T3GUI_ELEMENT * d, void * dp3);
+int pa_toolbar_open_button_proc(T3GUI_ELEMENT * d, void * dp3);
+int pa_toolbar_save_button_proc(T3GUI_ELEMENT * d, void * dp3);
+int pa_toolbar_import_button_proc(T3GUI_ELEMENT * d, void * dp3);
+int pa_toolbar_export_button_proc(T3GUI_ELEMENT * d, void * dp3);
+int pa_toolbar_undo_button_proc(T3GUI_ELEMENT * d, void * dp3);
+int pa_toolbar_redo_button_proc(T3GUI_ELEMENT * d, void * dp3);
+int pa_toolbar_cut_button_proc(T3GUI_ELEMENT * d, void * dp3);
+int pa_toolbar_copy_button_proc(T3GUI_ELEMENT * d, void * dp3);
+int pa_toolbar_paste_button_proc(T3GUI_ELEMENT * d, void * dp3);
+int pa_toolbar_turn_cw_button_proc(T3GUI_ELEMENT * d, void * dp3);
+int pa_toolbar_turn_ccw_button_proc(T3GUI_ELEMENT * d, void * dp3);
+int pa_toolbar_flip_h_button_proc(T3GUI_ELEMENT * d, void * dp3);
+int pa_toolbar_flip_v_button_proc(T3GUI_ELEMENT * d, void * dp3);
 int pa_tool_pixel_button_proc(T3GUI_ELEMENT * d, void * dp3);
 int pa_tool_line_button_proc(T3GUI_ELEMENT * d, void * dp3);
 int pa_tool_rectangle_button_proc(T3GUI_ELEMENT * d, void * dp3);

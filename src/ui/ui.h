@@ -19,6 +19,20 @@
 #define PA_UI_BITMAP_TOOL_DROPPER           9
 #define PA_UI_BITMAP_TOOL_SELECTION        10
 #define PA_UI_BITMAP_TOOL_FRAME            11
+#define PA_UI_BITMAP_TOOLBAR_NEW           12
+#define PA_UI_BITMAP_TOOLBAR_OPEN          13
+#define PA_UI_BITMAP_TOOLBAR_SAVE          14
+#define PA_UI_BITMAP_TOOLBAR_IMPORT        15
+#define PA_UI_BITMAP_TOOLBAR_EXPORT        16
+#define PA_UI_BITMAP_TOOLBAR_UNDO          17
+#define PA_UI_BITMAP_TOOLBAR_REDO          18
+#define PA_UI_BITMAP_TOOLBAR_CUT           19
+#define PA_UI_BITMAP_TOOLBAR_COPY          20
+#define PA_UI_BITMAP_TOOLBAR_PASTE         21
+#define PA_UI_BITMAP_TOOLBAR_TURN_CW       22
+#define PA_UI_BITMAP_TOOLBAR_TURN_CCW      23
+#define PA_UI_BITMAP_TOOLBAR_FLIP_H        24
+#define PA_UI_BITMAP_TOOLBAR_FLIP_V        25
 
 #define PA_UI_MAX_MENUS                       32
 #define PA_UI_MENU_MAIN                        0
@@ -68,6 +82,21 @@
 #define PA_UI_ELEMENT_STATUS_MIDDLE_MESSAGE   26
 #define PA_UI_ELEMENT_STATUS_RIGHT_MESSAGE    27
 #define PA_UI_ELEMENT_CANVAS_EDITOR           28
+#define PA_UI_ELEMENT_TOOLBAR                 29
+#define PA_UI_ELEMENT_BUTTON_NEW              30
+#define PA_UI_ELEMENT_BUTTON_OPEN             31
+#define PA_UI_ELEMENT_BUTTON_SAVE             32
+#define PA_UI_ELEMENT_BUTTON_IMPORT           33
+#define PA_UI_ELEMENT_BUTTON_EXPORT           34
+#define PA_UI_ELEMENT_BUTTON_UNDO             35
+#define PA_UI_ELEMENT_BUTTON_REDO             36
+#define PA_UI_ELEMENT_BUTTON_CUT              37
+#define PA_UI_ELEMENT_BUTTON_COPY             38
+#define PA_UI_ELEMENT_BUTTON_PASTE            39
+#define PA_UI_ELEMENT_BUTTON_TURN_CW          40
+#define PA_UI_ELEMENT_BUTTON_TURN_CCW         41
+#define PA_UI_ELEMENT_BUTTON_FLIP_HORIZONTAL  42
+#define PA_UI_ELEMENT_BUTTON_FLIP_VERTICAL    43
 
 #define PA_UI_MAX_THEMES  32
 

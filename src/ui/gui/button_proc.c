@@ -4,6 +4,90 @@
 #include "modules/canvas/canvas_helpers.h"
 #include "modules/primitives.h"
 #include "ui/menu/layer_proc.h"
+#include "ui/menu/file_proc.h"
+#include "ui/menu/edit_proc.h"
+
+int pa_toolbar_new_button_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	pa_menu_file_new(0, dp3);
+	return 0;
+}
+
+int pa_toolbar_open_button_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	pa_menu_file_load(0, dp3);
+	return 0;
+}
+
+int pa_toolbar_save_button_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	pa_menu_file_save(0, dp3);
+	return 0;
+}
+
+int pa_toolbar_import_button_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	return 0;
+}
+
+int pa_toolbar_export_button_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	return 0;
+}
+
+int pa_toolbar_undo_button_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	pa_menu_edit_undo(0, dp3);
+	return 0;
+}
+
+int pa_toolbar_redo_button_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	pa_menu_edit_redo(0, dp3);
+	return 0;
+}
+
+int pa_toolbar_cut_button_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	pa_menu_edit_cut(0, dp3);
+	return 0;
+}
+
+int pa_toolbar_copy_button_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	pa_menu_edit_copy(0, dp3);
+	return 0;
+}
+
+int pa_toolbar_paste_button_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	pa_menu_edit_paste(0, dp3);
+	return 0;
+}
+
+int pa_toolbar_turn_cw_button_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	pa_menu_edit_turn_clockwise(0, dp3);
+	return 0;
+}
+
+int pa_toolbar_turn_ccw_button_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	pa_menu_edit_turn_counter_clockwise(0, dp3);
+	return 0;
+}
+
+int pa_toolbar_flip_h_button_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	pa_menu_edit_flip_horizontal(0, dp3);
+	return 0;
+}
+
+int pa_toolbar_flip_v_button_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	pa_menu_edit_flip_vertical(0, dp3);
+	return 0;
+}
 
 int pa_tool_pixel_button_proc(T3GUI_ELEMENT * d, void * dp3)
 {
