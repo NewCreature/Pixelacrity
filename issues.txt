@@ -1,17 +1,28 @@
 Pixelacrity 0.3.2 Issues
 ------------------------
 
-Fix position of canvas editor GUI element so it doesn't overlap the toolbar.
+[ ]Fix position of canvas editor GUI element so it doesn't overlap the toolbar.
 
 [ ]Add GUI themes.
 
-   [ ]We need a main theme module that contains references to versious resources
-      used by the UI module. The main them module will handle loading graphical
-      resources and GUI element themes.
+   [X]We need a main theme module that contains references to various resources
+      used by the UI module.
+
+   [ ]Define UI graphical element scale factor within theme.
+
+   [ ]Define color element size within theme.
+
+   [ ]Define margins and element spacing independently within theme.
 
    [ ]Add a standard UI theme.
 
    [ ]Add a standard 2x UI theme for high resolution displays.
+
+[ ]Add import and export buttons to toolbar.
+
+[ ]Ensure all toolbar buttons are using the correct graphics.
+
+[ ]Figure out why layer delete button doesn't stay in hover state.
 
 [ ]Make shade pickers available for left and right mouse button.
 
