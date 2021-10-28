@@ -8,7 +8,7 @@ Pixelacrity 0.3.2 Issues
    [X]We need a main theme module that contains references to various resources
       used by the UI module.
 
-   [ ]Define UI graphical element scale factor within theme.
+   [X]Define UI graphical element scale factor within theme.
 
    [ ]Define color element size within theme.
 
@@ -17,6 +17,8 @@ Pixelacrity 0.3.2 Issues
    [ ]Add a standard UI theme.
 
    [ ]Add a standard 2x UI theme for high resolution displays.
+
+   [ ]Define button size within theme.
 
 [ ]Add import and export buttons to toolbar.
 
