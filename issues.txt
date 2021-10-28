@@ -1,7 +1,7 @@
 Pixelacrity 0.3.2 Issues
 ------------------------
 
-[ ]Fix position of canvas editor GUI element so it doesn't overlap the toolbar.
+[X]Fix position of canvas editor GUI element so it doesn't overlap the toolbar.
 
 [ ]Add GUI themes.
 
