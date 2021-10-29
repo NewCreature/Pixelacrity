@@ -183,6 +183,10 @@ void pa_resize_ui(PA_UI * uip)
 	pos_x += pos_vx + mr + ml;
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_SAVE], pos_x, pos_y, pos_vx, pos_vy);
 	pos_x += pos_vx + mr + ml;
+	//resize_element(uip->element[PA_UI_ELEMENT_BUTTON_IMPORT], pos_x, pos_y, pos_vx, pos_vy);
+	//pos_x += pos_vx + mr + ml;
+	//resize_element(uip->element[PA_UI_ELEMENT_BUTTON_EXPORT], pos_x, pos_y, pos_vx, pos_vy);
+	//pos_x += pos_vx + mr + ml;
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_UNDO], pos_x, pos_y, pos_vx, pos_vy);
 	pos_x += pos_vx + mr + ml;
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_REDO], pos_x, pos_y, pos_vx, pos_vy);
@@ -410,6 +414,14 @@ static bool load_resources(PA_UI * uip)
 	{
 		return false;
 	}
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_IMPORT, "toolbar_import"))
+	{
+		return false;
+	}
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_EXPORT, "toolbar_export"))
+	{
+		return false;
+	}
 	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_UNDO, "toolbar_undo"))
 	{
 		return false;
@@ -485,6 +497,8 @@ static void add_toolbar(PA_UI * uip, PA_CANVAS_EDITOR * cep)
 	uip->element[PA_UI_ELEMENT_BUTTON_NEW] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, scale, 0, "Pixel", pa_toolbar_new_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_NEW]);
 	uip->element[PA_UI_ELEMENT_BUTTON_OPEN] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, scale, 0, "Pixel", pa_toolbar_open_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_OPEN]);
 	uip->element[PA_UI_ELEMENT_BUTTON_SAVE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, scale, 0, "Pixel", pa_toolbar_save_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_SAVE]);
+	//uip->element[PA_UI_ELEMENT_BUTTON_IMPORT] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, scale, 0, "Pixel", pa_toolbar_import_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_IMPORT]);
+	//uip->element[PA_UI_ELEMENT_BUTTON_EXPORT] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, scale, 0, "Pixel", pa_toolbar_export_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_EXPORT]);
 	uip->element[PA_UI_ELEMENT_BUTTON_UNDO] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, scale, 0, "Pixel", pa_toolbar_undo_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_UNDO]);
 	uip->element[PA_UI_ELEMENT_BUTTON_REDO] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, scale, 0, "Pixel", pa_toolbar_redo_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_REDO]);
 	uip->element[PA_UI_ELEMENT_BUTTON_CUT] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, scale, 0, "Pixel", pa_toolbar_cut_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_CUT]);

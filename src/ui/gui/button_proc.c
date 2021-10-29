@@ -27,11 +27,13 @@ int pa_toolbar_save_button_proc(T3GUI_ELEMENT * d, void * dp3)
 
 int pa_toolbar_import_button_proc(T3GUI_ELEMENT * d, void * dp3)
 {
+	pa_menu_file_import(0, dp3);
 	return 0;
 }
 
 int pa_toolbar_export_button_proc(T3GUI_ELEMENT * d, void * dp3)
 {
+	pa_menu_file_export(0, dp3);
 	return 0;
 }
 
