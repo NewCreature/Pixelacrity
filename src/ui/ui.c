@@ -158,6 +158,7 @@ void pa_resize_ui(PA_UI * uip)
 	int pos_y;
 	int pos_vy;
 	int status_height;
+	int button_size;
 
 	esl = pa_get_theme_int(uip->theme, "edge_left_space", 8);
 	esr = pa_get_theme_int(uip->theme, "edge_right_space", 8);
@@ -167,10 +168,11 @@ void pa_resize_ui(PA_UI * uip)
 	mr = pa_get_theme_int(uip->theme, "element_right_margin", 0);
 	mt = pa_get_theme_int(uip->theme, "element_top_margin", 0);
 	mb = pa_get_theme_int(uip->theme, "element_bottom_margin", 0);
-	right_pane_width = 96 + mr + ml + mr + ml + mr + ml + esr + esl;
-	pos_vx = 48;
+	button_size = pa_get_theme_int(uip->theme, "button_size", 64);
+	right_pane_width = button_size + button_size + mr + ml + mr + ml + mr + ml + esr + esl;
+	pos_vx = button_size;
 	pos_y = 0;
-	pos_vy = 48;
+	pos_vy = button_size;
 
 	pos_x = mr + ml + esl;
 	pos_y = mb + mt + est;
@@ -279,9 +281,9 @@ void pa_resize_ui(PA_UI * uip)
 	pos_y += pos_vy + mt + mb + esb;
 	resize_element(uip->element[PA_UI_ELEMENT_LAYER_LIST], t3f_default_view->width - right_pane_width + esl + ml, pos_y, right_pane_width - mr - ml - mr - ml - esl - esr, 128);
 	pos_y += 128;
-	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_ADD_LAYER], t3f_default_view->width - right_pane_width + ml + mr + esl, pos_y, (right_pane_width - ml - mr - ml - mr - esl) / 2, 32);
-	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_REMOVE_LAYER], t3f_default_view->width - ml - mr - esr - pos_vx, pos_y, (right_pane_width - ml - mr - ml - mr - esl) / 2, 32);
-	pos_y += 32 + mt + mb;
+	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_ADD_LAYER], t3f_default_view->width - right_pane_width + ml + mr + esl, pos_y, button_size, button_size);
+	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_REMOVE_LAYER], t3f_default_view->width - ml - mr - esr - pos_vx, pos_y, button_size, button_size);
+	pos_y += button_size + mt + mb + est + esb;
 	resize_element(uip->element[PA_UI_ELEMENT_MAP], t3f_default_view->width - right_pane_width, pos_y, right_pane_width, 128);
 
 	left_pane_width = PA_COLOR_PICKER_SHADES * PA_COLOR_PICKER_SCALE + PA_COLOR_PICKER_SCALE;
