@@ -3,6 +3,11 @@ Pixelacrity 0.3.2 Issues
 
 [X]Fix position of canvas editor GUI element so it doesn't overlap the toolbar.
 
+[ ]Crash when dialog reaches 128 elements. Need to audit the code which is
+   supposed to expand the allocated memory for dialog elements once we fill up
+   the original chunk. We might get rid of the chunk implementation in favor of
+   always reallocating when adding a new element.
+
 [ ]Selecting a frame causes a move frame action even if the frame was not moved.
 
 [ ]Add GUI themes.
