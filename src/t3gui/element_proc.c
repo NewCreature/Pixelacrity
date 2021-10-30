@@ -272,8 +272,6 @@ int t3gui_button_proc(int msg, T3GUI_ELEMENT *d, int c)
     int select = D_INTERACT;
     int hover = D_GOTMOUSE | D_GOTFOCUS;
 
-    c3 = al_map_rgba_f(1.0, 1.0, 1.0, 1.0);
-
     switch(msg)
     {
         case MSG_DRAW:
@@ -282,16 +280,19 @@ int t3gui_button_proc(int msg, T3GUI_ELEMENT *d, int c)
             {
                 c1 = d->theme->state[T3GUI_ELEMENT_STATE_HOVER].color[T3GUI_THEME_COLOR_FG];
                 c2 = (d->flags & D_DISABLED) ? d->theme->state[T3GUI_ELEMENT_STATE_HOVER].color[T3GUI_THEME_COLOR_MG] : d->theme->state[T3GUI_ELEMENT_STATE_HOVER].color[T3GUI_THEME_COLOR_BG];
+                c3 = al_map_rgba_f(1.0, 1.0, 1.0, 1.0);
             }
             else if(d->flags & D_SELECTED)
             {
               c1 = d->theme->state[T3GUI_ELEMENT_STATE_SELECTED].color[T3GUI_THEME_COLOR_FG];
               c2 = d->theme->state[T3GUI_ELEMENT_STATE_SELECTED].color[T3GUI_THEME_COLOR_BG];
+              c3 = al_map_rgba_f(1.0, 1.0, 1.0, 1.0);
             }
             else
             {
                 c1 = (d->flags & D_DISABLED) ? d->theme->state[T3GUI_ELEMENT_STATE_DISABLED].color[T3GUI_THEME_COLOR_FG] : d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].color[T3GUI_THEME_COLOR_FG];
                 c2 = d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].color[T3GUI_THEME_COLOR_BG];
+                c3 = d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].color[T3GUI_THEME_COLOR_EG];
             }
             if(d->flags & select)
             {
