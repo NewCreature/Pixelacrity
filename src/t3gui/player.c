@@ -620,47 +620,52 @@ static void dialog_thread_event_handler(T3GUI_PLAYER * player, ALLEGRO_EVENT * e
 
         case ALLEGRO_EVENT_MOUSE_AXES:
         {
+          int n;
+          bool track = false;
           player->mouse_x = event->mouse.x;
           player->mouse_y = event->mouse.y;
           player->mouse_z = event->mouse.z;
+
+          /* Are objects tracking the mouse? */
+          if(event->mouse.x != old_mouse_x || event->mouse.y != old_mouse_y)
+          {
+              for (n=0; player->dialog[n].proc; n++)
+              {
+                  player->dialog[n].mousex = event->mouse.x;
+                  player->dialog[n].mousey = event->mouse.y;
+                  if (player->dialog[n].flags & D_TRACKMOUSE)
+                  {
+                      player->res |= t3gui_object_message(player->dialog+n, MSG_MOUSEMOVE, 0);
+                      track = true;
+                  }
+              }
+          }
             /* has mouse object changed? */
-            (void)0;
-            int mouse_obj = t3gui_find_mouse_object(player->dialog, event->mouse.x, event->mouse.y);
-            int n;
-            if (mouse_obj != player->mouse_obj)
+            if(!track)
             {
-                if (player->mouse_obj >= 0)
-                {
-                    player->dialog[player->mouse_obj].flags &= ~D_GOTMOUSE;
-                    MESSAGE(player, player->mouse_obj, MSG_LOSTMOUSE, 0);
-                }
-                if (mouse_obj >= 0)
-                {
-                    player->dialog[mouse_obj].flags |= D_GOTMOUSE;
-                    MESSAGE(player, mouse_obj, MSG_GOTMOUSE, 0);
-                }
-                player->mouse_obj = mouse_obj;
+              int mouse_obj = t3gui_find_mouse_object(player->dialog, event->mouse.x, event->mouse.y);
+              if (mouse_obj != player->mouse_obj)
+              {
+                  if (player->mouse_obj >= 0)
+                  {
+                      player->dialog[player->mouse_obj].flags &= ~D_GOTMOUSE;
+                      MESSAGE(player, player->mouse_obj, MSG_LOSTMOUSE, 0);
+                  }
+                  if (mouse_obj >= 0)
+                  {
+                      player->dialog[mouse_obj].flags |= D_GOTMOUSE;
+                      MESSAGE(player, mouse_obj, MSG_GOTMOUSE, 0);
+                  }
+                  player->mouse_obj = mouse_obj;
 
-                /* move the input focus as well? */
-                if ((player->focus_follows_mouse) && (player->mouse_obj != player->keyboard_obj))
-                {
-                    player->res |= offer_focus(player->dialog, player->mouse_obj, &player->mouse_obj, true);
-                }
+                  /* move the input focus as well? */
+                  if ((player->focus_follows_mouse) && (player->mouse_obj != player->keyboard_obj))
+                  {
+                      player->res |= offer_focus(player->dialog, player->mouse_obj, &player->mouse_obj, true);
+                  }
+              }
             }
 
-            /* Are objects tracking the mouse? */
-            if(event->mouse.x != old_mouse_x || event->mouse.y != old_mouse_y)
-            {
-                for (n=0; player->dialog[n].proc; n++)
-                {
-                    player->dialog[n].mousex = event->mouse.x;
-                    player->dialog[n].mousey = event->mouse.y;
-                    if (player->dialog[n].flags & D_TRACKMOUSE)
-                    {
-                        player->res |= t3gui_object_message(player->dialog+n, MSG_MOUSEMOVE, 0);
-                    }
-                }
-            }
             old_mouse_x = event->mouse.x;
             old_mouse_y = event->mouse.y;
             if (event->mouse.dz)
