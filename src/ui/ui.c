@@ -672,11 +672,11 @@ void pa_process_ui(PA_UI * uip)
 	old_layer_d1 = uip->element[PA_UI_ELEMENT_LAYER_LIST]->d1;
 	if(cep->canvas->layer_max > 1)
 	{
-		uip->element[PA_UI_ELEMENT_BUTTON_REMOVE_LAYER]->flags = 0;
+		uip->element[PA_UI_ELEMENT_BUTTON_REMOVE_LAYER]->flags &= ~D_DISABLED;
 	}
 	else
 	{
-		uip->element[PA_UI_ELEMENT_BUTTON_REMOVE_LAYER]->flags = D_DISABLED;
+		uip->element[PA_UI_ELEMENT_BUTTON_REMOVE_LAYER]->flags |= D_DISABLED;
 	}
 
 	if(cep->current_tool != PA_TOOL_SELECTION && cep->current_tool != PA_TOOL_FRAME)
