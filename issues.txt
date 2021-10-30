@@ -1,12 +1,7 @@
 Pixelacrity 0.3.2 Issues
 ------------------------
 
-[X]Fix position of canvas editor GUI element so it doesn't overlap the toolbar.
-
-[ ]Crash when dialog reaches 128 elements. Need to audit the code which is
-   supposed to expand the allocated memory for dialog elements once we fill up
-   the original chunk. We might get rid of the chunk implementation in favor of
-   always reallocating when adding a new element.
+[ ]Look into adding new layers messing up the cached canvas dimensions.
 
 [ ]Selecting a frame causes a move frame action even if the frame was not moved.
 
@@ -26,8 +21,6 @@ Pixelacrity 0.3.2 Issues
    [ ]Add a standard 2x UI theme for high resolution displays.
 
    [ ]Define button size within theme.
-
-[ ]Add import and export buttons to toolbar.
 
 [ ]Ensure all toolbar buttons are using the correct graphics.
 
@@ -748,3 +741,12 @@ Closed Issues
       canvas so we don't have to keep doing the pixel scanning algorithm.
 
 [X]Fix GUI sliders not going all the way to the full value.
+
+[X]Fix position of canvas editor GUI element so it doesn't overlap the toolbar.
+
+[X]Crash when dialog reaches 128 elements. Need to audit the code which is
+   supposed to expand the allocated memory for dialog elements once we fill up
+   the original chunk. We might get rid of the chunk implementation in favor of
+   always reallocating when adding a new element.
+
+[X]Add import and export buttons to toolbar.
