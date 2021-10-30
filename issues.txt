@@ -1,6 +1,9 @@
 Pixelacrity 0.3.2 Issues
 ------------------------
 
+[ ]Drawing snapped shapes doesn't expand the canvas correctly when we start in
+   negative space.
+
 [ ]Make breakout view spread the layers independently of the zoom level.
 
 [ ]Look into crash when adding and immediately removing a layer on a new canvas.
