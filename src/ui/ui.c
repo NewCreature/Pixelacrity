@@ -328,7 +328,7 @@ void pa_resize_ui(PA_UI * uip)
 	resize_element(uip->element[PA_UI_ELEMENT_STATUS_MIDDLE_MESSAGE], PA_UI_ELEMENT_SPACE, pos_y, t3f_default_view->width - PA_UI_ELEMENT_SPACE * 2, status_height);
 	resize_element(uip->element[PA_UI_ELEMENT_STATUS_RIGHT_MESSAGE], PA_UI_ELEMENT_SPACE, pos_y, t3f_default_view->width - PA_UI_ELEMENT_SPACE * 2, status_height);
 
-	resize_element(uip->element[PA_UI_ELEMENT_CANVAS_EDITOR], left_pane_width, pos_vy + mt + mb + mt + mb, t3f_default_view->width - left_pane_width - right_pane_width, t3f_default_view->height - pos_vy - mt - mb - mt - mb - status_height);
+	resize_element(uip->element[PA_UI_ELEMENT_CANVAS_EDITOR], left_pane_width, pos_vy + mt + mb + mt + mb + est + esb, t3f_default_view->width - left_pane_width - right_pane_width, t3f_default_view->height - pos_vy - mt - mb - mt - mb - est - esb - status_height);
 
 	canvas_editor = (PA_CANVAS_EDITOR *)uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->dp;
 	t3f_adjust_view(canvas_editor->view, 0, 0, al_get_display_width(t3f_display), al_get_display_height(t3f_display), uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->w / 2, uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->h / 2, T3F_NO_SCALE);
