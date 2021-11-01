@@ -60,12 +60,21 @@ static bool make_frame_undo(PA_CANVAS_EDITOR * cep, const char * name)
 	return false;
 }
 
+static bool box_moved(PA_BOX * updated_box, PA_BOX * original_box)
+{
+	if(updated_box->start_x != original_box->start_x || updated_box->start_y != original_box->start_y || updated_box->width != original_box->width || updated_box->height != original_box->height)
+	{
+		return true;
+	}
+	return false;
+}
+
 static bool finalize_frame_edit(PA_CANVAS_EDITOR * cep, const char * name)
 {
 	PA_BOX temp_box;
 
 	cep->canvas->frame[cep->hover_frame]->box.state = PA_BOX_STATE_IDLE;
-	if(memcmp(&cep->canvas->frame[cep->hover_frame]->box, &cep->click_box, sizeof(PA_BOX)))
+	if(box_moved(&cep->canvas->frame[cep->hover_frame]->box, &cep->click_box))
 	{
 		memcpy(&temp_box, &cep->canvas->frame[cep->hover_frame]->box, sizeof(PA_BOX));
 		memcpy(&cep->canvas->frame[cep->hover_frame]->box, &cep->click_box, sizeof(PA_BOX));
