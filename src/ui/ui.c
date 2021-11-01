@@ -48,18 +48,19 @@ static bool add_color_picker(PA_UI * uip, PA_CANVAS_EDITOR * cep, T3GUI_DIALOG *
 {
 	int i, pos_x = x;
 	int left_panel_width;
+	int color_size = pa_get_theme_int(uip->theme, "color_size", 12);
 
-	left_panel_width = PA_COLOR_PICKER_SHADES * PA_COLOR_PICKER_SCALE + PA_COLOR_PICKER_SCALE;
+	left_panel_width = PA_COLOR_PICKER_SHADES * color_size + color_size;
 	for(i = 0; i < PA_COLOR_PICKER_SHADES; i++)
 	{
 		uip->color_picker_element[i] = t3gui_dialog_add_element(dp, NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->pick_color[i], &cep->left_color.color, &cep->right_color.color);
 		if(i <= 0 || i >= PA_COLOR_PICKER_SHADES - 2)
 		{
-			pos_x += PA_COLOR_PICKER_SCALE + PA_COLOR_PICKER_SCALE / 2;
+			pos_x += color_size + color_size / 2;
 		}
 		else
 		{
-			pos_x += PA_COLOR_PICKER_SCALE;
+			pos_x += color_size;
 		}
 	}
 
@@ -70,23 +71,24 @@ static bool add_color_palette(PA_UI * uip, PA_CANVAS_EDITOR * cep, T3GUI_DIALOG 
 {
 	int i, j, pos_x = x;
 	int left_panel_width;
+	int color_size = pa_get_theme_int(uip->theme, "color_size", 12);
 
-	left_panel_width = PA_COLOR_PICKER_SHADES * PA_COLOR_PICKER_SCALE + PA_COLOR_PICKER_SCALE;
+	left_panel_width = PA_COLOR_PICKER_SHADES * color_size + color_size;
 	for(i = 0; i < 9; i++)
 	{
 		uip->palette_color_element[i] = t3gui_dialog_add_element(dp, NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->palette[i], &cep->left_color.base_color, &cep->right_color.base_color);
-		pos_x += PA_COLOR_PICKER_SCALE;
+		pos_x += color_size;
 	}
-	y += PA_COLOR_PICKER_SCALE;
+	y += color_size;
 	for(i = 0; i < 8; i++)
 	{
 		pos_x = x;
 		for(j = 0; j < 8; j++)
 		{
 			uip->palette_color_element[i * 8 + j + 9] = t3gui_dialog_add_element(dp, NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->palette[i * 8 + j + 9], &cep->left_color.base_color, &cep->right_color.base_color);
-			pos_x += PA_COLOR_PICKER_SCALE;
+			pos_x += color_size;
 		}
-		y += PA_COLOR_PICKER_SCALE;
+		y += color_size;
 	}
 
 	return true;
@@ -104,18 +106,19 @@ static void resize_color_picker(PA_UI * uip, int x, int y)
 {
 	int i, pos_x = x;
 	int left_panel_width;
+	int color_size = pa_get_theme_int(uip->theme, "color_size", 12);
 
-	left_panel_width = PA_COLOR_PICKER_SHADES * PA_COLOR_PICKER_SCALE + PA_COLOR_PICKER_SCALE;
+	left_panel_width = PA_COLOR_PICKER_SHADES * color_size + color_size;
 	for(i = 0; i < PA_COLOR_PICKER_SHADES; i++)
 	{
-		resize_element(uip->color_picker_element[i], pos_x, y, PA_COLOR_PICKER_SCALE, PA_COLOR_PICKER_SCALE);
+		resize_element(uip->color_picker_element[i], pos_x, y, color_size, color_size);
 		if(i <= 0 || i >= PA_COLOR_PICKER_SHADES - 2)
 		{
-			pos_x += PA_COLOR_PICKER_SCALE + PA_COLOR_PICKER_SCALE / 2;
+			pos_x += color_size + color_size / 2;
 		}
 		else
 		{
-			pos_x += PA_COLOR_PICKER_SCALE;
+			pos_x += color_size;
 		}
 	}
 }
@@ -124,23 +127,24 @@ static void resize_color_palette(PA_UI * uip, int x, int y)
 {
 	int i, j, pos_x = x;
 	int left_panel_width;
+	int color_size = pa_get_theme_int(uip->theme, "color_size", 12);
 
-	left_panel_width = PA_COLOR_PICKER_SHADES * PA_COLOR_PICKER_SCALE + PA_COLOR_PICKER_SCALE;
+	left_panel_width = PA_COLOR_PICKER_SHADES * color_size + color_size;
 	for(i = 0; i < 9; i++)
 	{
-		resize_element(uip->palette_color_element[i], pos_x, y, PA_COLOR_PICKER_SCALE, PA_COLOR_PICKER_SCALE);
-		pos_x += PA_COLOR_PICKER_SCALE;
+		resize_element(uip->palette_color_element[i], pos_x, y, color_size, color_size);
+		pos_x += color_size;
 	}
-	y += PA_COLOR_PICKER_SCALE;
+	y += color_size;
 	for(i = 0; i < 8; i++)
 	{
 		pos_x = x;
 		for(j = 0; j < 8; j++)
 		{
-			resize_element(uip->palette_color_element[i * 8 + j + 9], pos_x, y, PA_COLOR_PICKER_SCALE, PA_COLOR_PICKER_SCALE);
-			pos_x += PA_COLOR_PICKER_SCALE;
+			resize_element(uip->palette_color_element[i * 8 + j + 9], pos_x, y, color_size, color_size);
+			pos_x += color_size;
 		}
-		y += PA_COLOR_PICKER_SCALE;
+		y += color_size;
 	}
 }
 
@@ -159,6 +163,7 @@ void pa_resize_ui(PA_UI * uip)
 	int pos_vy;
 	int status_height;
 	int button_size;
+	int color_size = pa_get_theme_int(uip->theme, "color_size", 12);
 
 	esl = pa_get_theme_int(uip->theme, "edge_left_space", 8);
 	esr = pa_get_theme_int(uip->theme, "edge_right_space", 8);
@@ -290,26 +295,26 @@ void pa_resize_ui(PA_UI * uip)
 	pos_y += button_size + mt + mb + est + esb;
 	resize_element(uip->element[PA_UI_ELEMENT_MAP], t3f_default_view->width - right_pane_width, pos_y, right_pane_width, 128);
 
-	left_pane_width = PA_COLOR_PICKER_SHADES * PA_COLOR_PICKER_SCALE + PA_COLOR_PICKER_SCALE;
+	left_pane_width = PA_COLOR_PICKER_SHADES * color_size + color_size;
 	pos_y = pos_vy + mt + mb + mt + mb + est + esb;
 	resize_element(uip->element[PA_UI_ELEMENT_LEFT_PANE], 0, pos_y, left_pane_width, t3f_default_view->height);
 	resize_element(uip->element[PA_UI_ELEMENT_LEFT_COLOR], 0, pos_y, left_pane_width / 2, 48);
 	resize_element(uip->element[PA_UI_ELEMENT_RIGHT_COLOR], left_pane_width / 2, pos_y, left_pane_width / 2, 48);
 	pos_y += 48;
-	resize_element(uip->element[PA_UI_ELEMENT_LEFT_SHADE_SLIDER], 0, pos_y, left_pane_width / 2, PA_COLOR_PICKER_SCALE);
-	resize_element(uip->element[PA_UI_ELEMENT_RIGHT_SHADE_SLIDER], left_pane_width / 2, pos_y, left_pane_width / 2, PA_COLOR_PICKER_SCALE);
-	pos_y += PA_COLOR_PICKER_SCALE;
-	resize_element(uip->element[PA_UI_ELEMENT_LEFT_ALPHA_SLIDER], 0, pos_y, left_pane_width / 2, PA_COLOR_PICKER_SCALE);
-	resize_element(uip->element[PA_UI_ELEMENT_RIGHT_ALPHA_SLIDER], left_pane_width / 2, pos_y, left_pane_width / 2, PA_COLOR_PICKER_SCALE);
-	pos_y += PA_COLOR_PICKER_SCALE;
+	resize_element(uip->element[PA_UI_ELEMENT_LEFT_SHADE_SLIDER], 0, pos_y, left_pane_width / 2, color_size);
+	resize_element(uip->element[PA_UI_ELEMENT_RIGHT_SHADE_SLIDER], left_pane_width / 2, pos_y, left_pane_width / 2, color_size);
+	pos_y += color_size;
+	resize_element(uip->element[PA_UI_ELEMENT_LEFT_ALPHA_SLIDER], 0, pos_y, left_pane_width / 2, color_size);
+	resize_element(uip->element[PA_UI_ELEMENT_RIGHT_ALPHA_SLIDER], left_pane_width / 2, pos_y, left_pane_width / 2, color_size);
+	pos_y += color_size;
 	pos_y += PA_UI_ELEMENT_SPACE;
 
 	resize_color_picker(uip, 0, pos_y);
-	pos_y += PA_COLOR_PICKER_SCALE;
+	pos_y += color_size;
 	pos_y += PA_UI_ELEMENT_SPACE;
 
 	resize_color_palette(uip, 0, pos_y);
-	pos_y += PA_COLOR_PICKER_SCALE * 9;
+	pos_y += color_size * 9;
 	pos_y += PA_UI_ELEMENT_SPACE;
 
 	resize_element(uip->element[PA_UI_ELEMENT_PALETTE], 0, pos_y, left_pane_width, t3f_default_view->height - pos_y);
