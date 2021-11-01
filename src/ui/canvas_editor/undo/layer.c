@@ -84,7 +84,7 @@ bool pa_make_remove_layer_undo(PA_CANVAS_EDITOR * cep, int layer, const char * f
 	}
 	pa_write_undo_header(fp, cep, PA_UNDO_TYPE_REMOVE_LAYER, "Remove Layer");
 	al_fwrite16le(fp, layer);
-	if(width < 0 || height < 0)
+	if(width <= 0 || height <= 0)
 	{
 		al_fputc(fp, 0);
 	}
