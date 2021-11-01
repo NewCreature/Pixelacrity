@@ -19,15 +19,15 @@ Pixelacrity 0.3.2 Issues
 
    [X]Define UI graphical element scale factor within theme.
 
-   [ ]Define color element size within theme.
+   [X]Define color element size within theme.
 
-   [ ]Define margins and element spacing independently within theme.
+   [X]Define margins and element spacing independently within theme.
 
    [ ]Add a standard UI theme.
 
    [ ]Add a standard 2x UI theme for high resolution displays.
 
-   [ ]Define button size within theme.
+   [X]Define button size within theme.
 
 [ ]Ensure all toolbar buttons are using the correct graphics.
 
