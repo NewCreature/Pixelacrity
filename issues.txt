@@ -4,8 +4,6 @@ Pixelacrity 0.3.2 Issues
 [ ]Drawing snapped shapes doesn't expand the canvas correctly when we start in
    negative space.
 
-[ ]Make breakout view spread the layers independently of the zoom level.
-
 [ ]Look into adding new layers messing up the cached canvas dimensions.
 
 [ ]Add GUI themes.
@@ -757,3 +755,5 @@ Closed Issues
 [X]Look into crash when adding and immediately removing a layer on a new canvas.
 
 [X]Selecting a frame causes a move frame action even if the frame was not moved.
+
+[X]Make breakout view spread the layers independently of the zoom level.
