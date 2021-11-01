@@ -6,8 +6,6 @@ Pixelacrity 0.3.2 Issues
 
 [ ]Make breakout view spread the layers independently of the zoom level.
 
-[ ]Look into crash when adding and immediately removing a layer on a new canvas.
-
 [ ]Look into adding new layers messing up the cached canvas dimensions.
 
 [ ]Selecting a frame causes a move frame action even if the frame was not moved.
@@ -757,3 +755,5 @@ Closed Issues
    always reallocating when adding a new element.
 
 [X]Add import and export buttons to toolbar.
+
+[X]Look into crash when adding and immediately removing a layer on a new canvas.
