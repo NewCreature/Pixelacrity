@@ -8,8 +8,6 @@ Pixelacrity 0.3.2 Issues
 
 [ ]Look into adding new layers messing up the cached canvas dimensions.
 
-[ ]Selecting a frame causes a move frame action even if the frame was not moved.
-
 [ ]Add GUI themes.
 
    [X]We need a main theme module that contains references to various resources
@@ -757,3 +755,5 @@ Closed Issues
 [X]Add import and export buttons to toolbar.
 
 [X]Look into crash when adding and immediately removing a layer on a new canvas.
+
+[X]Selecting a frame causes a move frame action even if the frame was not moved.
