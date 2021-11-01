@@ -83,7 +83,7 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 	{
 		if(canvas_editor->view_break_out)
 		{
-			current_z = (canvas_editor->view_zoom * vz) * (canvas_editor->current_layer + 1);
+			current_z = (PA_CANVAS_EDITOR_BREAKOUT_DISTANCE * vz) * (canvas_editor->current_layer + 1);
 		}
 		else
 		{
@@ -98,7 +98,7 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 				current_color = t3f_color_white;
 				if(canvas_editor->view_break_out)
 				{
-					current_z -= vz * canvas_editor->view_zoom;
+					current_z -= vz * PA_CANVAS_EDITOR_BREAKOUT_DISTANCE;
 					if(i != canvas_editor->current_layer)
 					{
 						current_color = al_map_rgba_f(1.0, 1.0, 1.0, 0.5);
@@ -111,7 +111,7 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 		current_color = t3f_color_white;
 		if(canvas_editor->view_break_out)
 		{
-			current_z -= vz * canvas_editor->view_zoom;
+			current_z -= vz * PA_CANVAS_EDITOR_BREAKOUT_DISTANCE;
 		}
 		if(canvas_editor->selection.bitmap_stack)
 		{
@@ -136,7 +136,7 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 				current_color = t3f_color_white;
 				if(canvas_editor->view_break_out)
 				{
-					current_z -= vz * canvas_editor->view_zoom;
+					current_z -= vz * PA_CANVAS_EDITOR_BREAKOUT_DISTANCE;
 					if(i != canvas_editor->current_layer)
 					{
 						current_color = al_map_rgba_f(1.0, 1.0, 1.0, 0.5);
