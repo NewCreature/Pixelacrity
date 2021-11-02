@@ -19,7 +19,7 @@ void pa_tool_filled_oval_logic(PA_CANVAS_EDITOR * cep)
 	if(t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL])
 	{
 		pa_snap_coordinates(start_x, start_y, &end_x, &end_y, 1, 0.0);
-		pa_set_tool_boundaries(cep, start_x, start_y, end_x, end_y);
+		pa_set_tool_boundaries(cep, start_x + cep->view_x, start_y + cep->view_y, end_x + cep->view_x, end_y + cep->view_y);
 	}
 
 	cep->scratch_offset_x = cep->view_x;
