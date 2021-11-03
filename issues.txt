@@ -18,8 +18,6 @@ Pixelacrity 0.3.3 Issues
 
    [X]Define button size within theme.
 
-[ ]Ensure all toolbar buttons are using the correct graphics.
-
 [ ]Make shade pickers available for left and right mouse button.
 
 [ ]Make alpha pickers available.
@@ -757,3 +755,5 @@ Closed Issues
 [X]Figure out why layer delete button doesn't stay in hover state.
 
 [X]Look into adding new layers messing up the cached canvas dimensions.
+
+[X]Ensure all toolbar buttons are using the correct graphics.
