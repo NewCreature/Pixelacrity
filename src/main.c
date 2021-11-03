@@ -220,6 +220,7 @@ void app_exit(APP_INSTANCE * app)
 	}
 	if(app->canvas_editor)
 	{
+		pa_resave_canvas_editor_state(app->canvas_editor);
 		t3f_debug_message("Clean up undo data\n");
 		pa_undo_clean_up(app->canvas_editor);
 		t3f_debug_message("Destroy canvas editor\n");

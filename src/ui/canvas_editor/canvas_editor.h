@@ -171,6 +171,7 @@ void pa_destroy_canvas_editor(PA_CANVAS_EDITOR * cep);
 
 bool pa_load_canvas_editor_state(PA_CANVAS_EDITOR * cep, const char * fn);
 bool pa_save_canvas_editor_state(PA_CANVAS_EDITOR * cep, const char * fn);
+void pa_resave_canvas_editor_state(PA_CANVAS_EDITOR * cep);
 
 void pa_set_color(PA_COLOR_INFO * cip, ALLEGRO_COLOR color);
 

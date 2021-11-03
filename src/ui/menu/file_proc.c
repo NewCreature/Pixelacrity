@@ -71,6 +71,7 @@ int pa_menu_file_new(int id, void * data)
 		}
 		if(app->canvas_editor)
 		{
+			pa_resave_canvas_editor_state(app->canvas_editor);
 			pa_reset_canvas_editor(app->canvas_editor);
 			app->canvas_editor->canvas = app->canvas;
 			pa_set_window_message(NULL);
@@ -181,6 +182,7 @@ int pa_menu_file_load(int id, void * data)
 						}
 						if(new_canvas)
 						{
+							pa_resave_canvas_editor_state(app->canvas_editor);
 							if(app->canvas)
 							{
 								pa_destroy_canvas(app->canvas);
