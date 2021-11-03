@@ -24,8 +24,6 @@ Pixelacrity 0.3.2 Issues
 
 [ ]Figure out why layer delete button doesn't stay in hover state.
 
-[ ]Investigate crash when loading a very large image as a canvas.
-
 [ ]Make shade pickers available for left and right mouse button.
 
 [ ]Make alpha pickers available.
@@ -757,3 +755,5 @@ Closed Issues
 
 [X]Drawing snapped shapes doesn't expand the canvas correctly when we start in
    negative space.
+
+[X]Investigate crash when loading a very large image as a canvas.
