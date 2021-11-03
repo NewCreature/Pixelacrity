@@ -22,8 +22,6 @@ Pixelacrity 0.3.2 Issues
 
 [ ]Ensure all toolbar buttons are using the correct graphics.
 
-[ ]Figure out why layer delete button doesn't stay in hover state.
-
 [ ]Make shade pickers available for left and right mouse button.
 
 [ ]Make alpha pickers available.
@@ -757,3 +755,5 @@ Closed Issues
    negative space.
 
 [X]Investigate crash when loading a very large image as a canvas.
+
+[X]Figure out why layer delete button doesn't stay in hover state.
