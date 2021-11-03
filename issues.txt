@@ -1,4 +1,4 @@
-Pixelacrity 0.3.2 Issues
+Pixelacrity 0.3.3 Issues
 ------------------------
 
 [ ]Look into adding new layers messing up the cached canvas dimensions.
