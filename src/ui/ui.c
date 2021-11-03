@@ -158,6 +158,12 @@ void pa_resize_ui(PA_UI * uip)
 	int button_size;
 	int color_size = pa_get_theme_int(uip->theme, "color_size", 12);
 
+	default_theme = t3gui_get_default_theme();
+	if(!default_theme)
+	{
+		return;
+	}
+	status_height = al_get_font_line_height(default_theme->state[0].font[0]) + PA_UI_ELEMENT_SPACE * 2;
 	esl = pa_get_theme_int(uip->theme, "edge_left_space", 8);
 	esr = pa_get_theme_int(uip->theme, "edge_right_space", 8);
 	est = pa_get_theme_int(uip->theme, "edge_top_space", 8);
@@ -323,15 +329,9 @@ void pa_resize_ui(PA_UI * uip)
 	pos_y += color_size * 9;
 	pos_y += esb;
 
-	resize_element(uip->element[PA_UI_ELEMENT_PALETTE], esl, pos_y, left_pane_width - esl - esr, t3f_default_view->height - pos_y - esb);
+	resize_element(uip->element[PA_UI_ELEMENT_PALETTE], esl, pos_y, left_pane_width - esl - esr, t3f_default_view->height - pos_y - esb - status_height);
 	pa_resize_palette(uip->element[PA_UI_ELEMENT_PALETTE]->w, uip->element[PA_UI_ELEMENT_PALETTE]->h);
 
-	default_theme = t3gui_get_default_theme();
-	if(!default_theme)
-	{
-		return;
-	}
-	status_height = al_get_font_line_height(default_theme->state[0].font[0]) + PA_UI_ELEMENT_SPACE * 2;
 	pos_y = t3f_default_view->height - status_height;
 	resize_element(uip->element[PA_UI_ELEMENT_STATUS_BAR], 0, pos_y, t3f_default_view->width, status_height);
 	pos_y += PA_UI_ELEMENT_SPACE;
