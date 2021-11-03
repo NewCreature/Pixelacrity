@@ -428,4 +428,9 @@ void pa_undo_clean_up(PA_CANVAS_EDITOR * cep)
 	{
 		al_remove_filename(pa_get_undo_path("redo", i, undo_path, 1024));
 	}
+	cep->undo_count = 0;
+	cep->redo_count = 0;
+	pa_update_undo_name(cep);
+	pa_update_redo_name(cep);
+	t3f_refresh_menus();
 }
