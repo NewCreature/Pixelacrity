@@ -368,23 +368,26 @@ void pa_draw_primitive_to_canvas(PA_CANVAS * cp, int layer, int x1, int y1, int 
 		for(j = start_bitmap_x; j <= end_bitmap_x; j++)
 		{
 			pa_expand_canvas(cp, layer, j * cp->bitmap_size, i * cp->bitmap_size);
-			al_set_target_bitmap(cp->layer[layer]->bitmap[i][j]);
-			if(shader)
+			if(cp->layer[layer]->bitmap[i][j])
 			{
-				al_use_shader(shader);
+				al_set_target_bitmap(cp->layer[layer]->bitmap[i][j]);
+				if(shader)
+				{
+					al_use_shader(shader);
+				}
+				else
+				{
+					pa_set_target_pixel_shader(NULL);
+				}
+				al_use_transform(&identity);
+				if(mode == PA_RENDER_COPY)
+				{
+					al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
+				}
+				offset_x = j * cp->bitmap_size;
+				offset_y = i * cp->bitmap_size;
+				primitive_proc(x1 - offset_x, y1 - offset_y, x2 - offset_x, y2 - offset_y, bp, color, texture);
 			}
-			else
-			{
-				pa_set_target_pixel_shader(NULL);
-			}
-			al_use_transform(&identity);
-			if(mode == PA_RENDER_COPY)
-			{
-				al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
-			}
-			offset_x = j * cp->bitmap_size;
-			offset_y = i * cp->bitmap_size;
-			primitive_proc(x1 - offset_x, y1 - offset_y, x2 - offset_x, y2 - offset_y, bp, color, texture);
 		}
 	}
 
@@ -450,13 +453,13 @@ bool pa_handle_canvas_expansion(PA_CANVAS * cp, int left, int top, int right, in
 
 	/* expand down and to the right if needed */
 	new_width = cp->layer_width;
-	cx = right / cp->bitmap_size;
+	cx = right / cp->bitmap_size + *shift_x;
 	if(cx >= cp->layer_width)
 	{
 		new_width = cx + 1;
 	}
 	new_height = cp->layer_height;
-	cy = bottom / cp->bitmap_size;
+	cy = bottom / cp->bitmap_size + *shift_y;
 	if(cy >= cp->layer_height)
 	{
 		new_height = cy + 1;

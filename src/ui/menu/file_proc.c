@@ -108,6 +108,14 @@ static PA_CANVAS * canvas_from_image(const char * fn)
 	x = cx - al_get_bitmap_width(bp) / 2;
 	y = cy - al_get_bitmap_height(bp) / 2;
 	pa_import_bitmap_to_canvas(cp, bp, 0, x, y);
+	while(x < 0)
+	{
+		x += cp->bitmap_size;
+	}
+	while(y < 0)
+	{
+		y += cp->bitmap_size;
+	}
 	pa_add_canvas_frame(cp, "Frame 1", x, y, al_get_bitmap_width(bp), al_get_bitmap_height(bp));
 	al_destroy_bitmap(bp);
 
