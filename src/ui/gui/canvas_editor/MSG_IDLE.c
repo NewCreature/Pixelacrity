@@ -29,10 +29,12 @@ static bool save_backup(PA_CANVAS * cp)
 
 static void update_color_selections(PA_CANVAS_EDITOR * canvas_editor)
 {
+	bool update_pick_colors = false;
+
 	/* handle left shade slider */
 	if(canvas_editor->left_color.old_shade_slider_d2 != canvas_editor->left_color.shade_slider_element->d2)
 	{
-		canvas_editor->left_color.shade_color = pa_get_real_color(pa_shade_color(canvas_editor->left_color.base_color, (float)canvas_editor->left_color.shade_slider_element->d2 / 1000.0), canvas_editor->scratch_bitmap);
+		canvas_editor->left_color.shade_color = pa_get_real_color(pa_shade_color(canvas_editor->left_color.base_color, (float)canvas_editor->left_color.shade_slider_element->d2 / 1000.0), canvas_editor->color_scratch_bitmap);
 		canvas_editor->left_color.color = pa_alpha_color(canvas_editor->left_color.shade_color, pa_get_color_alpha(canvas_editor->left_color.color));
 		canvas_editor->left_color.last_shade_color = canvas_editor->left_color.shade_color;
 	}
@@ -40,7 +42,7 @@ static void update_color_selections(PA_CANVAS_EDITOR * canvas_editor)
 	/* handle left alpha slider */
 	if(canvas_editor->left_color.old_alpha_slider_d2 != canvas_editor->left_color.alpha_slider_element->d2)
 	{
-		canvas_editor->left_color.alpha_color = pa_get_real_color(pa_alpha_color(canvas_editor->left_color.shade_color, (float)canvas_editor->left_color.alpha_slider_element->d2 / 1000.0), canvas_editor->scratch_bitmap);
+		canvas_editor->left_color.alpha_color = pa_get_real_color(pa_alpha_color(canvas_editor->left_color.shade_color, (float)canvas_editor->left_color.alpha_slider_element->d2 / 1000.0), canvas_editor->color_scratch_bitmap);
 		canvas_editor->left_color.color = canvas_editor->left_color.alpha_color;
 		canvas_editor->left_color.last_alpha_color = canvas_editor->left_color.alpha_color;
 	}
@@ -49,7 +51,7 @@ static void update_color_selections(PA_CANVAS_EDITOR * canvas_editor)
 	if(!pa_color_equal(canvas_editor->left_color.base_color, canvas_editor->left_color.last_base_color))
 	{
 		pa_set_color(&canvas_editor->left_color, canvas_editor->left_color.base_color);
-		pa_canvas_editor_update_pick_colors(canvas_editor);
+		update_pick_colors = true;
 	}
 
 	/* handle changing the left color */
@@ -60,12 +62,13 @@ static void update_color_selections(PA_CANVAS_EDITOR * canvas_editor)
 		canvas_editor->left_color.alpha_slider_element->d2 = pa_get_color_alpha(canvas_editor->left_color.color) * 1000.0;
 		canvas_editor->left_color.shade_color = pa_shade_color(canvas_editor->left_color.color, pa_get_color_shade(canvas_editor->left_color.color));
 		canvas_editor->left_color.alpha_color = pa_alpha_color(canvas_editor->left_color.shade_color, pa_get_color_alpha(canvas_editor->left_color.color));
+		update_pick_colors = true;
 	}
 
 	/* handle the right shade slider */
 	if(canvas_editor->right_color.old_shade_slider_d2 != canvas_editor->right_color.shade_slider_element->d2)
 	{
-		canvas_editor->right_color.shade_color = pa_get_real_color(pa_shade_color(canvas_editor->right_color.base_color, (float)canvas_editor->right_color.shade_slider_element->d2 / 1000.0), canvas_editor->scratch_bitmap);
+		canvas_editor->right_color.shade_color = pa_get_real_color(pa_shade_color(canvas_editor->right_color.base_color, (float)canvas_editor->right_color.shade_slider_element->d2 / 1000.0), canvas_editor->color_scratch_bitmap);
 		canvas_editor->right_color.color = pa_alpha_color(canvas_editor->right_color.shade_color, pa_get_color_alpha(canvas_editor->right_color.color));
 		canvas_editor->right_color.last_shade_color = canvas_editor->right_color.shade_color;
 	}
@@ -73,7 +76,7 @@ static void update_color_selections(PA_CANVAS_EDITOR * canvas_editor)
 	/* handle the right alpha slider */
 	if(canvas_editor->right_color.old_alpha_slider_d2 != canvas_editor->right_color.alpha_slider_element->d2)
 	{
-		canvas_editor->right_color.alpha_color = pa_get_real_color(pa_alpha_color(canvas_editor->right_color.shade_color, (float)canvas_editor->right_color.alpha_slider_element->d2 / 1000.0), canvas_editor->scratch_bitmap);
+		canvas_editor->right_color.alpha_color = pa_get_real_color(pa_alpha_color(canvas_editor->right_color.shade_color, (float)canvas_editor->right_color.alpha_slider_element->d2 / 1000.0), canvas_editor->color_scratch_bitmap);
 		canvas_editor->right_color.color = canvas_editor->right_color.alpha_color;
 		canvas_editor->right_color.last_alpha_color = canvas_editor->right_color.alpha_color;
 	}
@@ -82,7 +85,7 @@ static void update_color_selections(PA_CANVAS_EDITOR * canvas_editor)
 	if(!pa_color_equal(canvas_editor->right_color.base_color, canvas_editor->right_color.last_base_color))
 	{
 		pa_set_color(&canvas_editor->right_color, canvas_editor->right_color.base_color);
-		pa_canvas_editor_update_pick_colors(canvas_editor);
+		update_pick_colors = true;
 	}
 
 	/* handle changing the right color */
@@ -93,11 +96,16 @@ static void update_color_selections(PA_CANVAS_EDITOR * canvas_editor)
 		canvas_editor->right_color.alpha_slider_element->d2 = pa_get_color_alpha(canvas_editor->right_color.color) * 1000.0;
 		canvas_editor->right_color.shade_color = pa_shade_color(canvas_editor->right_color.color, pa_get_color_shade(canvas_editor->right_color.color));
 		canvas_editor->right_color.alpha_color = pa_alpha_color(canvas_editor->right_color.shade_color, pa_get_color_alpha(canvas_editor->right_color.color));
+		update_pick_colors = true;
 	}
 	canvas_editor->left_color.old_shade_slider_d2 = canvas_editor->left_color.shade_slider_element->d2;
 	canvas_editor->left_color.old_alpha_slider_d2 = canvas_editor->left_color.alpha_slider_element->d2;
 	canvas_editor->right_color.old_shade_slider_d2 = canvas_editor->right_color.shade_slider_element->d2;
 	canvas_editor->right_color.old_alpha_slider_d2 = canvas_editor->right_color.alpha_slider_element->d2;
+	if(update_pick_colors)
+	{
+		pa_canvas_editor_update_pick_colors(canvas_editor);
+	}
 }
 
 void pa_canvas_editor_MSG_IDLE(T3GUI_ELEMENT * d, int c)

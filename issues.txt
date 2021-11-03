@@ -1,6 +1,8 @@
 Pixelacrity 0.3.3 Issues
 ------------------------
 
+[ ]Crash when pasting while using frame tool.
+
 [ ]Add GUI themes.
 
    [X]We need a main theme module that contains references to various resources

@@ -103,6 +103,7 @@ typedef struct
 	ALLEGRO_BITMAP * multilayer_bitmap;
 	ALLEGRO_BITMAP * singlelayer_bitmap;
 	ALLEGRO_BITMAP * brush;
+	ALLEGRO_BITMAP * color_scratch_bitmap;
 	PA_CLIPBOARD_DATA clipboard;
 	PA_GRID_DATA grid[PA_MAX_GRIDS];
 	int scratch_offset_x; // offset of scratch in relation to view
@@ -136,7 +137,10 @@ typedef struct
 	int modified;
 	PA_COLOR_INFO left_color;
 	PA_COLOR_INFO right_color;
-	ALLEGRO_COLOR pick_color[PA_COLOR_PICKER_SHADES];
+	ALLEGRO_COLOR left_shade_color[PA_COLOR_PICKER_SHADES];
+	ALLEGRO_COLOR left_alpha_color[PA_COLOR_PICKER_SHADES];
+	ALLEGRO_COLOR right_shade_color[PA_COLOR_PICKER_SHADES];
+	ALLEGRO_COLOR right_alpha_color[PA_COLOR_PICKER_SHADES];
 	ALLEGRO_COLOR start_color;
 	ALLEGRO_COLOR hover_color;
 	ALLEGRO_COLOR palette[PA_COLOR_PALETTE_MAX];

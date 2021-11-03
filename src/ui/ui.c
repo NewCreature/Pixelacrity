@@ -44,24 +44,25 @@ static ALLEGRO_BITMAP * make_checkerboard_bitmap(ALLEGRO_COLOR c1, ALLEGRO_COLOR
 	return bp;
 }
 
-static bool add_color_picker(PA_UI * uip, PA_CANVAS_EDITOR * cep, T3GUI_DIALOG * dp, int x, int y)
+static bool add_color_pickers(PA_UI * uip, PA_CANVAS_EDITOR * cep, T3GUI_DIALOG * dp, int x, int y)
 {
-	int i, pos_x = x;
-	int left_panel_width;
-	int color_size = pa_get_theme_int(uip->theme, "color_size", 12);
+	int i;
 
-	left_panel_width = PA_COLOR_PICKER_SHADES * color_size + color_size;
 	for(i = 0; i < PA_COLOR_PICKER_SHADES; i++)
 	{
-		uip->color_picker_element[i] = t3gui_dialog_add_element(dp, NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->pick_color[i], &cep->left_color.color, &cep->right_color.color);
-		if(i <= 0 || i >= PA_COLOR_PICKER_SHADES - 2)
-		{
-			pos_x += color_size + color_size / 2;
-		}
-		else
-		{
-			pos_x += color_size;
-		}
+		uip->left_shade_picker_element[i] = t3gui_dialog_add_element(dp, NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->left_shade_color[i], &cep->left_color.color, &cep->right_color.color);
+	}
+	for(i = 0; i < PA_COLOR_PICKER_SHADES; i++)
+	{
+		uip->left_alpha_picker_element[i] = t3gui_dialog_add_element(dp, NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->left_alpha_color[i], &cep->left_color.color, &cep->right_color.color);
+	}
+	for(i = 0; i < PA_COLOR_PICKER_SHADES; i++)
+	{
+		uip->right_shade_picker_element[i] = t3gui_dialog_add_element(dp, NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->right_shade_color[i], &cep->left_color.color, &cep->right_color.color);
+	}
+	for(i = 0; i < PA_COLOR_PICKER_SHADES; i++)
+	{
+		uip->right_alpha_picker_element[i] = t3gui_dialog_add_element(dp, NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->right_alpha_color[i], &cep->left_color.color, &cep->right_color.color);
 	}
 
 	return true;
@@ -102,24 +103,15 @@ static void resize_element(T3GUI_ELEMENT * ep, int x, int y, int w, int h)
 	ep->h = h;
 }
 
-static void resize_color_picker(PA_UI * uip, int x, int y)
+static void resize_color_picker(PA_UI * uip, T3GUI_ELEMENT ** element, int size, int x, int y, int vx, int vy)
 {
-	int i, pos_x = x;
-	int left_panel_width;
-	int color_size = pa_get_theme_int(uip->theme, "color_size", 12);
+	int i, pos_x = x, pos_y = y;
 
-	left_panel_width = PA_COLOR_PICKER_SHADES * color_size + color_size;
 	for(i = 0; i < PA_COLOR_PICKER_SHADES; i++)
 	{
-		resize_element(uip->color_picker_element[i], pos_x, y, color_size, color_size);
-		if(i <= 0 || i >= PA_COLOR_PICKER_SHADES - 2)
-		{
-			pos_x += color_size + color_size / 2;
-		}
-		else
-		{
-			pos_x += color_size;
-		}
+		resize_element(element[i], pos_x, pos_y, size, size);
+		pos_x += vx;
+		pos_y += vy;
 	}
 }
 
@@ -161,6 +153,7 @@ void pa_resize_ui(PA_UI * uip)
 	int pos_vx;
 	int pos_y;
 	int pos_vy;
+	int s;
 	int status_height;
 	int button_size;
 	int color_size = pa_get_theme_int(uip->theme, "color_size", 12);
@@ -295,29 +288,42 @@ void pa_resize_ui(PA_UI * uip)
 	pos_y += button_size + mt + mb + est + esb;
 	resize_element(uip->element[PA_UI_ELEMENT_MAP], t3f_default_view->width - right_pane_width, pos_y, right_pane_width, 128);
 
-	left_pane_width = PA_COLOR_PICKER_SHADES * color_size + color_size;
+	left_pane_width = PA_COLOR_PICKER_SHADES * color_size + esl + esr + color_size + color_size;
+	pos_x = esl;
 	pos_y = pos_vy + mt + mb + mt + mb + est + esb;
+	s = (left_pane_width - esl - esr - color_size - color_size) / 2;
 	resize_element(uip->element[PA_UI_ELEMENT_LEFT_PANE], 0, pos_y, left_pane_width, t3f_default_view->height);
-	resize_element(uip->element[PA_UI_ELEMENT_LEFT_COLOR], 0, pos_y, left_pane_width / 2, 48);
-	resize_element(uip->element[PA_UI_ELEMENT_RIGHT_COLOR], left_pane_width / 2, pos_y, left_pane_width / 2, 48);
-	pos_y += 48;
-	resize_element(uip->element[PA_UI_ELEMENT_LEFT_SHADE_SLIDER], 0, pos_y, left_pane_width / 2, color_size);
-	resize_element(uip->element[PA_UI_ELEMENT_RIGHT_SHADE_SLIDER], left_pane_width / 2, pos_y, left_pane_width / 2, color_size);
+	pos_y += esb;
+	resize_element(uip->element[PA_UI_ELEMENT_LEFT_ALPHA_SLIDER], pos_x, pos_y, color_size, s);
+	pos_x += color_size;
+	resize_element(uip->element[PA_UI_ELEMENT_LEFT_COLOR], pos_x, pos_y, s, s);
+	pos_x += s;
+	resize_element(uip->element[PA_UI_ELEMENT_RIGHT_COLOR], pos_x, pos_y, s, s);
+	pos_x += s;
+	resize_element(uip->element[PA_UI_ELEMENT_RIGHT_ALPHA_SLIDER], pos_x, pos_y, color_size, s);
+	pos_y += s;
+	pos_x = esl + color_size;
+	resize_element(uip->element[PA_UI_ELEMENT_LEFT_SHADE_SLIDER], pos_x, pos_y, s, color_size);
+	pos_x += s;
+	resize_element(uip->element[PA_UI_ELEMENT_RIGHT_SHADE_SLIDER], pos_x, pos_y, s, color_size);
+	pos_x = esl;
 	pos_y += color_size;
-	resize_element(uip->element[PA_UI_ELEMENT_LEFT_ALPHA_SLIDER], 0, pos_y, left_pane_width / 2, color_size);
-	resize_element(uip->element[PA_UI_ELEMENT_RIGHT_ALPHA_SLIDER], left_pane_width / 2, pos_y, left_pane_width / 2, color_size);
+	pos_y += esb;
+	resize_color_picker(uip, uip->left_shade_picker_element, color_size, pos_x, pos_y, color_size, 0);
 	pos_y += color_size;
-	pos_y += PA_UI_ELEMENT_SPACE;
+	resize_color_picker(uip, uip->left_alpha_picker_element, color_size, pos_x, pos_y, color_size, 0);
+	pos_y += color_size;
+	resize_color_picker(uip, uip->right_shade_picker_element, color_size, pos_x, pos_y, color_size, 0);
+	pos_y += color_size;
+	resize_color_picker(uip, uip->right_alpha_picker_element, color_size, pos_x, pos_y, color_size, 0);
+	pos_y += color_size;
 
-	resize_color_picker(uip, 0, pos_y);
-	pos_y += color_size;
-	pos_y += PA_UI_ELEMENT_SPACE;
-
-	resize_color_palette(uip, 0, pos_y);
+	pos_x = esl;
+	resize_color_palette(uip, esl, pos_y);
 	pos_y += color_size * 9;
-	pos_y += PA_UI_ELEMENT_SPACE;
+	pos_y += esb;
 
-	resize_element(uip->element[PA_UI_ELEMENT_PALETTE], 0, pos_y, left_pane_width, t3f_default_view->height - pos_y);
+	resize_element(uip->element[PA_UI_ELEMENT_PALETTE], esl, pos_y, left_pane_width - esl - esr, t3f_default_view->height - pos_y - esb);
 	pa_resize_palette(uip->element[PA_UI_ELEMENT_PALETTE]->w, uip->element[PA_UI_ELEMENT_PALETTE]->h);
 
 	default_theme = t3gui_get_default_theme();
@@ -551,7 +557,7 @@ static void add_left_pane(PA_UI * uip, PA_CANVAS_EDITOR * cep)
 	cep->right_color.alpha_slider_element = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_slider_proc, 0, 0, 0, 0, 0, 0, 1000, 0, NULL, NULL, NULL);
 	uip->element[PA_UI_ELEMENT_RIGHT_ALPHA_SLIDER] = cep->right_color.alpha_slider_element;
 
-	add_color_picker(uip, cep, uip->dialog[PA_UI_DIALOG_MAIN], 0, 0);
+	add_color_pickers(uip, cep, uip->dialog[PA_UI_DIALOG_MAIN], 0, 0);
 
 	add_color_palette(uip, cep, uip->dialog[PA_UI_DIALOG_MAIN], 0, 0);
 

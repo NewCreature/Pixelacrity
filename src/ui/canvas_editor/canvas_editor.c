@@ -98,6 +98,11 @@ PA_CANVAS_EDITOR * pa_create_canvas_editor(PA_CANVAS * cp)
 	}
 	al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);
 	al_set_new_bitmap_flags(0);
+	cep->color_scratch_bitmap = al_create_bitmap(1, 1);
+	if(!cep->color_scratch_bitmap)
+	{
+		goto fail;
+	}
 	cep->brush = pa_create_default_brush();
 	if(!cep->brush)
 	{
@@ -166,6 +171,10 @@ void pa_destroy_canvas_editor(PA_CANVAS_EDITOR * cep)
 	if(cep->scratch_bitmap)
 	{
 		al_destroy_bitmap(cep->scratch_bitmap);
+	}
+	if(cep->color_scratch_bitmap)
+	{
+		al_destroy_bitmap(cep->color_scratch_bitmap);
 	}
 	if(cep->view)
 	{
@@ -483,7 +492,22 @@ void pa_canvas_editor_update_pick_colors(PA_CANVAS_EDITOR * cep)
 	for(i = 0; i < PA_COLOR_PICKER_SHADES; i++)
 	{
 		new_l = step * (float)i;
-		cep->pick_color[i] = pa_get_real_color(pa_shade_color(cep->left_color.base_color, new_l), cep->scratch_bitmap);
+		cep->left_shade_color[i] = pa_get_real_color(pa_shade_color(cep->left_color.base_color, new_l), cep->color_scratch_bitmap);
+	}
+	for(i = 0; i < PA_COLOR_PICKER_SHADES; i++)
+	{
+		new_l = step * (float)i;
+		cep->left_alpha_color[i] = pa_get_real_color(pa_alpha_color(cep->left_color.color, new_l), cep->color_scratch_bitmap);
+	}
+	for(i = 0; i < PA_COLOR_PICKER_SHADES; i++)
+	{
+		new_l = step * (float)i;
+		cep->right_shade_color[i] = pa_get_real_color(pa_shade_color(cep->right_color.base_color, new_l), cep->color_scratch_bitmap);
+	}
+	for(i = 0; i < PA_COLOR_PICKER_SHADES; i++)
+	{
+		new_l = step * (float)i;
+		cep->right_alpha_color[i] = pa_get_real_color(pa_alpha_color(cep->right_color.color, new_l), cep->color_scratch_bitmap);
 	}
 }
 

@@ -53,7 +53,7 @@
 #define PA_UI_MAX_DIALOGS 32
 #define PA_UI_DIALOG_MAIN  0
 
-#define PA_UI_MAX_DIALOG_ELEMENTS            128
+#define PA_UI_MAX_DIALOG_ELEMENTS            256
 #define PA_UI_ELEMENT_LEFT_PANE                0
 #define PA_UI_ELEMENT_LEFT_COLOR               1
 #define PA_UI_ELEMENT_LEFT_SHADE_SLIDER        2
@@ -116,7 +116,10 @@ typedef struct
 	int tool_menu_item[16];
 
 	T3GUI_ELEMENT * element[PA_UI_MAX_DIALOG_ELEMENTS];
-	T3GUI_ELEMENT * color_picker_element[PA_UI_MAX_DIALOG_ELEMENTS];
+	T3GUI_ELEMENT * left_shade_picker_element[PA_UI_MAX_DIALOG_ELEMENTS];
+	T3GUI_ELEMENT * left_alpha_picker_element[PA_UI_MAX_DIALOG_ELEMENTS];
+	T3GUI_ELEMENT * right_shade_picker_element[PA_UI_MAX_DIALOG_ELEMENTS];
+	T3GUI_ELEMENT * right_alpha_picker_element[PA_UI_MAX_DIALOG_ELEMENTS];
 	T3GUI_ELEMENT * palette_color_element[PA_UI_MAX_DIALOG_ELEMENTS];
 
 	char status_left_message[1024];
