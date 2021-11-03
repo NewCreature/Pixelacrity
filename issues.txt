@@ -11,8 +11,6 @@ Pixelacrity 0.3.3 Issues
 
 [ ]Add dropper mode to get apparent color.
 
-[ ]Undo states need to be cleared when loading a canvas or creating a new one.
-
 [ ]Add GUI themes.
 
    [X]We need a main theme module that contains references to various resources
@@ -769,3 +767,5 @@ Closed Issues
 [X]Add ability to modify the color palette.
 
 [X]Save color palette to canvas editor settings.
+
+[X]Undo states need to be cleared when loading a canvas or creating a new one.
