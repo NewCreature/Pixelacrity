@@ -9,13 +9,27 @@ int pa_gui_color_proc(int msg, T3GUI_ELEMENT * d, int c)
 	{
 		case MSG_MOUSEDOWN:
 		{
-			if(c == 1 && d->dp2)
+			if(t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND])
 			{
-				*(ALLEGRO_COLOR *)d->dp2 = *(ALLEGRO_COLOR *)d->dp;
+				if(c == 1 && d->dp4)
+				{
+					*(ALLEGRO_COLOR *)d->dp = *(ALLEGRO_COLOR *)d->dp4;
+				}
+				else if(d->dp5)
+				{
+					*(ALLEGRO_COLOR *)d->dp = *(ALLEGRO_COLOR *)d->dp5;
+				}
 			}
-			else if(d->dp3)
+			else
 			{
-				*(ALLEGRO_COLOR *)d->dp3 = *(ALLEGRO_COLOR *)d->dp;
+				if(c == 1 && d->dp2)
+				{
+					*(ALLEGRO_COLOR *)d->dp2 = *(ALLEGRO_COLOR *)d->dp;
+				}
+				else if(d->dp3)
+				{
+					*(ALLEGRO_COLOR *)d->dp3 = *(ALLEGRO_COLOR *)d->dp;
+				}
 			}
 			break;
 		}

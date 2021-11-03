@@ -117,6 +117,7 @@ T3GUI_ELEMENT * t3gui_dialog_add_element(T3GUI_DIALOG * dialog, T3GUI_THEME * th
 	t3gui_expand_dialog_element(dialog);
 	if(dialog->elements < dialog->allocated_elements)
 	{
+		memset(&dialog->element[dialog->elements], 0, sizeof(T3GUI_ELEMENT));
 		dialog->element[dialog->elements].proc = proc;
 		dialog->element[dialog->elements].x = x;
 		dialog->element[dialog->elements].y = y;

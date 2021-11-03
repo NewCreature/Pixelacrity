@@ -77,6 +77,8 @@ static bool add_color_palette(PA_UI * uip, PA_CANVAS_EDITOR * cep, T3GUI_DIALOG 
 		for(j = 0; j < PA_COLOR_PICKER_SHADES; j++)
 		{
 			uip->palette_color_element[i * PA_COLOR_PICKER_SHADES + j] = t3gui_dialog_add_element(dp, NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->palette[i * PA_COLOR_PICKER_SHADES + j], &cep->left_color.base_color, &cep->right_color.base_color);
+			uip->palette_color_element[i * PA_COLOR_PICKER_SHADES + j]->dp4 = &cep->left_color.color;
+			uip->palette_color_element[i * PA_COLOR_PICKER_SHADES + j]->dp5 = &cep->right_color.color;
 		}
 	}
 
