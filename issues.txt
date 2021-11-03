@@ -3,6 +3,8 @@ Pixelacrity 0.3.3 Issues
 
 [ ]Crash when pasting while using frame tool.
 
+[ ]Look into re-export not working.
+
 [ ]Add color replace tool.
 
 [ ]Add dropper mode to get apparent color.
