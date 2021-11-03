@@ -3,6 +3,10 @@ Pixelacrity 0.3.3 Issues
 
 [ ]Crash when pasting while using frame tool.
 
+[ ]Add color replace tool.
+
+[ ]Add dropper mode to get apparent color.
+
 [ ]Undo states need to be cleared when loading a canvas or creating a new one.
 
 [ ]Add GUI themes.
