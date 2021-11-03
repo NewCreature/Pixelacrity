@@ -70,26 +70,14 @@ static bool add_color_pickers(PA_UI * uip, PA_CANVAS_EDITOR * cep, T3GUI_DIALOG 
 
 static bool add_color_palette(PA_UI * uip, PA_CANVAS_EDITOR * cep, T3GUI_DIALOG * dp, int x, int y)
 {
-	int i, j, pos_x = x;
-	int left_panel_width;
-	int color_size = pa_get_theme_int(uip->theme, "color_size", 12);
+	int i, j;
 
-	left_panel_width = PA_COLOR_PICKER_SHADES * color_size + color_size;
-	for(i = 0; i < 9; i++)
+	for(i = 0; i < PA_COLOR_PICKER_SHADES; i++)
 	{
-		uip->palette_color_element[i] = t3gui_dialog_add_element(dp, NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->palette[i], &cep->left_color.base_color, &cep->right_color.base_color);
-		pos_x += color_size;
-	}
-	y += color_size;
-	for(i = 0; i < 8; i++)
-	{
-		pos_x = x;
-		for(j = 0; j < 8; j++)
+		for(j = 0; j < PA_COLOR_PICKER_SHADES; j++)
 		{
-			uip->palette_color_element[i * 8 + j + 9] = t3gui_dialog_add_element(dp, NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->palette[i * 8 + j + 9], &cep->left_color.base_color, &cep->right_color.base_color);
-			pos_x += color_size;
+			uip->palette_color_element[i * PA_COLOR_PICKER_SHADES + j] = t3gui_dialog_add_element(dp, NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->palette[i * PA_COLOR_PICKER_SHADES + j], &cep->left_color.base_color, &cep->right_color.base_color);
 		}
-		y += color_size;
 	}
 
 	return true;
@@ -117,26 +105,15 @@ static void resize_color_picker(PA_UI * uip, T3GUI_ELEMENT ** element, int size,
 
 static void resize_color_palette(PA_UI * uip, int x, int y)
 {
-	int i, j, pos_x = x;
-	int left_panel_width;
+	int i, j;
 	int color_size = pa_get_theme_int(uip->theme, "color_size", 12);
 
-	left_panel_width = PA_COLOR_PICKER_SHADES * color_size + color_size;
-	for(i = 0; i < 9; i++)
+	for(i = 0; i < PA_COLOR_PICKER_SHADES; i++)
 	{
-		resize_element(uip->palette_color_element[i], pos_x, y, color_size, color_size);
-		pos_x += color_size;
-	}
-	y += color_size;
-	for(i = 0; i < 8; i++)
-	{
-		pos_x = x;
-		for(j = 0; j < 8; j++)
+		for(j = 0; j < PA_COLOR_PICKER_SHADES; j++)
 		{
-			resize_element(uip->palette_color_element[i * 8 + j + 9], pos_x, y, color_size, color_size);
-			pos_x += color_size;
+			resize_element(uip->palette_color_element[i * PA_COLOR_PICKER_SHADES + j], x + j * color_size, y + i * color_size, color_size, color_size);
 		}
-		y += color_size;
 	}
 }
 
