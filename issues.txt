@@ -3,6 +3,8 @@ Pixelacrity 0.3.3 Issues
 
 [ ]Crash when pasting while using frame tool.
 
+[ ]Undo states need to be cleared when loading a canvas or creating a new one.
+
 [ ]Add GUI themes.
 
    [X]We need a main theme module that contains references to various resources
