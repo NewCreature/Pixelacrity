@@ -28,13 +28,7 @@ Pixelacrity 0.3.3 Issues
 
    [X]Define button size within theme.
 
-[ ]Make shade pickers available for left and right mouse button.
-
-[ ]Make alpha pickers available.
-
 [ ]Add ability to load and save color palettes.
-
-[ ]Add ability to modify the color palette.
 
 [ ]Save color palette to canvas editor settings.
 
@@ -767,3 +761,9 @@ Closed Issues
 [X]Look into adding new layers messing up the cached canvas dimensions.
 
 [X]Ensure all toolbar buttons are using the correct graphics.
+
+[X]Make shade pickers available for left and right mouse button.
+
+[X]Make alpha pickers available.
+
+[X]Add ability to modify the color palette.
