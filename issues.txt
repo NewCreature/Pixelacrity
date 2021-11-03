@@ -1,6 +1,8 @@
 Pixelacrity 0.3.3 Issues
 ------------------------
 
+[ ]Crash when loading an empty canvas file.
+
 [ ]Crash when pasting while using frame tool.
 
 [ ]Look into re-export not working.
@@ -29,8 +31,6 @@ Pixelacrity 0.3.3 Issues
    [X]Define button size within theme.
 
 [ ]Add ability to load and save color palettes.
-
-[ ]Save color palette to canvas editor settings.
 
 [ ]Add GUI elements related to the current tool configuration.
 
@@ -767,3 +767,5 @@ Closed Issues
 [X]Make alpha pickers available.
 
 [X]Add ability to modify the color palette.
+
+[X]Save color palette to canvas editor settings.
