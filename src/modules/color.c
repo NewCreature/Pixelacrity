@@ -75,3 +75,22 @@ ALLEGRO_COLOR pa_get_real_color(ALLEGRO_COLOR color, ALLEGRO_BITMAP * scratch)
 
 	return al_get_pixel(scratch, 0, 0);
 }
+
+ALLEGRO_COLOR pa_get_color_from_html(const char * html)
+{
+	char buf[3] = {0};
+	int i, l;
+	int c[4] = {255};
+
+	l = strlen(html);
+	for(i = 0; i < 4; i++)
+	{
+		if(i * 2 <= l)
+		{
+			buf[0] = html[i * 2];
+			buf[1] = html[i * 2 + 1];
+			c[i] = strtol(buf, NULL, 16);
+		}
+	}
+	return al_map_rgba(c[0], c[1], c[2], c[3]);
+}
