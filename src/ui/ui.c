@@ -288,10 +288,10 @@ void pa_resize_ui(PA_UI * uip)
 	pos_y += button_size + mt + mb + est + esb;
 	resize_element(uip->element[PA_UI_ELEMENT_MAP], t3f_default_view->width - right_pane_width, pos_y, right_pane_width, 128);
 
-	left_pane_width = PA_COLOR_PICKER_SHADES * color_size + esl + esr + color_size + color_size;
+	left_pane_width = PA_COLOR_PICKER_SHADES * color_size + esl + esr;
 	pos_x = esl;
 	pos_y = pos_vy + mt + mb + mt + mb + est + esb;
-	s = (left_pane_width - esl - esr - color_size - color_size) / 2;
+	s = left_pane_width / 2 - esl - color_size;
 	resize_element(uip->element[PA_UI_ELEMENT_LEFT_PANE], 0, pos_y, left_pane_width, t3f_default_view->height);
 	pos_y += esb;
 	resize_element(uip->element[PA_UI_ELEMENT_LEFT_ALPHA_SLIDER], pos_x, pos_y, color_size, s);
