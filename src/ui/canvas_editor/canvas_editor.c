@@ -606,24 +606,24 @@ void pa_optimize_canvas(PA_CANVAS_EDITOR * cep, int skip_x, int skip_y)
 				if(cep->canvas->layer[i]->bitmap[j][k])
 				{
 					empty_canvas = false;
-				}
-				if(!blank_bitmap(cep->canvas->layer[i]->bitmap[j][k]))
-				{
-					if(k < left)
+					if(!blank_bitmap(cep->canvas->layer[i]->bitmap[j][k]))
 					{
-						left = k;
-					}
-					if(k > right)
-					{
-						right = k;
-					}
-					if(j < top)
-					{
-						top = j;
-					}
-					if(j > bottom)
-					{
-						bottom = j;
+						if(k < left)
+						{
+							left = k;
+						}
+						if(k > right)
+						{
+							right = k;
+						}
+						if(j < top)
+						{
+							top = j;
+						}
+						if(j > bottom)
+						{
+							bottom = j;
+						}
 					}
 				}
 			}
