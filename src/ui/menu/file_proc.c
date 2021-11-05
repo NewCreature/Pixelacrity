@@ -8,6 +8,7 @@
 #include "file_proc.h"
 #include "ui/canvas_editor/undo/undo.h"
 #include "ui/canvas_editor/undo/import.h"
+#include "defines.h"
 
 static bool close_canvas(APP_INSTANCE * app)
 {
@@ -153,7 +154,7 @@ int pa_menu_file_load(int id, void * data)
 	val = al_get_config_value(t3f_config, "App Data", "last_canvas_path");
 	if(close_canvas(app))
 	{
-		file_chooser = al_create_native_file_dialog(val, "Choose canvas or image file...", "*.qcanvas;*.png;*.tga;*.pcx;*.bmp;*.jpg", ALLEGRO_FILECHOOSER_FILE_MUST_EXIST);
+		file_chooser = al_create_native_file_dialog(val, "Choose canvas or image file...", PA_CANVAS_FILE_EXTENSION ";*.png;*.tga;*.pcx;*.bmp;*.jpg", ALLEGRO_FILECHOOSER_FILE_MUST_EXIST);
 		if(file_chooser)
 		{
 			al_stop_timer(t3f_timer);
@@ -167,7 +168,7 @@ int pa_menu_file_load(int id, void * data)
 						extension = t3f_get_path_extension(file_path);
 						if(extension)
 						{
-							if(strcasecmp(extension, ".qcanvas"))
+							if(strcasecmp(extension, PA_CANVAS_FILE_EXTENSION))
 							{
 								import_image = true;
 							}
@@ -226,7 +227,7 @@ static bool resave_allowed(PA_CANVAS_EDITOR * cep)
 	int offset_x, offset_y, width, height;
 	const char * extension = t3f_get_path_extension(cep->canvas_path);
 
-	if(!strcasecmp(extension, ".qcanvas"))
+	if(!strcasecmp(extension, PA_CANVAS_FILE_EXTENSION))
 	{
 		return false;
 	}
@@ -264,7 +265,7 @@ int pa_menu_file_save(int id, void * data)
 	}
 	else
 	{
-		if(strcasecmp(t3f_get_path_extension(app->canvas_editor->canvas_path), ".qcanvas"))
+		if(strcasecmp(t3f_get_path_extension(app->canvas_editor->canvas_path), PA_CANVAS_FILE_EXTENSION))
 		{
 			pa_menu_file_save_as(id, data);
 		}
@@ -298,7 +299,7 @@ int pa_menu_file_save_as(int id, void * data)
 
 	t3f_debug_message("Enter pa_menu_file_save_as()\n");
 	val = al_get_config_value(t3f_config, "App Data", "last_canvas_path");
-	file_chooser = al_create_native_file_dialog(val, "Save canvas as...", "*.qcanvas", ALLEGRO_FILECHOOSER_SAVE);
+	file_chooser = al_create_native_file_dialog(val, "Save canvas as...", PA_CANVAS_FILE_EXTENSION, ALLEGRO_FILECHOOSER_SAVE);
 	if(file_chooser)
 	{
 		al_stop_timer(t3f_timer);
@@ -312,7 +313,7 @@ int pa_menu_file_save_as(int id, void * data)
 					path = al_create_path(file_path);
 					if(path)
 					{
-						al_set_path_extension(path, ".qcanvas");
+						al_set_path_extension(path, PA_CANVAS_FILE_EXTENSION);
 						strcpy(app->canvas_editor->canvas_path, al_path_cstr(path, '/'));
 						pa_menu_file_save(id, data);
 						al_set_path_filename(path, "");

@@ -10,6 +10,7 @@
 #include "ui/canvas_editor/selection.h"
 #include "ui/canvas_editor/frame.h"
 #include "ui/window.h"
+#include "defines.h"
 
 static bool save_backup(PA_CANVAS * cp)
 {
@@ -18,7 +19,7 @@ static bool save_backup(PA_CANVAS * cp)
 
 	pa_set_window_message("Saving backup...");
 	pa_get_date_string(backup_fn, 256);
-	strcat(backup_fn, ".qcanvas");
+	strcat(backup_fn, PA_CANVAS_FILE_EXTENSION);
 	t3f_get_filename(t3f_data_path, backup_fn, backup_path, 1024);
 	if(pa_save_canvas(cp, backup_path, ".png", PA_CANVAS_SAVE_AUTO))
 	{
