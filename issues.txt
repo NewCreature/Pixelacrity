@@ -1,8 +1,6 @@
 Pixelacrity 0.3.3 Issues
 ------------------------
 
-[ ]Crash when loading an empty canvas file.
-
 [ ]Crash when pasting while using frame tool.
 
 [ ]Look into re-export not working.
@@ -769,3 +767,5 @@ Closed Issues
 [X]Save color palette to canvas editor settings.
 
 [X]Undo states need to be cleared when loading a canvas or creating a new one.
+
+[X]Crash when loading an empty canvas file.
