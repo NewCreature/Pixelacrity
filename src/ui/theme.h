@@ -1,10 +1,13 @@
 #ifndef PA_UI_THEME_H
 #define PA_UI_THEME_H
 
-#define PA_UI_THEME_MAX   16
+#define PA_UI_THEME_MAX      16
 
-#define PA_UI_THEME_BOX    0
-#define PA_UI_THEME_BUTTON 1
+#define PA_UI_THEME_BOX       0
+#define PA_UI_THEME_BUTTON    1
+#define PA_UI_THEME_BOX_TOP   2
+#define PA_UI_THEME_BOX_LEFT  3
+#define PA_UI_THEME_BOX_RIGHT 4
 
 typedef struct
 {
