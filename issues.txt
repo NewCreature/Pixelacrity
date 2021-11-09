@@ -1,6 +1,17 @@
 Pixelacrity 0.3.3 Issues
 ------------------------
 
+[ ]Add checkerboard pattern beneath color elements.
+
+[ ]Add pane-specific edge space settings to themes. Some themes might need to
+   have these settings for fine-tuning the overall look.
+
+[ ]Don't apply highlights and shadows to panes in standard theme. We want the
+   default UI to have a modern look.
+
+[ ]Add separators between certain elements to help group them together by
+   function.
+
 [ ]Crash when pasting while using frame tool.
 
 [ ]Look into re-export not working.
