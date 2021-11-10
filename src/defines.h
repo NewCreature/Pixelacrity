@@ -5,4 +5,6 @@
 #define PA_PALETTE_FILE_EXTENSION   ".pxp"
 #define PA_WORKSPACE_FILE_EXTENSION ".pxw"
 
+#define PA_DEFAULT_THEME "data/themes/standard/theme.ini"
+
 #endif

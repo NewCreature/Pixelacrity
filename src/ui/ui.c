@@ -19,6 +19,7 @@
 #include "gui/list_proc.h"
 #include "gui/layer_list_proc.h"
 #include "ui/canvas_editor/undo/undo.h"
+#include "defines.h"
 
 static bool add_color_pickers(PA_UI * uip, PA_CANVAS_EDITOR * cep, T3GUI_DIALOG * dp, int x, int y)
 {
@@ -313,7 +314,14 @@ static bool load_bitmap(PA_UI * uip, int slot, const char * name)
 
 static bool load_resources(PA_UI * uip)
 {
-	uip->theme = pa_load_theme("data/themes/standard/theme.ini");
+	const char * val;
+
+	val = al_get_config_value(t3f_config, "App Data", "theme");
+	if(!val)
+	{
+		val = PA_DEFAULT_THEME;
+	}
+	uip->theme = pa_load_theme(val);
 	if(!uip->theme)
 	{
 		return false;
