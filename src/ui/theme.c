@@ -28,6 +28,7 @@ PA_UI_THEME * pa_load_theme(const char * fn)
 	tp->theme[PA_UI_THEME_LEFT_PANE] = pa_load_theme_theme(tp, "left_pane");
 	tp->theme[PA_UI_THEME_RIGHT_PANE] = pa_load_theme_theme(tp, "right_pane");
 	tp->theme[PA_UI_THEME_BOTTOM_PANE] = pa_load_theme_theme(tp, "bottom_pane");
+	tp->theme[PA_UI_THEME_LIST_BOX] = pa_load_theme_theme(tp, "list_box");
 	return tp;
 
 	fail:

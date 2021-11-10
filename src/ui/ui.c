@@ -119,7 +119,6 @@ void pa_resize_ui(PA_UI * uip)
 	{
 		return;
 	}
-	status_height = al_get_font_line_height(default_theme->state[0].font[0]) + PA_UI_ELEMENT_SPACE * 2;
 	esl = pa_get_theme_int(uip->theme, "edge_left_space", 8);
 	esr = pa_get_theme_int(uip->theme, "edge_right_space", 8);
 	est = pa_get_theme_int(uip->theme, "edge_top_space", 8);
@@ -128,6 +127,7 @@ void pa_resize_ui(PA_UI * uip)
 	mr = pa_get_theme_int(uip->theme, "element_right_margin", 0);
 	mt = pa_get_theme_int(uip->theme, "element_top_margin", 0);
 	mb = pa_get_theme_int(uip->theme, "element_bottom_margin", 0);
+	status_height = al_get_font_line_height(default_theme->state[0].font[0]) + est + esb;
 	button_size = pa_get_theme_int(uip->theme, "button_size", 64);
 	right_pane_width = button_size + button_size + mr + ml + mr + ml + mr + ml + esr + esl;
 	pos_vx = button_size;

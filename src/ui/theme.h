@@ -9,6 +9,7 @@
 #define PA_UI_THEME_RIGHT_PANE  3
 #define PA_UI_THEME_BOTTOM_PANE 4
 #define PA_UI_THEME_BUTTON      5
+#define PA_UI_THEME_LIST_BOX    6
 
 typedef struct
 {
