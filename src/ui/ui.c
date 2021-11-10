@@ -459,7 +459,7 @@ static void add_toolbar(PA_UI * uip, PA_CANVAS_EDITOR * cep)
 {
 	int scale = pa_get_theme_int(uip->theme, "graphics_scale", 1);
 
-	uip->element[PA_UI_ELEMENT_TOOLBAR] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BOX_TOP], t3gui_box_proc, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL);
+	uip->element[PA_UI_ELEMENT_TOOLBAR] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_TOP_PANE], t3gui_box_proc, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL);
 	uip->element[PA_UI_ELEMENT_BUTTON_NEW] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, scale, 0, "Pixel", pa_toolbar_new_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_NEW]);
 	uip->element[PA_UI_ELEMENT_BUTTON_OPEN] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, scale, 0, "Pixel", pa_toolbar_open_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_OPEN]);
 	uip->element[PA_UI_ELEMENT_BUTTON_SAVE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, scale, 0, "Pixel", pa_toolbar_save_button_proc, uip->bitmap[PA_UI_BITMAP_TOOLBAR_SAVE]);
@@ -480,7 +480,7 @@ static void add_right_pane(PA_UI * uip, PA_CANVAS_EDITOR * cep)
 {
 	int scale = pa_get_theme_int(uip->theme, "graphics_scale", 1);
 
-	uip->element[PA_UI_ELEMENT_RIGHT_PANE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BOX_RIGHT], t3gui_box_proc, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL);
+	uip->element[PA_UI_ELEMENT_RIGHT_PANE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_RIGHT_PANE], t3gui_box_proc, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL);
 	uip->element[PA_UI_ELEMENT_BUTTON_PIXEL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, scale, 0, "Pixel", pa_tool_pixel_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_PIXEL]);
 	uip->element[PA_UI_ELEMENT_BUTTON_LINE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, scale, 0, "Line", pa_tool_line_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_LINE]);
 	uip->element[PA_UI_ELEMENT_BUTTON_RECTANGLE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, scale, 0, "Rectangle", pa_tool_rectangle_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_RECTANGLE]);
@@ -500,7 +500,7 @@ static void add_right_pane(PA_UI * uip, PA_CANVAS_EDITOR * cep)
 
 static void add_left_pane(PA_UI * uip, PA_CANVAS_EDITOR * cep)
 {
-	uip->element[PA_UI_ELEMENT_LEFT_PANE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BOX_LEFT], t3gui_box_proc, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL);
+	uip->element[PA_UI_ELEMENT_LEFT_PANE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_LEFT_PANE], t3gui_box_proc, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL);
 	uip->element[PA_UI_ELEMENT_LEFT_COLOR] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->left_color.color, NULL, NULL);
 	uip->element[PA_UI_ELEMENT_RIGHT_COLOR] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->right_color.color, NULL, NULL);
 	cep->left_color.shade_slider_element = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_slider_proc, 0, 0, 0, 0, 0, 0, 1000, 0, NULL, NULL, NULL);
@@ -521,7 +521,7 @@ static void add_left_pane(PA_UI * uip, PA_CANVAS_EDITOR * cep)
 
 static void add_status_bar(PA_UI * uip, PA_CANVAS_EDITOR * cep)
 {
-	uip->element[PA_UI_ELEMENT_STATUS_BAR] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_box_proc, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL);
+	uip->element[PA_UI_ELEMENT_STATUS_BAR] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BOTTOM_PANE], t3gui_box_proc, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL);
 	uip->element[PA_UI_ELEMENT_STATUS_LEFT_MESSAGE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_text_proc, 0, 0, 0, 0, 0, 0, 0, 0, uip->status_left_message, NULL, NULL);
 	uip->element[PA_UI_ELEMENT_STATUS_MIDDLE_MESSAGE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_text_proc, 0, 0, 0, 0, 0, 0, 0, 0, uip->status_middle_message, NULL, NULL);
 	uip->element[PA_UI_ELEMENT_STATUS_RIGHT_MESSAGE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_text_proc, 0, 0, 0, 0, 0, 0, 0, 0, uip->status_right_message, NULL, NULL);

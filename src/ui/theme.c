@@ -24,9 +24,10 @@ PA_UI_THEME * pa_load_theme(const char * fn)
 	}
 	tp->theme[PA_UI_THEME_BOX] = pa_load_theme_theme(tp, "box");
 	tp->theme[PA_UI_THEME_BUTTON] = pa_load_theme_theme(tp, "button");
-	tp->theme[PA_UI_THEME_BOX_TOP] = pa_load_theme_theme(tp, "box_top");
-	tp->theme[PA_UI_THEME_BOX_LEFT] = pa_load_theme_theme(tp, "box_left");
-	tp->theme[PA_UI_THEME_BOX_RIGHT] = pa_load_theme_theme(tp, "box_right");
+	tp->theme[PA_UI_THEME_TOP_PANE] = pa_load_theme_theme(tp, "top_pane");
+	tp->theme[PA_UI_THEME_LEFT_PANE] = pa_load_theme_theme(tp, "left_pane");
+	tp->theme[PA_UI_THEME_RIGHT_PANE] = pa_load_theme_theme(tp, "right_pane");
+	tp->theme[PA_UI_THEME_BOTTOM_PANE] = pa_load_theme_theme(tp, "bottom_pane");
 	return tp;
 
 	fail:
