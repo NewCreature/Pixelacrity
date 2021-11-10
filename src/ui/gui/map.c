@@ -10,6 +10,7 @@ static void render_map(PA_CANVAS_EDITOR * cep, int x, int y, int width, int heig
 	float scale2;
 	int left, top, right, bottom;
 	int offset_x, offset_y;
+	int i;
 
 	pa_get_canvas_dimensions(cep->canvas, &cx, &cy, &cwidth, &cheight, 0, false);
 	if(cwidth > 0 && cheight > 0)
@@ -33,6 +34,14 @@ static void render_map(PA_CANVAS_EDITOR * cep, int x, int y, int width, int heig
 		right = left + (float)cep->view_width * scale;
 		bottom = top + (float)cep->view_height * scale;
 		al_draw_filled_rectangle(x + left, y + top, x + right, y + bottom, al_map_rgba_f(1.0, 1.0, 1.0, 0.5));
+		for(i = 0; i < cep->canvas->frame_max; i++)
+		{
+			left = (float)(cep->canvas->frame[i]->box.start_x - cx) * scale + offset_x;
+			top = (float)(cep->canvas->frame[i]->box.start_y - cy) * scale + offset_y;
+			right = left + (float)cep->canvas->frame[i]->box.width * scale;
+			bottom = top + (float)cep->canvas->frame[i]->box.height * scale;
+			al_draw_rectangle(x + left, y + top, x + right, y + bottom, t3f_color_black, 0.0);
+		}
 	}
 }
 
