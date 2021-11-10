@@ -154,7 +154,7 @@ int pa_menu_file_load(int id, void * data)
 	val = al_get_config_value(t3f_config, "App Data", "last_canvas_path");
 	if(close_canvas(app))
 	{
-		file_chooser = al_create_native_file_dialog(val, "Choose canvas or image file...", PA_CANVAS_FILE_EXTENSION ";*.png;*.tga;*.pcx;*.bmp;*.jpg", ALLEGRO_FILECHOOSER_FILE_MUST_EXIST);
+		file_chooser = al_create_native_file_dialog(val, "Choose canvas or image file...", "*" PA_CANVAS_FILE_EXTENSION ";*.png;*.tga;*.pcx;*.bmp;*.jpg", ALLEGRO_FILECHOOSER_FILE_MUST_EXIST);
 		if(file_chooser)
 		{
 			al_stop_timer(t3f_timer);
@@ -299,7 +299,7 @@ int pa_menu_file_save_as(int id, void * data)
 
 	t3f_debug_message("Enter pa_menu_file_save_as()\n");
 	val = al_get_config_value(t3f_config, "App Data", "last_canvas_path");
-	file_chooser = al_create_native_file_dialog(val, "Save canvas as...", PA_CANVAS_FILE_EXTENSION, ALLEGRO_FILECHOOSER_SAVE);
+	file_chooser = al_create_native_file_dialog(val, "Save canvas as...", "*" PA_CANVAS_FILE_EXTENSION, ALLEGRO_FILECHOOSER_SAVE);
 	if(file_chooser)
 	{
 		al_stop_timer(t3f_timer);
