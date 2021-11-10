@@ -184,39 +184,6 @@ void pa_destroy_canvas_editor(PA_CANVAS_EDITOR * cep)
 	free(cep);
 }
 
-static void load_palette(PA_CANVAS_EDITOR * cep)
-{
-	int i;
-	char buf[32];
-	const char * val;
-
-	for(i = 0; i < PA_COLOR_PICKER_SHADES * PA_COLOR_PICKER_SHADES; i++)
-	{
-		sprintf(buf, "color_%d", i);
-		val = al_get_config_value(cep->config, "Palette", buf);
-		if(val)
-		{
-			cep->palette[i] = pa_get_color_from_html(val);
-		}
-	}
-}
-
-static void save_palette(PA_CANVAS_EDITOR * cep)
-{
-	int i;
-	char buf[32];
-	char val[32];
-	unsigned char r, g, b, a;
-
-	for(i = 0; i < PA_COLOR_PICKER_SHADES * PA_COLOR_PICKER_SHADES; i++)
-	{
-		sprintf(buf, "color_%d", i);
-		al_unmap_rgba(cep->palette[i], &r, &g, &b, &a);
-		sprintf(val, "%02X%02X%02X%02X", r, g, b, a);
-		al_set_config_value(cep->config, "Palette", buf, val);
-	}
-}
-
 bool pa_load_canvas_editor_state(PA_CANVAS_EDITOR * cep, const char * fn)
 {
 	char buf[64];
@@ -255,7 +222,7 @@ bool pa_load_canvas_editor_state(PA_CANVAS_EDITOR * cep, const char * fn)
 			{
 				cep->canvas->frame[i]->export_path = NULL;
 			}
-			load_palette(cep);
+			pa_read_palette(cep->palette, cep->config);
 		}
 		return true;
 	}
@@ -292,7 +259,7 @@ bool pa_save_canvas_editor_state(PA_CANVAS_EDITOR * cep, const char * fn)
 			al_set_config_value(cep->config, buf, "export_path", cep->canvas->frame[i]->export_path);
 		}
 	}
-	save_palette(cep);
+	pa_write_palette(cep->palette, cep->config);
 	return al_save_config_file(fn, cep->config);
 }
 

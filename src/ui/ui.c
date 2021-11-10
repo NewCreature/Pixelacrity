@@ -52,7 +52,7 @@ static bool add_color_palette(PA_UI * uip, PA_CANVAS_EDITOR * cep, T3GUI_DIALOG 
 	{
 		for(j = 0; j < PA_COLOR_PICKER_SHADES; j++)
 		{
-			uip->palette_color_element[i * PA_COLOR_PICKER_SHADES + j] = t3gui_dialog_add_element(dp, NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->palette[i * PA_COLOR_PICKER_SHADES + j], &cep->left_color.base_color, &cep->right_color.base_color);
+			uip->palette_color_element[i * PA_COLOR_PICKER_SHADES + j] = t3gui_dialog_add_element(dp, NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->palette->color[i * PA_COLOR_PICKER_SHADES + j], &cep->left_color.base_color, &cep->right_color.base_color);
 			uip->palette_color_element[i * PA_COLOR_PICKER_SHADES + j]->dp4 = &cep->left_color.color;
 			uip->palette_color_element[i * PA_COLOR_PICKER_SHADES + j]->dp5 = &cep->right_color.color;
 		}
@@ -436,25 +436,6 @@ static bool load_resources(PA_UI * uip)
 	return true;
 }
 
-static void set_default_palette(PA_CANVAS_EDITOR * cep)
-{
-	int i;
-
-	cep->palette[0] = al_map_rgb_f(1.0, 0.0, 0.0);
-	cep->palette[1] = al_map_rgb_f(0.0, 1.0, 0.0);
-	cep->palette[2] = al_map_rgb_f(0.0, 0.0, 1.0);
-	cep->palette[3] = al_map_rgb_f(1.0, 1.0, 0.0);
-	cep->palette[4] = al_map_rgb_f(1.0, 0.0, 1.0);
-	cep->palette[5] = al_map_rgb_f(0.0, 1.0, 1.0);
-	cep->palette[6] = al_map_rgb_f(1.0, 1.0, 1.0);
-	cep->palette[7] = al_map_rgb_f(0.0, 0.0, 0.0);
-	cep->palette[8] = al_map_rgb_f(0.5, 0.5, 0.5);
-	for(i = 0; i < 64; i++)
-	{
-		cep->palette[9 + i] = pa_get_ega_palette_color(i);
-	}
-}
-
 static void add_toolbar(PA_UI * uip, PA_CANVAS_EDITOR * cep)
 {
 	int scale = pa_get_theme_int(uip->theme, "graphics_scale", 1);
@@ -558,7 +539,11 @@ PA_UI * pa_create_ui(PA_CANVAS_EDITOR * cep)
 		{
 			goto fail;
 		}
-		set_default_palette(cep);
+		cep->palette = pa_load_palette("data/default.pxp");
+		if(!cep->palette)
+		{
+			goto fail;
+		}
 		if(!pa_setup_menus(uip))
 		{
 			goto fail;

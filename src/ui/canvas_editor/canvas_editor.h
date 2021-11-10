@@ -5,6 +5,7 @@
 #include "modules/canvas/canvas.h"
 #include "modules/box.h"
 #include "modules/multi_layer_bitmap.h"
+#include "modules/palette.h"
 
 #define PA_CANVAS_EDITOR_SIGNAL_NONE         0
 #define PA_CANVAS_EDITOR_SIGNAL_DELETE_LAYER 1
@@ -143,7 +144,7 @@ typedef struct
 	ALLEGRO_COLOR right_alpha_color[PA_COLOR_PICKER_SHADES];
 	ALLEGRO_COLOR start_color;
 	ALLEGRO_COLOR hover_color;
-	ALLEGRO_COLOR palette[PA_COLOR_PALETTE_MAX];
+	PA_PALETTE * palette;
 
 	T3GUI_ELEMENT * editor_element;
 	bool simulate_mouse_move;

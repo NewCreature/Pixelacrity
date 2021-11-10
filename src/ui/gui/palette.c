@@ -6,7 +6,7 @@
 static ALLEGRO_BITMAP * _palette_bitmap = NULL;
 static int mouse_button = 0;
 
-static ALLEGRO_BITMAP * pa_create_palette(int width, int height)
+static ALLEGRO_BITMAP * create_palette(int width, int height)
 {
 	ALLEGRO_BITMAP * bp;
 	ALLEGRO_COLOR color;
@@ -47,7 +47,7 @@ void pa_resize_palette(int width, int height)
 	{
 		al_destroy_bitmap(_palette_bitmap);
 	}
-	_palette_bitmap = pa_create_palette(width, height);
+	_palette_bitmap = create_palette(width, height);
 }
 
 int pa_gui_palette_proc(int msg, T3GUI_ELEMENT * d, int c)

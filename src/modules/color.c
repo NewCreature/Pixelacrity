@@ -80,12 +80,12 @@ ALLEGRO_COLOR pa_get_color_from_html(const char * html)
 {
 	char buf[3] = {0};
 	int i, l;
-	int c[4] = {255};
+	int c[4] = {255, 255, 255, 255};
 
 	l = strlen(html);
 	for(i = 0; i < 4; i++)
 	{
-		if(i * 2 <= l)
+		if(i * 2 + 1 < l)
 		{
 			buf[0] = html[i * 2];
 			buf[1] = html[i * 2 + 1];
@@ -93,4 +93,12 @@ ALLEGRO_COLOR pa_get_color_from_html(const char * html)
 		}
 	}
 	return al_map_rgba(c[0], c[1], c[2], c[3]);
+}
+
+void pa_color_to_html(ALLEGRO_COLOR color, char * buffer)
+{
+	unsigned char r, g, b, a;
+
+	al_unmap_rgba(color, &r, &g, &b, &a);
+	sprintf(buffer, "%02X%02X%02X%02X", r, g, b, a);
 }
