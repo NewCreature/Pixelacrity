@@ -1,4 +1,4 @@
-Pixelacrity 0.3.3 Issues
+Pixelacrity 0.3.4 Issues
 ------------------------
 
 [ ]Add checkerboard pattern beneath color elements.
