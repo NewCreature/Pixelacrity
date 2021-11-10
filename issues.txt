@@ -1,6 +1,8 @@
 Pixelacrity 0.3.4 Issues
 ------------------------
 
+[ ]Figure out why bitmap fonts don't work in T3GUI.
+
 [ ]Add pane-specific edge space settings to themes. Some themes might need to
    have these settings for fine-tuning the overall look.
 
