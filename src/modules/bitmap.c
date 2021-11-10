@@ -63,3 +63,28 @@ void pa_turn_bitmap(ALLEGRO_BITMAP ** bp, int amount)
 	}
 	al_restore_state(&old_state);
 }
+
+ALLEGRO_BITMAP * pa_make_checkerboard_bitmap(ALLEGRO_COLOR c1, ALLEGRO_COLOR c2)
+{
+	ALLEGRO_STATE old_state;
+	ALLEGRO_TRANSFORM identity;
+	ALLEGRO_BITMAP * bp;
+
+	al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS | ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_TRANSFORM);
+	al_set_new_bitmap_flags(0);
+	bp = al_create_bitmap(2, 2);
+	if(bp)
+	{
+		al_set_target_bitmap(bp);
+		al_identity_transform(&identity);
+		al_use_transform(&identity);
+		al_lock_bitmap(bp, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_WRITEONLY);
+		al_put_pixel(0, 0, c1);
+		al_put_pixel(0, 1, c2);
+		al_put_pixel(1, 0, c2);
+		al_put_pixel(1, 1, c1);
+		al_unlock_bitmap(bp);
+	}
+	al_restore_state(&old_state);
+	return bp;
+}
