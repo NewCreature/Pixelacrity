@@ -1,13 +1,16 @@
 Pixelacrity 0.3.4 Issues
 ------------------------
 
-[ ]Add checkerboard pattern beneath color elements.
-
 [ ]Add pane-specific edge space settings to themes. Some themes might need to
    have these settings for fine-tuning the overall look.
 
-[ ]Don't apply highlights and shadows to panes in standard theme. We want the
-   default UI to have a modern look.
+[ ]Figure out a way to allow deferred rendering for the GUI.
+
+   [ ]T3GUI should allow deferred rendering by default. Elements that need to
+      enforce clipping should implicitly turn off deferred rendering and bring
+      it back to its original state after finishing.
+
+   [ ]Put all graphics onto an atlas to speed up rendering.
 
 [ ]Add separators between certain elements to help group them together by
    function.
@@ -780,3 +783,8 @@ Closed Issues
 [X]Undo states need to be cleared when loading a canvas or creating a new one.
 
 [X]Crash when loading an empty canvas file.
+
+[X]Add checkerboard pattern beneath color elements.
+
+[X]Don't apply highlights and shadows to panes in standard theme. We want the
+   default UI to have a modern look.
