@@ -247,7 +247,7 @@ void pa_resize_ui(PA_UI * uip)
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_ADD_LAYER], t3f_default_view->width - right_pane_width + ml + mr + esl, pos_y, button_size, button_size);
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_REMOVE_LAYER], t3f_default_view->width - ml - mr - esr - pos_vx, pos_y, button_size, button_size);
 	pos_y += button_size + mt + mb + est + esb;
-	resize_element(uip->element[PA_UI_ELEMENT_MAP], t3f_default_view->width - right_pane_width, pos_y, right_pane_width, 128);
+	resize_element(uip->element[PA_UI_ELEMENT_MAP], t3f_default_view->width - right_pane_width + esl, pos_y, right_pane_width - esl - esr, 128);
 
 	left_pane_width = PA_COLOR_PICKER_SHADES * color_size + esl + esr;
 	pos_x = esl;
