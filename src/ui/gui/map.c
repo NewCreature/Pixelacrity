@@ -40,7 +40,7 @@ static void render_map(PA_CANVAS_EDITOR * cep, int x, int y, int width, int heig
 			top = (float)(cep->canvas->frame[i]->box.start_y - cy) * scale + offset_y;
 			right = left + (float)cep->canvas->frame[i]->box.width * scale;
 			bottom = top + (float)cep->canvas->frame[i]->box.height * scale;
-			al_draw_rectangle(x + left, y + top, x + right, y + bottom, t3f_color_black, 0.0);
+			al_draw_rectangle(x + left, y + top, x + right, y + bottom, t3f_color_black, 1.0);
 		}
 	}
 }
