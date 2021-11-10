@@ -23,23 +23,6 @@ Pixelacrity 0.3.4 Issues
 
 [ ]Add dropper mode to get apparent color.
 
-[ ]Add GUI themes.
-
-   [X]We need a main theme module that contains references to various resources
-      used by the UI module.
-
-   [X]Define UI graphical element scale factor within theme.
-
-   [X]Define color element size within theme.
-
-   [X]Define margins and element spacing independently within theme.
-
-   [ ]Add a standard UI theme.
-
-   [ ]Add a standard 2x UI theme for high resolution displays.
-
-   [X]Define button size within theme.
-
 [ ]Add ability to load and save color palettes.
 
 [ ]Add GUI elements related to the current tool configuration.
@@ -788,3 +771,20 @@ Closed Issues
 
 [X]Don't apply highlights and shadows to panes in standard theme. We want the
    default UI to have a modern look.
+
+[X]Add GUI themes.
+
+   [X]We need a main theme module that contains references to various resources
+      used by the UI module.
+
+   [X]Define UI graphical element scale factor within theme.
+
+   [X]Define color element size within theme.
+
+   [X]Define margins and element spacing independently within theme.
+
+   [X]Add a standard UI theme.
+
+   [X]Add a standard 2x UI theme for high resolution displays.
+
+   [X]Define button size within theme.
