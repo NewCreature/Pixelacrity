@@ -1,6 +1,13 @@
 Pixelacrity 0.3.4 Issues
 ------------------------
 
+[ ]Properly disable toolbar buttons when their functionality is unavailable.
+
+[ ]Ensure all menu items can't be used when they are not supposed to be
+   available.
+
+[ ]Look into crash when loading/creating canvas after working on a canvas.
+
 [ ]Figure out why bitmap fonts don't work in T3GUI.
 
 [ ]Add pane-specific edge space settings to themes. Some themes might need to
