@@ -179,7 +179,7 @@ static void t3gui_get_theme_state(ALLEGRO_CONFIG * cp, const char * section, T3G
     const char * val;
     const char * val2;
     char key_buf[64] = {0};
-    int j, k;
+    int j;
     int * ranges;
 
     for(j = 0; j < T3GUI_THEME_MAX_BITMAPS; j++)
