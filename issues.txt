@@ -1,6 +1,8 @@
 Pixelacrity 0.3.4 Issues
 ------------------------
 
+[ ]Make flood fill undo work with area flood fill.
+
 [ ]Properly disable toolbar buttons when their functionality is unavailable.
 
 [ ]Ensure all menu items can't be used when they are not supposed to be
@@ -79,12 +81,6 @@ Pixelacrity 0.3.4 Issues
 
    [ ]Use a modifier key to enable this mode. I'm thinking Ctrl+Click to make
       the flood fill tool restrict itself to filling inside the current frame.
-
-[ ]Consider allowing flood fill to be bound by the visible part of the canvas.
-
-   [ ]Use a modifier key to enable this mode. I'm thinking Ctrl+Click to make
-      the flood fill tool restrict itself to filling inside the visible part of
-      the canvas.
 
 [ ]Finish implementing color palette.
 
@@ -797,3 +793,9 @@ Closed Issues
    [X]Add a standard 2x UI theme for high resolution displays.
 
    [X]Define button size within theme.
+
+[X]Consider allowing flood fill to be bound by the visible part of the canvas.
+
+   [X]Use a modifier key to enable this mode. I'm thinking Ctrl+Click to make
+      the flood fill tool restrict itself to filling inside the visible part of
+      the canvas.
