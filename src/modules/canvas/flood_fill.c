@@ -19,11 +19,11 @@ static ALLEGRO_COLOR get_pixel(PA_CANVAS * cp, int layer, int x, int y, ALLEGRO_
 	return al_get_pixel(*current_bp, *ox, *oy);
 }
 
-static ALLEGRO_COLOR get_pixel_2(PA_CANVAS * cp, int layer, int x, int y, int * ox, int * oy)
+static ALLEGRO_COLOR get_pixel_2(PA_CANVAS * cp, int layer, int x, int y)
 {
 	ALLEGRO_BITMAP * current_bp = cp->layer[layer]->bitmap[y / cp->bitmap_size][x / cp->bitmap_size];
-	*ox = x % cp->bitmap_size;
-	*oy = y % cp->bitmap_size;
+	int ox = x % cp->bitmap_size;
+	int oy = y % cp->bitmap_size;
 
 	if(current_bp)
 	{
@@ -31,7 +31,7 @@ static ALLEGRO_COLOR get_pixel_2(PA_CANVAS * cp, int layer, int x, int y, int * 
 		{
 			al_lock_bitmap(current_bp, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_READWRITE);
 		}
-		return al_get_pixel(current_bp, *ox, *oy);
+		return al_get_pixel(current_bp, ox, oy);
 	}
 	return al_map_rgba_f(0.0, 0.0, 0.0, 0.0);
 }
@@ -42,11 +42,11 @@ static void put_pixel(PA_CANVAS * cp, int layer, int ox, int oy, ALLEGRO_COLOR c
 	al_put_pixel(ox, oy, color);
 }
 
-static void put_pixel_2(PA_CANVAS * cp, int layer, int ox, int oy, ALLEGRO_COLOR color)
+static void put_pixel_2(PA_CANVAS * cp, int layer, int x, int y, ALLEGRO_COLOR color)
 {
-	pa_expand_canvas(cp, layer, ox, oy);
-	al_set_target_bitmap(cp->layer[layer]->bitmap[oy / cp->bitmap_size][ox / cp->bitmap_size]);
-	al_put_pixel(ox, oy, color);
+	pa_expand_canvas(cp, layer, x, y);
+	al_set_target_bitmap(cp->layer[layer]->bitmap[y / cp->bitmap_size][x / cp->bitmap_size]);
+	al_put_pixel(x % cp->bitmap_size, y % cp->bitmap_size, color);
 }
 
 static void unlock_canvas_layer(PA_CANVAS * cp, int layer)
@@ -191,9 +191,8 @@ bool pa_flood_fill_canvas_area(PA_CANVAS * cp, int layer, int left, int top, int
 	ALLEGRO_COLOR old_color;
 	ALLEGRO_COLOR current_color;
 	ALLEGRO_STATE old_state;
-	int x, y, ox, oy;
+	int x, y;
 	bool ret = true;
-	int shift_x, shift_y;
 
 	t3f_debug_message("Enter pa_flood_fill_canvas_area()\n");
 	if(layer >= cp->layer_max)
@@ -205,54 +204,63 @@ bool pa_flood_fill_canvas_area(PA_CANVAS * cp, int layer, int left, int top, int
 	qp = pa_create_queue();
 	if(qp)
 	{
-		old_color = get_pixel_2(cp, layer, start_x, start_y, &ox, &oy);
+		old_color = get_pixel_2(cp, layer, start_x, start_y);
 		if(pa_color_equal(old_color, color))
 		{
 			ret = true;
 			goto cleanup;
 		}
-		pa_handle_canvas_expansion(cp, left, top, right, bottom, &shift_x, &shift_y);
-		left += shift_x;
-		top += shift_y;
-		right += shift_x;
-		bottom += shift_y;
-		start_x += shift_x;
-		start_y += shift_y;
-		put_pixel_2(cp, layer, ox, oy, color);
+		put_pixel_2(cp, layer, start_x, start_y, color);
 		pa_queue_push(qp, start_x, start_y);
 		pa_queue_push(out_qp, start_x, start_y);
 		while(pa_queue_pop(qp, &x, &y))
 		{
-			current_color = get_pixel_2(cp, layer, x - 1, y, &ox, &oy);
-			if(pa_color_equal(current_color, old_color))
+			if(x >= left && x <= right && y >= top && y <= bottom)
 			{
-				put_pixel_2(cp, layer, ox, oy, color);
-				pa_queue_push(qp, x - 1, y);
-				pa_queue_push(out_qp, x - 1, y);
-			}
-			current_color = get_pixel_2(cp, layer, x + 1, y, &ox, &oy);
-			if(pa_color_equal(current_color, old_color))
-			{
-				put_pixel_2(cp, layer, ox, oy, color);
-				pa_queue_push(qp, x + 1, y);
-				pa_queue_push(out_qp, x + 1, y);
-			}
-			current_color = get_pixel_2(cp, layer, x, y - 1, &ox, &oy);
-			if(pa_color_equal(current_color, old_color))
-			{
-				put_pixel_2(cp, layer, ox, oy, color);
-				pa_queue_push(qp, x, y - 1);
-				pa_queue_push(out_qp, x, y - 1);
-			}
-			current_color = get_pixel_2(cp, layer, x, y + 1, &ox, &oy);
-			if(pa_color_equal(current_color, old_color))
-			{
-				put_pixel_2(cp, layer, ox, oy, color);
-				pa_queue_push(qp, x, y + 1);
-				pa_queue_push(out_qp, x, y + 1);
+				if(x - 1 >= left)
+				{
+					current_color = get_pixel_2(cp, layer, x - 1, y);
+					if(pa_color_equal(current_color, old_color))
+					{
+						put_pixel_2(cp, layer, x - 1, y, color);
+						pa_queue_push(qp, x - 1, y);
+						pa_queue_push(out_qp, x - 1, y);
+					}
+				}
+				if(x + 1 <= right)
+				{
+					current_color = get_pixel_2(cp, layer, x + 1, y);
+					if(pa_color_equal(current_color, old_color))
+					{
+						put_pixel_2(cp, layer, x + 1, y, color);
+						pa_queue_push(qp, x + 1, y);
+						pa_queue_push(out_qp, x + 1, y);
+					}
+				}
+				if(y - 1 >= top)
+				{
+					current_color = get_pixel_2(cp, layer, x, y - 1);
+					if(pa_color_equal(current_color, old_color))
+					{
+						put_pixel_2(cp, layer, x, y - 1, color);
+						pa_queue_push(qp, x, y - 1);
+						pa_queue_push(out_qp, x, y - 1);
+					}
+				}
+				if(y + 1 <= bottom)
+				{
+					current_color = get_pixel_2(cp, layer, x, y + 1);
+					if(pa_color_equal(current_color, old_color))
+					{
+						put_pixel_2(cp, layer, x, y + 1, color);
+						pa_queue_push(qp, x, y + 1);
+						pa_queue_push(out_qp, x, y + 1);
+					}
+				}
 			}
 		}
 		pa_destroy_queue(qp);
+		pa_update_canvas_dimensions(cp, layer, left, top, right, bottom);
 	}
 	cleanup:
 	{

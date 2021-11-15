@@ -284,7 +284,7 @@ void pa_import_bitmap_to_canvas(PA_CANVAS * cp, ALLEGRO_BITMAP * bp, int layer, 
 	pa_draw_primitive_to_canvas(cp, layer, x, y, x + al_get_bitmap_width(bp), y + al_get_bitmap_height(bp), NULL, t3f_color_white, bp, PA_RENDER_COPY, NULL, pa_draw_quad);
 }
 
-static void update_canvas_dimensions(PA_CANVAS * cp, int layer, int left, int top, int right, int bottom)
+void pa_update_canvas_dimensions(PA_CANVAS * cp, int layer, int left, int top, int right, int bottom)
 {
 	int real_left, real_top, real_right, real_bottom;
 
@@ -369,7 +369,7 @@ void pa_draw_primitive_to_canvas(PA_CANVAS * cp, int layer, int x1, int y1, int 
 	right = end_x + w / 2 + w % 2;
 	bottom = end_y + h / 2 + h % 2;
 
-	update_canvas_dimensions(cp, layer, left, top, right, bottom);
+	pa_update_canvas_dimensions(cp, layer, left, top, right, bottom);
 
 	/* loop through all affected bitmaps and render the primitive to them all */
 	al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_BLENDER | ALLEGRO_STATE_TRANSFORM);

@@ -59,6 +59,7 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 	bool made_undo = false;
 	char buf[64];
 	char undo_path[1024];
+	int shift_x, shift_y;
 
 	pa_update_mouse_variables(canvas_editor);
 
@@ -114,15 +115,38 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 			case PA_TOOL_FLOOD_FILL:
 			{
 				pa_set_window_message("Processing flood fill...");
-				tx = canvas_editor->hover_x / canvas_editor->canvas->bitmap_size;
-				ty = canvas_editor->hover_y / canvas_editor->canvas->bitmap_size;
-				if(tx >= 0 && tx < canvas_editor->canvas->layer_width && ty >= 0 && ty < canvas_editor->canvas->layer_height && canvas_editor->canvas->layer[canvas_editor->current_layer]->bitmap[ty][tx])
+				if(t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT])
+				{
+					tx = canvas_editor->hover_x / canvas_editor->canvas->bitmap_size;
+					ty = canvas_editor->hover_y / canvas_editor->canvas->bitmap_size;
+					if(tx >= 0 && tx < canvas_editor->canvas->layer_width && ty >= 0 && ty < canvas_editor->canvas->layer_height && canvas_editor->canvas->layer[canvas_editor->current_layer]->bitmap[ty][tx])
+					{
+						flood_fill_queue = pa_create_queue();
+						if(flood_fill_queue)
+						{
+							color = pa_get_canvas_pixel(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y);
+							if(pa_flood_fill_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y, c == 1 ? canvas_editor->left_color.color : canvas_editor->right_color.color, flood_fill_queue))
+							{
+								made_undo = create_flood_fill_undo(canvas_editor, color, flood_fill_queue);
+								if(made_undo)
+								{
+									pa_finalize_undo(canvas_editor);
+								}
+								canvas_editor->modified++;
+							}
+							pa_destroy_queue(flood_fill_queue);
+						}
+					}
+				}
+				else
 				{
 					flood_fill_queue = pa_create_queue();
 					if(flood_fill_queue)
 					{
 						color = pa_get_canvas_pixel(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y);
-						if(pa_flood_fill_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y, c == 1 ? canvas_editor->left_color.color : canvas_editor->right_color.color, flood_fill_queue))
+						pa_handle_canvas_expansion(canvas_editor->canvas, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_x + canvas_editor->view_width, canvas_editor->view_y + canvas_editor->view_height, &shift_x, &shift_y);
+						pa_shift_canvas_editor_variables(canvas_editor, shift_x * canvas_editor->canvas->bitmap_size, shift_y * canvas_editor->canvas->bitmap_size);
+						if(pa_flood_fill_canvas_area(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_x + canvas_editor->view_width, canvas_editor->view_y + canvas_editor->view_height, canvas_editor->hover_x, canvas_editor->hover_y, c == 1 ? canvas_editor->left_color.color : canvas_editor->right_color.color, flood_fill_queue))
 						{
 							made_undo = create_flood_fill_undo(canvas_editor, color, flood_fill_queue);
 							if(made_undo)
