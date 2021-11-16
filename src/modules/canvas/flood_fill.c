@@ -260,7 +260,6 @@ bool pa_flood_fill_canvas_area(PA_CANVAS * cp, int layer, int left, int top, int
 			}
 		}
 		pa_destroy_queue(qp);
-		pa_update_canvas_dimensions(cp, layer, left, top, right, bottom);
 	}
 	cleanup:
 	{

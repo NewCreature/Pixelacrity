@@ -38,12 +38,12 @@ static void click_on_canvas(PA_CANVAS_EDITOR * cep, int button, int x, int y)
 	}
 }
 
-static bool create_flood_fill_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_COLOR color, PA_QUEUE * qp)
+static bool create_flood_fill_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_COLOR color, PA_QUEUE * qp, int shift_x, int shift_y)
 {
 	char undo_path[1024];
 
 	pa_get_undo_path("undo", cep->undo_count, undo_path, 1024);
-	if(pa_make_flood_fill_undo(cep, cep->current_layer, color, qp, undo_path))
+	if(pa_make_flood_fill_undo(cep, cep->current_layer, color, qp, shift_x, shift_y, undo_path))
 	{
 		return true;
 	}
@@ -60,6 +60,7 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 	char buf[64];
 	char undo_path[1024];
 	int shift_x, shift_y;
+	int left, right, top, bottom;
 
 	pa_update_mouse_variables(canvas_editor);
 
@@ -127,7 +128,7 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 							color = pa_get_canvas_pixel(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y);
 							if(pa_flood_fill_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y, c == 1 ? canvas_editor->left_color.color : canvas_editor->right_color.color, flood_fill_queue))
 							{
-								made_undo = create_flood_fill_undo(canvas_editor, color, flood_fill_queue);
+								made_undo = create_flood_fill_undo(canvas_editor, color, flood_fill_queue, 0, 0);
 								if(made_undo)
 								{
 									pa_finalize_undo(canvas_editor);
@@ -143,12 +144,20 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 					flood_fill_queue = pa_create_queue();
 					if(flood_fill_queue)
 					{
+						left = canvas_editor->view_x;
+						top = canvas_editor->view_y;
+						right = canvas_editor->view_x + canvas_editor->view_width;
+						bottom = canvas_editor->view_y + canvas_editor->view_height;
 						color = pa_get_canvas_pixel(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y);
 						pa_handle_canvas_expansion(canvas_editor->canvas, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_x + canvas_editor->view_width, canvas_editor->view_y + canvas_editor->view_height, &shift_x, &shift_y);
 						pa_shift_canvas_editor_variables(canvas_editor, shift_x * canvas_editor->canvas->bitmap_size, shift_y * canvas_editor->canvas->bitmap_size);
+						left += shift_x * canvas_editor->canvas->bitmap_size;
+						top += shift_y * canvas_editor->canvas->bitmap_size;
+						right += shift_x * canvas_editor->canvas->bitmap_size;
+						bottom += shift_y * canvas_editor->canvas->bitmap_size;
 						if(pa_flood_fill_canvas_area(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_x + canvas_editor->view_width, canvas_editor->view_y + canvas_editor->view_height, canvas_editor->hover_x, canvas_editor->hover_y, c == 1 ? canvas_editor->left_color.color : canvas_editor->right_color.color, flood_fill_queue))
 						{
-							made_undo = create_flood_fill_undo(canvas_editor, color, flood_fill_queue);
+							made_undo = create_flood_fill_undo(canvas_editor, color, flood_fill_queue, shift_x, shift_y);
 							if(made_undo)
 							{
 								pa_finalize_undo(canvas_editor);
@@ -156,6 +165,7 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 							canvas_editor->modified++;
 						}
 						pa_destroy_queue(flood_fill_queue);
+						pa_update_canvas_dimensions(canvas_editor->canvas, canvas_editor->current_layer, left, top, right, bottom);
 					}
 				}
 				break;

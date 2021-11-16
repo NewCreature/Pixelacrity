@@ -18,7 +18,7 @@ static bool write_color(ALLEGRO_FILE * fp, ALLEGRO_COLOR color)
 	return true;
 }
 
-bool pa_make_flood_fill_undo(PA_CANVAS_EDITOR * cep, int layer, ALLEGRO_COLOR color, PA_QUEUE * qp, const char * fn)
+bool pa_make_flood_fill_undo(PA_CANVAS_EDITOR * cep, int layer, ALLEGRO_COLOR color, PA_QUEUE * qp, int shift_x, int shift_y, const char * fn)
 {
 	ALLEGRO_FILE * fp = NULL;
 	PA_QUEUE_NODE * current_node;
@@ -34,6 +34,8 @@ bool pa_make_flood_fill_undo(PA_CANVAS_EDITOR * cep, int layer, ALLEGRO_COLOR co
 	al_fwrite16le(fp, cep->current_tool);
 	al_fwrite32le(fp, layer);
 	write_color(fp, color);
+	al_fwrite32le(fp, shift_x);
+	al_fwrite32le(fp, shift_y);
 	al_fwrite32le(fp, pa_get_queue_size(qp));
 	current_node = qp->current;
 	while(current_node)
@@ -57,9 +59,9 @@ bool pa_make_flood_fill_undo(PA_CANVAS_EDITOR * cep, int layer, ALLEGRO_COLOR co
 	}
 }
 
-bool pa_make_flood_fill_redo(PA_CANVAS_EDITOR * cep, int layer, ALLEGRO_COLOR color, PA_QUEUE * qp, const char * fn)
+bool pa_make_flood_fill_redo(PA_CANVAS_EDITOR * cep, int layer, ALLEGRO_COLOR color, PA_QUEUE * qp, int shift_x, int shift_y, const char * fn)
 {
-	return pa_make_flood_fill_undo(cep, layer, color, qp, fn);
+	return pa_make_flood_fill_undo(cep, layer, color, qp, shift_x, shift_y, fn);
 }
 
 static bool read_color(ALLEGRO_FILE * fp, ALLEGRO_COLOR * color)
@@ -85,11 +87,14 @@ bool pa_apply_flood_fill_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 	char undo_path[1024];
 	int layer;
 	int tool;
+	int shift_x, shift_y;
 
 	t3f_debug_message("Enter pa_apply_flood_fill_undo()\n");
 	tool = al_fread16le(fp);
 	layer = al_fread32le(fp);
 	read_color(fp, &color);
+	shift_x = al_fread32le(fp);
+	shift_y = al_fread32le(fp);
 	size = al_fread32le(fp);
 	if(size)
 	{
@@ -105,10 +110,15 @@ bool pa_apply_flood_fill_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 			pa_queue_push(qp, x, y);
 		}
 		old_color = pa_get_canvas_pixel(cep->canvas, layer, x, y);
-		pa_make_flood_fill_redo(cep, layer, old_color, qp,  pa_get_undo_path("redo", cep->redo_count, undo_path, 1024));
+		pa_make_flood_fill_redo(cep, layer, old_color, qp, shift_x, shift_y,  pa_get_undo_path("redo", cep->redo_count, undo_path, 1024));
 		cep->redo_count++;
 		pa_flood_fill_canvas_from_queue(cep->canvas, layer, color, qp);
 		pa_destroy_queue(qp);
+		if(shift_x || shift_y)
+		{
+			pa_shift_canvas_bitmap_array(cep->canvas, -shift_x, -shift_y);
+			pa_shift_canvas_editor_variables(cep, -shift_x * cep->canvas->bitmap_size, -shift_y * cep->canvas->bitmap_size);
+		}
 	}
 	pa_select_canvas_editor_tool(cep, PA_TOOL_FLOOD_FILL);
 	t3f_debug_message("Exit pa_apply_flood_fill_undo()\n");
@@ -125,6 +135,18 @@ bool pa_apply_flood_fill_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 	}
 }
 
+static void ensure_bitmaps_exist(PA_CANVAS * cp, int layer, PA_QUEUE * qp)
+{
+	PA_QUEUE_NODE * current_node;
+
+	current_node = qp->current;
+	while(current_node)
+	{
+		pa_expand_canvas(cp, layer, current_node->x, current_node->y);
+		current_node = current_node->previous;
+	}
+}
+
 bool pa_apply_flood_fill_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 {
 	PA_QUEUE * qp;
@@ -135,11 +157,20 @@ bool pa_apply_flood_fill_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 	char undo_path[1024];
 	int layer;
 	int tool;
+	int shift_x, shift_y;
+	int left, right, top, bottom;
+	int pit;
 
 	t3f_debug_message("Enter pa_apply_flood_fill_redo()\n");
 	tool = al_fread16le(fp);
 	layer = al_fread32le(fp);
+	left = cep->canvas->layer[layer]->width;
+	right = 0;
+	top = cep->canvas->layer[layer]->height;
+	bottom = 0;
 	read_color(fp, &color);
+	shift_x = al_fread32le(fp);
+	shift_y = al_fread32le(fp);
 	size = al_fread32le(fp);
 	if(size)
 	{
@@ -153,9 +184,32 @@ bool pa_apply_flood_fill_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 			x = al_fread32le(fp);
 			y = al_fread32le(fp);
 			pa_queue_push(qp, x, y);
+			if(x < left)
+			{
+				left = x;
+			}
+			if(x > right)
+			{
+				right = x;
+			}
+			if(y < top)
+			{
+				top = y;
+			}
+			if(y > bottom)
+			{
+				bottom = y;
+			}
 		}
+		left -= shift_x * cep->canvas->bitmap_size;
+		top -= shift_y * cep->canvas->bitmap_size;
+		right -= shift_x * cep->canvas->bitmap_size;
+		bottom -= shift_y * cep->canvas->bitmap_size;
+		pa_handle_canvas_expansion(cep->canvas, left, top, right, bottom, &shift_x, &shift_y);
+		ensure_bitmaps_exist(cep->canvas, layer, qp);
+		pa_shift_canvas_editor_variables(cep, shift_x * cep->canvas->bitmap_size, shift_y * cep->canvas->bitmap_size);
 		old_color = pa_get_canvas_pixel(cep->canvas, layer, x, y);
-		pa_make_flood_fill_undo(cep, layer, old_color, qp,  pa_get_undo_path("undo", cep->undo_count, undo_path, 1024));
+		pa_make_flood_fill_undo(cep, layer, old_color, qp, shift_x, shift_y,  pa_get_undo_path("undo", cep->undo_count, undo_path, 1024));
 		cep->undo_count++;
 		pa_flood_fill_canvas_from_queue(cep->canvas, layer, color, qp);
 		pa_destroy_queue(qp);
