@@ -622,6 +622,52 @@ static void select_button(PA_UI * uip, int button)
 	}
 }
 
+static void update_toolbar_flags(PA_UI * uip, PA_CANVAS_EDITOR * cep)
+{
+	if(!cep->undo_count)
+	{
+		uip->element[PA_UI_ELEMENT_BUTTON_UNDO]->flags |= D_DISABLED;
+	}
+	else
+	{
+		uip->element[PA_UI_ELEMENT_BUTTON_UNDO]->flags &= ~D_DISABLED;
+	}
+	if(!cep->redo_count)
+	{
+		uip->element[PA_UI_ELEMENT_BUTTON_REDO]->flags |= D_DISABLED;
+	}
+	else
+	{
+		uip->element[PA_UI_ELEMENT_BUTTON_REDO]->flags &= ~D_DISABLED;
+	}
+	if(cep->selection.box.width > 0 && cep->selection.box.height > 0)
+	{
+		uip->element[PA_UI_ELEMENT_BUTTON_CUT]->flags &= ~D_DISABLED;
+		uip->element[PA_UI_ELEMENT_BUTTON_COPY]->flags &= ~D_DISABLED;
+		uip->element[PA_UI_ELEMENT_BUTTON_TURN_CW]->flags &= ~D_DISABLED;
+		uip->element[PA_UI_ELEMENT_BUTTON_TURN_CCW]->flags &= ~D_DISABLED;
+		uip->element[PA_UI_ELEMENT_BUTTON_FLIP_HORIZONTAL]->flags &= ~D_DISABLED;
+		uip->element[PA_UI_ELEMENT_BUTTON_FLIP_VERTICAL]->flags &= ~D_DISABLED;
+	}
+	else
+	{
+		uip->element[PA_UI_ELEMENT_BUTTON_CUT]->flags |= D_DISABLED;
+		uip->element[PA_UI_ELEMENT_BUTTON_COPY]->flags |= D_DISABLED;
+		uip->element[PA_UI_ELEMENT_BUTTON_TURN_CW]->flags |= D_DISABLED;
+		uip->element[PA_UI_ELEMENT_BUTTON_TURN_CCW]->flags |= D_DISABLED;
+		uip->element[PA_UI_ELEMENT_BUTTON_FLIP_HORIZONTAL]->flags |= D_DISABLED;
+		uip->element[PA_UI_ELEMENT_BUTTON_FLIP_VERTICAL]->flags |= D_DISABLED;
+	}
+	if(cep->clipboard.bitmap_stack)
+	{
+		uip->element[PA_UI_ELEMENT_BUTTON_PASTE]->flags &= ~D_DISABLED;
+	}
+	else
+	{
+		uip->element[PA_UI_ELEMENT_BUTTON_PASTE]->flags |= D_DISABLED;
+	}
+}
+
 void pa_process_ui(PA_UI * uip)
 {
 	PA_CANVAS_EDITOR * cep = (PA_CANVAS_EDITOR *)uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->dp;
@@ -651,6 +697,7 @@ void pa_process_ui(PA_UI * uip)
 		pa_set_mouse_cursor(ALLEGRO_SYSTEM_MOUSE_CURSOR_ARROW);
 	}
 
+	update_toolbar_flags(uip, cep);
 	t3gui_logic();
 
 	/* update button selection */
