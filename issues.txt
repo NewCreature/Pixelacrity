@@ -13,6 +13,8 @@ Pixelacrity 0.3.4 Issues
 [ ]Ensure all menu items can't be used when they are not supposed to be
    available.
 
+   [ ]Fix Edit->Paste.
+
 [ ]Look into crash when loading/creating canvas after working on a canvas.
 
 [ ]Figure out why bitmap fonts don't work in T3GUI.
