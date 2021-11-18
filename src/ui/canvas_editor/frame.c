@@ -12,11 +12,10 @@ static void update_box_handles(PA_CANVAS_EDITOR * cep)
 	}
 }
 
-static void update_hover_frame(PA_CANVAS_EDITOR * cep)
+int pa_get_hover_frame(PA_CANVAS_EDITOR * cep)
 {
 	int i;
 
-	cep->hover_frame = -1;
 	for(i = 0; i < cep->canvas->frame_max; i++)
 	{
 		pa_setup_box(&cep->canvas->frame[i]->box, cep->canvas->frame[i]->box.start_x, cep->canvas->frame[i]->box.start_y, cep->canvas->frame[i]->box.width, cep->canvas->frame[i]->box.height);
@@ -24,13 +23,14 @@ static void update_hover_frame(PA_CANVAS_EDITOR * cep)
 		pa_get_box_hover_handle(&cep->canvas->frame[i]->box, cep->editor_element->x, cep->editor_element->y, al_get_bitmap_width(cep->peg_bitmap) / 2);
 		if(cep->canvas->frame[i]->box.hover_handle >= 0)
 		{
-			cep->hover_frame = i;
+			return i;
 		}
 		else if(cep->hover_x >= cep->canvas->frame[i]->box.start_x && cep->hover_x <= cep->canvas->frame[i]->box.end_x && cep->hover_y >= cep->canvas->frame[i]->box.start_y && cep->hover_y <= cep->canvas->frame[i]->box.end_y)
 		{
-			cep->hover_frame = i;
+			return i;
 		}
 	}
+	return -1;
 }
 
 void pa_update_hover_frame(PA_CANVAS_EDITOR * cep, T3GUI_ELEMENT * d)
@@ -40,7 +40,7 @@ void pa_update_hover_frame(PA_CANVAS_EDITOR * cep, T3GUI_ELEMENT * d)
 
 	if(cep->current_tool == PA_TOOL_FRAME && cep->tool_state == PA_TOOL_STATE_OFF)
 	{
-		update_hover_frame(cep);
+		cep->hover_frame = pa_get_hover_frame(cep);
 	}
 	else
 	{
