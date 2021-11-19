@@ -5,6 +5,7 @@
 #include "ui/window.h"
 #include "modules/canvas/canvas_file.h"
 #include "modules/canvas/canvas_helpers.h"
+#include "file.h"
 #include "file_proc.h"
 #include "ui/canvas_editor/undo/undo.h"
 #include "ui/canvas_editor/undo/import.h"
@@ -418,26 +419,29 @@ int pa_menu_file_reexport(int id, void * data)
 	int x, y, w, h;
 	const char * export_path;
 
-	if(app->canvas_editor->current_frame < app->canvas->frame_max)
+	if(pa_can_reexport(app->canvas_editor))
 	{
-		export_path = app->canvas->frame[app->canvas_editor->current_frame]->export_path;
-		x = app->canvas->frame[app->canvas_editor->current_frame]->box.start_x;
-		y = app->canvas->frame[app->canvas_editor->current_frame]->box.start_y;
-		w = app->canvas->frame[app->canvas_editor->current_frame]->box.width;
-		h = app->canvas->frame[app->canvas_editor->current_frame]->box.height;
-	}
-	else
-	{
-		export_path = app->canvas_editor->export_path;
-		pa_get_canvas_dimensions(app->canvas, &x, &y, &w, &h, 0, true);
-	}
-	if(export_path)
-	{
-		export(app->canvas, x, y, w, h, export_path, app->canvas_editor->premultiplied_alpha_shader);
-	}
-	else
-	{
-		pa_menu_file_export(id, data);
+		if(app->canvas_editor->current_frame < app->canvas->frame_max)
+		{
+			export_path = app->canvas->frame[app->canvas_editor->current_frame]->export_path;
+			x = app->canvas->frame[app->canvas_editor->current_frame]->box.start_x;
+			y = app->canvas->frame[app->canvas_editor->current_frame]->box.start_y;
+			w = app->canvas->frame[app->canvas_editor->current_frame]->box.width;
+			h = app->canvas->frame[app->canvas_editor->current_frame]->box.height;
+		}
+		else
+		{
+			export_path = app->canvas_editor->export_path;
+			pa_get_canvas_dimensions(app->canvas, &x, &y, &w, &h, 0, true);
+		}
+		if(export_path)
+		{
+			export(app->canvas, x, y, w, h, export_path, app->canvas_editor->premultiplied_alpha_shader);
+		}
+		else
+		{
+			pa_menu_file_export(id, data);
+		}
 	}
 	return 0;
 }
@@ -447,11 +451,14 @@ int pa_menu_file_reexport_all(int id, void * data)
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 	int i;
 
-	for(i = 0; i < app->canvas->frame_max; i++)
+	if(pa_can_reexport_all(app->canvas_editor))
 	{
-		if(app->canvas->frame[i]->export_path)
+		for(i = 0; i < app->canvas->frame_max; i++)
 		{
-			export(app->canvas, app->canvas->frame[i]->box.start_x, app->canvas->frame[i]->box.start_y, app->canvas->frame[i]->box.width, app->canvas->frame[i]->box.height, app->canvas->frame[i]->export_path, app->canvas_editor->premultiplied_alpha_shader);
+			if(app->canvas->frame[i]->export_path)
+			{
+				export(app->canvas, app->canvas->frame[i]->box.start_x, app->canvas->frame[i]->box.start_y, app->canvas->frame[i]->box.width, app->canvas->frame[i]->box.height, app->canvas->frame[i]->export_path, app->canvas_editor->premultiplied_alpha_shader);
+			}
 		}
 	}
 	return 0;
@@ -462,16 +469,14 @@ int pa_menu_file_export(int id, void * data)
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 	ALLEGRO_FILECHOOSER * file_chooser;
 	ALLEGRO_PATH * pp;
-	int x, y, w, h;
 	const char * file_path;
 	const char * extension;
 
-	pa_get_canvas_dimensions(app->canvas, &x, &y, &w, &h, 0, false);
-	if(app->canvas->frame_max <= 0 && (w <= 0 || y <= 0))
+	t3f_debug_message("Enter pa_menu_file_export()\n");
+	if(!pa_can_export(app->canvas_editor))
 	{
 		return 0;
 	}
-	t3f_debug_message("Enter pa_menu_file_export()\n");
 	file_chooser = al_create_native_file_dialog(NULL, "Export canvas to image file...", "*.png;*.tga;*.pcx;*.bmp;*.jpg", ALLEGRO_FILECHOOSER_SAVE);
 	if(file_chooser)
 	{

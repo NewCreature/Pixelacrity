@@ -4,11 +4,53 @@
 #include "menu.h"
 #include "file_proc.h"
 
+bool pa_can_export(PA_CANVAS_EDITOR * cep)
+{
+	int x, y, w, h;
+
+	if(cep->canvas->frame_max > 0)
+	{
+		return true;
+	}
+	else
+	{
+		pa_get_canvas_dimensions(cep->canvas, &x, &y, &w, &h, 0, false);
+		if(w > 0 && h > 0)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+bool pa_can_reexport(PA_CANVAS_EDITOR * cep)
+{
+	if(cep->export_path || (cep->canvas->frame_max > 0 && cep->canvas->frame[cep->current_frame]->export_path))
+	{
+		return true;
+	}
+	return false;
+}
+
+bool pa_can_reexport_all(PA_CANVAS_EDITOR * cep)
+{
+	int i;
+
+	for(i = 0; i < cep->canvas->frame_max; i++)
+	{
+		if(cep->canvas->frame[i]->export_path)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 static int menu_reexport_update_proc(ALLEGRO_MENU * mp, int item, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	if(app->canvas_editor->export_path || (app->canvas->frame_max > 0 && app->canvas->frame[app->canvas_editor->current_frame]->export_path))
+	if(pa_can_reexport(app->canvas_editor))
 	{
 		t3f_set_menu_item_flags(mp, item, 0);
 	}
@@ -22,17 +64,12 @@ static int menu_reexport_update_proc(ALLEGRO_MENU * mp, int item, void * data)
 static int menu_reexport_all_update_proc(ALLEGRO_MENU * mp, int item, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
-	int i;
 
-	for(i = 0; i < app->canvas->frame_max; i++)
+	if(pa_can_reexport_all(app->canvas_editor))
 	{
-		if(app->canvas->frame[i]->export_path)
-		{
-			t3f_set_menu_item_flags(mp, item, 0);
-			break;
-		}
+		t3f_set_menu_item_flags(mp, item, 0);
 	}
-	if(i >= app->canvas->frame_max)
+	else
 	{
 		t3f_set_menu_item_flags(mp, item, ALLEGRO_MENU_ITEM_DISABLED);
 	}

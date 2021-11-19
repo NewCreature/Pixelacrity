@@ -3,6 +3,7 @@
 #include "ui.h"
 #include "window.h"
 #include "menu/menu.h"
+#include "menu/file.h"
 #include "menu/file_proc.h"
 #include "menu/edit_proc.h"
 #include "gui/button_proc.h"
@@ -624,6 +625,14 @@ static void select_button(PA_UI * uip, int button)
 
 static void update_toolbar_flags(PA_UI * uip, PA_CANVAS_EDITOR * cep)
 {
+	if(!pa_can_export(cep))
+	{
+		uip->element[PA_UI_ELEMENT_BUTTON_EXPORT]->flags |= D_DISABLED;
+	}
+	else
+	{
+		uip->element[PA_UI_ELEMENT_BUTTON_EXPORT]->flags &= ~D_DISABLED;
+	}
 	if(!cep->undo_count)
 	{
 		uip->element[PA_UI_ELEMENT_BUTTON_UNDO]->flags |= D_DISABLED;
