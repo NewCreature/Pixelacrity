@@ -1,9 +1,6 @@
 Pixelacrity 0.3.4 Issues
 ------------------------
 
-[ ]Alter appearance of disabled buttons. This may be a theme issue of an issue
-   with the underlying GUI code.
-
 [ ]Ensure disabled buttons cannot be hovered over. If a button becomes disabled
    due to the action performed, the button can remain in a hovered state. We
    might need to manually clear that flag when updating the disabled state since
@@ -810,3 +807,6 @@ Closed Issues
 [X]Make flood fill undo work with area flood fill.
 
 [X]Properly disable toolbar buttons when their functionality is unavailable.
+
+[X]Alter appearance of disabled buttons. This may be a theme issue of an issue
+   with the underlying GUI code.
