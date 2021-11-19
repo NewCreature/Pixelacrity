@@ -292,7 +292,7 @@ int t3gui_button_proc(int msg, T3GUI_ELEMENT *d, int c)
             {
                 c1 = (d->flags & D_DISABLED) ? d->theme->state[T3GUI_ELEMENT_STATE_DISABLED].color[T3GUI_THEME_COLOR_FG] : d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].color[T3GUI_THEME_COLOR_FG];
                 c2 = d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].color[T3GUI_THEME_COLOR_BG];
-                c3 = d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].color[T3GUI_THEME_COLOR_EG];
+                c3 = (d->flags & D_DISABLED) ? d->theme->state[T3GUI_ELEMENT_STATE_DISABLED].color[T3GUI_THEME_COLOR_FG] : d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].color[T3GUI_THEME_COLOR_EG];
             }
             if(d->flags & select)
             {
