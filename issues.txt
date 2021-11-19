@@ -1,12 +1,6 @@
 Pixelacrity 0.3.4 Issues
 ------------------------
 
-[ ]Ensure disabled buttons cannot be hovered over. If a button becomes disabled
-   due to the action performed, the button can remain in a hovered state. We
-   might need to manually clear that flag when updating the disabled state since
-   the GUI code won't update the button state until it receives an event to
-   process.
-
 [ ]Ensure all menu items can't be used when they are not supposed to be
    available.
 
@@ -810,3 +804,9 @@ Closed Issues
 
 [X]Alter appearance of disabled buttons. This may be a theme issue of an issue
    with the underlying GUI code.
+
+[X]Ensure disabled buttons cannot be hovered over. If a button becomes disabled
+   due to the action performed, the button can remain in a hovered state. We
+   might need to manually clear that flag when updating the disabled state since
+   the GUI code won't update the button state until it receives an event to
+   process.
