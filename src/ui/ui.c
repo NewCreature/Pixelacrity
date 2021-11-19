@@ -627,6 +627,7 @@ static void update_toolbar_flags(PA_UI * uip, PA_CANVAS_EDITOR * cep)
 	if(!cep->undo_count)
 	{
 		uip->element[PA_UI_ELEMENT_BUTTON_UNDO]->flags |= D_DISABLED;
+		uip->element[PA_UI_ELEMENT_BUTTON_UNDO]->flags &= ~(D_SELECTED | D_GOTFOCUS | D_GOTMOUSE);
 	}
 	else
 	{
@@ -635,6 +636,7 @@ static void update_toolbar_flags(PA_UI * uip, PA_CANVAS_EDITOR * cep)
 	if(!cep->redo_count)
 	{
 		uip->element[PA_UI_ELEMENT_BUTTON_REDO]->flags |= D_DISABLED;
+		uip->element[PA_UI_ELEMENT_BUTTON_REDO]->flags &= ~(D_SELECTED | D_GOTFOCUS | D_GOTMOUSE);
 	}
 	else
 	{
@@ -652,11 +654,17 @@ static void update_toolbar_flags(PA_UI * uip, PA_CANVAS_EDITOR * cep)
 	else
 	{
 		uip->element[PA_UI_ELEMENT_BUTTON_CUT]->flags |= D_DISABLED;
+		uip->element[PA_UI_ELEMENT_BUTTON_CUT]->flags &= ~(D_SELECTED | D_GOTFOCUS | D_GOTMOUSE);
 		uip->element[PA_UI_ELEMENT_BUTTON_COPY]->flags |= D_DISABLED;
+		uip->element[PA_UI_ELEMENT_BUTTON_COPY]->flags &= ~(D_SELECTED | D_GOTFOCUS | D_GOTMOUSE);
 		uip->element[PA_UI_ELEMENT_BUTTON_TURN_CW]->flags |= D_DISABLED;
+		uip->element[PA_UI_ELEMENT_BUTTON_TURN_CW]->flags &= ~(D_SELECTED | D_GOTFOCUS | D_GOTMOUSE);
 		uip->element[PA_UI_ELEMENT_BUTTON_TURN_CCW]->flags |= D_DISABLED;
+		uip->element[PA_UI_ELEMENT_BUTTON_TURN_CCW]->flags &= ~(D_SELECTED | D_GOTFOCUS | D_GOTMOUSE);
 		uip->element[PA_UI_ELEMENT_BUTTON_FLIP_HORIZONTAL]->flags |= D_DISABLED;
+		uip->element[PA_UI_ELEMENT_BUTTON_FLIP_HORIZONTAL]->flags &= ~(D_SELECTED | D_GOTFOCUS | D_GOTMOUSE);
 		uip->element[PA_UI_ELEMENT_BUTTON_FLIP_VERTICAL]->flags |= D_DISABLED;
+		uip->element[PA_UI_ELEMENT_BUTTON_FLIP_VERTICAL]->flags &= ~(D_SELECTED | D_GOTFOCUS | D_GOTMOUSE);
 	}
 	if(cep->clipboard.bitmap_stack)
 	{
