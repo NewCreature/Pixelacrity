@@ -122,13 +122,16 @@ int pa_menu_edit_paste(int id, void * data)
 	int ox = 0;
 	int oy = 0;
 
-	if(id < 0)
+	if(app->canvas_editor->clipboard.bitmap_stack)
 	{
-		pos = 2;
-		ox = -app->ui->element[PA_UI_ELEMENT_CANVAS_EDITOR]->x;
-		oy = -app->ui->element[PA_UI_ELEMENT_CANVAS_EDITOR]->y;
+		if(id < 0)
+		{
+			pos = 2;
+			ox = -app->ui->element[PA_UI_ELEMENT_CANVAS_EDITOR]->x;
+			oy = -app->ui->element[PA_UI_ELEMENT_CANVAS_EDITOR]->y;
+		}
+		pa_paste_clipboard(app->canvas_editor, pos, ox, oy, false);
 	}
-	pa_paste_clipboard(app->canvas_editor, pos, ox, oy, false);
 
 	return 0;
 }
@@ -137,7 +140,10 @@ int pa_menu_edit_paste_in_place(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	pa_paste_clipboard(app->canvas_editor, 1, 0, 0, false);
+	if(app->canvas_editor->clipboard.bitmap_stack)
+	{
+		pa_paste_clipboard(app->canvas_editor, 1, 0, 0, false);
+	}
 
 	return 0;
 }
@@ -149,13 +155,16 @@ int pa_menu_edit_paste_merged(int id, void * data)
 	int ox = 0;
 	int oy = 0;
 
-	if(id < 0)
+	if(app->canvas_editor->clipboard.bitmap_stack)
 	{
-		pos = 2;
-		ox = -app->ui->element[PA_UI_ELEMENT_CANVAS_EDITOR]->x;
-		oy = -app->ui->element[PA_UI_ELEMENT_CANVAS_EDITOR]->y;
+		if(id < 0)
+		{
+			pos = 2;
+			ox = -app->ui->element[PA_UI_ELEMENT_CANVAS_EDITOR]->x;
+			oy = -app->ui->element[PA_UI_ELEMENT_CANVAS_EDITOR]->y;
+		}
+		pa_paste_clipboard(app->canvas_editor, pos, ox, oy, true);
 	}
-	pa_paste_clipboard(app->canvas_editor, pos, ox, oy, true);
 
 	return 0;
 }
@@ -164,7 +173,10 @@ int pa_menu_edit_flip_horizontal(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	pa_flip_selection(app->canvas_editor, true, false, false);
+	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0)
+	{
+		pa_flip_selection(app->canvas_editor, true, false, false);
+	}
 
 	return 0;
 }
@@ -173,7 +185,10 @@ int pa_menu_edit_flip_vertical(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	pa_flip_selection(app->canvas_editor, false, true, false);
+	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0)
+	{
+		pa_flip_selection(app->canvas_editor, false, true, false);
+	}
 
 	return 0;
 }
@@ -182,7 +197,10 @@ int pa_menu_edit_turn_clockwise(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	pa_turn_selection(app->canvas_editor, 1, false);
+	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0)
+	{
+		pa_turn_selection(app->canvas_editor, 1, false);
+	}
 
 	return 0;
 }
@@ -191,7 +209,10 @@ int pa_menu_edit_turn_counter_clockwise(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	pa_turn_selection(app->canvas_editor, -1, false);
+	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0)
+	{
+		pa_turn_selection(app->canvas_editor, -1, false);
+	}
 
 	return 0;
 }
@@ -322,7 +343,10 @@ int pa_menu_edit_multilayer_flip_horizontal(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	pa_flip_selection(app->canvas_editor, true, false, true);
+	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0)
+	{
+		pa_flip_selection(app->canvas_editor, true, false, true);
+	}
 
 	return 0;
 }
@@ -331,7 +355,10 @@ int pa_menu_edit_multilayer_flip_vertical(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	pa_flip_selection(app->canvas_editor, false, true, true);
+	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0)
+	{
+		pa_flip_selection(app->canvas_editor, false, true, true);
+	}
 
 	return 0;
 }
@@ -340,7 +367,10 @@ int pa_menu_edit_multilayer_turn_clockwise(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	pa_turn_selection(app->canvas_editor, 1, true);
+	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0)
+	{
+		pa_turn_selection(app->canvas_editor, 1, true);
+	}
 
 	return 0;
 }
@@ -349,7 +379,10 @@ int pa_menu_edit_multilayer_turn_counter_clockwise(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	pa_turn_selection(app->canvas_editor, -1, true);
+	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0)
+	{
+		pa_turn_selection(app->canvas_editor, -1, true);
+	}
 
 	return 0;
 }
