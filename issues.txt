@@ -27,8 +27,6 @@ Pixelacrity 0.3.4 Issues
 
 [ ]Add dropper mode to get apparent color.
 
-[ ]Add ability to load and save color palettes.
-
 [ ]Add GUI elements related to the current tool configuration.
 
    [ ]The current brush should be visible.
@@ -810,3 +808,5 @@ Closed Issues
    available.
 
    [X]Fix Edit->Paste.
+
+[X]Add ability to load and save color palettes.
