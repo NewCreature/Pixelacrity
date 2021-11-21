@@ -548,8 +548,12 @@ PA_UI * pa_create_ui(PA_CANVAS_EDITOR * cep)
 		{
 			goto fail;
 		}
-		cep->palette = pa_load_palette("data/default.pxp");
+		cep->palette = pa_create_palette();
 		if(!cep->palette)
+		{
+			goto fail;
+		}
+		if(!pa_load_palette(cep->palette, "data/default.pxp"))
 		{
 			goto fail;
 		}

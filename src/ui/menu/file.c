@@ -119,6 +119,9 @@ ALLEGRO_MENU * pa_create_file_menu(void)
 	t3f_add_menu_item(mp, "Export", 0, NULL, pa_menu_file_export, menu_export_update_proc);
 	t3f_add_menu_item(mp, "Re-Export", 0, NULL, pa_menu_file_reexport, menu_reexport_update_proc);
 	t3f_add_menu_item(mp, "Re-Export All", 0, NULL, pa_menu_file_reexport_all, menu_reexport_all_update_proc);
+	t3f_add_menu_item(mp, NULL, 0, NULL, NULL, NULL);
+	t3f_add_menu_item(mp, "Load Palette", 0, NULL, pa_menu_file_load_palette, pa_menu_base_update_proc);
+	t3f_add_menu_item(mp, "Save Palette", 0, NULL, pa_menu_file_save_palette, pa_menu_base_update_proc);
 	#ifndef ALLEGRO_MACOSX
 		t3f_add_menu_item(mp, NULL, 0, NULL, NULL, NULL);
 		t3f_add_menu_item(mp, "Exit", 0, NULL, pa_menu_file_exit, pa_menu_base_update_proc);

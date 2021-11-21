@@ -20,7 +20,11 @@ static bool resize_palette(PA_PALETTE * pp, int size)
 		pp->color_max = size;
 		return true;
 	}
-	return false;
+	if(size != pp->color_max)
+	{
+		return false;
+	}
+	return true;
 }
 
 PA_PALETTE * pa_create_palette(void)
@@ -42,18 +46,12 @@ PA_PALETTE * pa_create_palette(void)
 	return NULL;
 }
 
-PA_PALETTE * pa_load_palette(const char * fn)
+bool pa_load_palette(PA_PALETTE * pp, const char * fn)
 {
-	PA_PALETTE * pp = NULL;
 	ALLEGRO_CONFIG * config;
 
 	config = al_load_config_file(fn);
 	if(!config)
-	{
-		goto fail;
-	}
-	pp = pa_create_palette();
-	if(!pp)
 	{
 		goto fail;
 	}
@@ -62,7 +60,7 @@ PA_PALETTE * pa_load_palette(const char * fn)
 		goto fail;
 	}
 	al_destroy_config(config);
-	return pp;
+	return true;
 
 	fail:
 	{
@@ -70,9 +68,8 @@ PA_PALETTE * pa_load_palette(const char * fn)
 		{
 			al_destroy_config(config);
 		}
-		pa_destroy_palette(pp);
 	}
-	return NULL;
+	return false;
 }
 
 bool pa_save_palette(PA_PALETTE * pp, const char * fn)

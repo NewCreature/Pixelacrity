@@ -14,7 +14,7 @@ typedef struct
 } PA_PALETTE;
 
 PA_PALETTE * pa_create_palette(void);
-PA_PALETTE * pa_load_palette(const char * fn);
+bool pa_load_palette(PA_PALETTE * pp, const char * fn);
 bool pa_save_palette(PA_PALETTE * pp, const char * fn);
 void pa_destroy_palette(PA_PALETTE * pp);
 
