@@ -246,6 +246,10 @@ int t3gui_box_proc(int msg, T3GUI_ELEMENT *d, int c)
                 int h = max(d->h, get_nine_patch_bitmap_min_height(p9));
                 draw_nine_patch_bitmap(p9, d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].color[T3GUI_THEME_COLOR_BG], d->x, d->y, w, h);
             }
+            else
+            {
+              al_draw_filled_rectangle(d->x, d->y, d->x + d->w, d->y + d->h, d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].color[T3GUI_THEME_COLOR_BG]);
+            }
         }
     }
 
