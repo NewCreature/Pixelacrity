@@ -1,6 +1,18 @@
 Pixelacrity 0.3.4 Issues
 ------------------------
 
+[ ]Finish theme implementation.
+
+   [ ]Apply theme to box handles and box lines.
+
+[ ]Finish default themes.
+
+   [ ]Add slider handle nine patch bitmaps.
+
+   [ ]Add font.
+
+[ ]Allow navigating the canvas using the map.
+
 [ ]Look into crash when loading/creating canvas after working on a canvas.
 
 [ ]Figure out why bitmap fonts don't work in T3GUI.
@@ -27,6 +39,14 @@ Pixelacrity 0.3.4 Issues
 [ ]Add GUI elements related to the current tool configuration.
 
    [ ]The current brush should be visible.
+
+      [ ]The brush preview should be scaled based on the current theme. If the
+         brush doesn't fit within the preview area it should be scaled down to
+         fit.
+
+   [ ]Add brush palette for selecting from some basic brush shapes.
+
+   [ ]Add brush size slider.
 
    [ ]Allow selecting between copy and composite rendering for tools.
 
