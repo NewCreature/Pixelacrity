@@ -64,12 +64,6 @@ Pixelacrity 0.3.4 Issues
       Allegro differs from what it actually gets. This should be fixed in
       Allegro.
 
-[ ]Consider allowing flood fill to be bound by the current frame if the user
-   clicks within a frame.
-
-   [ ]Use a modifier key to enable this mode. I'm thinking Ctrl+Click to make
-      the flood fill tool restrict itself to filling inside the current frame.
-
 [ ]Finish implementing color palette.
 
    [ ]Make colors configurable. The default palette should be able to be
@@ -810,3 +804,9 @@ Closed Issues
 
 [X]Add separators between certain elements to help group them together by
    function.
+
+[X]Consider allowing flood fill to be bound by the current frame if the user
+   clicks within a frame.
+
+   [X]Use a modifier key to enable this mode. I'm thinking Ctrl+Click to make
+      the flood fill tool restrict itself to filling inside the current frame.
