@@ -16,9 +16,6 @@ Pixelacrity 0.3.4 Issues
 
    [ ]Put all graphics onto an atlas to speed up rendering.
 
-[ ]Add separators between certain elements to help group them together by
-   function.
-
 [ ]Crash when pasting while using frame tool.
 
 [ ]Look into re-export not working.
@@ -810,3 +807,6 @@ Closed Issues
    [X]Fix Edit->Paste.
 
 [X]Add ability to load and save color palettes.
+
+[X]Add separators between certain elements to help group them together by
+   function.
