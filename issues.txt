@@ -70,21 +70,6 @@ Pixelacrity 0.3.4 Issues
       restored at any time. Custom color palettes should be able to be saved and
       reloaded.
 
-[ ]Improve image export options.
-
-   [ ]Export current frame to specified file.
-
-      [X]We should default to exporting the whole image if no frame is
-         selected.
-
-      [ ]Consider saving the export path for each frame in the canvas settings
-         file and adding a re-export option that overwrites the previously
-         exported file.
-
-      [ ]Investigate compositing methods for exporting multi-layered canvases.
-         The current method will supposedly result in inaccurate colors where
-         alpha is used, but I'm not sure that applies to non-filtered textures.
-
 
 Closed Issues
 -------------
@@ -810,3 +795,18 @@ Closed Issues
 
    [X]Use a modifier key to enable this mode. I'm thinking Ctrl+Click to make
       the flood fill tool restrict itself to filling inside the current frame.
+
+[X]Improve image export options.
+
+   [X]Export current frame to specified file.
+
+      [X]We should default to exporting the whole image if no frame is
+         selected.
+
+      [X]Consider saving the export path for each frame in the canvas settings
+         file and adding a re-export option that overwrites the previously
+         exported file.
+
+      [X]Investigate compositing methods for exporting multi-layered canvases.
+         The current method will supposedly result in inaccurate colors where
+         alpha is used, but I'm not sure that applies to non-filtered textures.
