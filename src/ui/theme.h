@@ -11,6 +11,7 @@
 #define PA_UI_THEME_BUTTON      5
 #define PA_UI_THEME_LIST_BOX    6
 #define PA_UI_THEME_SEPARATOR   7
+#define PA_UI_THEME_SLIDER      8
 
 typedef struct
 {

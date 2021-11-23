@@ -508,13 +508,13 @@ static void add_left_pane(PA_UI * uip, PA_CANVAS_EDITOR * cep)
 	uip->element[PA_UI_ELEMENT_LEFT_PANE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_LEFT_PANE], t3gui_box_proc, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL);
 	uip->element[PA_UI_ELEMENT_LEFT_COLOR] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->left_color.color, NULL, NULL);
 	uip->element[PA_UI_ELEMENT_RIGHT_COLOR] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->right_color.color, NULL, NULL);
-	cep->left_color.shade_slider_element = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_slider_proc, 0, 0, 0, 0, 0, 0, 1000, 0, NULL, NULL, NULL);
+	cep->left_color.shade_slider_element = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_SLIDER], t3gui_slider_proc, 0, 0, 0, 0, 0, 0, 1000, 0, NULL, NULL, NULL);
 	uip->element[PA_UI_ELEMENT_LEFT_SHADE_SLIDER] = cep->left_color.shade_slider_element;
-	cep->right_color.shade_slider_element = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_slider_proc, 0, 0, 0, 0, 0, 0, 1000, 0, NULL, NULL, NULL);
+	cep->right_color.shade_slider_element = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_SLIDER], t3gui_slider_proc, 0, 0, 0, 0, 0, 0, 1000, 0, NULL, NULL, NULL);
 	uip->element[PA_UI_ELEMENT_RIGHT_SHADE_SLIDER] = cep->right_color.shade_slider_element;
-	cep->left_color.alpha_slider_element = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_slider_proc, 0, 0, 0, 0, 0, 0, 1000, 0, NULL, NULL, NULL);
+	cep->left_color.alpha_slider_element = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_SLIDER], t3gui_slider_proc, 0, 0, 0, 0, 0, 0, 1000, 0, NULL, NULL, NULL);
 	uip->element[PA_UI_ELEMENT_LEFT_ALPHA_SLIDER] = cep->left_color.alpha_slider_element;
-	cep->right_color.alpha_slider_element = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_slider_proc, 0, 0, 0, 0, 0, 0, 1000, 0, NULL, NULL, NULL);
+	cep->right_color.alpha_slider_element = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_SLIDER], t3gui_slider_proc, 0, 0, 0, 0, 0, 0, 1000, 0, NULL, NULL, NULL);
 	uip->element[PA_UI_ELEMENT_RIGHT_ALPHA_SLIDER] = cep->right_color.alpha_slider_element;
 
 	add_color_pickers(uip, cep, uip->dialog[PA_UI_DIALOG_MAIN], 0, 0);
