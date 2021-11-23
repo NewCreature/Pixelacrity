@@ -1,6 +1,8 @@
 Pixelacrity 0.3.4 Issues
 ------------------------
 
+[ ]Can't select color from palette after selecting a shade of that color.
+
 [ ]Finish theme implementation.
 
    [ ]Apply theme to box handles and box lines.
