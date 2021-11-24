@@ -1,6 +1,9 @@
 Pixelacrity 0.3.4 Issues
 ------------------------
 
+[ ]When saving back to image file, the image is missing the bottom and right
+   edges.
+
 [ ]Can't select color from palette after selecting a shade of that color.
 
 [ ]Finish theme implementation.
