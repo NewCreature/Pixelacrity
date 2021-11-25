@@ -968,7 +968,6 @@ int t3gui_slider_proc(int msg, T3GUI_ELEMENT *d, int c)
          vert = false;
 
       if (vert) {
-         hh = d->h * d->h / (range + d->h);
 
          if (hh > d->h) hh = d->h;
 
@@ -979,7 +978,6 @@ int t3gui_slider_proc(int msg, T3GUI_ELEMENT *d, int c)
          }
          offset = (d->h - hh) * value / range;
       } else {
-         hh = d->w * d->w / (range + d->w);
 
          if (hh > d->w) hh = d->w;
 
