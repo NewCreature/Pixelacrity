@@ -6,12 +6,6 @@ Pixelacrity 0.3.4 Issues
 
 [ ]Can't select color from palette after selecting a shade of that color.
 
-[ ]Finish theme implementation.
-
-   [ ]Apply theme to box handles and box lines.
-
-   [ ]Apply theme to floating selection type indicator.
-
 [ ]Finish default themes.
 
    [ ]Add slider handle nine patch bitmaps.
@@ -837,3 +831,9 @@ Closed Issues
       [X]Investigate compositing methods for exporting multi-layered canvases.
          The current method will supposedly result in inaccurate colors where
          alpha is used, but I'm not sure that applies to non-filtered textures.
+
+[X]Finish theme implementation.
+
+   [X]Apply theme to box handles and box lines.
+
+   [X]Apply theme to floating selection type indicator.
