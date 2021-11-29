@@ -1,6 +1,9 @@
 Pixelacrity 0.3.4 Issues
 ------------------------
 
+[ ]Adjust position of selection type indicators based on dimensions of
+   graphics.
+
 [ ]When saving back to image file, the image is missing the bottom and right
    edges.
 
