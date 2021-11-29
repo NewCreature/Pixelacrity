@@ -453,6 +453,10 @@ static bool load_resources(PA_UI * uip)
 	{
 		return false;
 	}
+	if(!load_bitmap(uip, PA_UI_BITMAP_BOX_HANDLE, "box_handle"))
+	{
+		return false;
+	}
 
 	return true;
 }
@@ -563,6 +567,7 @@ PA_UI * pa_create_ui(PA_CANVAS_EDITOR * cep)
 		{
 			goto fail;
 		}
+		cep->peg_bitmap = uip->bitmap[PA_UI_BITMAP_BOX_HANDLE];
 		cep->palette = pa_create_palette();
 		if(!cep->palette)
 		{
