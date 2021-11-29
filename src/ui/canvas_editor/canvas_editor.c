@@ -121,16 +121,6 @@ PA_CANVAS_EDITOR * pa_create_canvas_editor(PA_CANVAS * cp)
 	{
 		goto fail;
 	}
-	cep->multilayer_bitmap = al_load_bitmap_flags("data/graphics/multilayer.png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
-	if(!cep->multilayer_bitmap)
-	{
-		goto fail;
-	}
-	cep->singlelayer_bitmap = al_load_bitmap_flags("data/graphics/singlelayer.png", ALLEGRO_NO_PREMULTIPLIED_ALPHA);
-	if(!cep->singlelayer_bitmap)
-	{
-		goto fail;
-	}
 	cep->canvas = cp;
 	pa_reset_canvas_editor(cep);
 	return cep;
@@ -152,14 +142,6 @@ void pa_destroy_canvas_editor(PA_CANVAS_EDITOR * cep)
 		free(cep->export_path);
 	}
 	pa_free_clipboard(cep);
-	if(cep->multilayer_bitmap)
-	{
-		al_destroy_bitmap(cep->multilayer_bitmap);
-	}
-	if(cep->tool_bitmap)
-	{
-		al_destroy_bitmap(cep->tool_bitmap);
-	}
 	if(cep->scratch_bitmap)
 	{
 		al_destroy_bitmap(cep->scratch_bitmap);

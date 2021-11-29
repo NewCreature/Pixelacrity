@@ -37,6 +37,8 @@
 #define PA_UI_BITMAP_LAYER_ADD             26
 #define PA_UI_BITMAP_LAYER_REMOVE          27
 #define PA_UI_BITMAP_BOX_HANDLE            28
+#define PA_UI_BITMAP_SELECTION_SINGLE      29
+#define PA_UI_BITMAP_SELECTION_MULTI       30
 
 #define PA_UI_MAX_MENUS                       32
 #define PA_UI_MENU_MAIN                        0
