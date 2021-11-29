@@ -10,6 +10,8 @@ Pixelacrity 0.3.4 Issues
 
    [ ]Apply theme to box handles and box lines.
 
+   [ ]Apply theme to floating selection type indicator.
+
 [ ]Finish default themes.
 
    [ ]Add slider handle nine patch bitmaps.
