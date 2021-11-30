@@ -1,6 +1,8 @@
 Pixelacrity 0.3.4 Issues
 ------------------------
 
+[ ]Don't load INI file when loading canvas from image file.
+
 [ ]When saving back to image file, the image is missing the bottom and right
    edges.
 
