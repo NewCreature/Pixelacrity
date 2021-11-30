@@ -210,11 +210,11 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 		{
 			if(canvas_editor->selection.layer < 0)
 			{
-				al_draw_bitmap(canvas_editor->multilayer_bitmap, d->x + canvas_editor->selection.box.start_x * canvas_editor->view_zoom - canvas_editor->view_x * canvas_editor->view_zoom - 24, d->y + canvas_editor->selection.box.start_y * canvas_editor->view_zoom - canvas_editor->view_y * canvas_editor->view_zoom - 24, 0);
+				al_draw_bitmap(canvas_editor->multilayer_bitmap, d->x + canvas_editor->selection.box.start_x * canvas_editor->view_zoom - canvas_editor->view_x * canvas_editor->view_zoom - al_get_bitmap_width(canvas_editor->multilayer_bitmap), d->y + canvas_editor->selection.box.start_y * canvas_editor->view_zoom - canvas_editor->view_y * canvas_editor->view_zoom - al_get_bitmap_height(canvas_editor->multilayer_bitmap), 0);
 			}
 			else
 			{
-				al_draw_bitmap(canvas_editor->singlelayer_bitmap, d->x + canvas_editor->selection.box.start_x * canvas_editor->view_zoom - canvas_editor->view_x * canvas_editor->view_zoom - 24, d->y + canvas_editor->selection.box.start_y * canvas_editor->view_zoom - canvas_editor->view_y * canvas_editor->view_zoom - 24, 0);
+				al_draw_bitmap(canvas_editor->singlelayer_bitmap, d->x + canvas_editor->selection.box.start_x * canvas_editor->view_zoom - canvas_editor->view_x * canvas_editor->view_zoom - al_get_bitmap_width(canvas_editor->singlelayer_bitmap), d->y + canvas_editor->selection.box.start_y * canvas_editor->view_zoom - canvas_editor->view_y * canvas_editor->view_zoom - al_get_bitmap_height(canvas_editor->singlelayer_bitmap), 0);
 			}
 		}
 	}
