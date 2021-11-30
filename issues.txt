@@ -8,6 +8,10 @@ Pixelacrity 0.3.4 Issues
 
 [ ]Can't select color from palette after selecting a shade of that color.
 
+   [ ]We need a way for the color elements to communicate they have been
+      clicked. We'll probably need to introduce a 'PA_COLOR' structure for
+      storing the clicked state alongside the 'ALLEGRO_COLOR' data.
+
 [ ]Finish default themes.
 
    [ ]Add slider handle nine patch bitmaps.
