@@ -49,6 +49,8 @@ int pa_gui_map_proc(int msg, T3GUI_ELEMENT * d, int c)
 {
 	PA_CANVAS_EDITOR * cep = (PA_CANVAS_EDITOR *)d->dp;
 	int cx, cy, cwidth, cheight;
+	float scale, scale2;
+	int left, top;
 
 	switch(msg)
 	{
@@ -68,7 +70,15 @@ int pa_gui_map_proc(int msg, T3GUI_ELEMENT * d, int c)
 				pa_get_canvas_dimensions(cep->canvas, &cx, &cy, &cwidth, &cheight, 0, false);
 				if(cwidth > 0 && cheight > 0)
 				{
-					pa_center_canvas_editor_at(cep, (t3gui_get_mouse_x() - d->x) * (float)(cwidth / d->w) + cx, (t3gui_get_mouse_y() - d->y) * (float)(cheight / d->h) + cy);
+					scale = (float)d->w / (float)cwidth;
+					scale2 = (float)d->h / (float)cheight;
+					left = d->w / 2 - (int)((float)cwidth * scale) / 2;
+					top = d->h / 2 - (int)((float)cheight * scale) / 2;
+					if(scale > scale2)
+					{
+						scale = scale2;
+					}
+					pa_center_canvas_editor_at(cep, (t3gui_get_mouse_x() - left - d->x) / scale + cx, (t3gui_get_mouse_y() - top - d->y) / scale + cy);
 				}
 			}
 			break;
