@@ -233,6 +233,13 @@ void pa_resize_ui(PA_UI * uip)
 		offset_x = mr + ml;
 		pos_y += pos_vy + mt + mb;
 	}
+	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_REPLACE], pos_x + offset_x, pos_y, pos_vx, pos_vy);
+	offset_x += pos_vx + mr + ml;
+	if(offset_x > pos_vx + mr + ml + mr + ml)
+	{
+		offset_x = mr + ml;
+		pos_y += pos_vy + mt + mb;
+	}
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_ERASER], pos_x + offset_x, pos_y, pos_vx, pos_vy);
 	offset_x += pos_vx + mr + ml;
 	if(offset_x > pos_vx + mr + ml + mr + ml)
@@ -373,6 +380,10 @@ static bool load_resources(PA_UI * uip)
 	{
 		return false;
 	}
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOL_REPLACE, "tool_replace"))
+	{
+		return false;
+	}
 	if(!load_bitmap(uip, PA_UI_BITMAP_TOOL_ERASER, "tool_eraser"))
 	{
 		return false;
@@ -505,6 +516,7 @@ static void add_right_pane(PA_UI * uip, PA_CANVAS_EDITOR * cep)
 	uip->element[PA_UI_ELEMENT_BUTTON_OVAL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, scale, 0, "Oval", pa_tool_oval_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_OVAL]);
 	uip->element[PA_UI_ELEMENT_BUTTON_FILLED_OVAL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, scale, 0, "FOval", pa_tool_filled_oval_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_FILLED_OVAL]);
 	uip->element[PA_UI_ELEMENT_BUTTON_FLOOD_FILL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, scale, 0, "Flood", pa_tool_flood_fill_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_FLOOD]);
+	uip->element[PA_UI_ELEMENT_BUTTON_REPLACE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, scale, 0, "Replace", pa_tool_replace_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_REPLACE]);
 	uip->element[PA_UI_ELEMENT_BUTTON_ERASER] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, scale, 0, "Eraser", pa_tool_eraser_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_ERASER]);
 	uip->element[PA_UI_ELEMENT_BUTTON_DROPPER] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, scale, 0, "Dropper", pa_tool_dropper_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_DROPPER]);
 	uip->element[PA_UI_ELEMENT_BUTTON_SELECTION] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, scale, 0, "Selection", pa_tool_selection_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_SELECTION]);
@@ -788,6 +800,11 @@ void pa_process_ui(PA_UI * uip)
 		case PA_TOOL_FLOOD_FILL:
 		{
 			select_button(uip, PA_UI_ELEMENT_BUTTON_FLOOD_FILL);
+			break;
+		}
+		case PA_TOOL_REPLACE:
+		{
+			select_button(uip, PA_UI_ELEMENT_BUTTON_REPLACE);
 			break;
 		}
 		case PA_TOOL_ERASER:

@@ -19,10 +19,11 @@
 #define PA_TOOL_OVAL             4
 #define PA_TOOL_FILLED_OVAL      5
 #define PA_TOOL_FLOOD_FILL       6
-#define PA_TOOL_ERASER           7
-#define PA_TOOL_DROPPER          8
-#define PA_TOOL_SELECTION        9
-#define PA_TOOL_FRAME           10
+#define PA_TOOL_REPLACE          7
+#define PA_TOOL_ERASER           8
+#define PA_TOOL_DROPPER          9
+#define PA_TOOL_SELECTION       10
+#define PA_TOOL_FRAME           11
 
 #define PA_TOOL_STATE_OFF        0
 #define PA_TOOL_STATE_DRAWING    1

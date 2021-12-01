@@ -24,6 +24,7 @@ int pa_tool_filled_rectangle_button_proc(T3GUI_ELEMENT * d, void * dp3);
 int pa_tool_oval_button_proc(T3GUI_ELEMENT * d, void * dp3);
 int pa_tool_filled_oval_button_proc(T3GUI_ELEMENT * d, void * dp3);
 int pa_tool_flood_fill_button_proc(T3GUI_ELEMENT * d, void * dp3);
+int pa_tool_replace_button_proc(T3GUI_ELEMENT * d, void * dp3);
 int pa_tool_dropper_button_proc(T3GUI_ELEMENT * d, void * dp3);
 int pa_tool_eraser_button_proc(T3GUI_ELEMENT * d, void * p3);
 int pa_tool_selection_button_proc(T3GUI_ELEMENT * d, void * dp3);

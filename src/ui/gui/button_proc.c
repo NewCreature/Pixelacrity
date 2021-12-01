@@ -168,6 +168,17 @@ int pa_tool_flood_fill_button_proc(T3GUI_ELEMENT * d, void * dp3)
 	return 0;
 }
 
+int pa_tool_replace_button_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)dp3;
+
+	t3f_debug_message("Enter pa_tool_replace_button_proc()\n");
+	pa_select_canvas_editor_tool(app->canvas_editor, PA_TOOL_REPLACE);
+	t3f_debug_message("Exit pa_tool_replace_button_proc()\n");
+
+	return 0;
+}
+
 int pa_tool_dropper_button_proc(T3GUI_ELEMENT * d, void * dp3)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)dp3;

@@ -227,6 +227,15 @@ int pa_menu_tool_flood_fill(int id, void * data)
 	return 0;
 }
 
+int pa_menu_tool_replace(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	pa_select_canvas_editor_tool(app->canvas_editor, PA_TOOL_REPLACE);
+
+	return 0;
+}
+
 int pa_menu_tool_eraser(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;

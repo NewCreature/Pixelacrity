@@ -78,6 +78,7 @@ ALLEGRO_MENU * pa_create_tool_menu(ALLEGRO_MENU * brush_mp, int * item_array)
 	item_array[PA_TOOL_OVAL] = t3f_add_menu_item(mp, "Oval", ALLEGRO_MENU_ITEM_CHECKBOX, NULL, pa_menu_tool_oval, menu_tool_update_proc);
 	item_array[PA_TOOL_FILLED_OVAL] = t3f_add_menu_item(mp, "Filled Oval", ALLEGRO_MENU_ITEM_CHECKBOX, NULL, pa_menu_tool_filled_oval, menu_tool_update_proc);
 	item_array[PA_TOOL_FLOOD_FILL] = t3f_add_menu_item(mp, "Flood Fill", ALLEGRO_MENU_ITEM_CHECKBOX, NULL, pa_menu_tool_flood_fill, menu_tool_update_proc);
+	item_array[PA_TOOL_FLOOD_FILL] = t3f_add_menu_item(mp, "Replace Color", ALLEGRO_MENU_ITEM_CHECKBOX, NULL, pa_menu_tool_replace, menu_tool_update_proc);
 	item_array[PA_TOOL_ERASER] = t3f_add_menu_item(mp, "Eraser", ALLEGRO_MENU_ITEM_CHECKBOX, NULL, pa_menu_tool_eraser, menu_tool_update_proc);
 	item_array[PA_TOOL_DROPPER] = t3f_add_menu_item(mp, "Dropper", ALLEGRO_MENU_ITEM_CHECKBOX, NULL, pa_menu_tool_dropper, menu_tool_update_proc);
 	item_array[PA_TOOL_SELECTION] = t3f_add_menu_item(mp, "Selector", ALLEGRO_MENU_ITEM_CHECKBOX, NULL, pa_menu_tool_selector, menu_tool_update_proc);
