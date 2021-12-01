@@ -1,4 +1,4 @@
-Pixelacrity 0.3.4 Issues
+Pixelacrity 0.3.5 Issues
 ------------------------
 
 [ ]Don't load INI file when loading canvas from image file.
