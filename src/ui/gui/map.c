@@ -48,8 +48,31 @@ static void render_map(PA_CANVAS_EDITOR * cep, int x, int y, int width, int heig
 int pa_gui_map_proc(int msg, T3GUI_ELEMENT * d, int c)
 {
 	PA_CANVAS_EDITOR * cep = (PA_CANVAS_EDITOR *)d->dp;
+	int cx, cy, cwidth, cheight;
+
 	switch(msg)
 	{
+		case MSG_MOUSEUP:
+		{
+			d->flags &= ~D_TRACKMOUSE;
+			break;
+		}
+		case MSG_MOUSEDOWN:
+		{
+			d->flags |= D_TRACKMOUSE;
+		}
+		case MSG_MOUSEMOVE:
+		{
+			if(d->flags & D_TRACKMOUSE)
+			{
+				pa_get_canvas_dimensions(cep->canvas, &cx, &cy, &cwidth, &cheight, 0, false);
+				if(cwidth > 0 && cheight > 0)
+				{
+					pa_center_canvas_editor_at(cep, (t3gui_get_mouse_x() - d->x) * (float)(cwidth / d->w) + cx, (t3gui_get_mouse_y() - d->y) * (float)(cheight / d->h) + cy);
+				}
+			}
+			break;
+		}
 		case MSG_DRAW:
 		{
 			render_map(cep, d->x, d->y, d->w, d->h);

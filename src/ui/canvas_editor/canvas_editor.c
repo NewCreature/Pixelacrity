@@ -288,6 +288,14 @@ void pa_center_canvas_editor(PA_CANVAS_EDITOR * cep, int frame)
 	cep->view_fy = cep->view_y;
 }
 
+void pa_center_canvas_editor_at(PA_CANVAS_EDITOR * cep, int x, int y)
+{
+	cep->view_x = x - cep->view_width / 2;
+	cep->view_y = y - cep->view_height / 2;
+	cep->view_fx = cep->view_x;
+	cep->view_fy = cep->view_y;
+}
+
 void pa_set_canvas_editor_zoom(PA_CANVAS_EDITOR * cep, int level)
 {
 	int cx, cy;
