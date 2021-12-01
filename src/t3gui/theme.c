@@ -219,24 +219,28 @@ static void t3gui_get_theme_state(ALLEGRO_CONFIG * cp, const char * section, T3G
             if(val2)
             {
                 al_set_path_filename(theme_path, val);
-                if(!t3gui_load_font(&sp->font[j], strlen(val) > 0 ? al_path_cstr(theme_path, '/') : NULL, atoi(val2)))
+                ranges = get_ranges(cp, section);
+                if(ranges)
                 {
-                    if(!t3gui_load_font(&sp->font[j], strlen(val) > 0 ? val : NULL, atoi(val2)))
-                    {
-                      ranges = get_ranges(cp, section);
-                      if(ranges)
-                      {
-                        t3gui_load_bitmap_font(&sp->font[j], val, ranges);
-                        free(ranges);
-                      }
-                    }
+                  if(!t3gui_load_bitmap_font(&sp->font[j], al_path_cstr(theme_path, '/'), ranges))
+                  {
+                    t3gui_load_bitmap_font(&sp->font[j], val, ranges);
+                  }
+                  free(ranges);
                 }
-                if(j > 0)
+                if(!sp->font[j])
                 {
-                    if(sp->font[j - 1] && sp->font[j])
-                    {
-                        al_set_fallback_font(sp->font[j - 1], sp->font[j]);
-                    }
+                  if(!t3gui_load_font(&sp->font[j], strlen(val) > 0 ? al_path_cstr(theme_path, '/') : NULL, atoi(val2)))
+                  {
+                      t3gui_load_font(&sp->font[j], strlen(val) > 0 ? val : NULL, atoi(val2));
+                  }
+                  if(j > 0)
+                  {
+                      if(sp->font[j - 1] && sp->font[j])
+                      {
+                          al_set_fallback_font(sp->font[j - 1], sp->font[j]);
+                      }
+                  }
                 }
             }
         }

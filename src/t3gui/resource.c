@@ -249,6 +249,7 @@ static void t3gui_unload_resource(T3GUI_RESOURCE * rp)
                 break;
             }
             case T3GUI_RESOURCE_TYPE_FONT:
+            case T3GUI_RESOURCE_TYPE_BITMAP_FONT:
             case T3GUI_RESOURCE_TYPE_DEFAULT_FONT:
             {
                 if(rp->data)
