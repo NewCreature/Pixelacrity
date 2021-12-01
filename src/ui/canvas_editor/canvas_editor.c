@@ -39,7 +39,7 @@ void pa_reset_canvas_editor(PA_CANVAS_EDITOR * cep)
 	cep->view_y = 0;
 	cep->view_fx = 0.0;
 	cep->view_fy = 0.0;
-	cep->view_zoom = 8;
+	cep->view_zoom = 1;
 	cep->current_layer = 0;
 	cep->hover_frame = -1;
 	cep->modified = 0;
@@ -170,7 +170,7 @@ bool pa_load_canvas_editor_state(PA_CANVAS_EDITOR * cep, const char * fn)
 		cep->view_y = get_config_val(cep->config, "State", "view_y", cep->view_y);
 		cep->view_fx = cep->view_x;
 		cep->view_fy = cep->view_y;
-		cep->view_zoom = get_config_val(cep->config, "State", "view_zoom", 8);
+		cep->view_zoom = get_config_val(cep->config, "State", "view_zoom", 1);
 		pa_set_canvas_editor_zoom(cep, cep->view_zoom);
 		cep->current_tool = get_config_val(cep->config, "State", "current_tool", 0);
 		cep->current_layer = get_config_val(cep->config, "State", "current_layer", 0);
