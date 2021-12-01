@@ -194,13 +194,13 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 		}
 		sprintf(buf, "%s (%dx%d)", canvas_editor->canvas->frame[i]->name, canvas_editor->canvas->frame[i]->box.width, canvas_editor->canvas->frame[i]->box.height);
 		al_draw_text(d->theme->state[0].font[0], title_color, d->x + (canvas_editor->canvas->frame[i]->box.start_x - canvas_editor->view_x) * canvas_editor->view_zoom, d->y + (canvas_editor->canvas->frame[i]->box.start_y - canvas_editor->view_y) * canvas_editor->view_zoom - al_get_font_line_height(d->theme->state[0].font[0]) - PA_UI_ELEMENT_SPACE, 0, buf);
-		pa_box_render(&canvas_editor->canvas->frame[i]->box, 0, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, color, peg_bitmap);
+		pa_box_render(&canvas_editor->canvas->frame[i]->box, canvas_editor->box_line_thickness, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, color, peg_bitmap);
 	}
 
 	/* render selection box */
 	if(canvas_editor->selection.box.width > 0 && canvas_editor->selection.box.height > 0)
 	{
-		pa_box_render(&canvas_editor->selection.box, 0, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, t3f_color_black, canvas_editor->peg_bitmap);
+		pa_box_render(&canvas_editor->selection.box, canvas_editor->box_line_thickness, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, t3f_color_black, canvas_editor->peg_bitmap);
 		if(canvas_editor->selection.bitmap_stack)
 		{
 			if(canvas_editor->selection.layer < 0)

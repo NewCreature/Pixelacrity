@@ -154,6 +154,7 @@ typedef struct
 	char canvas_path[4096];
 	char * export_path;
 	PA_BOX click_box;
+	int box_line_thickness;
 
 	int undo_count;
 	char undo_name[256];

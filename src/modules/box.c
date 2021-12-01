@@ -267,6 +267,7 @@ void pa_box_logic(PA_BOX * bp, int view_x, int view_y, int view_zoom, int offset
 				pa_snap_coordinates(start_x, start_y, &end_x, &end_y, 0, ALLEGRO_PI / 2.0);
 			}
 			pa_setup_box(bp, end_x - (bp->click_x - bp->click_start_x), end_y - (bp->click_y - bp->click_start_y), bp->width, bp->height);
+			pa_update_box_handles(bp, view_x, view_y, view_zoom);
 			bp->click_tick++;
 			break;
 		}
@@ -310,7 +311,7 @@ void pa_box_render(PA_BOX * bp, int style, int view_x, int view_y, int view_zoom
 		start_y = (bp->start_y - view_y) * view_zoom;
 		end_x = (bp->end_x - view_x + 1) * view_zoom;
 		end_y = (bp->end_y - view_y + 1) * view_zoom;
-		al_draw_rectangle(offset_x + start_x - 1.0 + 0.5, offset_y + start_y - 1.0 + 0.5, offset_x + end_x + 0.5, offset_y + end_y + 0.5, color, 1.0);
+		al_draw_rectangle(offset_x + start_x - 1.0 + 0.5, offset_y + start_y - 1.0 + 0.5, offset_x + end_x + 0.5, offset_y + end_y + 0.5, color, style);
 		for(i = 0; i < 10; i++)
 		{
 			if(bp->handle[i].type != PA_BOX_HANDLE_TYPE_NONE)

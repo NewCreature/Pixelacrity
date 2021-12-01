@@ -602,6 +602,7 @@ PA_UI * pa_create_ui(PA_CANVAS_EDITOR * cep)
 		pa_set_color(&cep->left_color, al_map_rgba_f(1.0, 0.0, 0.0, 1.0));
 		pa_set_color(&cep->right_color, al_map_rgba_f(0.0, 0.0, 0.0, 1.0));
 		pa_canvas_editor_update_pick_colors(cep);
+		cep->box_line_thickness = pa_get_theme_int(uip->theme, "box_line_thickness", 2);
 	}
 	return uip;
 
