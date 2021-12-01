@@ -157,7 +157,7 @@ static ALLEGRO_FONT * load_bitmap_font(const char * fn, int * ranges)
 bool t3gui_load_bitmap_font(ALLEGRO_FONT ** fp, const char * fn, int * ranges)
 {
     T3GUI_RESOURCE * rp;
-    int i, r;
+    int i;
 
     if(t3gui_fonts >= T3GUI_MAX_FONTS)
     {
@@ -178,9 +178,9 @@ bool t3gui_load_bitmap_font(ALLEGRO_FONT ** fp, const char * fn, int * ranges)
       if(rp->data)
       {
         strcpy(rp->path, fn);
-        r = count_ranges(ranges);
-        rp->data_a = malloc(sizeof(int) * (r * 2 + 1));
-        for(i = 0; i < r; i += 2)
+        rp->data_i = count_ranges(ranges);
+        rp->data_a = malloc(sizeof(int) * (rp->data_i * 2 + 1));
+        for(i = 0; i < rp->data_i; i += 2)
         {
           rp->data_a[i] = ranges[i];
           rp->data_a[i + 1] = ranges[i + 1];
@@ -249,12 +249,23 @@ static void t3gui_unload_resource(T3GUI_RESOURCE * rp)
                 break;
             }
             case T3GUI_RESOURCE_TYPE_FONT:
-            case T3GUI_RESOURCE_TYPE_BITMAP_FONT:
             case T3GUI_RESOURCE_TYPE_DEFAULT_FONT:
             {
                 if(rp->data)
                 {
                     al_destroy_font(rp->data);
+                }
+                break;
+            }
+            case T3GUI_RESOURCE_TYPE_BITMAP_FONT:
+            {
+                if(rp->data)
+                {
+                    al_destroy_font(rp->data);
+                }
+                if(rp->data_a)
+                {
+                  free(rp->data_a);
                 }
                 break;
             }
