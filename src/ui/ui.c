@@ -827,15 +827,16 @@ void pa_render_ui(PA_UI * uip)
 	PA_CANVAS_EDITOR * cep = (PA_CANVAS_EDITOR *)uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->dp;
 	int i, j;
 	int tw, th;
+	int scale = pa_get_theme_int(uip->theme, "checkerboard_scale", 24);
 
 	al_use_shader(cep->premultiplied_alpha_shader);
-	tw = t3f_default_view->width / PA_UI_BG_SCALE + 1;
-	th = t3f_default_view->height / PA_UI_BG_SCALE + 1;
+	tw = uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->w / scale + 1;
+	th = uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->h / scale + 1;
 	for(i = 0; i < th; i++)
 	{
 		for(j = 0; j < tw; j++)
 		{
-			t3f_draw_scaled_bitmap(uip->bitmap[PA_UI_BITMAP_BG], t3f_color_white, j * PA_UI_BG_SCALE, i * PA_UI_BG_SCALE, 0, PA_UI_BG_SCALE, PA_UI_BG_SCALE, 0);
+			t3f_draw_scaled_bitmap(uip->bitmap[PA_UI_BITMAP_BG], t3f_color_white, uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->x + j * scale, uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->y + i * scale, 0, scale, scale, 0);
 		}
 	}
 	t3gui_render();
