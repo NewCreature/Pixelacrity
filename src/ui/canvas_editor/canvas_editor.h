@@ -191,5 +191,6 @@ void pa_update_tool_variables(PA_CANVAS_EDITOR * cep);
 void pa_set_tool_boundaries(PA_CANVAS_EDITOR * cep, int start_x, int start_y, int end_x, int end_y);
 void pa_canvas_editor_update_pick_colors(PA_CANVAS_EDITOR * cep);
 void pa_optimize_canvas(PA_CANVAS_EDITOR * cep, int skip_x, int skip_y);
+void pa_update_canvas_editor_box_handles(PA_CANVAS_EDITOR * cep);
 
 #endif

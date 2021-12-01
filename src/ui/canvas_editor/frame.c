@@ -2,16 +2,6 @@
 #include "modules/box.h"
 #include "ui/canvas_editor/canvas_editor.h"
 
-static void update_box_handles(PA_CANVAS_EDITOR * cep)
-{
-	int i;
-
-	for(i = 0; i < cep->canvas->frame_max; i++)
-	{
-		pa_update_box_handles(&cep->canvas->frame[i]->box, cep->view_x, cep->view_y, cep->view_zoom);
-	}
-}
-
 int pa_get_hover_frame(PA_CANVAS_EDITOR * cep)
 {
 	int i;
@@ -44,7 +34,7 @@ void pa_update_hover_frame(PA_CANVAS_EDITOR * cep, T3GUI_ELEMENT * d)
 	}
 	else
 	{
-		update_box_handles(cep);
+		pa_update_canvas_editor_box_handles(cep);
 	}
 	if(cep->hover_frame >= 0)
 	{

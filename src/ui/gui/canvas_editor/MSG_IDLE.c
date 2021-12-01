@@ -171,4 +171,5 @@ void pa_canvas_editor_MSG_IDLE(T3GUI_ELEMENT * d, int c)
 	{
 		pa_update_hover_frame(canvas_editor, d);
 	}
+	pa_update_canvas_editor_box_handles(canvas_editor);
 }
