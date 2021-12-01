@@ -828,7 +828,13 @@ void pa_render_ui(PA_UI * uip)
 	int i, j;
 	int tw, th;
 	int scale = pa_get_theme_int(uip->theme, "checkerboard_scale", 24);
+	bool held = al_is_bitmap_drawing_held();
 
+	if(held)
+	{
+		al_hold_bitmap_drawing(false);
+	}
+	al_hold_bitmap_drawing(true);
 	al_use_shader(cep->premultiplied_alpha_shader);
 	tw = uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->w / scale + 1;
 	th = uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->h / scale + 1;
@@ -838,6 +844,11 @@ void pa_render_ui(PA_UI * uip)
 		{
 			t3f_draw_scaled_bitmap(uip->bitmap[PA_UI_BITMAP_BG], t3f_color_white, uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->x + j * scale, uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->y + i * scale, 0, scale, scale, 0);
 		}
+	}
+	al_hold_bitmap_drawing(false);
+	if(held)
+	{
+		al_hold_bitmap_drawing(true);
 	}
 	t3gui_render();
 	al_use_shader(cep->standard_shader);
