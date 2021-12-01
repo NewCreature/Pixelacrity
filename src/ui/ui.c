@@ -134,7 +134,7 @@ void pa_resize_ui(PA_UI * uip)
 	mr = pa_get_theme_int(uip->theme, "element_right_margin", 0);
 	mt = pa_get_theme_int(uip->theme, "element_top_margin", 0);
 	mb = pa_get_theme_int(uip->theme, "element_bottom_margin", 0);
-	status_height = al_get_font_line_height(default_theme->state[0].font[0]) + est + esb;
+	status_height = al_get_font_line_height(uip->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0]) + est + esb;
 	button_size = pa_get_theme_int(uip->theme, "button_size", 64);
 	right_pane_width = button_size + button_size + mr + ml + mr + ml + mr + ml + esr + esl;
 	pos_vx = button_size;
@@ -539,9 +539,9 @@ static void add_left_pane(PA_UI * uip, PA_CANVAS_EDITOR * cep)
 static void add_status_bar(PA_UI * uip, PA_CANVAS_EDITOR * cep)
 {
 	uip->element[PA_UI_ELEMENT_STATUS_BAR] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BOTTOM_PANE], t3gui_box_proc, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL);
-	uip->element[PA_UI_ELEMENT_STATUS_LEFT_MESSAGE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_text_proc, 0, 0, 0, 0, 0, 0, 0, 0, uip->status_left_message, NULL, NULL);
-	uip->element[PA_UI_ELEMENT_STATUS_MIDDLE_MESSAGE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_text_proc, 0, 0, 0, 0, 0, 0, 0, 0, uip->status_middle_message, NULL, NULL);
-	uip->element[PA_UI_ELEMENT_STATUS_RIGHT_MESSAGE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, t3gui_text_proc, 0, 0, 0, 0, 0, 0, 0, 0, uip->status_right_message, NULL, NULL);
+	uip->element[PA_UI_ELEMENT_STATUS_LEFT_MESSAGE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_text_proc, 0, 0, 0, 0, 0, 0, 0, 0, uip->status_left_message, NULL, NULL);
+	uip->element[PA_UI_ELEMENT_STATUS_MIDDLE_MESSAGE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_text_proc, 0, 0, 0, 0, 0, 0, 0, 0, uip->status_middle_message, NULL, NULL);
+	uip->element[PA_UI_ELEMENT_STATUS_RIGHT_MESSAGE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_text_proc, 0, 0, 0, 0, 0, 0, 0, 0, uip->status_right_message, NULL, NULL);
 }
 
 static bool create_gui(PA_UI * uip, PA_CANVAS_EDITOR * cep)
