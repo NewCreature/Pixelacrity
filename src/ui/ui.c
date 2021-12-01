@@ -556,7 +556,7 @@ static bool create_gui(PA_UI * uip, PA_CANVAS_EDITOR * cep)
 	add_left_pane(uip, cep);
 	add_status_bar(uip, cep);
 
-	cep->editor_element = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], NULL, pa_gui_canvas_editor_proc, 0, 0, 0, 0, 0, 0, 0, 0, cep, NULL, NULL);
+	cep->editor_element = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_LIST_BOX], pa_gui_canvas_editor_proc, 0, 0, 0, 0, 0, 0, 0, 0, cep, NULL, NULL);
 	uip->element[PA_UI_ELEMENT_CANVAS_EDITOR] = cep->editor_element;
 
 	return true;
