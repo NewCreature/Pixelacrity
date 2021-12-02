@@ -239,14 +239,19 @@ bool pa_save_canvas_editor_state(PA_CANVAS_EDITOR * cep, const char * fn)
 void pa_resave_canvas_editor_state(PA_CANVAS_EDITOR * cep)
 {
 	ALLEGRO_PATH * pp;
+	const char * extension;
 
 	if(strlen(cep->canvas_path))
 	{
 		pp = al_create_path(cep->canvas_path);
 		if(pp)
 		{
-			al_set_path_extension(pp, ".ini");
-			pa_save_canvas_editor_state(cep, al_path_cstr(pp, '/'));
+			extension = al_get_path_extension(pp);
+			if(!strcasecmp(extension, ".pxc"))
+			{
+				al_set_path_extension(pp, ".ini");
+				pa_save_canvas_editor_state(cep, al_path_cstr(pp, '/'));
+			}
 			al_destroy_path(pp);
 		}
 	}
