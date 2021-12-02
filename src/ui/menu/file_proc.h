@@ -5,6 +5,7 @@ int pa_menu_file_new(int id, void * data);
 int pa_menu_file_load(int id, void * data);
 int pa_menu_file_save(int id, void * data);
 int pa_menu_file_save_as(int id, void * data);
+int pa_menu_file_resave_image(int id, void * data);
 int pa_menu_file_import(int id, void * data);
 int pa_menu_file_export(int id, void * data);
 int pa_menu_file_reexport(int id, void * data);

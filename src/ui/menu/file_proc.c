@@ -226,59 +226,21 @@ int pa_menu_file_load(int id, void * data)
 	return 0;
 }
 
-static bool resave_allowed(PA_CANVAS_EDITOR * cep)
-{
-	int offset_x, offset_y, width, height;
-	const char * extension = t3f_get_path_extension(cep->canvas_path);
-
-	if(!strcasecmp(extension, PA_CANVAS_FILE_EXTENSION))
-	{
-		return false;
-	}
-	if(cep->canvas->frame_max == 1 && cep->canvas->layer_max < 2)
-	{
-		if(!strcasecmp(extension, ".png") || !strcasecmp(extension, ".tga"))
-		{
-			pa_get_canvas_dimensions(cep->canvas, &offset_x, &offset_y, &width, &height, 0, false);
-			if(offset_x >= cep->canvas->frame[0]->box.start_x && offset_x + width <= cep->canvas->frame[0]->box.start_x + cep->canvas->frame[0]->box.width && offset_y >= cep->canvas->frame[0]->box.start_y && offset_y + height <= cep->canvas->frame[0]->box.start_y + cep->canvas->frame[0]->box.height)
-			{
-				return true;
-			}
-		}
-	}
-	return false;
-}
-
 int pa_menu_file_save(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
-	ALLEGRO_BITMAP * bp;
 
 	t3f_debug_message("Enter pa_menu_file_save()\n");
-	if(resave_allowed(app->canvas_editor))
+	if(strcasecmp(t3f_get_path_extension(app->canvas_editor->canvas_path), PA_CANVAS_FILE_EXTENSION))
 	{
-		bp = pa_get_bitmap_from_canvas(app->canvas, 0, app->canvas->layer_max, 0, false);
-		if(bp)
-		{
-			pa_set_window_message("Saving...");
-			al_save_bitmap(app->canvas_editor->canvas_path, bp);
-			al_destroy_bitmap(bp);
-			app->canvas_editor->modified = 0;
-		}
+		pa_menu_file_save_as(id, data);
 	}
 	else
 	{
-		if(strcasecmp(t3f_get_path_extension(app->canvas_editor->canvas_path), PA_CANVAS_FILE_EXTENSION))
+		pa_set_window_message("Saving...");
+		if(pa_save_canvas(app->canvas, app->canvas_editor->canvas_path, ".png", PA_CANVAS_SAVE_AUTO))
 		{
-			pa_menu_file_save_as(id, data);
-		}
-		else
-		{
-			pa_set_window_message("Saving...");
-			if(pa_save_canvas(app->canvas, app->canvas_editor->canvas_path, ".png", PA_CANVAS_SAVE_AUTO))
-			{
-				app->canvas_editor->modified = 0;
-			}
+			app->canvas_editor->modified = 0;
 		}
 	}
 	pa_resave_canvas_editor_state(app->canvas_editor);
@@ -324,6 +286,56 @@ int pa_menu_file_save_as(int id, void * data)
 		al_start_timer(t3f_timer);
 	}
 	t3f_debug_message("Exit pa_menu_file_save_as()\n");
+	return 0;
+}
+
+static bool export(PA_CANVAS * cp, int x, int y, int width, int height, const char * fn, ALLEGRO_SHADER * shader)
+{
+	ALLEGRO_BITMAP * bp;
+	ALLEGRO_STATE old_state;
+
+	al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);
+//	al_set_new_bitmap_flags(ALLEGRO_MEMORY_BITMAP);
+	bp = al_create_bitmap(width, height);
+	al_restore_state(&old_state);
+	if(bp)
+	{
+		pa_render_canvas_to_bitmap(cp, 0, cp->layer_max, x, y, width, height, 0, bp, shader);
+		al_save_bitmap(fn, bp);
+		al_destroy_bitmap(bp);
+		return true;
+	}
+	else
+	{
+		printf("Error exporting bitmap!\n");
+	}
+	return false;
+}
+
+int pa_menu_file_resave_image(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+	int x, y, w, h;
+
+	if(pa_resave_allowed(app->canvas_editor))
+	{
+		pa_get_canvas_dimensions(app->canvas, &x, &y, &w, &h, 0, true);
+		if(app->canvas->frame_max == 1)
+		{
+			if(x >= app->canvas->frame[0]->box.start_x && y >= app->canvas->frame[0]->box.start_y && x + w <= app->canvas->frame[0]->box.start_x + app->canvas->frame[0]->box.width && y + h <= app->canvas->frame[0]->box.start_y + app->canvas->frame[0]->box.height)
+			{
+				x = app->canvas->frame[0]->box.start_x;
+				y = app->canvas->frame[0]->box.start_y;
+				w = app->canvas->frame[0]->box.width;
+				h = app->canvas->frame[0]->box.height;
+			}
+		}
+		pa_set_window_message("Saving...");
+		if(export(app->canvas, x, y, w, h, app->canvas_editor->canvas_path, app->canvas_editor->premultiplied_alpha_shader))
+		{
+			app->canvas_editor->modified = 0;
+		}
+	}
 	return 0;
 }
 
@@ -384,29 +396,6 @@ int pa_menu_file_import(int id, void * data)
 	}
 	t3f_debug_message("Exit pa_menu_file_import()\n");
 	return 0;
-}
-
-static bool export(PA_CANVAS * cp, int x, int y, int width, int height, const char * fn, ALLEGRO_SHADER * shader)
-{
-	ALLEGRO_BITMAP * bp;
-	ALLEGRO_STATE old_state;
-
-	al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);
-//	al_set_new_bitmap_flags(ALLEGRO_MEMORY_BITMAP);
-	bp = al_create_bitmap(width, height);
-	al_restore_state(&old_state);
-	if(bp)
-	{
-		pa_render_canvas_to_bitmap(cp, 0, cp->layer_max, x, y, width, height, 0, bp, shader);
-		al_save_bitmap(fn, bp);
-		al_destroy_bitmap(bp);
-		return true;
-	}
-	else
-	{
-		printf("Error exporting bitmap!\n");
-	}
-	return false;
 }
 
 int pa_menu_file_reexport(int id, void * data)
