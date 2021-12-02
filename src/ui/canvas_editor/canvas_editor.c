@@ -11,6 +11,7 @@
 #include "selection.h"
 #include "clipboard.h"
 #include "selection.h"
+#include "defines.h"
 
 static int get_config_val(ALLEGRO_CONFIG * cp, const char * section, const char * key, int default_val)
 {
@@ -247,7 +248,7 @@ void pa_resave_canvas_editor_state(PA_CANVAS_EDITOR * cep)
 		if(pp)
 		{
 			extension = al_get_path_extension(pp);
-			if(!strcasecmp(extension, ".pxc"))
+			if(!strcasecmp(extension, PA_CANVAS_FILE_EXTENSION))
 			{
 				al_set_path_extension(pp, ".ini");
 				pa_save_canvas_editor_state(cep, al_path_cstr(pp, '/'));
