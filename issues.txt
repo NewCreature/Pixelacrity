@@ -3,8 +3,6 @@ Pixelacrity 0.3.5 Issues
 
 [ ]Ensure GUI elements that use margins have a way to modify their settings.
 
-[ ]Don't load INI file when loading canvas from image file.
-
 [ ]When saving back to image file, the image is missing the bottom and right
    edges.
 
@@ -848,3 +846,5 @@ Closed Issues
    [X]Add font.
 
 [X]Allow navigating the canvas using the map.
+
+[X]Don't load INI file when loading canvas from image file.
