@@ -1,8 +1,6 @@
 Pixelacrity 0.3.5 Issues
 ------------------------
 
-[ ]Separate image resave functionality from save functionality.
-
 [ ]Ensure GUI elements that use margins have a way to modify their settings.
 
 [ ]When saving back to image file, the image is missing the bottom and right
@@ -850,3 +848,5 @@ Closed Issues
 [X]Allow navigating the canvas using the map.
 
 [X]Don't load INI file when loading canvas from image file.
+
+[X]Separate image resave functionality from save functionality.
