@@ -1,6 +1,8 @@
 Pixelacrity 0.3.5 Issues
 ------------------------
 
+[ ]Fix color replace undo name.
+
 [ ]Ensure GUI elements that use margins have a way to modify their settings.
 
 [ ]Can't select color from palette after selecting a shade of that color.
@@ -25,8 +27,6 @@ Pixelacrity 0.3.5 Issues
 [ ]Crash when pasting while using frame tool.
 
 [ ]Look into re-export not working.
-
-[ ]Add color replace tool.
 
 [ ]Add dropper mode to get apparent color.
 
@@ -847,3 +847,5 @@ Closed Issues
 [X]Don't load INI file when loading canvas from image file.
 
 [X]Separate image resave functionality from save functionality.
+
+[X]Add color replace tool.
