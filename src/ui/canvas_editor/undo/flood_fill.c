@@ -159,7 +159,6 @@ bool pa_apply_flood_fill_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 	int tool;
 	int shift_x, shift_y;
 	int left, right, top, bottom;
-	int pit;
 
 	t3f_debug_message("Enter pa_apply_flood_fill_redo()\n");
 	tool = al_fread16le(fp);

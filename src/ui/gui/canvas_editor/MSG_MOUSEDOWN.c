@@ -205,6 +205,26 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 				}
 				break;
 			}
+			case PA_TOOL_REPLACE:
+			{
+				pa_set_window_message("Processing color replace...");
+				flood_fill_queue = pa_create_queue();
+				if(flood_fill_queue)
+				{
+					color = pa_get_canvas_pixel(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y);
+					if(pa_replace_canvas_color(canvas_editor->canvas, canvas_editor->current_layer, color, c == 1 ? canvas_editor->left_color.color : canvas_editor->right_color.color, flood_fill_queue))
+					{
+						made_undo = create_flood_fill_undo(canvas_editor, color, flood_fill_queue, 0, 0);
+						if(made_undo)
+						{
+							pa_finalize_undo(canvas_editor);
+						}
+						canvas_editor->modified++;
+					}
+					pa_destroy_queue(flood_fill_queue);
+				}
+				break;
+			}
 			case PA_TOOL_DROPPER:
 			{
 				pa_tool_dropper_logic(canvas_editor, c);

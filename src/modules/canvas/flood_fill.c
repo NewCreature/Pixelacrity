@@ -276,6 +276,54 @@ bool pa_flood_fill_canvas_area(PA_CANVAS * cp, int layer, int left, int top, int
 	return ret;
 }
 
+static void replace_bitmap_color(ALLEGRO_BITMAP * bp, ALLEGRO_COLOR original_color, ALLEGRO_COLOR new_color, int offset_x, int offset_y, PA_QUEUE * out_qp)
+{
+	ALLEGRO_STATE old_state;
+	int i, j;
+	ALLEGRO_COLOR c;
+
+	al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP);
+	al_lock_bitmap(bp, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_READWRITE);
+	al_set_target_bitmap(bp);
+	for(i = 0; i < al_get_bitmap_height(bp); i++)
+	{
+		for(j = 0; j < al_get_bitmap_width(bp); j++)
+		{
+			c = al_get_pixel(bp, j, i);
+			if(pa_color_equal(c, original_color))
+			{
+				al_put_pixel(j, i, new_color);
+				pa_queue_push(out_qp, offset_x + j, offset_y + i);
+			}
+		}
+	}
+	al_unlock_bitmap(bp);
+	al_restore_state(&old_state);
+}
+
+bool pa_replace_canvas_color(PA_CANVAS * cp, int layer, ALLEGRO_COLOR old_color, ALLEGRO_COLOR new_color, PA_QUEUE * out_qp)
+{
+	unsigned char r, g, b, a;
+	int i, j;
+
+	al_unmap_rgba(old_color, &r, &g, &b, &a);
+	if(a > 0)
+	{
+		for(i = 0; i < cp->layer_height; i++)
+		{
+			for(j = 0; j < cp->layer_width; j++)
+			{
+				if(cp->layer[layer]->bitmap[i][j])
+				{
+					replace_bitmap_color(cp->layer[layer]->bitmap[i][j], old_color, new_color, j * cp->bitmap_size, i * cp->bitmap_size, out_qp);
+				}
+			}
+		}
+		return true;
+	}
+	return false;
+}
+
 void pa_flood_fill_canvas_from_queue(PA_CANVAS * cp, int layer, ALLEGRO_COLOR color, PA_QUEUE * qp)
 {
 	ALLEGRO_STATE old_state;
