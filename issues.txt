@@ -1,8 +1,6 @@
 Pixelacrity 0.3.5 Issues
 ------------------------
 
-[ ]Fix color replace undo name.
-
 [ ]Ensure GUI elements that use margins have a way to modify their settings.
 
 [ ]Can't select color from palette after selecting a shade of that color.
@@ -849,3 +847,5 @@ Closed Issues
 [X]Separate image resave functionality from save functionality.
 
 [X]Add color replace tool.
+
+[X]Fix color replace undo name.
