@@ -124,7 +124,7 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 					ty = canvas_editor->hover_y / canvas_editor->canvas->bitmap_size;
 					if(tx >= 0 && tx < canvas_editor->canvas->layer_width && ty >= 0 && ty < canvas_editor->canvas->layer_height && canvas_editor->canvas->layer[canvas_editor->current_layer]->bitmap[ty][tx])
 					{
-						flood_fill_queue = pa_create_queue();
+						flood_fill_queue = pa_create_queue("Flood Fill");
 						if(flood_fill_queue)
 						{
 							color = pa_get_canvas_pixel(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y);
@@ -143,7 +143,7 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 				}
 				else if(t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND])
 				{
-					flood_fill_queue = pa_create_queue();
+					flood_fill_queue = pa_create_queue("Flood Fill");
 					if(flood_fill_queue)
 					{
 						hover_frame = pa_get_hover_frame(canvas_editor);
@@ -176,7 +176,7 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 				}
 				else
 				{
-					flood_fill_queue = pa_create_queue();
+					flood_fill_queue = pa_create_queue("Flood Fill");
 					if(flood_fill_queue)
 					{
 						left = canvas_editor->view_x;
@@ -208,7 +208,7 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 			case PA_TOOL_REPLACE:
 			{
 				pa_set_window_message("Processing color replace...");
-				flood_fill_queue = pa_create_queue();
+				flood_fill_queue = pa_create_queue("Replace Color");
 				if(flood_fill_queue)
 				{
 					color = pa_get_canvas_pixel(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y);

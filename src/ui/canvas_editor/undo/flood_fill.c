@@ -1,4 +1,5 @@
 #include "t3f/t3f.h"
+#include "t3f/file.h"
 #include "modules/canvas/canvas.h"
 #include "modules/canvas/canvas_helpers.h"
 #include "modules/canvas/flood_fill.h"
@@ -30,12 +31,13 @@ bool pa_make_flood_fill_undo(PA_CANVAS_EDITOR * cep, int layer, ALLEGRO_COLOR co
 		printf("fail: %s\n", fn);
 		goto fail;
 	}
-	pa_write_undo_header(fp, cep, PA_UNDO_TYPE_FLOOD_FILL, "Flood Fill");
+	pa_write_undo_header(fp, cep, PA_UNDO_TYPE_FLOOD_FILL, qp->name);
 	al_fwrite16le(fp, cep->current_tool);
 	al_fwrite32le(fp, layer);
 	write_color(fp, color);
 	al_fwrite32le(fp, shift_x);
 	al_fwrite32le(fp, shift_y);
+	t3f_save_string_f(fp, qp->name);
 	al_fwrite32le(fp, pa_get_queue_size(qp));
 	current_node = qp->current;
 	while(current_node)
@@ -88,6 +90,7 @@ bool pa_apply_flood_fill_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 	int layer;
 	int tool;
 	int shift_x, shift_y;
+	char * name;
 
 	t3f_debug_message("Enter pa_apply_flood_fill_undo()\n");
 	tool = al_fread16le(fp);
@@ -95,10 +98,11 @@ bool pa_apply_flood_fill_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 	read_color(fp, &color);
 	shift_x = al_fread32le(fp);
 	shift_y = al_fread32le(fp);
+	name = t3f_load_string_f(fp);
 	size = al_fread32le(fp);
 	if(size)
 	{
-		qp = pa_create_queue();
+		qp = pa_create_queue(name);
 		if(!qp)
 		{
 			goto fail;
@@ -120,6 +124,10 @@ bool pa_apply_flood_fill_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 			pa_shift_canvas_editor_variables(cep, -shift_x * cep->canvas->bitmap_size, -shift_y * cep->canvas->bitmap_size);
 		}
 	}
+	if(name)
+	{
+		free(name);
+	}
 	pa_select_canvas_editor_tool(cep, PA_TOOL_FLOOD_FILL);
 	t3f_debug_message("Exit pa_apply_flood_fill_undo()\n");
 	return true;
@@ -130,6 +138,10 @@ bool pa_apply_flood_fill_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 		if(qp)
 		{
 			pa_destroy_queue(qp);
+		}
+		if(name)
+		{
+			free(name);
 		}
 		return false;
 	}
@@ -159,6 +171,7 @@ bool pa_apply_flood_fill_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 	int tool;
 	int shift_x, shift_y;
 	int left, right, top, bottom;
+	char * name;
 
 	t3f_debug_message("Enter pa_apply_flood_fill_redo()\n");
 	tool = al_fread16le(fp);
@@ -170,10 +183,11 @@ bool pa_apply_flood_fill_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 	read_color(fp, &color);
 	shift_x = al_fread32le(fp);
 	shift_y = al_fread32le(fp);
+	name = t3f_load_string_f(fp);
 	size = al_fread32le(fp);
 	if(size)
 	{
-		qp = pa_create_queue();
+		qp = pa_create_queue(name);
 		if(!qp)
 		{
 			goto fail;
@@ -213,6 +227,10 @@ bool pa_apply_flood_fill_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 		pa_flood_fill_canvas_from_queue(cep->canvas, layer, color, qp);
 		pa_destroy_queue(qp);
 	}
+	if(name)
+	{
+		free(name);
+	}
 	pa_select_canvas_editor_tool(cep, PA_TOOL_FLOOD_FILL);
 	t3f_debug_message("Exit pa_apply_flood_fill_redo()\n");
 	return true;
@@ -223,6 +241,10 @@ bool pa_apply_flood_fill_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 		if(qp)
 		{
 			pa_destroy_queue(qp);
+		}
+		if(name)
+		{
+			free(name);
 		}
 		return false;
 	}

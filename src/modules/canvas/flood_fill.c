@@ -105,7 +105,7 @@ bool pa_flood_fill_canvas(PA_CANVAS * cp, int layer, int start_x, int start_y, A
 		return false;
 	}
 	al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP);
-	qp = pa_create_queue();
+	qp = pa_create_queue("Flood Fill");
 	if(qp)
 	{
 		old_color = get_pixel(cp, layer, start_x, start_y, &current_bp, &ox, &oy);
@@ -201,7 +201,7 @@ bool pa_flood_fill_canvas_area(PA_CANVAS * cp, int layer, int left, int top, int
 		return false;
 	}
 	al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP);
-	qp = pa_create_queue();
+	qp = pa_create_queue("Flood Fill");
 	if(qp)
 	{
 		old_color = get_pixel_2(cp, layer, start_x, start_y);

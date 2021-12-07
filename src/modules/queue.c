@@ -30,7 +30,7 @@ void queue_delete(PA_QUEUE * qp)
 	}
 }
 
-PA_QUEUE * pa_create_queue(void)
+PA_QUEUE * pa_create_queue(const char * name)
 {
 	PA_QUEUE * qp;
 
@@ -38,6 +38,10 @@ PA_QUEUE * pa_create_queue(void)
 	if(qp)
 	{
 		memset(qp, 0, sizeof(PA_QUEUE));
+		if(name)
+		{
+			strcpy(qp->name, name);
+		}
 	}
 	return qp;
 }

@@ -23,11 +23,12 @@ typedef struct
 typedef struct
 {
 
+	char name[256];
 	PA_QUEUE_NODE * current;
 
 } PA_QUEUE;
 
-PA_QUEUE * pa_create_queue(void);
+PA_QUEUE * pa_create_queue(const char * name);
 void pa_destroy_queue(PA_QUEUE * qp);
 bool pa_queue_push(PA_QUEUE * qp, int x, int y);
 bool pa_queue_pop(PA_QUEUE * qp, int * x, int * y);

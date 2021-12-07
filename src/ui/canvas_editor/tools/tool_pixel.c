@@ -61,7 +61,7 @@ static void render_queued_lines(PA_CANVAS_EDITOR * cep)
 
 bool pa_tool_pixel_start(PA_CANVAS_EDITOR * cep)
 {
-	pixel_queue = pa_create_queue();
+	pixel_queue = pa_create_queue("Draw Pixel");
 	if(!pixel_queue)
 	{
 		goto fail;
