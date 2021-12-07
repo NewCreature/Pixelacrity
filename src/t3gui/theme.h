@@ -21,6 +21,10 @@ typedef struct
     ALLEGRO_COLOR color[T3GUI_THEME_MAX_BITMAPS];
     ALLEGRO_FONT * font[T3GUI_THEME_MAX_FONTS];
     void * aux_font; // alternate font system
+    int left_margin;
+    int right_margin;
+    int top_margin;
+    int bottom_margin;
 
 } T3GUI_THEME_STATE;
 

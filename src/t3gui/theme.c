@@ -64,6 +64,10 @@ static bool create_default_theme(T3GUI_THEME * theme)
         theme->state[i].color[T3GUI_THEME_COLOR_EG] = t3gui_red;
         t3gui_load_font(&theme->state[i].font[0], NULL, 0);
         theme->state[i].aux_font = NULL;
+        theme->state[i].left_margin = 1;
+        theme->state[i].right_margin = 1;
+        theme->state[i].top_margin = 1;
+        theme->state[i].bottom_margin = 1;
     }
     theme->state[T3GUI_ELEMENT_STATE_HOVER].color[T3GUI_THEME_COLOR_BG] = t3gui_silver;
     theme->state[T3GUI_ELEMENT_STATE_HOVER].color[T3GUI_THEME_COLOR_FG] = t3gui_black;
@@ -244,6 +248,26 @@ static void t3gui_get_theme_state(ALLEGRO_CONFIG * cp, const char * section, T3G
                 }
             }
         }
+    }
+    val = al_get_config_value(cp, section, "left_margin");
+    if(val)
+    {
+      sp->left_margin = atoi(val);
+    }
+    val = al_get_config_value(cp, section, "right_margin");
+    if(val)
+    {
+      sp->right_margin = atoi(val);
+    }
+    val = al_get_config_value(cp, section, "top_margin");
+    if(val)
+    {
+      sp->top_margin = atoi(val);
+    }
+    val = al_get_config_value(cp, section, "bottom_margin");
+    if(val)
+    {
+      sp->bottom_margin = atoi(val);
     }
 }
 
