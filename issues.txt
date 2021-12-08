@@ -18,8 +18,6 @@ Pixelacrity 0.3.6 Issues
 
 [ ]Look into re-export not working.
 
-[ ]Add dropper mode to get apparent color.
-
 [ ]Add GUI elements related to the current tool configuration.
 
    [ ]The current brush should be visible.
@@ -849,3 +847,5 @@ Closed Issues
    [X]We need a way for the color elements to communicate they have been
       clicked. We'll probably need to introduce a 'PA_COLOR' structure for
       storing the clicked state alongside the 'ALLEGRO_COLOR' data.
+
+[X]Add dropper mode to get apparent color.
