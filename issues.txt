@@ -1,4 +1,4 @@
-Pixelacrity 0.3.5 Issues
+Pixelacrity 0.3.6 Issues
 ------------------------
 
 [ ]Ensure GUI elements that use margins have a way to modify their settings.
