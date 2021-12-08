@@ -628,7 +628,9 @@ int t3gui_text_proc(int msg, T3GUI_ELEMENT *d, int c)
     {
         const char *text = d->dp;
         int flags = d->d1;
-        int x = d->x;
+        int x = d->x + d->theme->state[0].left_margin;
+        int y = d->y + d->theme->state[0].top_margin;
+        int w = d->w - d->theme->state[0].left_margin - d->theme->state[0].right_margin;
         ALLEGRO_COLOR fg = (d->flags & D_DISABLED) ? d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].color[T3GUI_THEME_COLOR_MG] : d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].color[T3GUI_THEME_COLOR_FG];
         const ALLEGRO_FONT *font = d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].font[0];
         assert(font);
@@ -640,14 +642,14 @@ int t3gui_text_proc(int msg, T3GUI_ELEMENT *d, int c)
 
         if(flags == ALLEGRO_ALIGN_CENTRE)
         {
-            x += d->w/2;
+            x += w / 2;
         }
         if(flags == ALLEGRO_ALIGN_RIGHT)
         {
-            x += d->w;
+            x += w;
         }
 
-        render_split_text(font, fg, x, d->y, d->w, 4, text);
+        render_split_text(font, fg, x, y, w, d->theme->state[0].min_space, text);
     }
 
     return ret;
