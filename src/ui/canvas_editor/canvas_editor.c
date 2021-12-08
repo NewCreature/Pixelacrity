@@ -43,6 +43,7 @@ void pa_reset_canvas_editor(PA_CANVAS_EDITOR * cep)
 	cep->view_zoom = 1;
 	cep->current_layer = 0;
 	cep->hover_frame = -1;
+	cep->current_frame = 0;
 	cep->modified = 0;
 	strcpy(cep->canvas_path, "");
 	cep->backup_tick = PA_BACKUP_INTERVAL;
