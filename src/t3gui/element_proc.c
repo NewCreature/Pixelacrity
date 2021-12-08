@@ -1904,7 +1904,6 @@ int t3gui_list_proc(int msg, T3GUI_ELEMENT *d, int c)
     .mousey = d->mousey
   };
 
-
   switch(msg)
   {
     case MSG_START:
@@ -1990,9 +1989,13 @@ int t3gui_list_proc(int msg, T3GUI_ELEMENT *d, int c)
 
     case MSG_MOUSEUP:
     {
-      if(d->d3 > 0 && dd.d1 > 0 && d->mousex > dd.x)
+      if(dd.flags & D_TRACKMOUSE)
       {
         ret |= t3gui_scroll_proc(msg, &dd, c);
+      }
+      if(!(dd.flags & D_TRACKMOUSE))
+      {
+        d->flags &= ~D_TRACKMOUSE;
       }
       break;
     }
@@ -2002,6 +2005,10 @@ int t3gui_list_proc(int msg, T3GUI_ELEMENT *d, int c)
       if(d->d3 > 0 && dd.d1 > 0 && d->mousex > dd.x)
       {
         ret |= t3gui_scroll_proc(msg, &dd, c);
+        if(dd.flags & D_TRACKMOUSE)
+        {
+          d->flags |= D_TRACKMOUSE;
+        }
       }
       else
       {
