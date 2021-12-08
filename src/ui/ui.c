@@ -263,8 +263,9 @@ void pa_resize_ui(PA_UI * uip)
 	}
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_FRAME], pos_x + offset_x, pos_y, pos_vx, pos_vy);
 	pos_y += pos_vy + mt + mb + esb;
-	resize_element(uip->element[PA_UI_ELEMENT_LAYER_LIST], t3f_default_view->width - right_pane_width + esl + ml, pos_y, right_pane_width - mr - ml - mr - ml - esl - esr, 128);
-	pos_y += 128;
+	s = (al_get_font_line_height(uip->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0]) + uip->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].top_margin + uip->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].bottom_margin) * 4;
+	resize_element(uip->element[PA_UI_ELEMENT_LAYER_LIST], t3f_default_view->width - right_pane_width + esl + ml, pos_y, right_pane_width - mr - ml - mr - ml - esl - esr, s);
+	pos_y += s;
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_ADD_LAYER], t3f_default_view->width - right_pane_width + ml + mr + esl, pos_y, button_size, button_size);
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_REMOVE_LAYER], t3f_default_view->width - ml - mr - esr - pos_vx, pos_y, button_size, button_size);
 	pos_y += button_size + mt + mb + est + esb;
