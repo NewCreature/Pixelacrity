@@ -1,12 +1,6 @@
 Pixelacrity 0.3.6 Issues
 ------------------------
 
-[ ]Can't select color from palette after selecting a shade of that color.
-
-   [ ]We need a way for the color elements to communicate they have been
-      clicked. We'll probably need to introduce a 'PA_COLOR' structure for
-      storing the clicked state alongside the 'ALLEGRO_COLOR' data.
-
 [ ]Look into crash when loading/creating canvas after working on a canvas.
 
 [ ]Add pane-specific edge space settings to themes. Some themes might need to
@@ -849,3 +843,9 @@ Closed Issues
 [X]Fix color replace undo name.
 
 [X]Ensure GUI elements that use margins have a way to modify their settings.
+
+[X]Can't select color from palette after selecting a shade of that color.
+
+   [X]We need a way for the color elements to communicate they have been
+      clicked. We'll probably need to introduce a 'PA_COLOR' structure for
+      storing the clicked state alongside the 'ALLEGRO_COLOR' data.
