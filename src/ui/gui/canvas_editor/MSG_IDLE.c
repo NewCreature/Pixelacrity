@@ -54,6 +54,12 @@ static void update_color_selections(PA_CANVAS_EDITOR * canvas_editor)
 		pa_set_color(&canvas_editor->left_color, canvas_editor->left_color.base_color);
 		update_pick_colors = true;
 	}
+	else if(canvas_editor->left_color.clicked)
+	{
+		pa_set_color(&canvas_editor->left_color, canvas_editor->left_color.base_color);
+		update_pick_colors = true;
+		canvas_editor->left_color.clicked = 0;
+	}
 
 	/* handle changing the left color */
 	if(!pa_color_equal(canvas_editor->left_color.color, canvas_editor->left_color.last_color))
@@ -87,6 +93,12 @@ static void update_color_selections(PA_CANVAS_EDITOR * canvas_editor)
 	{
 		pa_set_color(&canvas_editor->right_color, canvas_editor->right_color.base_color);
 		update_pick_colors = true;
+	}
+	else if(canvas_editor->right_color.clicked)
+	{
+		pa_set_color(&canvas_editor->right_color, canvas_editor->right_color.base_color);
+		update_pick_colors = true;
+		canvas_editor->right_color.clicked = 0;
 	}
 
 	/* handle changing the right color */

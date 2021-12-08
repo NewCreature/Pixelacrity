@@ -28,11 +28,11 @@ static bool add_color_pickers(PA_UI * uip, PA_CANVAS_EDITOR * cep, T3GUI_DIALOG 
 
 	for(i = 0; i < PA_COLOR_PICKER_SHADES; i++)
 	{
-		uip->left_shade_picker_element[i] = t3gui_dialog_add_element(dp, NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->left_shade_color[i], &cep->left_color.color, &cep->right_color.color);
+		uip->left_shade_picker_element[i] = t3gui_dialog_add_element(dp, NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->left_shade_color[i], &cep->left_color, &cep->right_color);
 	}
 	for(i = 0; i < PA_COLOR_PICKER_SHADES; i++)
 	{
-		uip->left_alpha_picker_element[i] = t3gui_dialog_add_element(dp, NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->left_alpha_color[i], &cep->left_color.color, &cep->right_color.color);
+		uip->left_alpha_picker_element[i] = t3gui_dialog_add_element(dp, NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->left_alpha_color[i], &cep->left_color, &cep->right_color);
 	}
 	for(i = 0; i < PA_COLOR_PICKER_SHADES; i++)
 	{
@@ -57,6 +57,8 @@ static bool add_color_palette(PA_UI * uip, PA_CANVAS_EDITOR * cep, T3GUI_DIALOG 
 			uip->palette_color_element[i * PA_COLOR_PICKER_SHADES + j] = t3gui_dialog_add_element(dp, NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->palette->color[i * PA_COLOR_PICKER_SHADES + j], &cep->left_color.base_color, &cep->right_color.base_color);
 			uip->palette_color_element[i * PA_COLOR_PICKER_SHADES + j]->dp4 = &cep->left_color.color;
 			uip->palette_color_element[i * PA_COLOR_PICKER_SHADES + j]->dp5 = &cep->right_color.color;
+			uip->palette_color_element[i * PA_COLOR_PICKER_SHADES + j]->dp6 = &cep->left_color.clicked;
+			uip->palette_color_element[i * PA_COLOR_PICKER_SHADES + j]->dp7 = &cep->right_color.clicked;
 		}
 	}
 

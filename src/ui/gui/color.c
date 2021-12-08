@@ -10,6 +10,9 @@ static T3F_ATLAS * color_atlas;
 
 int pa_gui_color_proc(int msg, T3GUI_ELEMENT * d, int c)
 {
+	int * left_clicked = d->dp6;
+	int * right_clicked = d->dp7;
+
 	switch(msg)
 	{
 		case MSG_START:
@@ -56,6 +59,14 @@ int pa_gui_color_proc(int msg, T3GUI_ELEMENT * d, int c)
 				{
 					*(ALLEGRO_COLOR *)d->dp3 = *(ALLEGRO_COLOR *)d->dp;
 				}
+			}
+			if(c == 1 && left_clicked)
+			{
+				*left_clicked = 1;
+			}
+			else if(c == 2 && right_clicked)
+			{
+				*right_clicked = 1;
 			}
 			break;
 		}

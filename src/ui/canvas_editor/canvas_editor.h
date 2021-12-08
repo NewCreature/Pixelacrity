@@ -87,6 +87,7 @@ typedef struct
 	int old_shade_slider_d2;
 	T3GUI_ELEMENT * alpha_slider_element;
 	int old_alpha_slider_d2;
+	int clicked;
 
 } PA_COLOR_INFO;
 
