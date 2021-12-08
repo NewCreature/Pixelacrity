@@ -129,6 +129,7 @@ void app_logic(void * data)
 	else if(app->canvas_editor->current_frame < app->canvas->frame_max)
 	{
 		sprintf(app->ui->status_left_message, "(%d, %d)", app->canvas_editor->hover_x - app->canvas->frame[app->canvas_editor->current_frame]->box.start_x, app->canvas_editor->hover_y - app->canvas->frame[app->canvas_editor->current_frame]->box.start_y);
+		sprintf(app->ui->status_right_message, "\t%s", app->canvas->frame[app->canvas_editor->current_frame]->export_path ? app->canvas->frame[app->canvas_editor->current_frame]->export_path : "");
 	}
 	pa_handle_shortcuts(app);
 }
