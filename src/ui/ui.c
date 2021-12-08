@@ -664,6 +664,7 @@ static void select_button(PA_UI * uip, int button)
 	uip->element[PA_UI_ELEMENT_BUTTON_FILLED_OVAL]->flags &= ~D_SELECTED;
 	uip->element[PA_UI_ELEMENT_BUTTON_ERASER]->flags &= ~D_SELECTED;
 	uip->element[PA_UI_ELEMENT_BUTTON_FLOOD_FILL]->flags &= ~D_SELECTED;
+	uip->element[PA_UI_ELEMENT_BUTTON_REPLACE]->flags &= ~D_SELECTED;
 	uip->element[PA_UI_ELEMENT_BUTTON_DROPPER]->flags &= ~D_SELECTED;
 	uip->element[PA_UI_ELEMENT_BUTTON_SELECTION]->flags &= ~D_SELECTED;
 	uip->element[PA_UI_ELEMENT_BUTTON_FRAME]->flags &= ~D_SELECTED;
