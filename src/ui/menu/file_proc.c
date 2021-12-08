@@ -456,13 +456,15 @@ int pa_menu_file_export(int id, void * data)
 	ALLEGRO_PATH * pp;
 	const char * file_path;
 	const char * extension;
+	const char * val;
 
 	t3f_debug_message("Enter pa_menu_file_export()\n");
 	if(!pa_can_export(app->canvas_editor))
 	{
 		return 0;
 	}
-	file_chooser = al_create_native_file_dialog(NULL, "Export canvas to image file...", "*.png;*.tga;*.pcx;*.bmp;*.jpg", ALLEGRO_FILECHOOSER_SAVE);
+	val = al_get_config_value(t3f_config, "App Data", "last_export_path");
+	file_chooser = al_create_native_file_dialog(val, "Export canvas to image file...", "*.png;*.tga;*.pcx;*.bmp;*.jpg", ALLEGRO_FILECHOOSER_SAVE);
 	if(file_chooser)
 	{
 		al_stop_timer(t3f_timer);
@@ -489,6 +491,8 @@ int pa_menu_file_export(int id, void * data)
 						{
 							app->canvas_editor->export_path = strdup(al_path_cstr(pp, '/'));
 						}
+						al_set_path_filename(pp, "");
+						al_set_config_value(t3f_config, "App Data", "last_export_path", al_path_cstr(pp, '/'));
 						al_destroy_path(pp);
 						t3f_refresh_menus();
 					}
