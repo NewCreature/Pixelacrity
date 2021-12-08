@@ -68,7 +68,8 @@ static bool create_default_theme(T3GUI_THEME * theme)
         theme->state[i].right_margin = 1;
         theme->state[i].top_margin = 1;
         theme->state[i].bottom_margin = 1;
-        theme->state[i].scrollbar_size = 0;
+        theme->state[i].scrollbar_size = 16;
+        theme->state[i].min_space = 0;
     }
     theme->state[T3GUI_ELEMENT_STATE_HOVER].color[T3GUI_THEME_COLOR_BG] = t3gui_silver;
     theme->state[T3GUI_ELEMENT_STATE_HOVER].color[T3GUI_THEME_COLOR_FG] = t3gui_black;
@@ -274,6 +275,11 @@ static void t3gui_get_theme_state(ALLEGRO_CONFIG * cp, const char * section, T3G
     if(val)
     {
       sp->scrollbar_size = atoi(val);
+    }
+    val = al_get_config_value(cp, section, "min_space");
+    if(val)
+    {
+      sp->min_space = atoi(val);
     }
 }
 
