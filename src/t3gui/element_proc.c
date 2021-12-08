@@ -1905,6 +1905,10 @@ int t3gui_list_proc(int msg, T3GUI_ELEMENT *d, int c)
         {
             /* Query size of required text box (d1) and size of scroll bar (d3) */
             d->d3 = 16;
+            if(d->theme)
+            {
+              d->d3 = d->theme->state[0].scrollbar_size;
+            }
             d->id1 = -1;
             d->id2 = -1;
             //d->d1 = draw_textbox(d, false, &d->d3);
