@@ -1,8 +1,6 @@
 Pixelacrity 0.3.6 Issues
 ------------------------
 
-[ ]Ensure GUI elements that use margins have a way to modify their settings.
-
 [ ]Can't select color from palette after selecting a shade of that color.
 
    [ ]We need a way for the color elements to communicate they have been
@@ -849,3 +847,5 @@ Closed Issues
 [X]Add color replace tool.
 
 [X]Fix color replace undo name.
+
+[X]Ensure GUI elements that use margins have a way to modify their settings.
