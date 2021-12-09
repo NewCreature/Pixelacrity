@@ -2056,7 +2056,7 @@ int t3gui_list_proc(int msg, T3GUI_ELEMENT *d, int c)
         al_set_clipping_rectangle(d->x, d->y, list_width, d->h);
         if(d->d1 == n && d->flags & D_GOTFOCUS)
         {
-          al_draw_filled_rectangle(d->x + 0.5, y + 0.5, d->x + fw + 0.5, y + entry_height + 0.5, d->theme->state[T3GUI_ELEMENT_STATE_SELECTED].color[T3GUI_THEME_COLOR_BG]);
+          al_draw_filled_rectangle(d->x, y, d->x + d->w - 1, y + entry_height, d->theme->state[T3GUI_ELEMENT_STATE_SELECTED].color[T3GUI_THEME_COLOR_BG]);
           fg = d->theme->state[T3GUI_ELEMENT_STATE_SELECTED].color[T3GUI_THEME_COLOR_FG];
           if(n == d->id2)
           {

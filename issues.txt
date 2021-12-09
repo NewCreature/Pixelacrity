@@ -1,9 +1,6 @@
 Pixelacrity 0.3.6 Issues
 ------------------------
 
-[ ]List box highlight rectangle does not extend to the edge of the list box
-   element.
-
 [ ]Use theme margin to get the height of the status bar.
 
 [ ]Look into crash when loading/creating canvas after working on a canvas.
@@ -854,3 +851,6 @@ Closed Issues
       storing the clicked state alongside the 'ALLEGRO_COLOR' data.
 
 [X]Add dropper mode to get apparent color.
+
+[X]List box highlight rectangle does not extend to the edge of the list box
+   element.
