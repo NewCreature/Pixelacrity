@@ -1,6 +1,8 @@
 Pixelacrity 0.3.6 Issues
 ------------------------
 
+[ ]Improve brush grab by discarding unused pixels.
+
 [ ]Use theme margin to get the height of the status bar.
 
 [ ]Look into crash when loading/creating canvas after working on a canvas.
@@ -22,9 +24,9 @@ Pixelacrity 0.3.6 Issues
 
 [ ]Add GUI elements related to the current tool configuration.
 
-   [ ]The current brush should be visible.
+   [X]The current brush should be visible.
 
-      [ ]The brush preview should be scaled based on the current theme. If the
+      [X]The brush preview should be scaled based on the current theme. If the
          brush doesn't fit within the preview area it should be scaled down to
          fit.
 
