@@ -1,6 +1,11 @@
 Pixelacrity 0.3.6 Issues
 ------------------------
 
+[ ]List box highlight rectangle does not extend to the edge of the list box
+   element.
+
+[ ]Use theme margin to get the height of the status bar.
+
 [ ]Look into crash when loading/creating canvas after working on a canvas.
 
 [ ]Add pane-specific edge space settings to themes. Some themes might need to
