@@ -74,6 +74,7 @@ APP_UI_OBJECTS =     ui/ui.o\
                      ui/gui/button_proc.o\
                      ui/gui/list_proc.o\
                      ui/gui/layer_list_proc.o\
+                     ui/gui/brush.o\
                      ui/gui/canvas_editor/element.o\
                      ui/gui/canvas_editor/MSG_GOTMOUSE.o\
                      ui/gui/canvas_editor/MSG_LOSTMOUSE.o\
