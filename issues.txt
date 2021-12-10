@@ -32,6 +32,8 @@ Pixelacrity 0.3.6 Issues
 
    [ ]Add brush palette for selecting from some basic brush shapes.
 
+      [ ]This should be implemented as a popup dialog.
+
    [ ]Add brush size slider.
 
    [ ]Allow selecting between copy and composite rendering for tools.
