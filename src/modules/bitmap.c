@@ -88,3 +88,60 @@ ALLEGRO_BITMAP * pa_make_checkerboard_bitmap(ALLEGRO_COLOR c1, ALLEGRO_COLOR c2)
 	al_restore_state(&old_state);
 	return bp;
 }
+
+void pa_get_bitmap_dimensions(ALLEGRO_BITMAP * bp, int * x, int * y, int * width, int * height)
+{
+	ALLEGRO_COLOR c;
+	unsigned char r, a;
+	int left_x = al_get_bitmap_width(bp);
+	int right_x = 0;
+	int top_y = al_get_bitmap_height(bp);
+	int bottom_y = 0;
+	int l, m;
+
+	al_lock_bitmap(bp, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_READONLY);
+	for(l = 0; l < al_get_bitmap_height(bp); l++)
+	{
+		for(m = 0; m < al_get_bitmap_width(bp); m++)
+		{
+			c = al_get_pixel(bp, m, l);
+			al_unmap_rgba(c, &r, &r, &r, &a);
+			if(a > 0)
+			{
+				if(m < left_x)
+				{
+					left_x = m;
+				}
+				if(m > right_x)
+				{
+					right_x = m;
+				}
+				if(l < top_y)
+				{
+					top_y = l;
+				}
+				if(l > bottom_y)
+				{
+					bottom_y = l;
+				}
+			}
+		}
+	}
+	al_unlock_bitmap(bp);
+	if(x)
+	{
+		*x = left_x;
+	}
+	if(y)
+	{
+		*y = top_y;
+	}
+	if(width)
+	{
+		*width = (right_x - left_x) + 1;
+	}
+	if(height)
+	{
+		*height = (bottom_y - top_y) + 1;
+	}
+}

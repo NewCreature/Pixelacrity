@@ -2,6 +2,7 @@
 #include "instance.h"
 #include "ui/canvas_editor/brush.h"
 #include "modules/canvas/canvas_helpers.h"
+#include "modules/bitmap.h"
 
 int pa_menu_tool_brush_reset(int id, void * data)
 {
@@ -46,6 +47,32 @@ static void grab_brush(PA_CANVAS_EDITOR * cep, ALLEGRO_BITMAP * bp, bool multi)
 	cep->brush = bp;
 }
 
+static void trim_brush(ALLEGRO_BITMAP ** bp)
+{
+	ALLEGRO_BITMAP * new_bp;
+	int x, y, w, h;
+	ALLEGRO_STATE old_state;
+	ALLEGRO_TRANSFORM identity;
+
+	pa_get_bitmap_dimensions(*bp, &x, &y, &w, &h);
+	if(w > 0 && h > 0)
+	{
+		new_bp = al_create_bitmap(w, h);
+		if(new_bp)
+		{
+			al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_BLENDER | ALLEGRO_STATE_TRANSFORM);
+			al_set_target_bitmap(new_bp);
+			al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
+			al_identity_transform(&identity);
+			al_use_transform(&identity);
+			al_draw_bitmap(*bp, -x, -y, 0);
+			al_destroy_bitmap(*bp);
+			*bp = new_bp;
+			al_restore_state(&old_state);
+		}
+	}
+}
+
 int pa_menu_tool_brush_grab_from_selection(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
@@ -57,6 +84,7 @@ int pa_menu_tool_brush_grab_from_selection(int id, void * data)
 		if(bp)
 		{
 			grab_brush(app->canvas_editor, bp, false);
+			trim_brush(&app->canvas_editor->brush);
 		}
 	}
 	return 0;
