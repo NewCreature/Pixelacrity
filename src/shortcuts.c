@@ -146,6 +146,16 @@ void pa_handle_shortcuts(APP_INSTANCE * app)
 		pa_menu_edit_turn_counter_clockwise(0, app);
 		t3f_key[ALLEGRO_KEY_COMMA] = 0;
 	}
+	else if(t3f_key[ALLEGRO_KEY_QUOTE])
+	{
+		pa_menu_frame_next(0, app);
+		t3f_key[ALLEGRO_KEY_QUOTE] = 0;
+	}
+	else if(t3f_key[ALLEGRO_KEY_SEMICOLON])
+	{
+		pa_menu_frame_previous(0, app);
+		t3f_key[ALLEGRO_KEY_SEMICOLON] = 0;
+	}
 	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && t3f_key[ALLEGRO_KEY_F])
 	{
 		pa_menu_frame_add_from_selection(0, app);
