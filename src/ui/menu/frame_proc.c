@@ -227,6 +227,7 @@ int pa_menu_frame_previous(int id, void * data)
 			app->canvas_editor->current_frame = 0;
 		}
 	}
+	pa_center_canvas_editor(app->canvas_editor, app->canvas_editor->current_frame);
 	t3f_debug_message("Exit pa_menu_frame_previous()\n");
 	return 0;
 }
@@ -241,6 +242,7 @@ int pa_menu_frame_next(int id, void * data)
 	{
 		app->canvas_editor->current_frame = 0;
 	}
+	pa_center_canvas_editor(app->canvas_editor, app->canvas_editor->current_frame);
 	t3f_debug_message("Exit pa_menu_frame_next()\n");
 	return 0;
 }
