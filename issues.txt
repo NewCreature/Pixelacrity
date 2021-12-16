@@ -48,11 +48,6 @@ Pixelacrity 0.3.7 Issues
    it to a memory bitmap without relying on pre-multiplied alpha. We can't use
    the pre-multiplied alpha shader when the target is a memory bitmap.
 
-[ ]Mouse cursor doesn't update properly after resizing the window.
-
-   [ ]This is an Allegro bug. Will look into getting them to fix it on their
-      end.
-
 [ ]Implement full screen preview.
 
 [ ]Allow scrolling the canvas by holding the mouse wheel button and moving the
@@ -61,6 +56,21 @@ Pixelacrity 0.3.7 Issues
 [ ]Make selections rotatable and scaleable.
 
 [ ]Fix oval tool missing pixels on slim ovals.
+
+[ ]Finish implementing color palette.
+
+   [ ]Make colors configurable. The default palette should be able to be
+      restored at any time. Custom color palettes should be able to be saved and
+      reloaded.
+
+
+Allegro Issues
+--------------
+
+[ ]Mouse cursor doesn't update properly after resizing the window.
+
+   [ ]This is an Allegro bug. Will look into getting them to fix it on their
+      end.
 
 [ ]Crash when resizing on M1 Macbook Air.
 
@@ -71,12 +81,6 @@ Pixelacrity 0.3.7 Issues
    [ ]Mouse coordinates seem to be off when the window size requested by
       Allegro differs from what it actually gets. This should be fixed in
       Allegro.
-
-[ ]Finish implementing color palette.
-
-   [ ]Make colors configurable. The default palette should be able to be
-      restored at any time. Custom color palettes should be able to be saved and
-      reloaded.
 
 
 Closed Issues
