@@ -5,6 +5,7 @@
 #include "frame.h"
 #include "layer.h"
 #include "tool.h"
+#include "palette.h"
 #include "instance.h"
 
 int pa_menu_base_update_proc(ALLEGRO_MENU * mp, int item, void * data)
@@ -80,11 +81,18 @@ bool pa_setup_menus(PA_UI * uip)
 		return false;
 	}
 
+	uip->menu[PA_UI_MENU_PALETTE] = pa_create_palette_menu();
+	if(!uip->menu[PA_UI_MENU_PALETTE])
+	{
+		return false;
+	}
+
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_MAIN], "File", 0, uip->menu[PA_UI_MENU_FILE], NULL, NULL);
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_MAIN], "Edit", 0, uip->menu[PA_UI_MENU_EDIT], NULL, NULL);
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_MAIN], "Frame", 0, uip->menu[PA_UI_MENU_FRAME], NULL, NULL);
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_MAIN], "Layer", 0, uip->menu[PA_UI_MENU_LAYER], NULL, NULL);
 	t3f_add_menu_item(uip->menu[PA_UI_MENU_MAIN], "Tool", 0, uip->menu[PA_UI_MENU_TOOL], NULL, NULL);
+	t3f_add_menu_item(uip->menu[PA_UI_MENU_MAIN], "Palette", 0, uip->menu[PA_UI_MENU_PALETTE], NULL, NULL);
 	t3f_refresh_menus();
 
 	return true;

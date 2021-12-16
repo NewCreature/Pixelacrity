@@ -53,6 +53,7 @@
 #define PA_UI_MENU_EDIT_MULTILAYER             8
 #define PA_UI_MENU_TOOL                        9
 #define PA_UI_MENU_TOOL_BRUSH                 10
+#define PA_UI_MENU_PALETTE                    11
 
 #define PA_UI_MAX_DIALOGS 32
 #define PA_UI_DIALOG_MAIN  0

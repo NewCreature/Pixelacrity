@@ -68,6 +68,8 @@ APP_UI_OBJECTS =     ui/ui.o\
                      ui/menu/layer_proc.o\
                      ui/menu/tool.o\
                      ui/menu/tool_proc.o\
+                     ui/menu/palette.o\
+                     ui/menu/palette_proc.o\
                      ui/gui/color.o\
                      ui/gui/palette.o\
                      ui/gui/map.o\
