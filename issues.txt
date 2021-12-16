@@ -57,12 +57,6 @@ Pixelacrity 0.3.7 Issues
 
 [ ]Fix oval tool missing pixels on slim ovals.
 
-[ ]Finish implementing color palette.
-
-   [ ]Make colors configurable. The default palette should be able to be
-      restored at any time. Custom color palettes should be able to be saved and
-      reloaded.
-
 
 Allegro Issues
 --------------
@@ -864,3 +858,9 @@ Closed Issues
    element.
 
 [X]Improve brush grab by discarding unused pixels.
+
+[X]Finish implementing color palette.
+
+   [X]Make colors configurable. The default palette should be able to be
+      restored at any time. Custom color palettes should be able to be saved and
+      reloaded.
