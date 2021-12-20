@@ -16,6 +16,11 @@ int pa_gui_brush_proc(int msg, T3GUI_ELEMENT * d, int c)
 
 	switch(msg)
 	{
+		case MSG_MOUSEDOWN:
+		{
+			d->id1 = 1;
+			break;
+		}
 		case MSG_DRAW:
 		{
 			al_draw_filled_rectangle(d->x, d->y, d->x + d->w - 1, d->y + d->h - 1, t3f_color_white);

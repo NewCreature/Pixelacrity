@@ -59,7 +59,15 @@ void app_event_handler(ALLEGRO_EVENT * event, void * data)
 		case ALLEGRO_EVENT_DISPLAY_CLOSE:
 		{
 			t3f_debug_message("Display close event start\n");
-			pa_menu_file_exit(0, data);
+			if(app->ui->brush_popup_dialog && event->display.source == app->ui->brush_popup_dialog->display)
+			{
+				pa_close_popup_dialog(app->ui->brush_popup_dialog);
+				app->ui->brush_popup_dialog = NULL;
+			}
+			else
+			{
+				pa_menu_file_exit(0, data);
+			}
 			t3f_debug_message("Display close event custom handling done\n");
 			break;
 		}

@@ -6,6 +6,7 @@
 #include "modules/canvas/canvas.h"
 #include "canvas_editor/canvas_editor.h"
 #include "theme.h"
+#include "popup_dialog.h"
 
 #define PA_UI_MAX_BITMAPS                  32
 #define PA_UI_BITMAP_BG                     0
@@ -135,6 +136,8 @@ typedef struct
 	char status_left_message[1024];
 	char status_middle_message[1024];
 	char status_right_message[1024];
+
+	PA_POPUP_DIALOG * brush_popup_dialog;
 
 } PA_UI;
 
