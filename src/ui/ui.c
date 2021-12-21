@@ -188,9 +188,7 @@ void pa_resize_ui(PA_UI * uip)
 
 	pos_x = t3f_default_view->width - right_pane_width + ml + mr + esl;
 	resize_element(uip->element[PA_UI_ELEMENT_BRUSH], pos_x, pos_y, pos_vx * 2, pos_vy * 2);
-	pos_y += pos_vx * 2;
-	resize_element(uip->element[PA_UI_ELEMENT_BRUSH_SLIDER], pos_x, pos_y, pos_vx * 2, uip->theme->theme[PA_UI_THEME_SLIDER]->state[0].scrollbar_size);
-	pos_y += uip->theme->theme[PA_UI_THEME_SLIDER]->state[0].scrollbar_size + mt + mb + esb;
+	pos_y += pos_vy * 2 + mt + mb + esb;
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_PIXEL], pos_x + offset_x, pos_y, pos_vx, pos_vy);
 	offset_x += pos_vx + mr + ml;
 	if(offset_x > pos_vx + mr + ml + mr + ml)
@@ -518,7 +516,6 @@ static void add_right_pane(PA_UI * uip, PA_CANVAS_EDITOR * cep)
 
 	uip->element[PA_UI_ELEMENT_RIGHT_PANE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_RIGHT_PANE], t3gui_box_proc, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL);
 	uip->element[PA_UI_ELEMENT_BRUSH] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_LIST_BOX], pa_gui_brush_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->brush, NULL, NULL);
-	uip->element[PA_UI_ELEMENT_BRUSH_SLIDER] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_SLIDER], t3gui_slider_proc, 0, 0, 0, 0, 0, 0, 24, 0, NULL, NULL, NULL);
 	uip->element[PA_UI_ELEMENT_BUTTON_PIXEL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, scale, 0, "Pixel", pa_tool_pixel_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_PIXEL]);
 	uip->element[PA_UI_ELEMENT_BUTTON_LINE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, scale, 0, "Line", pa_tool_line_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_LINE]);
 	uip->element[PA_UI_ELEMENT_BUTTON_RECTANGLE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, scale, 0, "Rectangle", pa_tool_rectangle_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_RECTANGLE]);
