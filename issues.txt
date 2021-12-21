@@ -40,6 +40,8 @@ Pixelacrity 0.3.7 Issues
 
    [ ]Allow toggling outline mode for filled tools.
 
+[ ]Add color editor popup dialog.
+
 [ ]Allow contents of frame to be moved along with frame if Shift key is held
    when frame is first dragged. We can probably do this by piggybacking off
    of the floating selection code.
