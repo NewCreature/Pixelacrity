@@ -34,8 +34,6 @@ Pixelacrity 0.3.7 Issues
 
       [ ]This should be implemented as a popup dialog.
 
-   [ ]Add brush size slider.
-
    [ ]Allow selecting between copy and composite rendering for tools.
 
    [ ]Allow toggling outline mode for filled tools.
