@@ -1,6 +1,8 @@
 Pixelacrity 0.3.7 Issues
 ------------------------
 
+[ ]Define button travel in theme.
+
 [ ]Add frame duplication function.
 
 [ ]Use theme margin to get the height of the status bar.
