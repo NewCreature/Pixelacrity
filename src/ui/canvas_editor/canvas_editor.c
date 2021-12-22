@@ -160,13 +160,12 @@ void pa_destroy_canvas_editor(PA_CANVAS_EDITOR * cep)
 	free(cep);
 }
 
-bool pa_load_canvas_editor_state(PA_CANVAS_EDITOR * cep, const char * fn)
+bool pa_reload_canvas_editor_state(PA_CANVAS_EDITOR * cep)
 {
 	char buf[64];
 	int i;
 	const char * val;
 
-	cep->config = al_load_config_file(fn);
 	if(cep->config)
 	{
 		cep->view_x = get_config_val(cep->config, "State", "view_x", cep->view_x);
@@ -189,7 +188,7 @@ bool pa_load_canvas_editor_state(PA_CANVAS_EDITOR * cep, const char * fn)
 		}
 		for(i = 0; i < cep->canvas->frame_max; i++)
 		{
-			sprintf(buf, "Frame %d", i);
+			sprintf(buf, "Frame %s", cep->canvas->frame[i]->name);
 			val = al_get_config_value(cep->config, buf, "export_path");
 			if(val)
 			{
@@ -204,6 +203,12 @@ bool pa_load_canvas_editor_state(PA_CANVAS_EDITOR * cep, const char * fn)
 		return true;
 	}
 	return false;
+}
+
+bool pa_load_canvas_editor_state(PA_CANVAS_EDITOR * cep, const char * fn)
+{
+	cep->config = al_load_config_file(fn);
+	return pa_reload_canvas_editor_state(cep);
 }
 
 bool pa_save_canvas_editor_state(PA_CANVAS_EDITOR * cep, const char * fn)
@@ -233,17 +238,21 @@ bool pa_save_canvas_editor_state(PA_CANVAS_EDITOR * cep, const char * fn)
 	{
 		if(cep->canvas->frame[i]->export_path)
 		{
-			sprintf(buf, "Frame %d", i);
+			sprintf(buf, "Frame %s", cep->canvas->frame[i]->name);
 			al_set_config_value(cep->config, buf, "export_path", cep->canvas->frame[i]->export_path);
 		}
 	}
 	pa_write_palette(cep->palette, cep->config);
-	return al_save_config_file(fn, cep->config);
+	if(fn)
+	{
+		return al_save_config_file(fn, cep->config);
+	}
+	return false;
 }
 
 void pa_resave_canvas_editor_state(PA_CANVAS_EDITOR * cep)
 {
-	ALLEGRO_PATH * pp;
+	ALLEGRO_PATH * pp = NULL;
 	const char * extension;
 
 	if(strlen(cep->canvas_path))
@@ -255,10 +264,13 @@ void pa_resave_canvas_editor_state(PA_CANVAS_EDITOR * cep)
 			if(!strcasecmp(extension, PA_CANVAS_FILE_EXTENSION))
 			{
 				al_set_path_extension(pp, ".ini");
-				pa_save_canvas_editor_state(cep, al_path_cstr(pp, '/'));
 			}
-			al_destroy_path(pp);
 		}
+	}
+	pa_save_canvas_editor_state(cep, pp ? al_path_cstr(pp, '/') : NULL);
+	if(pp)
+	{
+		al_destroy_path(pp);
 	}
 }
 
