@@ -44,6 +44,7 @@ void pa_reset_canvas_editor(PA_CANVAS_EDITOR * cep)
 	cep->current_layer = 0;
 	cep->hover_frame = -1;
 	cep->current_frame = 0;
+	cep->frame_id = 0;
 	cep->modified = 0;
 	strcpy(cep->canvas_path, "");
 	cep->backup_tick = PA_BACKUP_INTERVAL;
@@ -176,6 +177,7 @@ bool pa_load_canvas_editor_state(PA_CANVAS_EDITOR * cep, const char * fn)
 		pa_set_canvas_editor_zoom(cep, cep->view_zoom);
 		cep->current_tool = get_config_val(cep->config, "State", "current_tool", 0);
 		cep->current_layer = get_config_val(cep->config, "State", "current_layer", 0);
+		cep->frame_id = get_config_val(cep->config, "State", "frame_id", 0);
 		val = al_get_config_value(cep->config, "State", "export_path");
 		if(val)
 		{
@@ -222,6 +224,7 @@ bool pa_save_canvas_editor_state(PA_CANVAS_EDITOR * cep, const char * fn)
 	set_config_val(cep->config, "State", "view_zoom", cep->view_zoom);
 	set_config_val(cep->config, "State", "current_tool", cep->current_tool);
 	set_config_val(cep->config, "State", "current_layer", cep->current_layer);
+	set_config_val(cep->config, "State", "frame_id", cep->frame_id);
 	if(cep->export_path)
 	{
 		al_set_config_value(cep->config, "State", "export_path", cep->export_path);
