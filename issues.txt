@@ -24,6 +24,8 @@ Pixelacrity 0.3.7 Issues
 
 [ ]Look into re-export not working.
 
+   [ ]Export paths are not restored after frame add/delete undo is applied.
+
 [ ]Add GUI elements related to the current tool configuration.
 
    [X]The current brush should be visible.
