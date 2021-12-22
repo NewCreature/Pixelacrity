@@ -84,10 +84,25 @@ static bool finalize_frame_edit(PA_CANVAS_EDITOR * cep, const char * name)
 	return true;
 }
 
+static int find_frame(PA_CANVAS * cp, PA_CANVAS_FRAME * fp)
+{
+	int i;
+
+	for(i = 0; i < cp->frame_max; i++)
+	{
+		if(cp->frame[i] == fp)
+		{
+			return i;
+		}
+	}
+	return 0;
+}
+
 void pa_canvas_editor_MSG_MOUSEUP(T3GUI_ELEMENT * d, int c)
 {
 	PA_CANVAS_EDITOR * canvas_editor = (PA_CANVAS_EDITOR *)d->dp;
 	bool made_undo = false;
+	PA_CANVAS_FRAME * old_frame = NULL;
 
 	d->flags = d->flags & ~D_TRACKMOUSE;
 
@@ -300,6 +315,16 @@ void pa_canvas_editor_MSG_MOUSEUP(T3GUI_ELEMENT * d, int c)
 			{
 //				pa_clear_canvas_editor_selection(canvas_editor);
 			}
+			if(canvas_editor->current_frame < canvas_editor->canvas->frame_max)
+			{
+				old_frame = canvas_editor->canvas->frame[canvas_editor->current_frame];
+			}
+			pa_sort_canvas_frames(canvas_editor->canvas);
+			if(canvas_editor->hover_frame == canvas_editor->current_frame)
+			{
+				canvas_editor->hover_frame = find_frame(canvas_editor->canvas, old_frame);
+			}
+			canvas_editor->current_frame = find_frame(canvas_editor->canvas, old_frame);
 			t3f_refresh_menus();
 			break;
 		}

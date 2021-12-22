@@ -494,3 +494,24 @@ void pa_swap_canvas_layer(PA_CANVAS * cp, int layer1, int layer2)
 	cp->layer[layer2] = cp->layer[layer1];
 	cp->layer[layer1] = temp_layer;
 }
+
+static int sort_frame_by_xy(const void * d1, const void * d2)
+{
+	PA_CANVAS_FRAME * f1 = *(PA_CANVAS_FRAME **)d1;
+	PA_CANVAS_FRAME * f2 = *(PA_CANVAS_FRAME **)d2;
+
+	if(f1->box.start_y < f2->box.start_y)
+	{
+		return -1;
+	}
+	else if(f2->box.start_y < f1->box.start_y)
+	{
+		return 1;
+	}
+	return f1->box.start_x - f2->box.start_x;
+}
+
+void pa_sort_canvas_frames(PA_CANVAS * cp)
+{
+	qsort(cp->frame, cp->frame_max, sizeof(PA_CANVAS_FRAME *), sort_frame_by_xy);
+}

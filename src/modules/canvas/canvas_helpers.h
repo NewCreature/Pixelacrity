@@ -18,5 +18,6 @@ ALLEGRO_COLOR pa_get_canvas_pixel(PA_CANVAS * cp, int layer, int x, int y);
 void pa_get_canvas_shift(PA_CANVAS * cp, int x, int y, int * shift_x, int * shift_y);
 bool pa_handle_canvas_expansion(PA_CANVAS * cp, int left, int top, int right, int bottom, int * shift_x, int * shift_y);
 void pa_swap_canvas_layer(PA_CANVAS * cp, int layer1, int layer2);
+void pa_sort_canvas_frames(PA_CANVAS * cp);
 
 #endif
