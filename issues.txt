@@ -3,11 +3,7 @@ Pixelacrity 0.3.7 Issues
 
 [ ]Define button travel in theme.
 
-[ ]Add frame duplication function.
-
 [ ]Use theme margin to get the height of the status bar.
-
-[ ]Look into crash when loading/creating canvas after working on a canvas.
 
 [ ]Add pane-specific edge space settings to themes. Some themes might need to
    have these settings for fine-tuning the overall look.
@@ -868,3 +864,11 @@ Closed Issues
    [X]Make colors configurable. The default palette should be able to be
       restored at any time. Custom color palettes should be able to be saved and
       reloaded.
+
+[X]Look into crash when loading/creating canvas after working on a canvas.
+
+   [X]This was probably being caused by the current frame not being reset when
+      resetting the canvas editor. This could lead to access of a non-existent
+      frame within the canvas.
+
+[X]Add frame duplication function.
