@@ -18,6 +18,7 @@ bool pa_make_frame_undo(PA_CANVAS_EDITOR * cep, const char * action, const char 
 		goto fail;
 	}
 	pa_write_undo_header(fp, cep, PA_UNDO_TYPE_FRAME, action ? action : action_name);
+	al_fwrite32le(fp, cep->current_frame);
 	al_fwrite32le(fp, cep->canvas->frame_max);
 	for(i = 0; i < cep->canvas->frame_max; i++)
 	{
@@ -65,6 +66,7 @@ bool pa_apply_frame_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, const char *
 	{
 		pa_remove_canvas_frame(cep->canvas, 0);
 	}
+	cep->current_frame = al_fread32le(fp);
 	frame_max = al_fread32le(fp);
 	for(i = 0; i < frame_max; i++)
 	{
@@ -81,6 +83,7 @@ bool pa_apply_frame_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, const char *
 		height = al_fread32le(fp);
 		pa_add_canvas_frame(cep->canvas, frame_name, x, y, width, height);
 	}
+	pa_reload_canvas_editor_state(cep);
 	t3f_debug_message("Exit pa_apply_frame_undo()\n");
 	return true;
 
@@ -107,6 +110,7 @@ bool pa_apply_frame_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, const char *
 	{
 		pa_remove_canvas_frame(cep->canvas, 0);
 	}
+	cep->current_frame = al_fread32le(fp);
 	frame_max = al_fread32le(fp);
 	for(i = 0; i < frame_max; i++)
 	{
@@ -123,6 +127,7 @@ bool pa_apply_frame_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, const char *
 		height = al_fread32le(fp);
 		pa_add_canvas_frame(cep->canvas, frame_name, x, y, width, height);
 	}
+	pa_reload_canvas_editor_state(cep);
 	t3f_debug_message("Exit pa_apply_frame_redo()\n");
 	return true;
 

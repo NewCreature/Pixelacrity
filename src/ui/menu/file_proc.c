@@ -497,6 +497,7 @@ int pa_menu_file_export(int id, void * data)
 						t3f_refresh_menus();
 					}
 					pa_menu_file_reexport(id, data);
+					pa_resave_canvas_editor_state(app->canvas_editor);
 				}
 			}
 		}
