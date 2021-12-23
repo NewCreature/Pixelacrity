@@ -1,6 +1,8 @@
 Pixelacrity 0.3.8 Issues
 ------------------------
 
+[ ]Look into crash when bringing up the brush popup dialog on Linux.
+
 [ ]Use theme margin to get the height of the status bar.
 
 [ ]Add pane-specific edge space settings to themes. Some themes might need to
@@ -14,11 +16,7 @@ Pixelacrity 0.3.8 Issues
 
    [ ]Put all graphics onto an atlas to speed up rendering.
 
-[ ]Crash when pasting while using frame tool.
-
-[ ]Look into re-export not working.
-
-   [ ]Export paths are not restored after frame add/delete undo is applied.
+      [ ]Add function to nine-patch module to put a nine-patch on an atlas.
 
 [ ]Add GUI elements related to the current tool configuration.
 
@@ -872,3 +870,14 @@ Closed Issues
 [X]Add frame duplication function.
 
 [X]Define button travel in theme.
+
+[X]Crash when pasting while using frame tool.
+
+   [X]I think this crash was being caused by trying to paste when there was
+      nothing in the clipboard. This was fixed when I audited all of the menu
+      functions to prevent their functionality from being triggered when the
+      menu item is supposed to be disabled.
+
+[X]Look into re-export not working.
+
+   [X]Export paths are not restored after frame add/delete undo is applied.
