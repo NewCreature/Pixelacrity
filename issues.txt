@@ -1,8 +1,6 @@
 Pixelacrity 0.3.8 Issues
 ------------------------
 
-[ ]Define button travel in theme.
-
 [ ]Use theme margin to get the height of the status bar.
 
 [ ]Add pane-specific edge space settings to themes. Some themes might need to
@@ -872,3 +870,5 @@ Closed Issues
       frame within the canvas.
 
 [X]Add frame duplication function.
+
+[X]Define button travel in theme.
