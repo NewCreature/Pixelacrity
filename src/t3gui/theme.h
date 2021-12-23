@@ -27,6 +27,7 @@ typedef struct
     int bottom_margin;
     int scrollbar_size;
     int min_space;
+    int click_travel;
 
 } T3GUI_THEME_STATE;
 

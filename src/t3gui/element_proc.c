@@ -300,7 +300,7 @@ int t3gui_button_proc(int msg, T3GUI_ELEMENT *d, int c)
             }
             if(d->flags & select)
             {
-                g = 1;
+                g = d->theme->state[0].click_travel;
             }
             else
             {
