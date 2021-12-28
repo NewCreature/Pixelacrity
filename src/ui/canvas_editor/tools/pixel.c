@@ -4,7 +4,7 @@
 #include "modules/canvas/canvas.h"
 #include "modules/canvas/canvas_helpers.h"
 #include "ui/canvas_editor/canvas_editor.h"
-#include "tool_pixel.h"
+#include "pixel.h"
 
 static PA_QUEUE * pixel_queue = NULL;
 

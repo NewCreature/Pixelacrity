@@ -50,14 +50,14 @@ APP_UI_OBJECTS =     ui/ui.o\
                      ui/canvas_editor/selection.o\
                      ui/canvas_editor/brush.o\
                      ui/canvas_editor/frame.o\
-                     ui/canvas_editor/tools/tool_pixel.o\
-                     ui/canvas_editor/tools/tool_line.o\
-                     ui/canvas_editor/tools/tool_rectangle.o\
-                     ui/canvas_editor/tools/tool_filled_rectangle.o\
-                     ui/canvas_editor/tools/tool_oval.o\
-                     ui/canvas_editor/tools/tool_filled_oval.o\
-                     ui/canvas_editor/tools/tool_dropper.o\
-                     ui/canvas_editor/tools/tool_selection.o\
+                     ui/canvas_editor/tools/pixel.o\
+                     ui/canvas_editor/tools/line.o\
+                     ui/canvas_editor/tools/rectangle.o\
+                     ui/canvas_editor/tools/filled_rectangle.o\
+                     ui/canvas_editor/tools/oval.o\
+                     ui/canvas_editor/tools/filled_oval.o\
+                     ui/canvas_editor/tools/dropper.o\
+                     ui/canvas_editor/tools/selection.o\
                      ui/menu/menu.o\
                      ui/menu/file.o\
                      ui/menu/file_proc.o\

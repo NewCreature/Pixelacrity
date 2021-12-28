@@ -3,7 +3,7 @@
 #include "modules/canvas/canvas_helpers.h"
 #include "ui/ui.h"
 #include "ui/canvas_editor/canvas_editor.h"
-#include "ui/canvas_editor/tools/tool_selection.h"
+#include "ui/canvas_editor/tools/selection.h"
 
 static void generate_brush_hint(PA_CANVAS_EDITOR * cep)
 {
