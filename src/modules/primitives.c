@@ -366,5 +366,6 @@ void pa_draw_quad(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_C
 {
 	pa_sort_coordinates(&x1, &x2);
 	pa_sort_coordinates(&y1, &y2);
-	al_draw_bitmap_region(texture, 0, 0, x2 - x1, y2 - y1, x1, y1, 0);
+	al_draw_scaled_bitmap(texture, 0, 0, al_get_bitmap_width(texture), al_get_bitmap_height(texture), x1, y1, x2 - x1, y2 - y1, 0);
+//	al_draw_bitmap_region(texture, 0, 0, x2 - x1, y2 - y1, x1, y1, 0);
 }
