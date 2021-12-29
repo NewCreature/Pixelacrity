@@ -762,7 +762,7 @@ static void update_layer_list(PA_UI * uip, PA_CANVAS_EDITOR * cep)
 			break;
 		}
 	}
-	while(d->d1 >= d->d2 + visible_elements - 1)
+	while(d->d1 >= d->d2 + visible_elements)
 	{
 		d->d2 += visible_elements;
 		if(d->d2 + visible_elements > cep->canvas->layer_max)
@@ -811,10 +811,6 @@ void pa_process_ui(PA_UI * uip)
 		uip->element[PA_UI_ELEMENT_BRUSH]->id1 = 0;
 	}
 	t3gui_logic();
-	if(cep->current_layer != old_layer)
-	{
-		update_layer_list(uip, cep);
-	}
 
 	/* update button selection */
 	switch(cep->current_tool)
@@ -883,6 +879,15 @@ void pa_process_ui(PA_UI * uip)
 		{
 			select_button(uip, -1);
 		}
+	}
+	if(uip->element[PA_UI_ELEMENT_LAYER_LIST]->d1 != old_layer_d1)
+	{
+		pa_select_canvas_editor_layer(cep, cep->canvas->layer_max - uip->element[PA_UI_ELEMENT_LAYER_LIST]->d1 - 1);
+	}
+	uip->element[PA_UI_ELEMENT_LAYER_LIST]->d1 = cep->canvas->layer_max - cep->current_layer - 1;
+	if(cep->current_layer != old_layer)
+	{
+		update_layer_list(uip, cep);
 	}
 	pa_update_window_title(cep);
 }
