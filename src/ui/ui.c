@@ -759,14 +759,16 @@ static void update_layer_list(PA_UI * uip, PA_CANVAS_EDITOR * cep)
 		if(d->d2 < 0)
 		{
 			d->d2 = 0;
+			break;
 		}
 	}
-	while(d->d1 >= d->d2 + visible_elements)
+	while(d->d1 >= d->d2 + visible_elements - 1)
 	{
 		d->d2 += visible_elements;
 		if(d->d2 + visible_elements > cep->canvas->layer_max)
 		{
 			d->d2 = cep->canvas->layer_max - visible_elements;
+			break;
 		}
 	}
 }
