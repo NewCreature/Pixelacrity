@@ -1,4 +1,4 @@
-Pixelacrity 0.3.8 Issues
+Pixelacrity 0.3.9 Issues
 ------------------------
 
 [ ]Look into crash when bringing up the brush popup dialog on Linux.
