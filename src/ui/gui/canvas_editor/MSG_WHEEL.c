@@ -9,15 +9,35 @@ void pa_canvas_editor_MSG_WHEEL(T3GUI_ELEMENT * d, int c)
 
 	pa_update_mouse_variables(canvas_editor);
 
-	if(c < 0)
+	if(t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT])
 	{
-		if(canvas_editor->view_zoom > 1)
+		if(c < 0)
 		{
-			pa_set_canvas_editor_zoom(canvas_editor, canvas_editor->view_zoom - 1);
+			if(canvas_editor->current_layer > 0)
+			{
+				canvas_editor->current_layer--;
+			}
+		}
+		else if(c > 0)
+		{
+			if(canvas_editor->current_layer < canvas_editor->canvas->layer_max - 1)
+			{
+				canvas_editor->current_layer++;
+			}
 		}
 	}
-	else if(c > 0)
+	else
 	{
-		pa_set_canvas_editor_zoom(canvas_editor, canvas_editor->view_zoom + 1);
+		if(c < 0)
+		{
+			if(canvas_editor->view_zoom > 1)
+			{
+				pa_set_canvas_editor_zoom(canvas_editor, canvas_editor->view_zoom - 1);
+			}
+		}
+		else if(c > 0)
+		{
+			pa_set_canvas_editor_zoom(canvas_editor, canvas_editor->view_zoom + 1);
+		}
 	}
 }

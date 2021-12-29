@@ -38,6 +38,7 @@ int pa_gui_canvas_editor_proc(int msg, T3GUI_ELEMENT * d, int c)
 			break;
 		}
 		case MSG_WHEEL:
+		case MSG_HBALL:
 		{
 			pa_canvas_editor_MSG_WHEEL(d, c);
 			break;
