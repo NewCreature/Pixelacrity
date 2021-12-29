@@ -747,10 +747,35 @@ static void update_toolbar_flags(PA_UI * uip, PA_CANVAS_EDITOR * cep)
 	}
 }
 
+static void update_layer_list(PA_UI * uip, PA_CANVAS_EDITOR * cep)
+{
+	T3GUI_ELEMENT * d = uip->element[PA_UI_ELEMENT_LAYER_LIST];
+	int entry_height = al_get_font_line_height(d->theme->state[0].font[0]) + d->theme->state[0].top_margin + d->theme->state[0].bottom_margin;
+  int visible_elements = d->h / entry_height;
+
+	while(d->d1 < d->d2)
+	{
+		d->d2 -= visible_elements;
+		if(d->d2 < 0)
+		{
+			d->d2 = 0;
+		}
+	}
+	while(d->d1 >= d->d2 + visible_elements)
+	{
+		d->d2 += visible_elements;
+		if(d->d2 + visible_elements > cep->canvas->layer_max)
+		{
+			d->d2 = cep->canvas->layer_max - visible_elements;
+		}
+	}
+}
+
 void pa_process_ui(PA_UI * uip)
 {
 	PA_CANVAS_EDITOR * cep = (PA_CANVAS_EDITOR *)uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->dp;
 	int old_layer_d1;
+	int old_layer = cep->current_layer;
 
 	uip->element[PA_UI_ELEMENT_LAYER_LIST]->d1 = cep->canvas->layer_max - cep->current_layer - 1;
 	old_layer_d1 = uip->element[PA_UI_ELEMENT_LAYER_LIST]->d1;
@@ -784,6 +809,10 @@ void pa_process_ui(PA_UI * uip)
 		uip->element[PA_UI_ELEMENT_BRUSH]->id1 = 0;
 	}
 	t3gui_logic();
+	if(cep->current_layer != old_layer)
+	{
+		update_layer_list(uip, cep);
+	}
 
 	/* update button selection */
 	switch(cep->current_tool)
@@ -852,11 +881,6 @@ void pa_process_ui(PA_UI * uip)
 		{
 			select_button(uip, -1);
 		}
-	}
-
-	if(uip->element[PA_UI_ELEMENT_LAYER_LIST]->d1 != old_layer_d1)
-	{
-		pa_select_canvas_editor_layer(cep, cep->canvas->layer_max - uip->element[PA_UI_ELEMENT_LAYER_LIST]->d1 - 1);
 	}
 	pa_update_window_title(cep);
 }

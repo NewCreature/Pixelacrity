@@ -15,14 +15,14 @@ void pa_canvas_editor_MSG_WHEEL(T3GUI_ELEMENT * d, int c)
 		{
 			if(canvas_editor->current_layer > 0)
 			{
-				canvas_editor->current_layer--;
+				pa_select_canvas_editor_layer(canvas_editor, canvas_editor->current_layer - 1);
 			}
 		}
 		else if(c > 0)
 		{
 			if(canvas_editor->current_layer < canvas_editor->canvas->layer_max - 1)
 			{
-				canvas_editor->current_layer++;
+				pa_select_canvas_editor_layer(canvas_editor, canvas_editor->current_layer + 1);
 			}
 		}
 	}
