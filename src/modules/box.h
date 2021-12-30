@@ -10,7 +10,7 @@
 #define PA_BOX_HANDLE_TYPE_BOTTOM       6
 #define PA_BOX_HANDLE_TYPE_LEFT         7
 #define PA_BOX_HANDLE_TYPE_RIGHT        8
-#define PA_BOX_HANDLE_TYPE_MOVE         9
+#define PA_BOX_HANDLE_TYPE_ANGLE        9
 
 #define PA_BOX_HANDLE_STATE_IDLE        0
 #define PA_BOX_HANDLE_STATE_HOVER       1
@@ -22,6 +22,7 @@
 #define PA_BOX_STATE_MOVING             3
 #define PA_BOX_STATE_RESIZING           4
 #define PA_BOX_STATE_DRAWING            5
+#define PA_BOX_STATE_ROTATING           6
 
 typedef struct
 {
@@ -43,8 +44,10 @@ typedef struct
 	int start_x, start_y;
 	int middle_x, middle_y;
 	int end_x, end_y;
+	int angle_x, angle_y;
 	int width, height;
-	PA_BOX_HANDLE handle[9];
+	float angle;
+	PA_BOX_HANDLE handle[10];
 	int hover_tick; // goes up each tick that the mouse is hovering over this box
 	int hover_handle;
 	int hover_x, hover_y;

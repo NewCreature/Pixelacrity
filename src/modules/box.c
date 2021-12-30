@@ -22,12 +22,15 @@ void pa_setup_box(PA_BOX * bp, int x, int y, int width, int height)
 	bp->height = height;
 	bp->end_x = x + width - 1;
 	bp->end_y = y + height - 1;
+	bp->angle_x = x + width / 2;
+	bp->angle_y = y - height / 2;
 	bp->middle_x = bp->start_x + bp->width / 2;
 	bp->middle_y = bp->start_y + bp->height / 2;
 }
 
 void pa_initialize_box(PA_BOX * bp, int x, int y, int width, int height)
 {
+	printf("clear box\n");
 	memset(bp, 0, sizeof(PA_BOX));
 	pa_setup_box(bp, x, y, width, height);
 }
@@ -177,6 +180,7 @@ void pa_update_box_handles(PA_BOX * bp, int view_x, int view_y, int view_zoom)
 		pa_initialize_box_handle(&bp->handle[6], view_x, view_y, view_zoom, PA_BOX_HANDLE_TYPE_LEFT, -1, offset, &bp->start_x, &bp->middle_y);
 		pa_initialize_box_handle(&bp->handle[7], view_x, view_y, view_zoom, PA_BOX_HANDLE_TYPE_RIGHT, view_zoom, offset, &bp->end_x, &bp->middle_y);
 	}
+	pa_initialize_box_handle(&bp->handle[8], view_x, view_y, view_zoom, PA_BOX_HANDLE_TYPE_NONE, view_zoom, 0, &bp->angle_x, &bp->angle_y);
 }
 
 void pa_get_box_hover_handle(PA_BOX * bp, int offset_x, int offset_y, int peg_offset)
@@ -290,6 +294,10 @@ void pa_box_logic(PA_BOX * bp, int view_x, int view_y, int view_zoom, int offset
 			pa_update_box_handles(bp, view_x, view_y, view_zoom);
 			break;
 		}
+		case PA_BOX_STATE_ROTATING:
+		{
+			break;
+		}
 	}
 }
 
@@ -314,6 +322,7 @@ void pa_box_render(PA_BOX * bp, int style, int view_x, int view_y, int view_zoom
 		al_draw_rectangle(offset_x + start_x - 1.0 + 0.5, offset_y + start_y - 1.0 + 0.5, offset_x + end_x + 0.5, offset_y + end_y + 0.5, color, style);
 		for(i = 0; i < 10; i++)
 		{
+//			printf("box %d %d\n", i, bp->handle[i].type);
 			if(bp->handle[i].type != PA_BOX_HANDLE_TYPE_NONE)
 			{
 				if(handle_bitmap)
