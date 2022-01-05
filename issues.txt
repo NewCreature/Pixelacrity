@@ -1,9 +1,6 @@
 Pixelacrity 0.3.9 Issues
 ------------------------
 
-[ ]Multiple frames can be highlighted if a frame is hovered and the tool
-   changed during the hover.
-
 [ ]Selection boxes can leave handles on the screen when they are resized to
    small sizes.
 
@@ -890,3 +887,6 @@ Closed Issues
 [X]Look into re-export not working.
 
    [X]Export paths are not restored after frame add/delete undo is applied.
+
+[X]Multiple frames can be highlighted if a frame is hovered and the tool
+   changed during the hover.
