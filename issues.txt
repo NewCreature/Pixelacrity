@@ -1,12 +1,6 @@
 Pixelacrity 0.3.9 Issues
 ------------------------
 
-[ ]Selection boxes can leave handles on the screen when they are resized to
-   small sizes.
-
-[ ]Look into selection boxes not going away when switching away from the
-   selection tool.
-
 [ ]Look into crash when bringing up the brush popup dialog on Linux.
 
 [ ]Use theme margin to get the height of the status bar.
@@ -890,3 +884,9 @@ Closed Issues
 
 [X]Multiple frames can be highlighted if a frame is hovered and the tool
    changed during the hover.
+
+[X]Selection boxes can leave handles on the screen when they are resized to
+   small sizes.
+
+[X]Look into selection boxes not going away when switching away from the
+   selection tool.
