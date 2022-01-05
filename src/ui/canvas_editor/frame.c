@@ -9,7 +9,7 @@ int pa_get_hover_frame(PA_CANVAS_EDITOR * cep)
 	for(i = 0; i < cep->canvas->frame_max; i++)
 	{
 		pa_setup_box(&cep->canvas->frame[i]->box, cep->canvas->frame[i]->box.start_x, cep->canvas->frame[i]->box.start_y, cep->canvas->frame[i]->box.width, cep->canvas->frame[i]->box.height);
-		pa_update_box_handles(&cep->canvas->frame[i]->box, cep->view_x, cep->view_y, cep->view_zoom);
+		pa_update_box_handles(&cep->canvas->frame[i]->box, cep->view_x, cep->view_y, cep->view_zoom, cep->selection.bitmap_stack);
 		pa_get_box_hover_handle(&cep->canvas->frame[i]->box, cep->editor_element->x, cep->editor_element->y, al_get_bitmap_width(cep->peg_bitmap) / 2);
 		if(cep->canvas->frame[i]->box.hover_handle >= 0)
 		{
@@ -45,12 +45,12 @@ void pa_update_hover_frame(PA_CANVAS_EDITOR * cep, T3GUI_ELEMENT * d)
 		if(cep->canvas->frame[cep->hover_frame]->box.width > 0 && cep->canvas->frame[cep->hover_frame]->box.height > 0)
 		{
 			memcpy(&old_box, &cep->canvas->frame[cep->hover_frame]->box, sizeof(PA_BOX));
-			pa_update_box_handles(&cep->canvas->frame[cep->hover_frame]->box, cep->view_x, cep->view_y, cep->view_zoom);
+			pa_update_box_handles(&cep->canvas->frame[cep->hover_frame]->box, cep->view_x, cep->view_y, cep->view_zoom, cep->selection.bitmap_stack);
 			if(t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL])
 			{
 				snap = true;
 			}
-			pa_box_logic(&cep->canvas->frame[cep->hover_frame]->box, cep->view_x, cep->view_y, cep->view_zoom, d->x, d->y, snap, cep->peg_bitmap);
+			pa_box_logic(&cep->canvas->frame[cep->hover_frame]->box, cep->view_x, cep->view_y, cep->view_zoom, d->x, d->y, snap, cep->peg_bitmap, cep->selection.bitmap_stack);
 			if(cep->canvas->frame[cep->hover_frame]->box.state == PA_BOX_STATE_HOVER)
 			{
 				cep->want_cursor = ALLEGRO_SYSTEM_MOUSE_CURSOR_LINK;

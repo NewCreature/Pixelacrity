@@ -30,7 +30,6 @@ void pa_setup_box(PA_BOX * bp, int x, int y, int width, int height)
 
 void pa_initialize_box(PA_BOX * bp, int x, int y, int width, int height)
 {
-	printf("clear box\n");
 	memset(bp, 0, sizeof(PA_BOX));
 	pa_setup_box(bp, x, y, width, height);
 }
@@ -160,7 +159,7 @@ static void update_box(PA_BOX * bp)
 }
 
 /* update boxes each frame before running the logic to modify boxes */
-void pa_update_box_handles(PA_BOX * bp, int view_x, int view_y, int view_zoom)
+void pa_update_box_handles(PA_BOX * bp, int view_x, int view_y, int view_zoom, bool floating)
 {
 	int offset;
 
@@ -192,7 +191,7 @@ void pa_update_box_handles(PA_BOX * bp, int view_x, int view_y, int view_zoom)
 		pa_initialize_box_handle(&bp->handle[6], view_x, view_y, view_zoom, PA_BOX_HANDLE_TYPE_NONE, -1, offset, &bp->start_x, &bp->middle_y);
 		pa_initialize_box_handle(&bp->handle[7], view_x, view_y, view_zoom, PA_BOX_HANDLE_TYPE_NONE, view_zoom, offset, &bp->end_x, &bp->middle_y);
 	}
-	pa_initialize_box_handle(&bp->handle[8], view_x, view_y, view_zoom, PA_BOX_HANDLE_TYPE_NONE, view_zoom, 0, &bp->angle_x, &bp->angle_y);
+	pa_initialize_box_handle(&bp->handle[8], view_x, view_y, view_zoom, floating ? PA_BOX_HANDLE_TYPE_ANGLE : PA_BOX_HANDLE_TYPE_NONE, view_zoom, 0, &bp->angle_x, &bp->angle_y);
 }
 
 void pa_get_box_hover_handle(PA_BOX * bp, int offset_x, int offset_y, int peg_offset)
@@ -213,7 +212,7 @@ void pa_get_box_hover_handle(PA_BOX * bp, int offset_x, int offset_y, int peg_of
 }
 
 /* handle user interaction with boxes */
-void pa_box_logic(PA_BOX * bp, int view_x, int view_y, int view_zoom, int offset_x, int offset_y, bool snap, ALLEGRO_BITMAP * handle_bitmap)
+void pa_box_logic(PA_BOX * bp, int view_x, int view_y, int view_zoom, int offset_x, int offset_y, bool snap, ALLEGRO_BITMAP * handle_bitmap, bool floating)
 {
 	int peg_size = handle_bitmap ? al_get_bitmap_width(handle_bitmap) : 0;
 	int peg_offset = peg_size / 2;
@@ -283,7 +282,7 @@ void pa_box_logic(PA_BOX * bp, int view_x, int view_y, int view_zoom, int offset
 				pa_snap_coordinates(start_x, start_y, &end_x, &end_y, 0, ALLEGRO_PI / 2.0);
 			}
 			pa_setup_box(bp, end_x - (bp->click_x - bp->click_start_x), end_y - (bp->click_y - bp->click_start_y), bp->width, bp->height);
-			pa_update_box_handles(bp, view_x, view_y, view_zoom);
+			pa_update_box_handles(bp, view_x, view_y, view_zoom, floating);
 			bp->click_tick++;
 			break;
 		}
@@ -303,7 +302,7 @@ void pa_box_logic(PA_BOX * bp, int view_x, int view_y, int view_zoom, int offset
 				bp->handle[bp->hover_handle].screen_y = (*bp->handle[bp->hover_handle].link_y - view_y) * view_zoom + bp->handle[bp->hover_handle].offset_y;
 			}
 			update_box(bp);
-			pa_update_box_handles(bp, view_x, view_y, view_zoom);
+			pa_update_box_handles(bp, view_x, view_y, view_zoom, floating);
 			break;
 		}
 		case PA_BOX_STATE_ROTATING:

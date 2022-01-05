@@ -191,7 +191,7 @@ void pa_update_selection(PA_CANVAS_EDITOR * canvas_editor, T3GUI_ELEMENT * d)
 	if(canvas_editor->selection.box.width > 0 && canvas_editor->selection.box.height > 0)
 	{
 		memcpy(&old_box, &canvas_editor->selection.box, sizeof(PA_BOX));
-		pa_update_box_handles(&canvas_editor->selection.box, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom);
+		pa_update_box_handles(&canvas_editor->selection.box, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, canvas_editor->selection.bitmap_stack);
 		if(t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL])
 		{
 			snap = true;
@@ -200,7 +200,7 @@ void pa_update_selection(PA_CANVAS_EDITOR * canvas_editor, T3GUI_ELEMENT * d)
 		{
 			multilayer = true;
 		}
-		pa_box_logic(&canvas_editor->selection.box, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, snap, canvas_editor->peg_bitmap);
+		pa_box_logic(&canvas_editor->selection.box, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, snap, canvas_editor->peg_bitmap, canvas_editor->selection.bitmap_stack);
 		if(canvas_editor->selection.box.state == PA_BOX_STATE_HOVER)
 		{
 			canvas_editor->want_cursor = ALLEGRO_SYSTEM_MOUSE_CURSOR_LINK;
@@ -226,9 +226,11 @@ void pa_update_selection(PA_CANVAS_EDITOR * canvas_editor, T3GUI_ELEMENT * d)
 			if(canvas_editor->selection.box.state == PA_BOX_STATE_MOVING)
 			{
 				pa_float_canvas_editor_selection(canvas_editor, &old_box, multilayer);
-				canvas_editor->selection.box.handle[8].type = PA_BOX_HANDLE_TYPE_ANGLE;
-				printf("break 1\n");
 			}
+		}
+		if(!canvas_editor->selection.bitmap_stack)
+		{
+			canvas_editor->selection.box.handle[8].type = PA_BOX_HANDLE_TYPE_NONE;
 		}
 	}
 }
@@ -370,7 +372,7 @@ bool pa_handle_turn_selection(PA_CANVAS_EDITOR * cep, int amount, bool multi, bo
 			cep->selection.bitmap_stack->height = i;
 			pa_initialize_box(&cep->selection.box, cep->selection.box.start_x, cep->selection.box.start_y, cep->selection.bitmap_stack->width, cep->selection.bitmap_stack->height);
 		}
-		pa_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom);
+		pa_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom, cep->selection.bitmap_stack);
 	}
 	if(!nomod)
 	{

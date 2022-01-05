@@ -437,7 +437,7 @@ bool pa_import_image(PA_CANVAS_EDITOR * cep, const char * fn)
 			{
 				pa_add_layer_to_bitmap_stack(cep->selection.bitmap_stack, i == cep->current_layer ? bp : NULL, i);
 			}
-			pa_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom);
+			pa_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom, cep->selection.bitmap_stack);
 			cep->selection.layer_max = cep->canvas->layer_max;
 			cep->selection.layer = cep->current_layer;
 		}
@@ -629,7 +629,7 @@ void pa_update_canvas_editor_box_handles(PA_CANVAS_EDITOR * cep)
 
 	for(i = 0; i < cep->canvas->frame_max; i++)
 	{
-		pa_update_box_handles(&cep->canvas->frame[i]->box, cep->view_x, cep->view_y, cep->view_zoom);
+		pa_update_box_handles(&cep->canvas->frame[i]->box, cep->view_x, cep->view_y, cep->view_zoom, false);
 	}
-	pa_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom);
+	pa_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom, cep->selection.bitmap_stack);
 }

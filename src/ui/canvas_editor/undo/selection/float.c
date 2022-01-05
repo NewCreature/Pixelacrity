@@ -162,7 +162,7 @@ bool pa_apply_float_selection_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, co
 	pa_free_clipboard(cep);
 	pa_free_selection(cep);
 	pa_initialize_box(&cep->selection.box, new_x, new_y, new_width, new_height);
-	pa_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom);
+	pa_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom, false);
 	t3f_debug_message("Exit pa_apply_float_selection_undo()\n");
 	return true;
 
@@ -198,7 +198,7 @@ bool pa_apply_float_selection_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, co
 	pa_initialize_box(&cep->selection.box, cep->selection.box.start_x, cep->selection.box.start_y, cep->selection.box.width, cep->selection.box.height);
 	pa_handle_float_canvas_editor_selection(cep, &cep->selection.box, multi, true);
 	pa_initialize_box(&cep->selection.box, new_x, new_y, cep->selection.box.width, cep->selection.box.height);
-	pa_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom);
+	pa_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom, true);
 
 	t3f_debug_message("Exit pa_apply_float_selection_redo()\n");
 	return true;

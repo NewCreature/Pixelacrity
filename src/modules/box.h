@@ -60,9 +60,9 @@ typedef struct
 
 void pa_initialize_box(PA_BOX * bp, int x, int y, int width, int height);
 void pa_setup_box(PA_BOX * bp, int x, int y, int width, int height);
-void pa_update_box_handles(PA_BOX * bp, int view_x, int view_y, int view_zoom);
+void pa_update_box_handles(PA_BOX * bp, int view_x, int view_y, int view_zoom, bool floating);
 void pa_get_box_hover_handle(PA_BOX * bp, int offset_x, int offset_y, int peg_offset);
-void pa_box_logic(PA_BOX * bp, int view_x, int view_y, int view_zoom, int offset_x, int offset_y, bool snap, ALLEGRO_BITMAP * handle_bitmap);
+void pa_box_logic(PA_BOX * bp, int view_x, int view_y, int view_zoom, int offset_x, int offset_y, bool snap, ALLEGRO_BITMAP * handle_bitmap, bool floating);
 void pa_box_render(PA_BOX * bp, int style, int view_x, int view_y, int view_zoom, int offset_x, int offset_y, ALLEGRO_COLOR color, ALLEGRO_BITMAP * handle_bitmap);
 
 #endif
