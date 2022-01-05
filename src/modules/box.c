@@ -14,12 +14,13 @@ static void pa_initialize_box_handle(PA_BOX_HANDLE * hp, int view_x, int view_y,
 	hp->screen_y = (*link_y - view_y) * view_zoom + offset_y;
 }
 
-void pa_setup_box(PA_BOX * bp, int x, int y, int width, int height)
+void pa_setup_box(PA_BOX * bp, int x, int y, int width, int height, float angle)
 {
 	bp->start_x = x;
 	bp->start_y = y;
 	bp->width = width;
 	bp->height = height;
+	bp->angle = angle;
 	bp->end_x = x + width - 1;
 	bp->end_y = y + height - 1;
 	bp->angle_x = x + width / 2;
@@ -31,7 +32,7 @@ void pa_setup_box(PA_BOX * bp, int x, int y, int width, int height)
 void pa_initialize_box(PA_BOX * bp, int x, int y, int width, int height)
 {
 	memset(bp, 0, sizeof(PA_BOX));
-	pa_setup_box(bp, x, y, width, height);
+	pa_setup_box(bp, x, y, width, height, 0);
 }
 
 static void update_box(PA_BOX * bp)
@@ -154,8 +155,13 @@ static void update_box(PA_BOX * bp)
 				break;
 			}
 		}
+		if(bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_ANGLE)
+		{
+			bp->angle = atan2(bp->middle_y - bp->angle_y, bp->middle_x - bp->angle_x);
+			printf("break 1 %f\n", bp->angle);
+		}
 	}
-	pa_setup_box(bp, bp->start_x, bp->start_y, bp->width, bp->height);
+	pa_setup_box(bp, bp->start_x, bp->start_y, bp->width, bp->height, bp->angle);
 }
 
 /* update boxes each frame before running the logic to modify boxes */
@@ -281,7 +287,7 @@ void pa_box_logic(PA_BOX * bp, int view_x, int view_y, int view_zoom, int offset
 			{
 				pa_snap_coordinates(start_x, start_y, &end_x, &end_y, 0, ALLEGRO_PI / 2.0);
 			}
-			pa_setup_box(bp, end_x - (bp->click_x - bp->click_start_x), end_y - (bp->click_y - bp->click_start_y), bp->width, bp->height);
+			pa_setup_box(bp, end_x - (bp->click_x - bp->click_start_x), end_y - (bp->click_y - bp->click_start_y), bp->width, bp->height, bp->angle);
 			pa_update_box_handles(bp, view_x, view_y, view_zoom, floating);
 			bp->click_tick++;
 			break;
@@ -307,6 +313,14 @@ void pa_box_logic(PA_BOX * bp, int view_x, int view_y, int view_zoom, int offset
 		}
 		case PA_BOX_STATE_ROTATING:
 		{
+			if(bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_ANGLE)
+			{
+				bp->handle[bp->hover_handle].screen_x = t3gui_get_mouse_x() - peg_offset - offset_x;
+				*bp->handle[bp->hover_handle].link_x = (bp->handle[bp->hover_handle].screen_x) / view_zoom + view_x;
+				bp->handle[bp->hover_handle].screen_x = (*bp->handle[bp->hover_handle].link_x - view_x) * view_zoom + bp->handle[bp->hover_handle].offset_x;
+			}
+			update_box(bp);
+			pa_update_box_handles(bp, view_x, view_y, view_zoom, floating);
 			break;
 		}
 	}

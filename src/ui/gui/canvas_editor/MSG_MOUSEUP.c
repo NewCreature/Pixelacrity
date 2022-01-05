@@ -269,6 +269,7 @@ void pa_canvas_editor_MSG_MOUSEUP(T3GUI_ELEMENT * d, int c)
 				case PA_BOX_STATE_MOVING:
 				case PA_BOX_STATE_DRAWING:
 				case PA_BOX_STATE_RESIZING:
+				case PA_BOX_STATE_ROTATING:
 				{
 					canvas_editor->selection.box.state = PA_BOX_STATE_IDLE;
 					break;

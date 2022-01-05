@@ -273,7 +273,14 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 						{
 							//pa_unfloat_canvas_editor_selection(canvas_editor, &canvas_editor->selection.box);
 						}
-						canvas_editor->selection.box.state = PA_BOX_STATE_RESIZING;
+						if(canvas_editor->selection.box.handle[canvas_editor->selection.box.hover_handle].type == PA_BOX_HANDLE_TYPE_ANGLE)
+						{
+							canvas_editor->selection.box.state = PA_BOX_STATE_ROTATING;
+						}
+						else
+						{
+							canvas_editor->selection.box.state = PA_BOX_STATE_RESIZING;
+						}
 						break;
 					}
 				}
