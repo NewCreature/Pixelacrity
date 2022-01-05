@@ -174,11 +174,23 @@ void pa_update_box_handles(PA_BOX * bp, int view_x, int view_y, int view_zoom)
 		pa_initialize_box_handle(&bp->handle[4], view_x, view_y, view_zoom, PA_BOX_HANDLE_TYPE_TOP, offset, -1, &bp->middle_x, &bp->start_y);
 		pa_initialize_box_handle(&bp->handle[5], view_x, view_y, view_zoom, PA_BOX_HANDLE_TYPE_BOTTOM, offset, view_zoom, &bp->middle_x, &bp->end_y);
 	}
+	else
+	{
+		offset = bp->width % 2 == 0 ? 0 : view_zoom / 2;
+		pa_initialize_box_handle(&bp->handle[4], view_x, view_y, view_zoom, PA_BOX_HANDLE_TYPE_NONE, offset, -1, &bp->middle_x, &bp->start_y);
+		pa_initialize_box_handle(&bp->handle[5], view_x, view_y, view_zoom, PA_BOX_HANDLE_TYPE_NONE, offset, view_zoom, &bp->middle_x, &bp->end_y);
+	}
 	if(bp->height > 1)
 	{
 		offset = bp->height % 2 == 0 ? 0 : view_zoom / 2;
 		pa_initialize_box_handle(&bp->handle[6], view_x, view_y, view_zoom, PA_BOX_HANDLE_TYPE_LEFT, -1, offset, &bp->start_x, &bp->middle_y);
 		pa_initialize_box_handle(&bp->handle[7], view_x, view_y, view_zoom, PA_BOX_HANDLE_TYPE_RIGHT, view_zoom, offset, &bp->end_x, &bp->middle_y);
+	}
+	else
+	{
+		offset = bp->height % 2 == 0 ? 0 : view_zoom / 2;
+		pa_initialize_box_handle(&bp->handle[6], view_x, view_y, view_zoom, PA_BOX_HANDLE_TYPE_NONE, -1, offset, &bp->start_x, &bp->middle_y);
+		pa_initialize_box_handle(&bp->handle[7], view_x, view_y, view_zoom, PA_BOX_HANDLE_TYPE_NONE, view_zoom, offset, &bp->end_x, &bp->middle_y);
 	}
 	pa_initialize_box_handle(&bp->handle[8], view_x, view_y, view_zoom, PA_BOX_HANDLE_TYPE_NONE, view_zoom, 0, &bp->angle_x, &bp->angle_y);
 }
