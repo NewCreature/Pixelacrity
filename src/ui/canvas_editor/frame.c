@@ -32,9 +32,13 @@ void pa_update_hover_frame(PA_CANVAS_EDITOR * cep, T3GUI_ELEMENT * d)
 	{
 		cep->hover_frame = pa_get_hover_frame(cep);
 	}
-	else
+	else if(cep->current_tool == PA_TOOL_FRAME)
 	{
 		pa_update_canvas_editor_box_handles(cep);
+	}
+	else
+	{
+		cep->hover_frame = -1;
 	}
 	if(cep->hover_frame >= 0)
 	{
