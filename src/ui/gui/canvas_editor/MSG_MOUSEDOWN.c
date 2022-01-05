@@ -331,6 +331,7 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 							{
 								memcpy(&canvas_editor->click_box, &canvas_editor->canvas->frame[canvas_editor->hover_frame]->box, sizeof(PA_BOX));
 								canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.state = PA_BOX_STATE_RESIZING;
+								canvas_editor->current_frame = canvas_editor->hover_frame;
 								break;
 							}
 						}
