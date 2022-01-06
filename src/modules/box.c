@@ -16,6 +16,8 @@ static void pa_initialize_box_handle(PA_BOX_HANDLE * hp, int view_x, int view_y,
 
 void pa_setup_box(PA_BOX * bp, int x, int y, int width, int height, float angle)
 {
+	float angle_length;
+
 	bp->start_x = x;
 	bp->start_y = y;
 	bp->width = width;
@@ -23,8 +25,9 @@ void pa_setup_box(PA_BOX * bp, int x, int y, int width, int height, float angle)
 	bp->angle = angle;
 	bp->end_x = x + width - 1;
 	bp->end_y = y + height - 1;
-	bp->angle_x = x + width / 2;
-	bp->angle_y = y - height / 2;
+	angle_length = hypot(width, height) / 2.0 + 32;
+	bp->angle_x = x + width / 2 + cos(bp->angle) * angle_length;
+	bp->angle_y = y + height / 2 + sin(bp->angle) * angle_length;
 	bp->middle_x = bp->start_x + bp->width / 2;
 	bp->middle_y = bp->start_y + bp->height / 2;
 }
@@ -157,7 +160,7 @@ static void update_box(PA_BOX * bp)
 		}
 		if(bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_ANGLE)
 		{
-			bp->angle = atan2(bp->middle_y - bp->angle_y, bp->middle_x - bp->angle_x);
+			bp->angle = atan2(bp->angle_y - bp->middle_y, bp->angle_x - bp->middle_x);
 			printf("break 1 %f\n", bp->angle);
 		}
 	}
