@@ -3,6 +3,9 @@ Pixelacrity 0.3.10 Issues
 
 [ ]Look into crash when bringing up the brush popup dialog on Linux.
 
+[ ]Add preprocessor flag to disable T3F's keep awake feature. For this kind of
+   app, it doesn't make sense to force the computer to stay awake.
+
 [ ]Use theme margin to get the height of the status bar.
 
 [ ]Add pane-specific edge space settings to themes. Some themes might need to
