@@ -1,6 +1,9 @@
 Pixelacrity 0.3.10 Issues
 -------------------------
 
+[ ]Snap box handle center to cursor position or track where in the handle the
+   user clicks and use that as the centering position.
+
 [ ]Look into crash when bringing up the brush popup dialog on Linux.
 
 [ ]Add preprocessor flag to disable T3F's keep awake feature. For this kind of
