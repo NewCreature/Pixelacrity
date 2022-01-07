@@ -22,12 +22,16 @@ void pa_setup_box(PA_BOX * bp, int x, int y, int width, int height, float angle)
 	bp->start_y = y;
 	bp->width = width;
 	bp->height = height;
-	bp->angle = angle;
 	bp->end_x = x + width - 1;
 	bp->end_y = y + height - 1;
-	angle_length = hypot(width, height) / 2.0 + 32;
-	bp->angle_x = x + width / 2 + cos(bp->angle) * angle_length;
-	bp->angle_y = y + height / 2 + sin(bp->angle) * angle_length;
+	if(fabs(angle) >= 10000)
+	{
+		angle = 0;
+		angle_length = hypot(width, height) / 2.0 + 32;
+		bp->angle_x = x + width / 2 + cos(angle) * angle_length;
+		bp->angle_y = y + height / 2 + sin(angle) * angle_length;
+	}
+	bp->angle = angle;
 	bp->middle_x = bp->start_x + bp->width / 2;
 	bp->middle_y = bp->start_y + bp->height / 2;
 }
@@ -35,7 +39,7 @@ void pa_setup_box(PA_BOX * bp, int x, int y, int width, int height, float angle)
 void pa_initialize_box(PA_BOX * bp, int x, int y, int width, int height)
 {
 	memset(bp, 0, sizeof(PA_BOX));
-	pa_setup_box(bp, x, y, width, height, 0);
+	pa_setup_box(bp, x, y, width, height, 10000);
 }
 
 static void update_box(PA_BOX * bp)
@@ -320,7 +324,8 @@ void pa_box_logic(PA_BOX * bp, int view_x, int view_y, int view_zoom, int offset
 			{
 				bp->handle[bp->hover_handle].screen_x = t3gui_get_mouse_x() - peg_offset - offset_x;
 				*bp->handle[bp->hover_handle].link_x = (bp->handle[bp->hover_handle].screen_x) / view_zoom + view_x;
-				bp->handle[bp->hover_handle].screen_x = (*bp->handle[bp->hover_handle].link_x - view_x) * view_zoom + bp->handle[bp->hover_handle].offset_x;
+				bp->handle[bp->hover_handle].screen_y = t3gui_get_mouse_y() - peg_offset - offset_y;
+				*bp->handle[bp->hover_handle].link_y = (bp->handle[bp->hover_handle].screen_y) / view_zoom + view_y;
 			}
 			update_box(bp);
 			pa_update_box_handles(bp, view_x, view_y, view_zoom, floating);
