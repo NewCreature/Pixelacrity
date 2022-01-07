@@ -24,6 +24,7 @@ void pa_tool_selection_render_layer(PA_CANVAS_EDITOR * cep, int layer)
 	ALLEGRO_TRANSFORM identity;
 	ALLEGRO_STATE old_state;
 	float cx, cy;
+	float rx, ry;
 	int i;
 
 	al_store_state(&old_state, ALLEGRO_STATE_BLENDER | ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_TRANSFORM);
@@ -47,7 +48,9 @@ void pa_tool_selection_render_layer(PA_CANVAS_EDITOR * cep, int layer)
 		al_use_transform(&identity);
 		cx = al_get_bitmap_width(cep->selection.bitmap_stack->bitmap[i]) / 2;
 		cy = al_get_bitmap_height(cep->selection.bitmap_stack->bitmap[i]) / 2;
-		al_draw_rotated_bitmap(cep->selection.bitmap_stack->bitmap[i], cx, cy, cx * 2, cy * 2, cep->selection.box.angle, 0);
+		rx = (float)cep->selection.box.width / (float)al_get_bitmap_width(cep->selection.bitmap_stack->bitmap[i]);
+		ry = (float)cep->selection.box.height / (float)al_get_bitmap_height(cep->selection.bitmap_stack->bitmap[i]);
+		al_draw_scaled_rotated_bitmap(cep->selection.bitmap_stack->bitmap[i], cx, cy, cx * 2, cy * 2, rx, ry, cep->selection.box.angle, 0);
 		al_set_target_bitmap(cep->tool_bitmap);
 		al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
 		al_identity_transform(&identity);
