@@ -3,12 +3,14 @@ Pixelacrity 0.3.10 Issues
 
 [ ]Finish rotating selection implementation.
 
-   [ ]Make scaling work again.
+   [X]Make scaling work again.
 
    [ ]Make rotated selection render to the canvas properly.
 
-      [ ]Render the rotated selection to scratch then use the quad primitive to
+      [X]Render the rotated selection to scratch then use the quad primitive to
          get it onto the canvas.
+
+      [ ]Figure out why scaling of final render seems to be off by one pixel.
 
    [ ]Ensure the undo state includes enough area around the selection box so
       the undo works properly.
