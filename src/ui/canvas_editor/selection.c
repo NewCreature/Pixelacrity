@@ -8,6 +8,7 @@
 #include "clipboard.h"
 #include "undo/selection/selection.h"
 #include "ui/window.h"
+#include "tools/selection.h"
 
 void pa_free_selection(PA_CANVAS_EDITOR * cep)
 {
@@ -140,15 +141,21 @@ void pa_float_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp, bool 
 void pa_handle_unfloat_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp, bool nomod)
 {
 	int i;
+	float cx, cy;
+	ALLEGRO_BITMAP * sub_bitmap;
 
 	t3f_debug_message("Enter pa_handle_unfloat_canvas_editor_selection()\n");
-	if(pa_handle_canvas_expansion(cep->canvas, cep->selection.box.start_x - cep->selection.box.width / 2, cep->selection.box.start_y - cep->selection.box.height / 2, cep->selection.box.end_x + cep->selection.box.width / 2, cep->selection.box.end_y + cep->selection.box.height / 2, &cep->shift_x, &cep->shift_y))
+	cx = cep->selection.box.width / 2;
+	cy = cep->selection.box.height / 2;
+	if(pa_handle_canvas_expansion(cep->canvas, cep->selection.box.start_x - cx, cep->selection.box.start_y - cy, cep->selection.box.end_x + cx, cep->selection.box.end_y + cy, &cep->shift_x, &cep->shift_y))
 	{
 		pa_shift_canvas_editor_variables(cep, cep->shift_x * cep->canvas->bitmap_size, cep->shift_y * cep->canvas->bitmap_size);
 	}
+	sub_bitmap = al_create_sub_bitmap(cep->scratch_bitmap, 0, 0, cep->selection.box.width * 2, cep->selection.box.height * 2);
 	if(cep->selection.layer >= 0)
 	{
-		pa_draw_primitive_to_canvas(cep->canvas, cep->current_layer, bp->start_x, bp->start_y, bp->start_x + bp->width, bp->start_y + bp->height, NULL, al_map_rgba_f(0, 0, 0, 0), cep->selection.bitmap_stack->bitmap[cep->selection.layer], PA_RENDER_COPY, cep->conditional_copy_shader, pa_draw_quad);
+		pa_tool_selection_render_layer_preview(cep, cep->selection.layer, cep->scratch_bitmap);
+		pa_draw_primitive_to_canvas(cep->canvas, cep->current_layer, bp->start_x - cx, bp->start_y - cy, bp->start_x + bp->width + cx, bp->start_y + bp->height + cy, NULL, al_map_rgba_f(0, 0, 0, 0), sub_bitmap, PA_RENDER_COPY, cep->conditional_copy_shader, pa_draw_quad);
 		al_use_shader(cep->standard_shader);
 	}
 	else
@@ -157,11 +164,12 @@ void pa_handle_unfloat_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * 
 		{
 			if(cep->selection.bitmap_stack->bitmap[i])
 			{
-				pa_draw_primitive_to_canvas(cep->canvas, i, bp->start_x, bp->start_y, bp->start_x + bp->width, bp->start_y + bp->height, NULL, al_map_rgba_f(0, 0, 0, 0), cep->selection.bitmap_stack->bitmap[i], PA_RENDER_COPY, cep->conditional_copy_shader, pa_draw_quad);
+				pa_draw_primitive_to_canvas(cep->canvas, i, bp->start_x - cx, bp->start_y - cy, bp->start_x + bp->width + cx, bp->start_y + bp->height + cy, NULL, al_map_rgba_f(0, 0, 0, 0), cep->selection.bitmap_stack->bitmap[i], PA_RENDER_COPY, cep->conditional_copy_shader, pa_draw_quad);
 				al_use_shader(cep->standard_shader);
 			}
 		}
 	}
+	al_destroy_bitmap(sub_bitmap);
 	pa_free_selection(cep);
 	if(!nomod)
 	{
