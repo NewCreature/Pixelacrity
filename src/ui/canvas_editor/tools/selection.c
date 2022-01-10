@@ -19,6 +19,30 @@
 	pa_initialize_box(&cep->selection.box, start_x, start_y, end_x - start_x + 1, end_y - start_y + 1, cep->peg_bitmap);
 } */
 
+void pa_tool_selection_render_layer_preview(PA_CANVAS_EDITOR * cep, int layer, ALLEGRO_BITMAP * scratch)
+{
+	ALLEGRO_TRANSFORM identity;
+	ALLEGRO_STATE old_state;
+	float cx, cy;
+	float rx, ry;
+
+	al_store_state(&old_state, ALLEGRO_STATE_BLENDER | ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_TRANSFORM);
+	if(cep->selection.bitmap_stack->bitmap[layer])
+	{
+		al_set_target_bitmap(scratch);
+		al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
+		al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
+		al_identity_transform(&identity);
+		al_use_transform(&identity);
+		cx = al_get_bitmap_width(cep->selection.bitmap_stack->bitmap[layer]) / 2;
+		cy = al_get_bitmap_height(cep->selection.bitmap_stack->bitmap[layer]) / 2;
+		rx = (float)cep->selection.box.width / (float)al_get_bitmap_width(cep->selection.bitmap_stack->bitmap[layer]);
+		ry = (float)cep->selection.box.height / (float)al_get_bitmap_height(cep->selection.bitmap_stack->bitmap[layer]);
+		al_draw_scaled_rotated_bitmap(cep->selection.bitmap_stack->bitmap[layer], cx, cy, cx * rx * 2, cy * ry * 2, rx, ry, cep->selection.box.angle, 0);
+	}
+	al_restore_state(&old_state);
+}
+
 void pa_tool_selection_render_layer(PA_CANVAS_EDITOR * cep, int layer)
 {
 	ALLEGRO_TRANSFORM identity;
@@ -41,16 +65,11 @@ void pa_tool_selection_render_layer(PA_CANVAS_EDITOR * cep, int layer)
 	i = cep->selection.layer < 0 ? layer : cep->selection.layer;
 	if(cep->selection.bitmap_stack->bitmap[i])
 	{
-		al_set_target_bitmap(cep->scratch_bitmap);
-		al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
-		al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
-		al_identity_transform(&identity);
-		al_use_transform(&identity);
-		cx = al_get_bitmap_width(cep->selection.bitmap_stack->bitmap[i]) / 2;
-		cy = al_get_bitmap_height(cep->selection.bitmap_stack->bitmap[i]) / 2;
-		rx = (float)cep->selection.box.width / (float)al_get_bitmap_width(cep->selection.bitmap_stack->bitmap[i]);
-		ry = (float)cep->selection.box.height / (float)al_get_bitmap_height(cep->selection.bitmap_stack->bitmap[i]);
-		al_draw_scaled_rotated_bitmap(cep->selection.bitmap_stack->bitmap[i], cx, cy, cx * rx * 2, cy * ry * 2, rx, ry, cep->selection.box.angle, 0);
+		cx = al_get_bitmap_width(cep->selection.bitmap_stack->bitmap[layer]) / 2;
+		cy = al_get_bitmap_height(cep->selection.bitmap_stack->bitmap[layer]) / 2;
+		rx = (float)cep->selection.box.width / (float)al_get_bitmap_width(cep->selection.bitmap_stack->bitmap[layer]);
+		ry = (float)cep->selection.box.height / (float)al_get_bitmap_height(cep->selection.bitmap_stack->bitmap[layer]);
+		pa_tool_selection_render_layer_preview(cep, i, cep->scratch_bitmap);
 		al_set_target_bitmap(cep->tool_bitmap);
 		al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
 		al_identity_transform(&identity);

@@ -142,7 +142,7 @@ void pa_handle_unfloat_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * 
 	int i;
 
 	t3f_debug_message("Enter pa_handle_unfloat_canvas_editor_selection()\n");
-	if(pa_handle_canvas_expansion(cep->canvas, cep->selection.box.start_x, cep->selection.box.start_y, cep->selection.box.end_x, cep->selection.box.end_y, &cep->shift_x, &cep->shift_y))
+	if(pa_handle_canvas_expansion(cep->canvas, cep->selection.box.start_x - cep->selection.box.width / 2, cep->selection.box.start_y - cep->selection.box.height / 2, cep->selection.box.end_x + cep->selection.box.width / 2, cep->selection.box.end_y + cep->selection.box.height / 2, &cep->shift_x, &cep->shift_y))
 	{
 		pa_shift_canvas_editor_variables(cep, cep->shift_x * cep->canvas->bitmap_size, cep->shift_y * cep->canvas->bitmap_size);
 	}
