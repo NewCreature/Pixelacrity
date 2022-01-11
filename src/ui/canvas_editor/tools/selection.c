@@ -34,11 +34,11 @@ void pa_tool_selection_render_layer_preview(PA_CANVAS_EDITOR * cep, int layer, A
 		al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
 		al_identity_transform(&identity);
 		al_use_transform(&identity);
-		cx = al_get_bitmap_width(cep->selection.bitmap_stack->bitmap[layer]) / 2;
-		cy = al_get_bitmap_height(cep->selection.bitmap_stack->bitmap[layer]) / 2;
+		cx = al_get_bitmap_width(cep->selection.bitmap_stack->bitmap[layer]) / 2.0;
+		cy = al_get_bitmap_height(cep->selection.bitmap_stack->bitmap[layer]) / 2.0;
 		rx = (float)cep->selection.box.width / (float)al_get_bitmap_width(cep->selection.bitmap_stack->bitmap[layer]);
 		ry = (float)cep->selection.box.height / (float)al_get_bitmap_height(cep->selection.bitmap_stack->bitmap[layer]);
-		al_draw_scaled_rotated_bitmap(cep->selection.bitmap_stack->bitmap[layer], cx, cy, cx * rx * 2, cy * ry * 2, rx, ry, cep->selection.box.angle, 0);
+		al_draw_scaled_rotated_bitmap(cep->selection.bitmap_stack->bitmap[layer], cx, cy, cx * rx * 2.0, cy * ry * 2.0, rx, ry, cep->selection.box.angle, 0);
 	}
 	al_restore_state(&old_state);
 }
@@ -65,8 +65,8 @@ void pa_tool_selection_render_layer(PA_CANVAS_EDITOR * cep, int layer)
 	i = cep->selection.layer < 0 ? layer : cep->selection.layer;
 	if(cep->selection.bitmap_stack->bitmap[i])
 	{
-		cx = al_get_bitmap_width(cep->selection.bitmap_stack->bitmap[layer]) / 2;
-		cy = al_get_bitmap_height(cep->selection.bitmap_stack->bitmap[layer]) / 2;
+		cx = al_get_bitmap_width(cep->selection.bitmap_stack->bitmap[layer]) / 2.0;
+		cy = al_get_bitmap_height(cep->selection.bitmap_stack->bitmap[layer]) / 2.0;
 		rx = (float)cep->selection.box.width / (float)al_get_bitmap_width(cep->selection.bitmap_stack->bitmap[layer]);
 		ry = (float)cep->selection.box.height / (float)al_get_bitmap_height(cep->selection.bitmap_stack->bitmap[layer]);
 		pa_tool_selection_render_layer_preview(cep, i, cep->scratch_bitmap);
