@@ -12,6 +12,10 @@ Pixelacrity 0.3.10 Issues
 
       [ ]Figure out why scaling of final render seems to be off by one pixel.
 
+         [ ]Preview is offset by one pixel in the scratch bitmap for odd width/
+            height values. Check pa_tool_selection_render_layer_preview() for
+            issues with position calculation. 
+
    [ ]Ensure the undo state includes enough area around the selection box so
       the undo works properly.
 
