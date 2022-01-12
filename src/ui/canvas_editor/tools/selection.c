@@ -2,6 +2,7 @@
 #include "modules/canvas/canvas.h"
 #include "modules/canvas/canvas_helpers.h"
 #include "modules/primitives.h"
+#include "modules/bitmap.h"
 #include "ui/canvas_editor/canvas_editor.h"
 
 /*void pa_tool_selection_logic(PA_CANVAS_EDITOR * cep)
@@ -57,7 +58,9 @@ void pa_tool_selection_render_layer_preview(PA_CANVAS_EDITOR * cep, int layer, A
 			}
 			px = py;
 		}
+		//pa_set_bitmap_flags(cep->selection.bitmap_stack->bitmap[layer], ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
 		al_draw_scaled_rotated_bitmap(cep->selection.bitmap_stack->bitmap[layer], cx, cy, px, py, rx, ry, cep->selection.box.angle, 0);
+		//pa_set_bitmap_flags(cep->selection.bitmap_stack->bitmap[layer], 0);
 	}
 	al_restore_state(&old_state);
 }
@@ -107,4 +110,5 @@ void pa_tool_selection_render_layer(PA_CANVAS_EDITOR * cep, int layer)
 	}
 	al_restore_state(&old_state);
 	al_use_shader(cep->standard_shader);
+	al_draw_scaled_bitmap(cep->selection.bitmap_stack->bitmap[layer], 0, 0, al_get_bitmap_width(cep->selection.bitmap_stack->bitmap[layer]), al_get_bitmap_height(cep->selection.bitmap_stack->bitmap[layer]), 0, 0, 500, 500, 0);
 }
