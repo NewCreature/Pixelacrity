@@ -23,7 +23,7 @@ Pixelacrity 0.3.10 Issues
 
    [ ]Use different handle graphic for rotate handle so we know what it's for.
 
-   [ ]Make rendering rotated multi-layer selections to canvas work.
+   [X]Make rendering rotated multi-layer selections to canvas work.
 
 [ ]Snap box handle center to cursor position or track where in the handle the
    user clicks and use that as the centering position.
