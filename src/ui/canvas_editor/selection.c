@@ -142,11 +142,14 @@ void pa_handle_unfloat_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * 
 {
 	int i;
 	float cx, cy;
+	int px, py;
 	ALLEGRO_BITMAP * sub_bitmap;
 
 	t3f_debug_message("Enter pa_handle_unfloat_canvas_editor_selection()\n");
-	cx = cep->selection.box.width / 2;
-	cy = cep->selection.box.height / 2;
+	cx = (float)cep->selection.box.width / 2.0 - 0.5;
+	cy = (float)cep->selection.box.height / 2.0;
+	px = bp->start_x - cx;
+	py = bp->start_y - cy;
 	if(pa_handle_canvas_expansion(cep->canvas, cep->selection.box.start_x - cx, cep->selection.box.start_y - cy, cep->selection.box.end_x + cx, cep->selection.box.end_y + cy, &cep->shift_x, &cep->shift_y))
 	{
 		pa_shift_canvas_editor_variables(cep, cep->shift_x * cep->canvas->bitmap_size, cep->shift_y * cep->canvas->bitmap_size);
@@ -155,7 +158,7 @@ void pa_handle_unfloat_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * 
 	if(cep->selection.layer >= 0)
 	{
 		pa_tool_selection_render_layer_preview(cep, cep->selection.layer, cep->scratch_bitmap);
-		pa_draw_primitive_to_canvas(cep->canvas, cep->current_layer, bp->start_x - cx, bp->start_y - cy, bp->start_x + bp->width + cx, bp->start_y + bp->height + cy, NULL, al_map_rgba_f(0, 0, 0, 0), sub_bitmap, PA_RENDER_COPY, cep->conditional_copy_shader, pa_draw_quad);
+		pa_draw_primitive_to_canvas(cep->canvas, cep->current_layer, px, py, px + bp->width * 2, py + bp->height * 2, NULL, al_map_rgba_f(0, 0, 0, 0), sub_bitmap, PA_RENDER_COPY, cep->conditional_copy_shader, pa_draw_quad);
 		al_use_shader(cep->standard_shader);
 	}
 	else
