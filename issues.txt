@@ -25,6 +25,8 @@ Pixelacrity 0.3.10 Issues
 
    [X]Make rendering rotated multi-layer selections to canvas work.
 
+   [ ]Fix floated odd-sized selection not scaled properly. 
+
 [ ]Snap box handle center to cursor position or track where in the handle the
    user clicks and use that as the centering position.
 
