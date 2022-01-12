@@ -150,6 +150,7 @@ void pa_get_bitmap_dimensions(ALLEGRO_BITMAP * bp, int * x, int * y, int * width
 void pa_set_bitmap_flags(ALLEGRO_BITMAP * bp, int flags)
 {
 	GLint old_texture;
+	//GLfloat color[6] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 
 	glGetIntegerv(GL_TEXTURE_BINDING_2D, &old_texture);
 	glBindTexture(GL_TEXTURE_2D, al_get_opengl_texture(bp));
@@ -169,5 +170,9 @@ void pa_set_bitmap_flags(ALLEGRO_BITMAP * bp, int flags)
 	{
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	}
+	//glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, color);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_BORDER);
 	glBindTexture(GL_TEXTURE_2D, old_texture);
 }
