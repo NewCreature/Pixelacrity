@@ -167,7 +167,8 @@ void pa_handle_unfloat_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * 
 		{
 			if(cep->selection.bitmap_stack->bitmap[i])
 			{
-				pa_draw_primitive_to_canvas(cep->canvas, i, bp->start_x - cx, bp->start_y - cy, bp->start_x + bp->width + cx, bp->start_y + bp->height + cy, NULL, al_map_rgba_f(0, 0, 0, 0), cep->selection.bitmap_stack->bitmap[i], PA_RENDER_COPY, cep->conditional_copy_shader, pa_draw_quad);
+				pa_tool_selection_render_layer_preview(cep, i, cep->scratch_bitmap);
+				pa_draw_primitive_to_canvas(cep->canvas, i, px, py, px + bp->width * 2, py + bp->height * 2, NULL, al_map_rgba_f(0, 0, 0, 0), sub_bitmap, PA_RENDER_COPY, cep->conditional_copy_shader, pa_draw_quad);
 				al_use_shader(cep->standard_shader);
 			}
 		}
