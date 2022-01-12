@@ -5,16 +5,16 @@ Pixelacrity 0.3.10 Issues
 
    [X]Make scaling work again.
 
-   [ ]Make rotated selection render to the canvas properly.
+   [X]Make rotated selection render to the canvas properly.
 
       [X]Render the rotated selection to scratch then use the quad primitive to
          get it onto the canvas.
 
-      [ ]Figure out why scaling of final render seems to be off by one pixel.
+      [X]Figure out why scaling of final render seems to be off by one pixel.
 
-         [ ]Preview is offset by one pixel in the scratch bitmap for odd width/
+         [X]Preview is offset by one pixel in the scratch bitmap for odd width/
             height values. Check pa_tool_selection_render_layer_preview() for
-            issues with position calculation. 
+            issues with position calculation.
 
    [ ]Ensure the undo state includes enough area around the selection box so
       the undo works properly.
@@ -22,6 +22,8 @@ Pixelacrity 0.3.10 Issues
    [ ]Render angle line as part of the selection box rendering.
 
    [ ]Use different handle graphic for rotate handle so we know what it's for.
+
+   [ ]Make rendering rotated multi-layer selections to canvas work.
 
 [ ]Snap box handle center to cursor position or track where in the handle the
    user clicks and use that as the centering position.
