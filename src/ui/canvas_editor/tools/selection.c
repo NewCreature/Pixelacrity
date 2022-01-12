@@ -110,5 +110,4 @@ void pa_tool_selection_render_layer(PA_CANVAS_EDITOR * cep, int layer)
 	}
 	al_restore_state(&old_state);
 	al_use_shader(cep->standard_shader);
-	al_draw_scaled_bitmap(cep->selection.bitmap_stack->bitmap[layer], 0, 0, al_get_bitmap_width(cep->selection.bitmap_stack->bitmap[layer]), al_get_bitmap_height(cep->selection.bitmap_stack->bitmap[layer]), 0, 0, 500, 500, 0);
 }
