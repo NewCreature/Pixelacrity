@@ -1,4 +1,5 @@
 #include "t3f/t3f.h"
+#include <allegro5/allegro_opengl.h>
 
 void pa_flip_bitmap(ALLEGRO_BITMAP * bp, bool h, bool v)
 {
@@ -144,4 +145,29 @@ void pa_get_bitmap_dimensions(ALLEGRO_BITMAP * bp, int * x, int * y, int * width
 	{
 		*height = (bottom_y - top_y) + 1;
 	}
+}
+
+void pa_set_bitmap_flags(ALLEGRO_BITMAP * bp, int flags)
+{
+	GLint old_texture;
+
+	glGetIntegerv(GL_TEXTURE_BINDING_2D, &old_texture);
+	glBindTexture(GL_TEXTURE_2D, al_get_opengl_texture(bp));
+	if(flags & ALLEGRO_MIN_LINEAR)
+	{
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	}
+	else
+	{
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	}
+	if(flags & ALLEGRO_MAG_LINEAR)
+	{
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	}
+	else
+	{
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	}
+	glBindTexture(GL_TEXTURE_2D, old_texture);
 }
