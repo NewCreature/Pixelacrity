@@ -1,6 +1,8 @@
 Pixelacrity 0.3.10 Issues
 -------------------------
 
+[ ]Allow color replace to be confined by frame with the Ctrl key.
+
 [ ]Finish rotating selection implementation.
 
    [X]Make scaling work again.
