@@ -165,7 +165,7 @@ void pa_handle_unfloat_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * 
 	if(cep->selection.layer >= 0)
 	{
 		pa_tool_selection_render_layer_preview(cep, cep->selection.layer, cep->scratch_bitmap, &offset_x, &offset_y);
-		pa_draw_primitive_to_canvas(cep->canvas, cep->current_layer, px - offset_x, py - offset_y, px - offset_x + preview_size, py - offset_y + preview_size, NULL, al_map_rgba_f(0, 0, 0, 0), sub_bitmap, PA_RENDER_COPY, cep->conditional_copy_shader, pa_draw_quad);
+		pa_draw_primitive_to_canvas(cep->canvas, cep->current_layer, bp->start_x, bp->start_y, bp->start_x + bp->width, bp->start_y + bp->height, NULL, al_map_rgba_f(0, 0, 0, 0), cep->selection.bitmap_stack->bitmap[cep->selection.layer], PA_RENDER_COPY, cep->conditional_copy_shader, pa_draw_quad);
 		al_use_shader(cep->standard_shader);
 	}
 	else
@@ -175,7 +175,7 @@ void pa_handle_unfloat_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * 
 			if(cep->selection.bitmap_stack->bitmap[i])
 			{
 				pa_tool_selection_render_layer_preview(cep, i, cep->scratch_bitmap, &offset_x, &offset_y);
-				pa_draw_primitive_to_canvas(cep->canvas, i, px - offset_x, py - offset_y, px - offset_x + preview_size, py - offset_y + preview_size, NULL, al_map_rgba_f(0, 0, 0, 0), sub_bitmap, PA_RENDER_COPY, cep->conditional_copy_shader, pa_draw_quad);
+				pa_draw_primitive_to_canvas(cep->canvas, i, bp->start_x, bp->start_y, bp->start_x + bp->width, bp->start_y + bp->height, NULL, al_map_rgba_f(0, 0, 0, 0), cep->selection.bitmap_stack->bitmap[i], PA_RENDER_COPY, cep->conditional_copy_shader, pa_draw_quad);
 				al_use_shader(cep->standard_shader);
 			}
 		}

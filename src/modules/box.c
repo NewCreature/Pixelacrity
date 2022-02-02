@@ -165,7 +165,6 @@ static void update_box(PA_BOX * bp)
 		if(bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_ANGLE)
 		{
 			bp->angle = atan2(bp->angle_y - bp->middle_y, bp->angle_x - bp->middle_x);
-			printf("break 1 %f\n", bp->angle);
 		}
 	}
 	pa_setup_box(bp, bp->start_x, bp->start_y, bp->width, bp->height, bp->angle);
@@ -204,7 +203,7 @@ void pa_update_box_handles(PA_BOX * bp, int view_x, int view_y, int view_zoom, b
 		pa_initialize_box_handle(&bp->handle[6], view_x, view_y, view_zoom, PA_BOX_HANDLE_TYPE_NONE, -1, offset, &bp->start_x, &bp->middle_y);
 		pa_initialize_box_handle(&bp->handle[7], view_x, view_y, view_zoom, PA_BOX_HANDLE_TYPE_NONE, view_zoom, offset, &bp->end_x, &bp->middle_y);
 	}
-	pa_initialize_box_handle(&bp->handle[8], view_x, view_y, view_zoom, floating ? PA_BOX_HANDLE_TYPE_ANGLE : PA_BOX_HANDLE_TYPE_NONE, view_zoom, 0, &bp->angle_x, &bp->angle_y);
+	pa_initialize_box_handle(&bp->handle[8], view_x, view_y, view_zoom, PA_BOX_HANDLE_TYPE_NONE, view_zoom, 0, &bp->angle_x, &bp->angle_y);
 }
 
 void pa_get_box_hover_handle(PA_BOX * bp, int offset_x, int offset_y, int peg_offset)
