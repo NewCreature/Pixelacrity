@@ -30,7 +30,14 @@ void pa_update_hover_frame(PA_CANVAS_EDITOR * cep, T3GUI_ELEMENT * d)
 
 	if(cep->current_tool == PA_TOOL_FRAME && cep->tool_state == PA_TOOL_STATE_OFF)
 	{
-		cep->hover_frame = pa_get_hover_frame(cep);
+		if(t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT])
+		{
+			cep->hover_frame = -1;
+		}
+		else
+		{
+			cep->hover_frame = pa_get_hover_frame(cep);
+		}
 	}
 	else if(cep->current_tool == PA_TOOL_FRAME)
 	{
