@@ -3,8 +3,6 @@ Pixelacrity 0.3.10 Issues
 
 [ ]Allow color replace to be confined by frame with the Ctrl key.
 
-[ ]Enable Shift to ignore hover frame when using the frame tool.
-
 [ ]Snapped drawing doesn't reflect the correct size of the output in the
    status bar.
 
@@ -935,3 +933,5 @@ Closed Issues
 
 [X]Look into selection boxes not going away when switching away from the
    selection tool.
+
+[X]Enable Shift to ignore hover frame when using the frame tool.
