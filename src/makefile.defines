@@ -127,7 +127,7 @@ app_clean:
 #LINUX_CFLAGS =
 #LINUX_PLATFORM_OBJECTS =
 #LINUX_PLATFORM_LIBS =
-#LINUX_DEPEND_LIBS =
+LINUX_DEPEND_LIBS = -lGL
 #LINUX_PLATFORM_TARGET =
 
 ################################################
