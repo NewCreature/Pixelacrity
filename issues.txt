@@ -1,4 +1,4 @@
-Pixelacrity 0.3.10 Issues
+Pixelacrity 0.3.11 Issues
 -------------------------
 
 [ ]Snapped drawing doesn't reflect the correct size of the output in the
