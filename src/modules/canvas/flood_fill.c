@@ -276,7 +276,7 @@ bool pa_flood_fill_canvas_area(PA_CANVAS * cp, int layer, int left, int top, int
 	return ret;
 }
 
-static void replace_bitmap_color(ALLEGRO_BITMAP * bp, ALLEGRO_COLOR original_color, ALLEGRO_COLOR new_color, int offset_x, int offset_y, PA_QUEUE * out_qp)
+static void replace_bitmap_color(ALLEGRO_BITMAP * bp, ALLEGRO_COLOR original_color, ALLEGRO_COLOR new_color, int offset_x, int offset_y, int left, int top, int right, int bottom, PA_QUEUE * out_qp)
 {
 	ALLEGRO_STATE old_state;
 	int i, j;
@@ -289,11 +289,14 @@ static void replace_bitmap_color(ALLEGRO_BITMAP * bp, ALLEGRO_COLOR original_col
 	{
 		for(j = 0; j < al_get_bitmap_width(bp); j++)
 		{
-			c = al_get_pixel(bp, j, i);
-			if(pa_color_equal(c, original_color))
+			if(offset_x + j >= left && offset_x + j <= right && offset_y + i >= top && offset_y + i <= bottom)
 			{
-				al_put_pixel(j, i, new_color);
-				pa_queue_push(out_qp, offset_x + j, offset_y + i);
+				c = al_get_pixel(bp, j, i);
+				if(pa_color_equal(c, original_color))
+				{
+					al_put_pixel(j, i, new_color);
+					pa_queue_push(out_qp, offset_x + j, offset_y + i);
+				}
 			}
 		}
 	}
@@ -315,7 +318,30 @@ bool pa_replace_canvas_color(PA_CANVAS * cp, int layer, ALLEGRO_COLOR old_color,
 			{
 				if(cp->layer[layer]->bitmap[i][j])
 				{
-					replace_bitmap_color(cp->layer[layer]->bitmap[i][j], old_color, new_color, j * cp->bitmap_size, i * cp->bitmap_size, out_qp);
+					replace_bitmap_color(cp->layer[layer]->bitmap[i][j], old_color, new_color, j * cp->bitmap_size, i * cp->bitmap_size, 0, 0, cp->layer_width * cp->bitmap_size, cp->layer_height * cp->bitmap_size, out_qp);
+				}
+			}
+		}
+		return true;
+	}
+	return false;
+}
+
+bool pa_replace_canvas_color_area(PA_CANVAS * cp, int layer, ALLEGRO_COLOR old_color, ALLEGRO_COLOR new_color, int left, int top, int right, int bottom, PA_QUEUE * out_qp)
+{
+	unsigned char r, g, b, a;
+	int i, j;
+
+	al_unmap_rgba(old_color, &r, &g, &b, &a);
+	if(a > 0)
+	{
+		for(i = 0; i < cp->layer_height; i++)
+		{
+			for(j = 0; j < cp->layer_width; j++)
+			{
+				if(cp->layer[layer]->bitmap[i][j])
+				{
+					replace_bitmap_color(cp->layer[layer]->bitmap[i][j], old_color, new_color, j * cp->bitmap_size, i * cp->bitmap_size, left, top, right, bottom, out_qp);
 				}
 			}
 		}

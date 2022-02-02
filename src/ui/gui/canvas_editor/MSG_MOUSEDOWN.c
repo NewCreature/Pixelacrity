@@ -208,20 +208,49 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 			case PA_TOOL_REPLACE:
 			{
 				pa_set_window_message("Processing color replace...");
-				flood_fill_queue = pa_create_queue("Replace Color");
-				if(flood_fill_queue)
+				if(t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND])
 				{
-					color = pa_get_canvas_pixel(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y);
-					if(pa_replace_canvas_color(canvas_editor->canvas, canvas_editor->current_layer, color, c == 1 ? canvas_editor->left_color.color : canvas_editor->right_color.color, flood_fill_queue))
+					flood_fill_queue = pa_create_queue("Replace Color");
+					if(flood_fill_queue)
 					{
-						made_undo = create_flood_fill_undo(canvas_editor, color, flood_fill_queue, 0, 0);
-						if(made_undo)
+						hover_frame = pa_get_hover_frame(canvas_editor);
+						if(hover_frame >= 0)
 						{
-							pa_finalize_undo(canvas_editor);
+							left = canvas_editor->canvas->frame[hover_frame]->box.start_x;
+							top = canvas_editor->canvas->frame[hover_frame]->box.start_y;
+							right = left + canvas_editor->canvas->frame[hover_frame]->box.width;
+							bottom = top + canvas_editor->canvas->frame[hover_frame]->box.height;
+							color = pa_get_canvas_pixel(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y);
+							if(pa_replace_canvas_color_area(canvas_editor->canvas, canvas_editor->current_layer, color, c == 1 ? canvas_editor->left_color.color : canvas_editor->right_color.color, left, top, right, bottom, flood_fill_queue))
+							{
+								made_undo = create_flood_fill_undo(canvas_editor, color, flood_fill_queue, 0, 0);
+								if(made_undo)
+								{
+									pa_finalize_undo(canvas_editor);
+								}
+								canvas_editor->modified++;
+							}
 						}
-						canvas_editor->modified++;
+						pa_destroy_queue(flood_fill_queue);
 					}
-					pa_destroy_queue(flood_fill_queue);
+				}
+				else
+				{
+					flood_fill_queue = pa_create_queue("Replace Color");
+					if(flood_fill_queue)
+					{
+						color = pa_get_canvas_pixel(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y);
+						if(pa_replace_canvas_color(canvas_editor->canvas, canvas_editor->current_layer, color, c == 1 ? canvas_editor->left_color.color : canvas_editor->right_color.color, flood_fill_queue))
+						{
+							made_undo = create_flood_fill_undo(canvas_editor, color, flood_fill_queue, 0, 0);
+							if(made_undo)
+							{
+								pa_finalize_undo(canvas_editor);
+							}
+							canvas_editor->modified++;
+						}
+						pa_destroy_queue(flood_fill_queue);
+					}
 				}
 				break;
 			}
