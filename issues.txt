@@ -4,8 +4,6 @@ Pixelacrity 0.3.11 Issues
 [ ]Snapped drawing doesn't reflect the correct size of the output in the
    status bar.
 
-[ ]Allow disabling auto-backup.
-
 [ ]Finish rotating selection implementation.
 
    [X]Make scaling work again.
@@ -937,3 +935,5 @@ Closed Issues
 [X]Enable Shift to ignore hover frame when using the frame tool.
 
 [X]Allow color replace to be confined by frame with the Ctrl key.
+
+[X]Allow disabling auto-backup.
