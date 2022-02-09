@@ -1,9 +1,6 @@
 Pixelacrity 0.3.11 Issues
 -------------------------
 
-[ ]Snapped drawing doesn't reflect the correct size of the output in the
-   status bar.
-
 [ ]Finish rotating selection implementation.
 
    [X]Make scaling work again.
@@ -933,3 +930,6 @@ Closed Issues
 
 [X]Add preprocessor flag to disable T3F's keep awake feature. For this kind of
    app, it doesn't make sense to force the computer to stay awake.
+
+[X]Snapped drawing doesn't reflect the correct size of the output in the
+   status bar.
