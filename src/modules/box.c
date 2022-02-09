@@ -361,7 +361,7 @@ void pa_box_render(PA_BOX * bp, int style, int view_x, int view_y, int view_zoom
 				{
 					start_x = (*bp->handle[i].link_x - view_x) * view_zoom;
 					start_y = (*bp->handle[i].link_y - view_y) * view_zoom;
-					t3f_draw_bitmap(handle_bitmap, t3f_color_white, bp->handle[i].screen_x + offset_x - peg_offset, bp->handle[i].screen_y + offset_y - peg_offset, 0, 0);
+					t3f_draw_bitmap(handle_bitmap, (i == bp->hover_handle && bp->state != PA_BOX_STATE_DRAWING) ? al_map_rgba_f(0.0, 1.0, 0.0, 1.0) : t3f_color_white, bp->handle[i].screen_x + offset_x - peg_offset, bp->handle[i].screen_y + offset_y - peg_offset, 0, 0);
 				}
 			}
 		}
