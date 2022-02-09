@@ -4,6 +4,8 @@ Pixelacrity 0.3.11 Issues
 [ ]Snapped drawing doesn't reflect the correct size of the output in the
    status bar.
 
+[ ]Allow disabling auto-backup.
+
 [ ]Finish rotating selection implementation.
 
    [X]Make scaling work again.
