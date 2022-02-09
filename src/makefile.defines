@@ -107,7 +107,7 @@ APP_URL = https://www.t3-i.com
 APP_OBJECTS = $(T3GUI_OBJECTS) $(APP_MODULE_OBJECTS) $(APP_UI_OBJECTS) main.o shortcuts.o
 APP_PACKAGE_DIR = ../packages
 #APP_LIBS =
-APP_CFLAGS = -O2 -Wall -I.
+APP_CFLAGS = -O2 -Wall -I. -DT3F_NO_KEEP_AWAKE
 #APP_EXTRA_TARGET =
 app_clean:
 #	@
