@@ -116,8 +116,6 @@
 
 #define PA_UI_MAX_THEMES  32
 
-#define PA_UI_ELEMENT_SPACE 8
-
 typedef struct
 {
 

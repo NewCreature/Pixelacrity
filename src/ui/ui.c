@@ -118,6 +118,7 @@ void pa_resize_ui(PA_UI * uip)
 	int separator_offset;
 	int separator_size;
 	int status_height;
+	int status_offset;
 	int button_size;
 	int color_size = pa_get_theme_int(uip->theme, "color_size", 12);
 
@@ -138,6 +139,7 @@ void pa_resize_ui(PA_UI * uip)
 	mt = pa_get_theme_int(uip->theme, "element_top_margin", 0);
 	mb = pa_get_theme_int(uip->theme, "element_bottom_margin", 0);
 	status_height = al_get_font_line_height(uip->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0]) + est + esb;
+	status_offset = pa_get_theme_int(uip->theme, "status_offset", 8);
 	button_size = pa_get_theme_int(uip->theme, "button_size", 64);
 	right_pane_width = button_size + button_size + mr + ml + mr + ml + mr + ml + esr + esl;
 	pos_vx = button_size;
@@ -321,16 +323,17 @@ void pa_resize_ui(PA_UI * uip)
 
 	pos_y = t3f_default_view->height - status_height;
 	resize_element(uip->element[PA_UI_ELEMENT_STATUS_BAR], 0, pos_y, t3f_default_view->width, status_height);
-	pos_y += PA_UI_ELEMENT_SPACE;
-	resize_element(uip->element[PA_UI_ELEMENT_STATUS_LEFT_MESSAGE], PA_UI_ELEMENT_SPACE, pos_y, t3f_default_view->width - PA_UI_ELEMENT_SPACE * 2, status_height);
-	resize_element(uip->element[PA_UI_ELEMENT_STATUS_MIDDLE_MESSAGE], PA_UI_ELEMENT_SPACE, pos_y, t3f_default_view->width - PA_UI_ELEMENT_SPACE * 2, status_height);
-	resize_element(uip->element[PA_UI_ELEMENT_STATUS_RIGHT_MESSAGE], PA_UI_ELEMENT_SPACE, pos_y, t3f_default_view->width - PA_UI_ELEMENT_SPACE * 2, status_height);
+	pos_y += status_offset;
+	resize_element(uip->element[PA_UI_ELEMENT_STATUS_LEFT_MESSAGE], esl, pos_y, t3f_default_view->width - esl - esr, status_height - status_offset);
+	resize_element(uip->element[PA_UI_ELEMENT_STATUS_MIDDLE_MESSAGE], esl, pos_y, t3f_default_view->width - esl - esr, status_height - status_offset);
+	resize_element(uip->element[PA_UI_ELEMENT_STATUS_RIGHT_MESSAGE], esl, pos_y, t3f_default_view->width - esl - esr, status_height - status_offset);
 
 	resize_element(uip->element[PA_UI_ELEMENT_CANVAS_EDITOR], left_pane_width, pos_vy + mt + mb + mt + mb + est + esb, t3f_default_view->width - left_pane_width - right_pane_width, t3f_default_view->height - pos_vy - mt - mb - mt - mb - est - esb - status_height);
 
 	canvas_editor = (PA_CANVAS_EDITOR *)uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->dp;
 	t3f_adjust_view(canvas_editor->view, 0, 0, al_get_display_width(t3f_display), al_get_display_height(t3f_display), uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->w / 2, uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->h / 2, T3F_NO_SCALE);
 	pa_set_canvas_editor_zoom(canvas_editor, canvas_editor->view_zoom);
+	canvas_editor->frame_text_offset = est + esb;
 }
 
 static bool load_bitmap(PA_UI * uip, int slot, const char * name)

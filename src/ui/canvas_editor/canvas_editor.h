@@ -130,6 +130,7 @@ typedef struct
 	int release_x, release_y;
 	int hover_frame;
 	int frame_id;
+	int frame_text_offset;
 	int shift_x, shift_y;
 	int current_layer;
 	int current_frame;
