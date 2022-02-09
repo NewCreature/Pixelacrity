@@ -240,7 +240,7 @@ void pa_box_logic(PA_BOX * bp, int view_x, int view_y, int view_zoom, int offset
 			pa_get_box_hover_handle(bp, offset_x, offset_y, peg_offset);
 			if(bp->hover_handle < 0)
 			{
-				if(t3gui_get_mouse_x() >= bp->handle[0].screen_x - peg_offset + offset_x && t3gui_get_mouse_x() <= bp->handle[1].screen_x + peg_offset + offset_x && t3gui_get_mouse_y() >= bp->handle[0].screen_y - peg_offset + offset_y && t3gui_get_mouse_y() <= bp->handle[2].screen_y + peg_offset + offset_y)
+				if(t3gui_get_mouse_x() >= bp->handle[0].screen_x + offset_x && t3gui_get_mouse_x() <= bp->handle[1].screen_x + offset_x && t3gui_get_mouse_y() >= bp->handle[0].screen_y + offset_y && t3gui_get_mouse_y() <= bp->handle[2].screen_y + offset_y)
 				{
 					bp->state = PA_BOX_STATE_HOVER;
 				}
@@ -268,7 +268,7 @@ void pa_box_logic(PA_BOX * bp, int view_x, int view_y, int view_zoom, int offset
 			{
 				bp->state = PA_BOX_STATE_HOVER_HANDLE;
 			}
-			else if(t3gui_get_mouse_x() < bp->handle[0].screen_x - peg_offset + offset_x || t3gui_get_mouse_x() > bp->handle[1].screen_x + peg_offset + offset_x || t3gui_get_mouse_y() < bp->handle[0].screen_y - peg_offset + offset_y || t3gui_get_mouse_y() > bp->handle[2].screen_y + peg_offset + offset_y)
+			else if(t3gui_get_mouse_x() < bp->handle[0].screen_x + offset_x || t3gui_get_mouse_x() > bp->handle[1].screen_x + offset_x || t3gui_get_mouse_y() < bp->handle[0].screen_y + offset_y || t3gui_get_mouse_y() > bp->handle[2].screen_y + offset_y)
 			{
 				bp->state = PA_BOX_STATE_IDLE;
 			}
@@ -303,13 +303,13 @@ void pa_box_logic(PA_BOX * bp, int view_x, int view_y, int view_zoom, int offset
 		{
 			if(bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_TOP_LEFT || bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_TOP_RIGHT || bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_BOTTOM_LEFT || bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_BOTTOM_RIGHT || bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_LEFT || bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_RIGHT)
 			{
-				bp->handle[bp->hover_handle].screen_x = t3gui_get_mouse_x() - peg_offset - offset_x;
+				bp->handle[bp->hover_handle].screen_x = t3gui_get_mouse_x() - offset_x;
 				*bp->handle[bp->hover_handle].link_x = (bp->handle[bp->hover_handle].screen_x) / view_zoom + view_x;
 				bp->handle[bp->hover_handle].screen_x = (*bp->handle[bp->hover_handle].link_x - view_x) * view_zoom + bp->handle[bp->hover_handle].offset_x;
 			}
 			if(bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_TOP_LEFT || bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_TOP_RIGHT || bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_BOTTOM_LEFT || bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_BOTTOM_RIGHT || bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_TOP || bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_BOTTOM)
 			{
-				bp->handle[bp->hover_handle].screen_y = t3gui_get_mouse_y() - peg_offset - offset_y;
+				bp->handle[bp->hover_handle].screen_y = t3gui_get_mouse_y() - offset_y;
 				*bp->handle[bp->hover_handle].link_y = (bp->handle[bp->hover_handle].screen_y) / view_zoom + view_y;
 				bp->handle[bp->hover_handle].screen_y = (*bp->handle[bp->hover_handle].link_y - view_y) * view_zoom + bp->handle[bp->hover_handle].offset_y;
 			}
@@ -321,9 +321,9 @@ void pa_box_logic(PA_BOX * bp, int view_x, int view_y, int view_zoom, int offset
 		{
 			if(bp->handle[bp->hover_handle].type == PA_BOX_HANDLE_TYPE_ANGLE)
 			{
-				bp->handle[bp->hover_handle].screen_x = t3gui_get_mouse_x() - peg_offset - offset_x;
+				bp->handle[bp->hover_handle].screen_x = t3gui_get_mouse_x() - offset_x;
 				*bp->handle[bp->hover_handle].link_x = (bp->handle[bp->hover_handle].screen_x) / view_zoom + view_x;
-				bp->handle[bp->hover_handle].screen_y = t3gui_get_mouse_y() - peg_offset - offset_y;
+				bp->handle[bp->hover_handle].screen_y = t3gui_get_mouse_y() - offset_y;
 				*bp->handle[bp->hover_handle].link_y = (bp->handle[bp->hover_handle].screen_y) / view_zoom + view_y;
 			}
 			update_box(bp);
