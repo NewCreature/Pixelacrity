@@ -128,7 +128,7 @@ void app_logic(void * data)
 	strcpy(app->ui->status_left_message, "");
 	if(app->canvas_editor->tool_state == PA_TOOL_STATE_DRAWING)
 	{
-		sprintf(app->ui->status_left_message, "(%d, %d)", abs(app->canvas_editor->click_x - app->canvas_editor->hover_x) + 1, abs(app->canvas_editor->click_y - app->canvas_editor->hover_y) + 1);
+		sprintf(app->ui->status_left_message, "(%d, %d)", abs((int)app->canvas_editor->start_x - (int)app->canvas_editor->end_x) + 1, abs((int)app->canvas_editor->start_y - (int)app->canvas_editor->end_y) + 1);
 	}
 	else if(app->canvas_editor->tool_state == PA_TOOL_STATE_EDITING)
 	{

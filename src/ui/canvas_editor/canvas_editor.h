@@ -128,6 +128,8 @@ typedef struct
 	ALLEGRO_COLOR click_color;
 	ALLEGRO_COLOR click_outline_color;
 	int release_x, release_y;
+	float start_x, start_y;
+	float end_x, end_y;
 	int hover_frame;
 	int frame_id;
 	int frame_text_offset;

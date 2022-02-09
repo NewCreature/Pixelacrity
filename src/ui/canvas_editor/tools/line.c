@@ -8,18 +8,17 @@ void pa_tool_line_logic(PA_CANVAS_EDITOR * cep)
 {
 	ALLEGRO_TRANSFORM identity;
 	ALLEGRO_STATE old_state;
-	float start_x, start_y, end_x, end_y;
 
-	start_x = cep->click_x - cep->view_x;
-	start_y = cep->click_y - cep->view_y;
-	end_x = cep->hover_x - cep->view_x;
-	end_y = cep->hover_y - cep->view_y;
+	cep->start_x = cep->click_x - cep->view_x;
+	cep->start_y = cep->click_y - cep->view_y;
+	cep->end_x = cep->hover_x - cep->view_x;
+	cep->end_y = cep->hover_y - cep->view_y;
 
 	/* apply constraint if user is pressing Control */
 	if(t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL])
 	{
-		pa_snap_coordinates(start_x, start_y, &end_x, &end_y, 0, ALLEGRO_PI / 16.0);
-		pa_set_tool_boundaries(cep, start_x + cep->view_x, start_y + cep->view_y, end_x + cep->view_x, end_y + cep->view_y);
+		pa_snap_coordinates(cep->start_x, cep->start_y, &cep->end_x, &cep->end_y, 0, ALLEGRO_PI / 16.0);
+		pa_set_tool_boundaries(cep, cep->start_x + cep->view_x, cep->start_y + cep->view_y, cep->end_x + cep->view_x, cep->end_y + cep->view_y);
 	}
 
 	cep->scratch_offset_x = cep->view_x;
@@ -32,7 +31,7 @@ void pa_tool_line_logic(PA_CANVAS_EDITOR * cep)
 	al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
 	pa_render_canvas_layer(cep->canvas, cep->current_layer, cep->view_x, cep->view_y, 0, t3f_color_white, 1, 0, 0, cep->editor_element->w, cep->editor_element->h);
 	al_use_shader(cep->conditional_copy_shader);
-	pa_draw_line(start_x, start_y, end_x, end_y, cep->brush, cep->click_color, NULL);
+	pa_draw_line(cep->start_x, cep->start_y, cep->end_x, cep->end_y, cep->brush, cep->click_color, NULL);
 	al_restore_state(&old_state);
 	al_use_shader(cep->standard_shader);
 }
