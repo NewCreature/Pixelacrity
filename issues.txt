@@ -34,8 +34,6 @@ Pixelacrity 0.3.11 Issues
          test to see if rotating an odd-sized object properly rotates around the
          center pixel.
 
-[ ]Ctrl+Click to flood fill frame extends to the right and down 1 pixel too far.
-
 [ ]Snap box handle center to cursor position or track where in the handle the
    user clicks and use that as the centering position.
 
@@ -937,3 +935,5 @@ Closed Issues
 [X]Allow color replace to be confined by frame with the Ctrl key.
 
 [X]Allow disabling auto-backup.
+
+[X]Ctrl+Click to flood fill frame extends to the right and down 1 pixel too far.
