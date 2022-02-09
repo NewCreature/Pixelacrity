@@ -31,9 +31,6 @@ Pixelacrity 0.3.11 Issues
          test to see if rotating an odd-sized object properly rotates around the
          center pixel.
 
-[ ]Snap box handle center to cursor position or track where in the handle the
-   user clicks and use that as the centering position.
-
 [ ]Look into crash when bringing up the brush popup dialog on Linux.
 
 [ ]Add pane-specific edge space settings to themes. Some themes might need to
@@ -933,3 +930,6 @@ Closed Issues
 
 [X]Snapped drawing doesn't reflect the correct size of the output in the
    status bar.
+
+[X]Snap box handle center to cursor position or track where in the handle the
+   user clicks and use that as the centering position.
