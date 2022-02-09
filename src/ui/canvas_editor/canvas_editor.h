@@ -163,6 +163,7 @@ typedef struct
 	int redo_count;
 	char redo_name[256];
 
+	bool auto_backup;
 	int backup_tick;
 
 	ALLEGRO_CONFIG * config;

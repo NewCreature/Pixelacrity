@@ -203,6 +203,14 @@ bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 		t3f_debug_message("Failed to create canvas editor\n");
 		return false;
 	}
+	val = al_get_config_value(t3f_config, "App Data", "auto_backup");
+	if(val)
+	{
+		if(!strcasecmp(val, "false"))
+		{
+			app->canvas_editor->auto_backup = false;
+		}
+	}
 	pa_set_window_message(NULL);
 
 	t3f_debug_message("Create UI\n");

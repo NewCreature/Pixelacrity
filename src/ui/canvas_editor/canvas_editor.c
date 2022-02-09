@@ -125,6 +125,7 @@ PA_CANVAS_EDITOR * pa_create_canvas_editor(PA_CANVAS * cp)
 		goto fail;
 	}
 	cep->canvas = cp;
+	cep->auto_backup = true;
 	pa_reset_canvas_editor(cep);
 	return cep;
 
