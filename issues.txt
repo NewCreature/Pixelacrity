@@ -85,8 +85,6 @@ Pixelacrity 0.3.11 Issues
 [ ]Allow scrolling the canvas by holding the mouse wheel button and moving the
    mouse.
 
-[ ]Make selections rotatable.
-
 [ ]Fix oval tool missing pixels on slim ovals.
 
 
