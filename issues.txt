@@ -79,6 +79,8 @@ Pixelacrity 0.3.12 Issues
 
 [ ]Fix oval tool missing pixels on slim ovals.
 
+[ ]Fix rendering of floating selection preview being cut off.
+
 
 Allegro Issues
 --------------
