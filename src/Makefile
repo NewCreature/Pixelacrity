@@ -82,3 +82,6 @@ demo_gp:
 
 makeicon:
 	$(MAKE) -f ../scripts/makefile.$(SYSTEM) -I ../scripts ../win32/makeicon
+
+reset_config:
+	$(MAKE) -f ../scripts/makefile.$(SYSTEM) -I ../scripts reset_config
