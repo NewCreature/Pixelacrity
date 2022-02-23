@@ -81,6 +81,8 @@ Pixelacrity 0.3.13 Issues
 
 [ ]Fix rendering of floating selection preview being cut off.
 
+[ ]Add option to toggle layer visibility.
+
 
 Allegro Issues
 --------------
