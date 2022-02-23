@@ -85,3 +85,6 @@ makeicon:
 
 reset_config:
 	$(MAKE) -f ../scripts/makefile.$(SYSTEM) -I ../scripts reset_config
+
+finish:
+	$(MAKE) -f ../scripts/makefile.$(SYSTEM) -I ../scripts finish
