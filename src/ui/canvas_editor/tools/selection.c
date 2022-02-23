@@ -91,10 +91,10 @@ void pa_tool_selection_render_layer(PA_CANVAS_EDITOR * cep, int layer)
 	i = cep->selection.layer < 0 ? layer : cep->selection.layer;
 	if(cep->selection.bitmap_stack->bitmap[i])
 	{
-		cx = al_get_bitmap_width(cep->selection.bitmap_stack->bitmap[layer]) / 2.0;
-		cy = al_get_bitmap_height(cep->selection.bitmap_stack->bitmap[layer]) / 2.0;
-		rx = (float)cep->selection.box.width / (float)al_get_bitmap_width(cep->selection.bitmap_stack->bitmap[layer]);
-		ry = (float)cep->selection.box.height / (float)al_get_bitmap_height(cep->selection.bitmap_stack->bitmap[layer]);
+		cx = al_get_bitmap_width(cep->selection.bitmap_stack->bitmap[i]) / 2.0;
+		cy = al_get_bitmap_height(cep->selection.bitmap_stack->bitmap[i]) / 2.0;
+		rx = (float)cep->selection.box.width / (float)al_get_bitmap_width(cep->selection.bitmap_stack->bitmap[i]);
+		ry = (float)cep->selection.box.height / (float)al_get_bitmap_height(cep->selection.bitmap_stack->bitmap[i]);
 		px = cx * rx;
 		py = cy * ry + 0.5;
 		preview_size = cep->selection.box.width * 2;
