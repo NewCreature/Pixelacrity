@@ -139,6 +139,7 @@ typedef struct
 	int current_tool;
 	int last_tool;
 	int tool_state;
+	bool tool_outline;
 	PA_SELECTION_DATA selection;
 	int modified;
 	PA_COLOR_INFO left_color;

@@ -414,6 +414,14 @@ static bool load_resources(PA_UI * uip)
 	{
 		return false;
 	}
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOL_OUTLINE, "tool_outline"))
+	{
+		return false;
+	}
+	if(!load_bitmap(uip, PA_UI_BITMAP_TOOL_COMPOSITE, "tool_composite"))
+	{
+		return false;
+	}
 	if(!load_bitmap(uip, PA_UI_BITMAP_TOOLBAR_NEW, "toolbar_new"))
 	{
 		return false;
@@ -524,8 +532,8 @@ static void add_right_pane(PA_UI * uip, PA_CANVAS_EDITOR * cep)
 
 	uip->element[PA_UI_ELEMENT_RIGHT_PANE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_RIGHT_PANE], t3gui_box_proc, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL);
 	uip->element[PA_UI_ELEMENT_BRUSH] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_LIST_BOX], pa_gui_brush_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->brush, NULL, NULL);
-	uip->element[PA_UI_ELEMENT_BUTTON_TOOL_MODE_COMPOSITE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_button_proc, 0, 0, 0, 0, 0, 0, scale, 0, "A", NULL, NULL);
-	uip->element[PA_UI_ELEMENT_BUTTON_TOOL_MODE_OUTLINE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_button_proc, 0, 0, 0, 0, 0, 0, scale, 0, "D", NULL, NULL);
+	uip->element[PA_UI_ELEMENT_BUTTON_TOOL_MODE_COMPOSITE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, scale, 0, "Composite", pa_tool_composite_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_COMPOSITE]);
+	uip->element[PA_UI_ELEMENT_BUTTON_TOOL_MODE_OUTLINE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, scale, 0, "Outline", pa_tool_outline_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_OUTLINE]);
 	uip->element[PA_UI_ELEMENT_BUTTON_PIXEL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, scale, 0, "Pixel", pa_tool_pixel_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_PIXEL]);
 	uip->element[PA_UI_ELEMENT_BUTTON_LINE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, scale, 0, "Line", pa_tool_line_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_LINE]);
 	uip->element[PA_UI_ELEMENT_BUTTON_RECTANGLE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, scale, 0, "Rectangle", pa_tool_rectangle_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_RECTANGLE]);
@@ -747,6 +755,15 @@ static void update_toolbar_flags(PA_UI * uip, PA_CANVAS_EDITOR * cep)
 	else
 	{
 		uip->element[PA_UI_ELEMENT_BUTTON_PASTE]->flags |= D_DISABLED;
+	}
+
+	if(cep->tool_outline)
+	{
+		uip->element[PA_UI_ELEMENT_BUTTON_TOOL_MODE_OUTLINE]->flags |= D_SELECTED;
+	}
+	else
+	{
+		uip->element[PA_UI_ELEMENT_BUTTON_TOOL_MODE_OUTLINE]->flags &= ~D_SELECTED;
 	}
 }
 

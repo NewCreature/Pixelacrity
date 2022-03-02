@@ -305,19 +305,16 @@ void pa_draw_oval(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_C
 	ry = (float)(y2 - y1) / 2.0;
 	cx = x1 + rx + 0.5;
 	cy = y1 + ry + 0.5;
-	if(!bp || (al_get_bitmap_width(bp) < 2 && al_get_bitmap_height(bp) < 2))
-	{
-		al_draw_ellipse(cx, cy, rx, ry, color, 0.0);
-		return;
-	}
 	al_hold_bitmap_drawing(true);
 	if(x1 == x2 || y1 == y2)
 	{
-		pa_draw_line(x1, y1, x2, y2, bp, color, texture);
+		al_draw_pixel(x1 + 0.5, y1 + 0.5, color);
+		al_draw_pixel(x2 + 0.5, y2 + 0.5, color);
+		pa_draw_line((float)x1 + 0.5, (float)y1 + 0.5, (float)x2 + 0.5, (float)y2 + 0.5, bp, color, texture);
 	}
 	else if(abs(x1 - x2) < 2 || abs(y1 - y2) < 2)
 	{
-		pa_draw_rectangle(x1, y1, x2, y2, bp, color, texture);
+		pa_draw_rectangle(x1 + 0.5, y1 + 0.5, x2 + 0.5, y2 + 0.5, bp, color, texture);
 	}
 	else
 	{
@@ -347,8 +344,8 @@ void pa_draw_filled_oval(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, AL
 	cy = y1 + ry + 0.5;
 	if(x1 == x2 || y1 == y2)
 	{
-		al_draw_pixel(x1, y1, color);
-		al_draw_pixel(x2, y2, color);
+		al_draw_pixel(x1 + 0.5, y1 + 0.5, color);
+		al_draw_pixel(x2 + 0.5, y2 + 0.5, color);
 		al_draw_line((float)x1 + 0.5, (float)y1 + 0.5, (float)x2 + 0.5, (float)y2 + 0.5, color, 1.0);
 	}
 	else if(abs(x1 - x2) < 2 || abs(y1 - y2) < 2)
