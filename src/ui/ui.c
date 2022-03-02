@@ -195,7 +195,7 @@ void pa_resize_ui(PA_UI * uip)
 	pos_y += pos_vy + mt + mb;
 	pos_x = t3f_default_view->width - right_pane_width + ml + mr + esl;
 	resize_element(uip->element[PA_UI_ELEMENT_BRUSH], pos_x, pos_y, pos_vx * 2, pos_vy * 2);
-	pos_y += pos_vy * 2 + mt + mb;
+	pos_y += pos_vy * 2 + mt + mb + esb;
 	resize_element(uip->element[PA_UI_ELEMENT_BUTTON_PIXEL], pos_x + offset_x, pos_y, pos_vx, pos_vy);
 	offset_x += pos_vx + mr + ml;
 	if(offset_x > pos_vx + mr + ml + mr + ml)
