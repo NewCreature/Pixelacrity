@@ -11,7 +11,7 @@ int pa_gui_brush_proc(int msg, T3GUI_ELEMENT * d, int c)
 	float scale = 1.0;
 	float usable_width = d->w - d->theme->state[0].left_margin - d->theme->state[0].right_margin;
 	float usable_height = d->h - d->theme->state[0].top_margin - d->theme->state[0].bottom_margin;
-	color = *(ALLEGRO_COLOR *)d->dp2;
+	color = d->dp2 ? *(ALLEGRO_COLOR *)d->dp2 : t3f_color_black;
 	float cx, cy;
 
 	switch(msg)
@@ -34,7 +34,7 @@ int pa_gui_brush_proc(int msg, T3GUI_ELEMENT * d, int c)
 			}
 			cx = d->x + d->w / 2 - (al_get_bitmap_width(bp) * scale) / 2;
 			cy = d->y + d->h / 2 - (al_get_bitmap_height(bp) * scale) / 2;
-			al_draw_tinted_scaled_bitmap(bp, t3f_color_black, 0, 0, al_get_bitmap_width(bp), al_get_bitmap_height(bp), cx, cy, al_get_bitmap_width(bp) * scale, al_get_bitmap_height(bp) * scale, 0);
+			al_draw_tinted_scaled_bitmap(bp, color, 0, 0, al_get_bitmap_width(bp), al_get_bitmap_height(bp), cx, cy, al_get_bitmap_width(bp) * scale, al_get_bitmap_height(bp) * scale, 0);
 			break;
 		}
 	}
