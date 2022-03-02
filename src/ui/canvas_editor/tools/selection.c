@@ -60,7 +60,7 @@ void pa_tool_selection_render_layer_preview(PA_CANVAS_EDITOR * cep, int layer, A
 		}
 		//pa_set_bitmap_flags(cep->selection.bitmap_stack->bitmap[layer], ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
 //		al_draw_scaled_rotated_bitmap(cep->selection.bitmap_stack->bitmap[layer], cx, cy, px, py, rx, ry, cep->selection.box.angle, 0);
-		al_draw_scaled_bitmap(cep->selection.bitmap_stack->bitmap[layer], 0, 0, al_get_bitmap_width(cep->selection.bitmap_stack->bitmap[layer]), al_get_bitmap_height(cep->selection.bitmap_stack->bitmap[layer]), 0, 0, cep->selection.box.width, cep->selection.box.height, 0);
+		al_draw_scaled_bitmap(cep->selection.bitmap_stack->bitmap[layer], 0, 0, al_get_bitmap_width(cep->selection.bitmap_stack->bitmap[layer]), al_get_bitmap_height(cep->selection.bitmap_stack->bitmap[layer]), cep->selection.box.start_x - cep->view_x, cep->selection.box.start_y - cep->view_y, cep->selection.box.width, cep->selection.box.height, 0);
 		//pa_set_bitmap_flags(cep->selection.bitmap_stack->bitmap[layer], 0);
 	}
 	al_restore_state(&old_state);
@@ -107,7 +107,7 @@ void pa_tool_selection_render_layer(PA_CANVAS_EDITOR * cep, int layer)
 		al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
 		al_identity_transform(&identity);
 		al_use_transform(&identity);
-		al_draw_scaled_bitmap(cep->scratch_bitmap, 0, 0, cep->selection.box.width, cep->selection.box.height, (cep->selection.box.start_x - cep->view_x) * cep->view_zoom, (cep->selection.box.start_y - cep->view_y) * cep->view_zoom, cep->selection.box.width * cep->view_zoom, cep->selection.box.height * cep->view_zoom, 0);
+		al_draw_scaled_bitmap(cep->scratch_bitmap, 0, 0, al_get_bitmap_width(cep->scratch_bitmap), al_get_bitmap_height(cep->scratch_bitmap), 0, 0, al_get_bitmap_width(cep->scratch_bitmap) * cep->view_zoom, al_get_bitmap_height(cep->scratch_bitmap) * cep->view_zoom, 0);
 	}
 	al_restore_state(&old_state);
 	al_use_shader(cep->standard_shader);
