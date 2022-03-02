@@ -34,10 +34,6 @@ int pa_gui_brush_proc(int msg, T3GUI_ELEMENT * d, int c)
 			}
 			grid_scale = usable_width / (brush_size + 2);
 			al_draw_filled_rectangle(d->x, d->y, d->x + d->w - 1, d->y + d->h - 1, t3f_color_white);
-			for(i = 0; i < usable_width / grid_scale; i++)
-			{
-				al_draw_line(d->x + i * grid_scale + grid_offset, d->y, d->x + i * grid_scale + grid_offset, d->y + d->h, t3f_color_black, 1.0);
-			}
 			cx = d->x + d->w / 2 - (al_get_bitmap_width(bp) * grid_scale) / 2;
 			cy = d->y + d->h / 2 - (al_get_bitmap_height(bp) * grid_scale) / 2;
 			if(grid_scale > 1)
