@@ -79,6 +79,10 @@ Pixelacrity 0.3.13 Issues
 
 [ ]Fix oval tool missing pixels on slim ovals.
 
+[ ]Implement solid/outline and replace/composite tool mode buttons.
+
+[ ]Make frame info only display above the current frame and the hover frame.
+
 
 Allegro Issues
 --------------
