@@ -85,6 +85,8 @@ Pixelacrity 0.3.13 Issues
    when using the frame tool. Don't show hover frame info when using other
    tools.
 
+[ ]Add recent documents option to File menu.
+
 
 Allegro Issues
 --------------
