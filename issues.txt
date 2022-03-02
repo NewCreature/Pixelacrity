@@ -81,7 +81,9 @@ Pixelacrity 0.3.13 Issues
 
 [ ]Implement solid/outline and replace/composite tool mode buttons.
 
-[ ]Make frame info only display above the current frame and the hover frame.
+[ ]Make frame info only display above the current frame and the hover frame
+   when using the frame tool. Don't show hover frame info when using other
+   tools.
 
 
 Allegro Issues
