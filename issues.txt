@@ -79,6 +79,16 @@ Pixelacrity 0.3.13 Issues
 
 [ ]Fix oval tool missing pixels on slim ovals.
 
+   [ ]An easy fix would be to render the oval mirrored over the slimmest axis.
+      The missing pixels only occur when the oval is exactly 4 pixels long/wide.
+      We could probably just check for that size and do a mirrored render in
+      that case for optimization.
+
+      A more robust fix would involve queueing up all the pixels affected by the
+      standard and mirrored rendering, sorting that queue and discarding the
+      duplicates. We'll need to do this eventually so the multi-colored brushes
+      will look correct.
+
 [ ]Implement solid/outline and replace/composite tool mode buttons.
 
 [ ]Make frame info only display above the current frame and the hover frame
