@@ -18,6 +18,21 @@ static int menu_layer_delete_update_proc(ALLEGRO_MENU * mp, int item, void * dat
 	return 0;
 }
 
+static int pa_menu_layer_toggle_visibility_update_proc(ALLEGRO_MENU * mp, int item, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	if(app->canvas->layer[app->canvas_editor->current_layer]->flags & PA_CANVAS_FLAG_HIDDEN)
+	{
+		al_set_menu_item_caption(mp, item, "Show Current");
+	}
+	else
+	{
+		al_set_menu_item_caption(mp, item, "Hide Current");
+	}
+	return 0;
+}
+
 static int menu_layer_move_up_update_proc(ALLEGRO_MENU * mp, int item, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
@@ -65,6 +80,8 @@ ALLEGRO_MENU * pa_create_layer_menu(void)
 	t3f_add_menu_item(mp, NULL, 0, NULL, NULL, NULL);
 	t3f_add_menu_item(mp, "Previous", ALLEGRO_MENU_ITEM_DISABLED, NULL, pa_menu_layer_previous, menu_layer_delete_update_proc);
 	t3f_add_menu_item(mp, "Next", ALLEGRO_MENU_ITEM_DISABLED, NULL, pa_menu_layer_next, menu_layer_delete_update_proc);
+	t3f_add_menu_item(mp, NULL, 0, NULL, NULL, NULL);
+	t3f_add_menu_item(mp, "Hide Current", 0, NULL, pa_menu_layer_toggle_visibility, pa_menu_layer_toggle_visibility_update_proc);
 
 	return mp;
 }

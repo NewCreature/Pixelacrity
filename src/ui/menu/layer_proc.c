@@ -151,6 +151,7 @@ int pa_menu_layer_previous(int id, void * data)
 			pa_select_canvas_editor_layer(app->canvas_editor, 0);
 		}
 	}
+	t3f_refresh_menus();
 	t3f_debug_message("Exit pa_menu_layer_previous()\n");
 	return 0;
 }
@@ -165,6 +166,25 @@ int pa_menu_layer_next(int id, void * data)
 	{
 		pa_select_canvas_editor_layer(app->canvas_editor, 0);
 	}
+	t3f_refresh_menus();
 	t3f_debug_message("Exit pa_menu_layer_next()\n");
+	return 0;
+}
+
+int pa_menu_layer_toggle_visibility(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	t3f_debug_message("Enter pa_menu_layer_toggle_visibility()\n");
+	if(app->canvas->layer[app->canvas_editor->current_layer]->flags & PA_CANVAS_FLAG_HIDDEN)
+	{
+		app->canvas->layer[app->canvas_editor->current_layer]->flags &= ~PA_CANVAS_FLAG_HIDDEN;
+	}
+	else
+	{
+		app->canvas->layer[app->canvas_editor->current_layer]->flags |= PA_CANVAS_FLAG_HIDDEN;
+	}
+	t3f_refresh_menus();
+	t3f_debug_message("Exit pa_menu_layer_toggle_visibility()\n");
 	return 0;
 }
