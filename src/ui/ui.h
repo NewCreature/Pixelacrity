@@ -8,7 +8,7 @@
 #include "theme.h"
 #include "popup_dialog.h"
 
-#define PA_UI_MAX_BITMAPS                  32
+#define PA_UI_MAX_BITMAPS                  48
 #define PA_UI_BITMAP_BG                     0
 #define PA_UI_BITMAP_TOOL_PIXEL             1
 #define PA_UI_BITMAP_TOOL_LINE              2
@@ -22,25 +22,27 @@
 #define PA_UI_BITMAP_TOOL_DROPPER          10
 #define PA_UI_BITMAP_TOOL_SELECTION        11
 #define PA_UI_BITMAP_TOOL_FRAME            12
-#define PA_UI_BITMAP_TOOLBAR_NEW           13
-#define PA_UI_BITMAP_TOOLBAR_OPEN          14
-#define PA_UI_BITMAP_TOOLBAR_SAVE          15
-#define PA_UI_BITMAP_TOOLBAR_IMPORT        16
-#define PA_UI_BITMAP_TOOLBAR_EXPORT        17
-#define PA_UI_BITMAP_TOOLBAR_UNDO          18
-#define PA_UI_BITMAP_TOOLBAR_REDO          19
-#define PA_UI_BITMAP_TOOLBAR_CUT           20
-#define PA_UI_BITMAP_TOOLBAR_COPY          21
-#define PA_UI_BITMAP_TOOLBAR_PASTE         22
-#define PA_UI_BITMAP_TOOLBAR_TURN_CW       23
-#define PA_UI_BITMAP_TOOLBAR_TURN_CCW      24
-#define PA_UI_BITMAP_TOOLBAR_FLIP_H        25
-#define PA_UI_BITMAP_TOOLBAR_FLIP_V        26
-#define PA_UI_BITMAP_LAYER_ADD             27
-#define PA_UI_BITMAP_LAYER_REMOVE          28
-#define PA_UI_BITMAP_BOX_HANDLE            29
-#define PA_UI_BITMAP_SELECTION_SINGLE      30
-#define PA_UI_BITMAP_SELECTION_MULTI       31
+#define PA_UI_BITMAP_TOOL_OUTLINE          13
+#define PA_UI_BITMAP_TOOL_COMPOSITE        14
+#define PA_UI_BITMAP_TOOLBAR_NEW           15
+#define PA_UI_BITMAP_TOOLBAR_OPEN          16
+#define PA_UI_BITMAP_TOOLBAR_SAVE          17
+#define PA_UI_BITMAP_TOOLBAR_IMPORT        18
+#define PA_UI_BITMAP_TOOLBAR_EXPORT        19
+#define PA_UI_BITMAP_TOOLBAR_UNDO          20
+#define PA_UI_BITMAP_TOOLBAR_REDO          21
+#define PA_UI_BITMAP_TOOLBAR_CUT           22
+#define PA_UI_BITMAP_TOOLBAR_COPY          23
+#define PA_UI_BITMAP_TOOLBAR_PASTE         24
+#define PA_UI_BITMAP_TOOLBAR_TURN_CW       25
+#define PA_UI_BITMAP_TOOLBAR_TURN_CCW      26
+#define PA_UI_BITMAP_TOOLBAR_FLIP_H        27
+#define PA_UI_BITMAP_TOOLBAR_FLIP_V        28
+#define PA_UI_BITMAP_LAYER_ADD             29
+#define PA_UI_BITMAP_LAYER_REMOVE          30
+#define PA_UI_BITMAP_BOX_HANDLE            31
+#define PA_UI_BITMAP_SELECTION_SINGLE      32
+#define PA_UI_BITMAP_SELECTION_MULTI       33
 
 #define PA_UI_MAX_MENUS                       32
 #define PA_UI_MENU_MAIN                        0

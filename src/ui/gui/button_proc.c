@@ -91,6 +91,22 @@ int pa_toolbar_flip_v_button_proc(T3GUI_ELEMENT * d, void * dp3)
 	return 0;
 }
 
+int pa_tool_composite_button_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)dp3;
+
+	return 0;
+}
+
+int pa_tool_outline_button_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)dp3;
+
+	app->canvas_editor->tool_outline = !app->canvas_editor->tool_outline;
+
+	return 0;
+}
+
 int pa_tool_pixel_button_proc(T3GUI_ELEMENT * d, void * dp3)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)dp3;

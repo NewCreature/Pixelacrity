@@ -31,8 +31,10 @@ void pa_tool_filled_oval_logic(PA_CANVAS_EDITOR * cep)
 	al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
 	pa_render_canvas_layer(cep->canvas, cep->current_layer, cep->view_x, cep->view_y, 0, t3f_color_white, 1, 0, 0, cep->editor_element->w, cep->editor_element->h);
 	pa_draw_filled_oval(cep->start_x, cep->start_y, cep->end_x, cep->end_y, NULL, cep->click_color, NULL);
-	pa_draw_oval(cep->start_x, cep->start_y, cep->end_x, cep->end_y, NULL, cep->click_color, NULL);
-//	pa_draw_oval(start_x, start_y, end_x, end_y, cep->brush, cep->click_outline_color, NULL);
+	if(cep->tool_outline)
+	{
+		pa_draw_oval(cep->start_x, cep->start_y, cep->end_x, cep->end_y, cep->brush, cep->click_outline_color, NULL);
+	}
 	al_restore_state(&old_state);
 }
 

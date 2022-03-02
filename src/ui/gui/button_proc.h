@@ -17,6 +17,8 @@ int pa_toolbar_turn_cw_button_proc(T3GUI_ELEMENT * d, void * dp3);
 int pa_toolbar_turn_ccw_button_proc(T3GUI_ELEMENT * d, void * dp3);
 int pa_toolbar_flip_h_button_proc(T3GUI_ELEMENT * d, void * dp3);
 int pa_toolbar_flip_v_button_proc(T3GUI_ELEMENT * d, void * dp3);
+int pa_tool_composite_button_proc(T3GUI_ELEMENT * d, void * dp3);
+int pa_tool_outline_button_proc(T3GUI_ELEMENT * d, void * dp3);
 int pa_tool_pixel_button_proc(T3GUI_ELEMENT * d, void * dp3);
 int pa_tool_line_button_proc(T3GUI_ELEMENT * d, void * dp3);
 int pa_tool_rectangle_button_proc(T3GUI_ELEMENT * d, void * dp3);
