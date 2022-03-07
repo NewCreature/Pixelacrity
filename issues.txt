@@ -93,6 +93,10 @@ Pixelacrity 0.3.14 Issues
 
 [ ]Add recent documents option to File menu.
 
+[ ]Line up positioning of brush preview with the brush preview grid.
+
+[ ]Ensure all empty tiles are optimized out during the optimization process.
+
 
 Allegro Issues
 --------------
