@@ -58,9 +58,9 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 	int current_z;
 	int vz = canvas_editor->view_break_out_frame;
 	ALLEGRO_COLOR current_color;
-
 	ALLEGRO_STATE old_state;
 	ALLEGRO_TRANSFORM identity;
+	bool show_info = false;
 	int i;
 
 	t3f_select_view(canvas_editor->view);
@@ -169,15 +169,18 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 	}
 	for(i = 0; i < canvas_editor->canvas->frame_max; i++)
 	{
+		show_info = false;
 		if(i == canvas_editor->current_frame && canvas_editor->current_tool != PA_TOOL_FRAME)
 		{
 			color = t3f_color_black;
+			show_info = true;
 		}
 		else
 		{
 			if(i == canvas_editor->hover_frame || i == canvas_editor->current_frame)
 			{
 				color = t3f_color_black;
+				show_info = true;
 			}
 			else
 			{
@@ -186,14 +189,18 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 			if(i == canvas_editor->current_frame)
 			{
 				title_color = t3f_color_black;
+				show_info = true;
 			}
 			else
 			{
 				title_color = al_map_rgba_f(0.0, 0.0, 0.0, 0.25);
 			}
 		}
-		sprintf(buf, "%s (%dx%d)", canvas_editor->canvas->frame[i]->name, canvas_editor->canvas->frame[i]->box.width, canvas_editor->canvas->frame[i]->box.height);
-		al_draw_text(d->theme->state[0].font[0], title_color, d->x + (canvas_editor->canvas->frame[i]->box.start_x - canvas_editor->view_x) * canvas_editor->view_zoom, d->y + (canvas_editor->canvas->frame[i]->box.start_y - canvas_editor->view_y) * canvas_editor->view_zoom - al_get_font_line_height(d->theme->state[0].font[0]) - canvas_editor->frame_text_offset, 0, buf);
+		if(show_info)
+		{
+			sprintf(buf, "%s (%dx%d)", canvas_editor->canvas->frame[i]->name, canvas_editor->canvas->frame[i]->box.width, canvas_editor->canvas->frame[i]->box.height);
+			al_draw_text(d->theme->state[0].font[0], title_color, d->x + (canvas_editor->canvas->frame[i]->box.start_x - canvas_editor->view_x) * canvas_editor->view_zoom, d->y + (canvas_editor->canvas->frame[i]->box.start_y - canvas_editor->view_y) * canvas_editor->view_zoom - al_get_font_line_height(d->theme->state[0].font[0]) - canvas_editor->frame_text_offset, 0, buf);
+		}
 		pa_box_render(&canvas_editor->canvas->frame[i]->box, canvas_editor->box_line_thickness, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_zoom, d->x, d->y, color, peg_bitmap);
 	}
 
