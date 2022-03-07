@@ -91,10 +91,6 @@ Pixelacrity 0.3.14 Issues
 
 [ ]Implement solid/outline and replace/composite tool mode buttons.
 
-[ ]Make frame info only display above the current frame and the hover frame
-   when using the frame tool. Don't show hover frame info when using other
-   tools.
-
 [ ]Add recent documents option to File menu.
 
 
@@ -955,3 +951,7 @@ Closed Issues
 [X]Fix rendering of floating selection preview being cut off.
 
 [X]Add option to toggle layer visibility.
+
+[X]Make frame info only display above the current frame and the hover frame
+   when using the frame tool. Don't show hover frame info when using other
+   tools.
