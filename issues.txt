@@ -1,4 +1,4 @@
-Pixelacrity 0.3.14 Issues
+Pixelacrity 0.3.15 Issues
 -------------------------
 
 [ ]Finish rotating selection implementation.
