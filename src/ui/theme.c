@@ -112,3 +112,15 @@ int pa_get_theme_int(PA_UI_THEME * tp, const char * name, int fallback)
 	}
 	return fallback;
 }
+
+float pa_get_theme_float(PA_UI_THEME * tp, const char * name, float fallback)
+{
+	const char * val;
+
+	val = al_get_config_value(tp->config, "Settings", name);
+	if(val)
+	{
+		return atof(val);
+	}
+	return fallback;
+}

@@ -5,12 +5,14 @@
 #include "ui/menu/layer_proc.h"
 #include "ui/menu/frame_proc.h"
 #include "modules/canvas/canvas_helpers.h"
+#include "modules/color.h"
 
 void pa_handle_shortcuts(APP_INSTANCE * app)
 {
 	int x, y, width, height;
 	float speed;
 	bool step = false;
+	const char * val;
 
 	if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && (t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT]) && t3f_key[ALLEGRO_KEY_X])
 	{
@@ -253,7 +255,15 @@ void pa_handle_shortcuts(APP_INSTANCE * app)
 		else
 		{
 			app->canvas_editor->grid[0].space = 1;
-			app->canvas_editor->grid[0].color = al_map_rgba_f(0.0, 0.0, 0.0, 0.5);
+			val = al_get_config_value(app->ui->theme->config, "Settings", "grid_color");
+			if(val)
+			{
+				app->canvas_editor->grid[0].color = pa_get_color_from_html(val);
+			}
+			else
+			{
+				app->canvas_editor->grid[0].color = al_map_rgba_f(0.0, 0.0, 0.0, 0.25);
+			}
 		}
 		t3f_key[ALLEGRO_KEY_G] = 0;
 	}

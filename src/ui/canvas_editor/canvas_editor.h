@@ -161,6 +161,8 @@ typedef struct
 	char * export_path;
 	PA_BOX click_box;
 	int box_line_thickness;
+	float grid_thickness;
+	float grid_offset;
 
 	int undo_count;
 	char undo_name[256];
