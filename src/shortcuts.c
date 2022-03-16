@@ -4,6 +4,7 @@
 #include "ui/menu/edit_proc.h"
 #include "ui/menu/layer_proc.h"
 #include "ui/menu/frame_proc.h"
+#include "ui/gui/canvas_editor/MSG_WHEEL.h"
 #include "modules/canvas/canvas_helpers.h"
 #include "modules/color.h"
 
@@ -337,20 +338,17 @@ void pa_handle_shortcuts(APP_INSTANCE * app)
 				t3f_key[ALLEGRO_KEY_S] = 0;
 			}
 		}
-		if(t3f_key[ALLEGRO_KEY_MINUS])
+		if(t3f_key[ALLEGRO_KEY_MINUS] || t3f_key[ALLEGRO_KEY_PAD_MINUS])
 		{
-			if(app->canvas_editor->view_zoom > 1)
-			{
-				pa_set_canvas_editor_zoom(app->canvas_editor, app->canvas_editor->view_zoom - 1);
-				app->canvas_editor->simulate_mouse_move = true;
-			}
+			pa_canvas_editor_MSG_WHEEL(app->ui->element[PA_UI_ELEMENT_CANVAS_EDITOR], -1);
 			t3f_key[ALLEGRO_KEY_MINUS] = 0;
+			t3f_key[ALLEGRO_KEY_PAD_MINUS] = 0;
 		}
-		if(t3f_key[ALLEGRO_KEY_EQUALS])
+		if(t3f_key[ALLEGRO_KEY_EQUALS] || t3f_key[ALLEGRO_KEY_PAD_PLUS])
 		{
-			pa_set_canvas_editor_zoom(app->canvas_editor, app->canvas_editor->view_zoom + 1);
-			app->canvas_editor->simulate_mouse_move = true;
+			pa_canvas_editor_MSG_WHEEL(app->ui->element[PA_UI_ELEMENT_CANVAS_EDITOR], 1);
 			t3f_key[ALLEGRO_KEY_EQUALS] = 0;
+			t3f_key[ALLEGRO_KEY_PAD_PLUS] = 0;
 		}
 	}
 }

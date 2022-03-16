@@ -323,7 +323,7 @@ void pa_set_canvas_editor_zoom(PA_CANVAS_EDITOR * cep, int level)
 {
 	int cx, cy;
 
-	if(level > 0)
+	if(level > 0 && level < cep->editor_element->w / 4 && level < cep->editor_element->h / 4)
 	{
 		if(cep->editor_element)
 		{
