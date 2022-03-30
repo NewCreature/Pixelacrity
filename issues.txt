@@ -95,8 +95,6 @@ Pixelacrity 0.3.15 Issues
 
 [ ]Line up positioning of brush preview with the brush preview grid.
 
-[ ]Ensure all empty tiles are optimized out during the optimization process.
-
 
 Allegro Issues
 --------------
@@ -959,3 +957,5 @@ Closed Issues
 [X]Make frame info only display above the current frame and the hover frame
    when using the frame tool. Don't show hover frame info when using other
    tools.
+
+[X]Ensure all empty tiles are optimized out during the optimization process.
