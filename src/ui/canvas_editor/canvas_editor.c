@@ -596,6 +596,11 @@ void pa_optimize_canvas(PA_CANVAS_EDITOR * cep, int skip_x, int skip_y)
 							bottom = j;
 						}
 					}
+					else
+					{
+						al_destroy_bitmap(cep->canvas->layer[i]->bitmap[j][k]);
+						cep->canvas->layer[i]->bitmap[j][k] = NULL;
+					}
 				}
 			}
 		}
