@@ -256,16 +256,8 @@ void pa_handle_shortcuts(APP_INSTANCE * app)
 		else
 		{
 			app->canvas_editor->grid[0].space = 1;
-			val = al_get_config_value(app->ui->theme->config, "Settings", "grid_color");
-			if(val)
-			{
-				app->canvas_editor->grid[0].color = pa_get_color_from_html(val);
-			}
-			else
-			{
-				app->canvas_editor->grid[0].color = al_map_rgba_f(0.0, 0.0, 0.0, 0.25);
-			}
 		}
+		app->canvas_editor->grid[0].color = app->canvas_editor->grid_color;
 		t3f_key[ALLEGRO_KEY_G] = 0;
 	}
 	else if(t3f_key[ALLEGRO_KEY_F8])

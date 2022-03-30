@@ -163,6 +163,7 @@ typedef struct
 	int box_line_thickness;
 	float grid_thickness;
 	float grid_offset;
+	ALLEGRO_COLOR grid_color;
 
 	int undo_count;
 	char undo_name[256];

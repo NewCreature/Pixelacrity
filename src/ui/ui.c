@@ -531,7 +531,7 @@ static void add_right_pane(PA_UI * uip, PA_CANVAS_EDITOR * cep)
 	int scale = pa_get_theme_int(uip->theme, "graphics_scale", 1);
 
 	uip->element[PA_UI_ELEMENT_RIGHT_PANE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_RIGHT_PANE], t3gui_box_proc, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL);
-	uip->element[PA_UI_ELEMENT_BRUSH] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_LIST_BOX], pa_gui_brush_proc, 0, 0, 0, 0, 0, 0, 0, 0, &cep->brush, NULL, NULL);
+	uip->element[PA_UI_ELEMENT_BRUSH] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_LIST_BOX], pa_gui_brush_proc, 0, 0, 0, 0, 0, 0, 0, 0, cep, NULL, NULL);
 	uip->element[PA_UI_ELEMENT_BUTTON_TOOL_MODE_COMPOSITE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, scale, 0, "Composite", pa_tool_composite_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_COMPOSITE]);
 	uip->element[PA_UI_ELEMENT_BUTTON_TOOL_MODE_OUTLINE] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, scale, 0, "Outline", pa_tool_outline_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_OUTLINE]);
 	uip->element[PA_UI_ELEMENT_BUTTON_PIXEL] = t3gui_dialog_add_element(uip->dialog[PA_UI_DIALOG_MAIN], uip->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, 0, 0, 0, 0, 0, 0, scale, 0, "Pixel", pa_tool_pixel_button_proc, uip->bitmap[PA_UI_BITMAP_TOOL_PIXEL]);
@@ -642,6 +642,7 @@ PA_UI * pa_create_ui(PA_CANVAS_EDITOR * cep)
 		cep->box_line_thickness = pa_get_theme_int(uip->theme, "box_line_thickness", 2);
 		cep->grid_thickness = pa_get_theme_float(uip->theme, "grid_thickness", 0.0);
 		cep->grid_offset = pa_get_theme_float(uip->theme, "grid_offset", 0.5);
+		cep->grid_color = pa_get_theme_color(uip->theme, "grid_color", al_map_rgba_f(0.0, 0.0, 0.0, 0.25));
 	}
 	return uip;
 

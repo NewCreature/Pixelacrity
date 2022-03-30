@@ -1,5 +1,6 @@
 #include "t3f/t3f.h"
 #include "t3gui/t3gui.h"
+#include "modules/color.h"
 #include "theme.h"
 
 PA_UI_THEME * pa_load_theme(const char * fn)
@@ -121,6 +122,18 @@ float pa_get_theme_float(PA_UI_THEME * tp, const char * name, float fallback)
 	if(val)
 	{
 		return atof(val);
+	}
+	return fallback;
+}
+
+ALLEGRO_COLOR pa_get_theme_color(PA_UI_THEME * tp, const char * name, ALLEGRO_COLOR fallback)
+{
+	const char * val;
+
+	val = al_get_config_value(tp->config, "Settings", name);
+	if(val)
+	{
+		return pa_get_color_from_html(val);
 	}
 	return fallback;
 }

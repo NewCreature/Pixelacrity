@@ -7,7 +7,8 @@
 int pa_gui_brush_proc(int msg, T3GUI_ELEMENT * d, int c)
 {
 	ALLEGRO_COLOR color;
-	ALLEGRO_BITMAP * bp = *(ALLEGRO_BITMAP **)d->dp;
+	PA_CANVAS_EDITOR * cep = (PA_CANVAS_EDITOR *)d->dp;
+	ALLEGRO_BITMAP * bp = cep->brush;
 	float scale = 1.0;
 	float usable_width = d->w - d->theme->state[0].left_margin - d->theme->state[0].right_margin;
 	float usable_height = d->h - d->theme->state[0].top_margin - d->theme->state[0].bottom_margin;
@@ -36,23 +37,23 @@ int pa_gui_brush_proc(int msg, T3GUI_ELEMENT * d, int c)
 			al_draw_filled_rectangle(d->x, d->y, d->x + d->w - 1, d->y + d->h - 1, t3f_color_white);
 			cx = d->x + d->w / 2 - (al_get_bitmap_width(bp) * grid_scale) / 2;
 			cy = d->y + d->h / 2 - (al_get_bitmap_height(bp) * grid_scale) / 2;
-			if(grid_scale > 1)
+			if(grid_scale > cep->grid_thickness)
 			{
 				for(i = cx; i >= d->x; i -= grid_scale)
 				{
-					al_draw_line(i, d->y, i, d->y + d->h, t3f_color_black, 1.0);
+					al_draw_line(i, d->y, i, d->y + d->h, cep->grid_color, cep->grid_thickness);
 				}
 				for(i = cx + grid_scale; i <= d->x + d->w; i += grid_scale)
 				{
-					al_draw_line(i, d->y, i, d->y + d->h, t3f_color_black, 1.0);
+					al_draw_line(i, d->y, i, d->y + d->h, cep->grid_color, cep->grid_thickness);
 				}
 				for(i = cy; i >= d->y; i -= grid_scale)
 				{
-					al_draw_line(d->x, i, d->x + d->w, i, t3f_color_black, 1.0);
+					al_draw_line(d->x, i, d->x + d->w, i, cep->grid_color, cep->grid_thickness);
 				}
 				for(i = cy + grid_scale; i <= d->y + d->h; i += grid_scale)
 				{
-					al_draw_line(d->x, i, d->x + d->w, i, t3f_color_black, 1.0);
+					al_draw_line(d->x, i, d->x + d->w, i, cep->grid_color, cep->grid_thickness);
 				}
 			}
 			if(grid_scale)
