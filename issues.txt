@@ -31,8 +31,6 @@ Pixelacrity 0.3.15 Issues
          test to see if rotating an odd-sized object properly rotates around the
          center pixel.
 
-[ ]Look into crash when bringing up the brush popup dialog on Linux.
-
 [ ]Add pane-specific edge space settings to themes. Some themes might need to
    have these settings for fine-tuning the overall look.
 
@@ -959,3 +957,7 @@ Closed Issues
    tools.
 
 [X]Ensure all empty tiles are optimized out during the optimization process.
+
+[X]Look into crash when bringing up the brush popup dialog on Linux.
+
+   [X]Crash caused by theme not loading if the 'theme_file' argument was 'NULL'.
