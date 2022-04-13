@@ -21,10 +21,12 @@ static void get_center(ALLEGRO_DISPLAY * dp, int w, int h, int * x, int * y)
 PA_POPUP_DIALOG * pa_create_popup_dialog(const char * theme_file, int w, int h, void * data)
 {
 	PA_POPUP_DIALOG * popup_dialog;
+	ALLEGRO_STATE old_state;
 	const char * val;
 	int font_size = 0;
 	int x, y;
 
+	al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP);
 	popup_dialog = malloc(sizeof(PA_POPUP_DIALOG));
 	if(popup_dialog)
 	{
@@ -58,10 +60,12 @@ PA_POPUP_DIALOG * pa_create_popup_dialog(const char * theme_file, int w, int h, 
 			goto fail;
 		}
 	}
+	al_restore_state(&old_state);
 	return popup_dialog;
 
 	fail:
 	{
+		al_restore_state(&old_state);
 		if(popup_dialog)
 		{
 			if(popup_dialog->dialog)

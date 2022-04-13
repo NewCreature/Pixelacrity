@@ -1,6 +1,8 @@
 #ifndef PA_UI_THEME_H
 #define PA_UI_THEME_H
 
+#include "t3gui/t3gui.h"
+
 #define PA_UI_THEME_MAX        16
 
 #define PA_UI_THEME_BOX         0

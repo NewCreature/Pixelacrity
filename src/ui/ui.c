@@ -22,6 +22,8 @@
 #include "gui/brush.h"
 #include "ui/canvas_editor/undo/undo.h"
 #include "defines.h"
+#include "popup_dialog.h"
+#include "color_popup_dialog.h"
 
 static bool add_color_pickers(PA_UI * uip, PA_CANVAS_EDITOR * cep, T3GUI_DIALOG * dp, int x, int y)
 {
@@ -801,6 +803,7 @@ void pa_process_ui(PA_UI * uip)
 	PA_CANVAS_EDITOR * cep = (PA_CANVAS_EDITOR *)uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->dp;
 	int old_layer_d1;
 	int old_layer = cep->current_layer;
+	ALLEGRO_STATE old_state;
 
 	uip->element[PA_UI_ELEMENT_LAYER_LIST]->d1 = cep->canvas->layer_max - cep->current_layer - 1;
 	old_layer_d1 = uip->element[PA_UI_ELEMENT_LAYER_LIST]->d1;
@@ -835,15 +838,21 @@ void pa_process_ui(PA_UI * uip)
 	}
 	if(uip->element[PA_UI_ELEMENT_LEFT_COLOR]->id1)
 	{
-		uip->color_popup_dialog = pa_create_popup_dialog(al_get_config_value(t3f_config, "App Data", "theme"), 640, 480, NULL);
+		uip->color_popup_dialog = pa_create_color_editor_popup_dialog(cep->left_color.color);
+		al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP);
+		al_set_target_bitmap(al_get_backbuffer(uip->color_popup_dialog->display));
 		t3gui_show_dialog(uip->color_popup_dialog->dialog, t3f_queue, T3GUI_PLAYER_CLEAR, NULL);
+		al_restore_state(&old_state);
 		uip->element[PA_UI_ELEMENT_LEFT_COLOR]->id1 = 0;
 	}
 	if(uip->element[PA_UI_ELEMENT_RIGHT_COLOR]->id1)
 	{
-		uip->color_popup_dialog = pa_create_popup_dialog(al_get_config_value(t3f_config, "App Data", "theme"), 640, 480, NULL);
+		uip->color_popup_dialog = pa_create_color_editor_popup_dialog(cep->right_color.color);
+		al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP);
+		al_set_target_bitmap(al_get_backbuffer(uip->color_popup_dialog->display));
 		t3gui_show_dialog(uip->color_popup_dialog->dialog, t3f_queue, T3GUI_PLAYER_CLEAR, NULL);
-		uip->element[PA_UI_ELEMENT_LEFT_COLOR]->id1 = 0;
+		al_restore_state(&old_state);
+		uip->element[PA_UI_ELEMENT_RIGHT_COLOR]->id1 = 0;
 	}
 	t3gui_logic();
 
