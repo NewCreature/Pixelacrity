@@ -1,4 +1,5 @@
 #include "t3gui/t3gui.h"
+#include "defines.h"
 #include "popup_dialog.h"
 #include "color_popup_dialog.h"
 
@@ -15,8 +16,14 @@ PA_POPUP_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color)
 	int pos_vy;
 	int space;
 	unsigned char r, g, b, a;
+	const char * val;
 
-	dp = pa_create_popup_dialog(al_get_config_value(t3f_config, "App Data", "theme"), 640, 480, NULL);
+	val = al_get_config_value(t3f_config, "App Data", "theme");
+	if(!val)
+	{
+		val = PA_DEFAULT_THEME;
+	}
+	dp = pa_create_popup_dialog(val, 640, 480, NULL);
 	if(!dp)
 	{
 		goto fail;
