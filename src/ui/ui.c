@@ -833,6 +833,18 @@ void pa_process_ui(PA_UI * uip)
 		t3gui_show_dialog(uip->brush_popup_dialog->dialog, t3f_queue, T3GUI_PLAYER_CLEAR, NULL);
 		uip->element[PA_UI_ELEMENT_BRUSH]->id1 = 0;
 	}
+	if(uip->element[PA_UI_ELEMENT_LEFT_COLOR]->id1)
+	{
+		uip->color_popup_dialog = pa_create_popup_dialog(al_get_config_value(t3f_config, "App Data", "theme"), 640, 480, NULL);
+		t3gui_show_dialog(uip->color_popup_dialog->dialog, t3f_queue, T3GUI_PLAYER_CLEAR, NULL);
+		uip->element[PA_UI_ELEMENT_LEFT_COLOR]->id1 = 0;
+	}
+	if(uip->element[PA_UI_ELEMENT_RIGHT_COLOR]->id1)
+	{
+		uip->color_popup_dialog = pa_create_popup_dialog(al_get_config_value(t3f_config, "App Data", "theme"), 640, 480, NULL);
+		t3gui_show_dialog(uip->color_popup_dialog->dialog, t3f_queue, T3GUI_PLAYER_CLEAR, NULL);
+		uip->element[PA_UI_ELEMENT_LEFT_COLOR]->id1 = 0;
+	}
 	t3gui_logic();
 
 	/* update button selection */
@@ -947,6 +959,12 @@ void pa_render_ui(PA_UI * uip)
 	if(uip->brush_popup_dialog)
 	{
 		al_set_target_bitmap(al_get_backbuffer(uip->brush_popup_dialog->display));
+		al_flip_display();
+		al_set_target_bitmap(al_get_backbuffer(t3f_display));
+	}
+	if(uip->color_popup_dialog)
+	{
+		al_set_target_bitmap(al_get_backbuffer(uip->color_popup_dialog->display));
 		al_flip_display();
 		al_set_target_bitmap(al_get_backbuffer(t3f_display));
 	}

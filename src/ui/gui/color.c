@@ -34,30 +34,38 @@ int pa_gui_color_proc(int msg, T3GUI_ELEMENT * d, int c)
 					t3f_add_bitmap_to_atlas(color_atlas, &color_background, T3F_ATLAS_TILE);
 				}
 			}
+			d->id1 = 0;
 			break;
 		}
 		case MSG_MOUSEDOWN:
 		{
-			if(t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND])
+			if(!d->dp2 && !d->dp3)
 			{
-				if(c == 1 && d->dp4)
-				{
-					*(ALLEGRO_COLOR *)d->dp = *(ALLEGRO_COLOR *)d->dp4;
-				}
-				else if(d->dp5)
-				{
-					*(ALLEGRO_COLOR *)d->dp = *(ALLEGRO_COLOR *)d->dp5;
-				}
+				d->id1 = 1;
 			}
 			else
 			{
-				if(c == 1 && d->dp2)
+				if(t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND])
 				{
-					*(ALLEGRO_COLOR *)d->dp2 = *(ALLEGRO_COLOR *)d->dp;
+					if(c == 1 && d->dp4)
+					{
+						*(ALLEGRO_COLOR *)d->dp = *(ALLEGRO_COLOR *)d->dp4;
+					}
+					else if(d->dp5)
+					{
+						*(ALLEGRO_COLOR *)d->dp = *(ALLEGRO_COLOR *)d->dp5;
+					}
 				}
-				else if(d->dp3)
+				else
 				{
-					*(ALLEGRO_COLOR *)d->dp3 = *(ALLEGRO_COLOR *)d->dp;
+					if(c == 1 && d->dp2)
+					{
+						*(ALLEGRO_COLOR *)d->dp2 = *(ALLEGRO_COLOR *)d->dp;
+					}
+					else if(d->dp3)
+					{
+						*(ALLEGRO_COLOR *)d->dp3 = *(ALLEGRO_COLOR *)d->dp;
+					}
 				}
 			}
 			if(c == 1 && left_clicked)

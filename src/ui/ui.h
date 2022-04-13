@@ -139,6 +139,7 @@ typedef struct
 	char status_right_message[1024];
 
 	PA_POPUP_DIALOG * brush_popup_dialog;
+	PA_POPUP_DIALOG * color_popup_dialog;
 
 } PA_UI;
 
