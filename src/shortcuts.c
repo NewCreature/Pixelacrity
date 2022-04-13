@@ -290,6 +290,10 @@ void pa_handle_shortcuts(APP_INSTANCE * app)
 			speed = 1.0;
 			step = true;
 		}
+		if(speed < 0.25)
+		{
+			speed = 0.25;
+		}
 		if(t3f_key[ALLEGRO_KEY_LEFT] || t3f_key[ALLEGRO_KEY_A])
 		{
 			app->canvas_editor->view_fx -= speed;
