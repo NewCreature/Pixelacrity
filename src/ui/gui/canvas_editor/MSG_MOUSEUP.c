@@ -294,44 +294,47 @@ void pa_canvas_editor_MSG_MOUSEUP(T3GUI_ELEMENT * d, int c)
 		}
 		case PA_TOOL_FRAME:
 		{
-			switch(canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.state)
+			if(c == 1)
 			{
-				case PA_BOX_STATE_DRAWING:
+				switch(canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.state)
 				{
-					canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.state = PA_BOX_STATE_IDLE;
-					break;
+					case PA_BOX_STATE_DRAWING:
+					{
+						canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.state = PA_BOX_STATE_IDLE;
+						break;
+					}
+					case PA_BOX_STATE_MOVING:
+					{
+						finalize_frame_edit(canvas_editor, "Move Frame");
+						break;
+					}
+					case PA_BOX_STATE_RESIZING:
+					{
+						finalize_frame_edit(canvas_editor, "Resize Frame");
+						break;
+					}
+					default:
+					{
+						canvas_editor->selection.layer = canvas_editor->current_layer;
+					}
 				}
-				case PA_BOX_STATE_MOVING:
+				canvas_editor->tool_state = PA_TOOL_STATE_OFF;
+				if(canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.width < 2 && canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.height < 2)
 				{
-					finalize_frame_edit(canvas_editor, "Move Frame");
-					break;
+	//				pa_clear_canvas_editor_selection(canvas_editor);
 				}
-				case PA_BOX_STATE_RESIZING:
+				if(canvas_editor->current_frame < canvas_editor->canvas->frame_max)
 				{
-					finalize_frame_edit(canvas_editor, "Resize Frame");
-					break;
+					old_frame = canvas_editor->canvas->frame[canvas_editor->current_frame];
 				}
-				default:
+				pa_sort_canvas_frames(canvas_editor->canvas);
+				if(canvas_editor->hover_frame == canvas_editor->current_frame)
 				{
-					canvas_editor->selection.layer = canvas_editor->current_layer;
+					canvas_editor->hover_frame = find_frame(canvas_editor->canvas, old_frame);
 				}
+				canvas_editor->current_frame = find_frame(canvas_editor->canvas, old_frame);
+				t3f_refresh_menus();
 			}
-			canvas_editor->tool_state = PA_TOOL_STATE_OFF;
-			if(canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.width < 2 && canvas_editor->canvas->frame[canvas_editor->hover_frame]->box.height < 2)
-			{
-//				pa_clear_canvas_editor_selection(canvas_editor);
-			}
-			if(canvas_editor->current_frame < canvas_editor->canvas->frame_max)
-			{
-				old_frame = canvas_editor->canvas->frame[canvas_editor->current_frame];
-			}
-			pa_sort_canvas_frames(canvas_editor->canvas);
-			if(canvas_editor->hover_frame == canvas_editor->current_frame)
-			{
-				canvas_editor->hover_frame = find_frame(canvas_editor->canvas, old_frame);
-			}
-			canvas_editor->current_frame = find_frame(canvas_editor->canvas, old_frame);
-			t3f_refresh_menus();
 			break;
 		}
 	}
