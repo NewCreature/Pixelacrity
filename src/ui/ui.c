@@ -804,6 +804,8 @@ void pa_process_ui(PA_UI * uip)
 	int old_layer_d1;
 	int old_layer = cep->current_layer;
 	ALLEGRO_STATE old_state;
+	int old_r;
+	char old_r_text[8];
 
 	uip->element[PA_UI_ELEMENT_LAYER_LIST]->d1 = cep->canvas->layer_max - cep->current_layer - 1;
 	old_layer_d1 = uip->element[PA_UI_ELEMENT_LAYER_LIST]->d1;
@@ -838,7 +840,7 @@ void pa_process_ui(PA_UI * uip)
 	}
 	if(uip->element[PA_UI_ELEMENT_LEFT_COLOR]->id1)
 	{
-		uip->color_popup_dialog = pa_create_color_editor_popup_dialog(cep->left_color.color);
+		uip->color_popup_dialog = pa_create_color_editor_popup_dialog(&cep->left_color.color);
 		al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP);
 		al_set_target_bitmap(al_get_backbuffer(uip->color_popup_dialog->display));
 		t3gui_show_dialog(uip->color_popup_dialog->dialog, t3f_queue, T3GUI_PLAYER_CLEAR, NULL);
@@ -847,12 +849,17 @@ void pa_process_ui(PA_UI * uip)
 	}
 	if(uip->element[PA_UI_ELEMENT_RIGHT_COLOR]->id1)
 	{
-		uip->color_popup_dialog = pa_create_color_editor_popup_dialog(cep->right_color.color);
+		uip->color_popup_dialog = pa_create_color_editor_popup_dialog(&cep->right_color.color);
 		al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP);
 		al_set_target_bitmap(al_get_backbuffer(uip->color_popup_dialog->display));
 		t3gui_show_dialog(uip->color_popup_dialog->dialog, t3f_queue, T3GUI_PLAYER_CLEAR, NULL);
 		al_restore_state(&old_state);
 		uip->element[PA_UI_ELEMENT_RIGHT_COLOR]->id1 = 0;
+	}
+
+	if(uip->color_popup_dialog)
+	{
+		pa_color_dialog_pre_logic(uip->color_popup_dialog);
 	}
 	t3gui_logic();
 
@@ -934,6 +941,11 @@ void pa_process_ui(PA_UI * uip)
 		update_layer_list(uip, cep);
 	}
 	pa_update_window_title(cep);
+
+	if(uip->color_popup_dialog)
+	{
+		pa_color_dialog_post_logic(uip->color_popup_dialog);
+	}
 }
 
 void pa_render_ui(PA_UI * uip)

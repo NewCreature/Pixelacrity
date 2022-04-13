@@ -3,6 +3,7 @@
 
 #include "t3f/t3f.h"
 #include "theme.h"
+#include "ui_defines.h"
 
 typedef struct
 {
@@ -10,6 +11,8 @@ typedef struct
 	ALLEGRO_DISPLAY * display;
 	PA_UI_THEME * theme;
 	T3GUI_DIALOG * dialog;
+	char * edit_text[PA_UI_MAX_DIALOG_EDIT_BOXES];
+	T3GUI_ELEMENT * element[PA_UI_MAX_DIALOG_ELEMENTS];
 
 } PA_POPUP_DIALOG;
 

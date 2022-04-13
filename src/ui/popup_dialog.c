@@ -88,6 +88,15 @@ PA_POPUP_DIALOG * pa_create_popup_dialog(const char * theme_file, int w, int h, 
 
 void pa_close_popup_dialog(PA_POPUP_DIALOG * dp)
 {
+	int i;
+
+	for(i = 0; i < PA_UI_MAX_DIALOG_EDIT_BOXES; i++)
+	{
+		if(dp->edit_text[i])
+		{
+			free(dp->edit_text[i]);
+		}
+	}
 	t3gui_close_dialog(dp->dialog);
 	t3gui_destroy_dialog(dp->dialog);
 	t3gui_unload_resources(dp->display, true);
