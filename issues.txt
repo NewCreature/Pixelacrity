@@ -1,6 +1,10 @@
 Pixelacrity 0.3.16 Issues
 -------------------------
 
+[ ]Examine how the T3GUI resource handler destroys resources to ensure the Linux
+   crash that happens when destroying the display after freeing the resources is
+   not a bug on our part.
+
 [ ]Finish rotating selection implementation.
 
    [X]Make scaling work again.
