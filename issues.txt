@@ -1,4 +1,4 @@
-Pixelacrity 0.3.16 Issues
+Pixelacrity 0.3.17 Issues
 -------------------------
 
 [ ]Look into crash when closing the color editor dialog on Linux.
