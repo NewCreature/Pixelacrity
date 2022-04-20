@@ -822,7 +822,7 @@ void pa_process_ui(PA_UI * uip)
 	{
 		cep->want_cursor = ALLEGRO_SYSTEM_MOUSE_CURSOR_PRECISION;
 	}
-	if(t3gui_get_mouse_x() >= uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->x && t3gui_get_mouse_x() < uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->x + uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->w && t3gui_get_mouse_y() >= uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->y && t3gui_get_mouse_y() < uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->y + uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->h)
+	if(t3gui_get_active_dialogs() < 2 && t3gui_get_mouse_x() >= uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->x && t3gui_get_mouse_x() < uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->x + uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->w && t3gui_get_mouse_y() >= uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->y && t3gui_get_mouse_y() < uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->y + uip->element[PA_UI_ELEMENT_CANVAS_EDITOR]->h)
 	{
 		pa_set_mouse_cursor(cep->want_cursor);
 	}
@@ -944,7 +944,15 @@ void pa_process_ui(PA_UI * uip)
 
 	if(uip->color_popup_dialog)
 	{
-		pa_color_dialog_post_logic(uip->color_popup_dialog);
+		if(t3gui_get_active_dialogs() > 1)
+		{
+			pa_color_dialog_post_logic(uip->color_popup_dialog);
+		}
+		else
+		{
+			pa_close_popup_dialog(uip->color_popup_dialog);
+			uip->color_popup_dialog = NULL;
+		}
 	}
 }
 
