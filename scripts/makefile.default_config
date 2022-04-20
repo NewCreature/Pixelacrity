@@ -79,6 +79,7 @@ LINUX_CONFIG_PKG_CONFIG_OPTIONS = --libs
 #LINUX_CONFIG_PKG_CONFIG_OPTIONS = --libs --static
 #LINUX_CONFIG_ALLEGRO_SUFFIX = -static
 LINUX_CONFIG_DEPEND_LIBS = -lm -lstdc++
+LINUX_CONFIG_GTK_LIBS = `pkg-config gtk+-x11-3.0 --libs`
 
 #############################
 # Debian Packaging Settings #

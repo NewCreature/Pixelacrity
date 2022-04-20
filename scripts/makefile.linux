@@ -16,7 +16,7 @@ T3F_PLATFORM_LIBRARIES = \
 	`pkg-config $(PKG_CONFIG_OPTIONS) allegro_color$(ALLEGRO_SUFFIX)-5`\
 	`pkg-config $(PKG_CONFIG_OPTIONS) allegro_memfile$(ALLEGRO_SUFFIX)-5`\
 	`pkg-config $(PKG_CONFIG_OPTIONS) allegro_dialog$(ALLEGRO_SUFFIX)-5`\
-	`pkg-config gtk+-x11-2.0 --libs`\
+	$(LINUX_CONFIG_GTK_LIBS)\
 	$(LINUX_CONFIG_PLATFORM_LIBS)\
 	$(LINUX_CONFIG_DEPEND_LIBS)\
 	$(LINUX_PLATFORM_LIBS)\
