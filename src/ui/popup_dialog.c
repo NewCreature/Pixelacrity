@@ -40,7 +40,6 @@ PA_POPUP_DIALOG * pa_create_popup_dialog(const char * theme_file, int w, int h, 
 			goto fail;
 		}
 		al_register_event_source(t3f_queue, al_get_display_event_source(popup_dialog->display));
-		al_set_target_bitmap(al_get_backbuffer(popup_dialog->display));
 		val = al_get_config_value(t3f_config, "Settings", "font_size_override");
 		if(val)
 		{
