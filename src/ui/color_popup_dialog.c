@@ -15,6 +15,8 @@ PA_POPUP_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color, PA_
 	int pos_y;
 	int pos_vy;
 	int space;
+	int x_offset = al_get_display_width(t3f_display) / 2 - 640 / 2;
+	int y_offset = al_get_display_height(t3f_display) / 2 - 480 / 2;
 	unsigned char r, g, b, a;
 	const char * val;
 
@@ -33,9 +35,9 @@ PA_POPUP_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color, PA_
 	al_unmap_rgba(*color, &r, &g, &b, &a);
 	space = pa_get_theme_int(dp->theme, "edge_space_left", 4);
 	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_POPUP_BOX], t3gui_box_proc, 0, 0, al_get_display_width(t3f_display), al_get_display_height(t3f_display), 0, 0, 0, 0, NULL, NULL, NULL);
-	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_BOX], t3gui_box_proc, 0, 0, 640, 480, 0, 0, 0, 0, NULL, NULL, NULL);
-	pos_y = pa_get_theme_int(dp->theme, "edge_top_space", 4);
-	pos_vy = al_get_font_line_height(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0]) + pos_y;
+	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_BOX], t3gui_box_proc, x_offset, y_offset, 640, 480, 0, 0, 0, 0, NULL, NULL, NULL);
+	pos_y = pa_get_theme_int(dp->theme, "edge_top_space", 4) + y_offset;
+	pos_vy = al_get_font_line_height(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0]) + pa_get_theme_int(dp->theme, "edge_top_space", 4);
 
 	/* R */
 	dp->edit_text[0] = malloc(4);
@@ -44,7 +46,7 @@ PA_POPUP_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color, PA_
 		goto fail;
 	}
 	sprintf(dp->edit_text[0], "%d", r);
-	pos_x = space;
+	pos_x = space + x_offset;
 	pos_vx = al_get_text_width(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0], "R") + space;
 	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_text_proc, pos_x, pos_y, 640, al_get_font_line_height(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0]), 0, 0, 0, 0, "R", NULL, NULL);
 	pos_x += pos_vx;
@@ -60,7 +62,7 @@ PA_POPUP_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color, PA_
 		goto fail;
 	}
 	sprintf(dp->edit_text[1], "%d", g);
-	pos_x = space;
+	pos_x = space + x_offset;
 	pos_vx = al_get_text_width(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0], "R") + space;
 	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_text_proc, pos_x, pos_y, 640, al_get_font_line_height(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0]), 0, 0, 0, 0, "G", NULL, NULL);
 	pos_x += pos_vx;
@@ -76,7 +78,7 @@ PA_POPUP_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color, PA_
 		goto fail;
 	}
 	sprintf(dp->edit_text[2], "%d", b);
-	pos_x = space;
+	pos_x = space + x_offset;
 	pos_vx = al_get_text_width(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0], "R") + space;
 	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_text_proc, pos_x, pos_y, 640, al_get_font_line_height(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0]), 0, 0, 0, 0, "B", NULL, NULL);
 	pos_x += pos_vx;
@@ -92,7 +94,7 @@ PA_POPUP_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color, PA_
 		goto fail;
 	}
 	sprintf(dp->edit_text[3], "%d", a);
-	pos_x = space;
+	pos_x = space + x_offset;
 	pos_vx = al_get_text_width(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0], "R") + space;
 	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_text_proc, pos_x, pos_y, 640, al_get_font_line_height(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0]), 0, 0, 0, 0, "A", NULL, NULL);
 	pos_x += pos_vx;
