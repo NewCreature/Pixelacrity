@@ -2,9 +2,11 @@
 #include "defines.h"
 #include "popup_dialog.h"
 #include "color_popup_dialog.h"
+#include "gui/color.h"
+#include "modules/color.h"
 
 static int old_r, old_g, old_b, old_a;
-static char old_r_text[8], old_g_text[8], old_b_text[8], old_a_text[8];
+static char old_r_text[8], old_g_text[8], old_b_text[8], old_a_text[8], old_html_text[10];
 static ALLEGRO_COLOR * edit_color = NULL;
 
 PA_POPUP_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color, PA_UI_THEME * theme)
@@ -16,8 +18,9 @@ PA_POPUP_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color, PA_
 	int pos_vy;
 	int space;
 	int scale;
-	int x_offset = al_get_display_width(t3f_display) / 2 - 640 / 2;
-	int y_offset = al_get_display_height(t3f_display) / 2 - 480 / 2;
+	int edit_width;
+	int x_offset;
+	int y_offset;
 	unsigned char r, g, b, a;
 	const char * val;
 
@@ -42,6 +45,7 @@ PA_POPUP_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color, PA_
 	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_BOX], t3gui_box_proc, x_offset, y_offset, 640 * scale, 480 * scale, 0, 0, 0, 0, NULL, NULL, NULL);
 	pos_y = pa_get_theme_int(dp->theme, "edge_top_space", 4) + y_offset;
 	pos_vy = al_get_font_line_height(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0]) + pa_get_theme_int(dp->theme, "edge_top_space", 4);
+	edit_width = al_get_text_width(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0], "0000") + space + space;
 
 	/* R */
 	dp->edit_text[0] = malloc(4);
@@ -56,7 +60,9 @@ PA_POPUP_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color, PA_
 	pos_x += pos_vx;
 	dp->element[PA_COLOR_DIALOG_ELEMENT_R_SLIDER] = t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_SLIDER], t3gui_slider_proc, pos_x, pos_y, 256, pos_vy, 0, 0, 255, r, NULL, NULL, NULL);
 	pos_x += 256 + space;
-	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_edit_proc, pos_x, pos_y, 128, pos_vy, 0, 0, 3, 0, dp->edit_text[0], NULL, NULL);
+	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_edit_proc, pos_x, pos_y, edit_width, pos_vy, 0, 0, 3, 0, dp->edit_text[0], NULL, NULL);
+	pos_x += edit_width + space + space;
+	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_BOX], pa_gui_color_proc, pos_x, pos_y, 320, 320, 0, 0, 0, 0, color, NULL, NULL);
 	pos_y += pos_vy;
 
 	/* G */
@@ -72,7 +78,7 @@ PA_POPUP_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color, PA_
 	pos_x += pos_vx;
 	dp->element[PA_COLOR_DIALOG_ELEMENT_G_SLIDER] = t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_SLIDER], t3gui_slider_proc, pos_x, pos_y, 256, pos_vy, 0, 0, 255, g, NULL, NULL, NULL);
 	pos_x += 256 + space;
-	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_edit_proc, pos_x, pos_y, 128, pos_vy, 0, 0, 3, 0, dp->edit_text[1], NULL, NULL);
+	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_edit_proc, pos_x, pos_y, edit_width, pos_vy, 0, 0, 3, 0, dp->edit_text[1], NULL, NULL);
 	pos_y += pos_vy;
 
 	/* B */
@@ -88,7 +94,7 @@ PA_POPUP_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color, PA_
 	pos_x += pos_vx;
 	dp->element[PA_COLOR_DIALOG_ELEMENT_B_SLIDER] = t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_SLIDER], t3gui_slider_proc, pos_x, pos_y, 256, pos_vy, 0, 0, 255, b, NULL, NULL, NULL);
 	pos_x += 256 + space;
-	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_edit_proc, pos_x, pos_y, 128, pos_vy, 0, 0, 3, 0, dp->edit_text[2], NULL, NULL);
+	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_edit_proc, pos_x, pos_y, edit_width, pos_vy, 0, 0, 3, 0, dp->edit_text[2], NULL, NULL);
 	pos_y += pos_vy;
 
 	/* A */
@@ -104,8 +110,21 @@ PA_POPUP_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color, PA_
 	pos_x += pos_vx;
 	dp->element[PA_COLOR_DIALOG_ELEMENT_A_SLIDER] = t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_SLIDER], t3gui_slider_proc, pos_x, pos_y, 256, pos_vy, 0, 0, 255, a, NULL, NULL, NULL);
 	pos_x += 256 + space;
-	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_edit_proc, pos_x, pos_y, 128, pos_vy, 0, 0, 3, 0, dp->edit_text[3], NULL, NULL);
+	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_edit_proc, pos_x, pos_y, edit_width, pos_vy, 0, 0, 3, 0, dp->edit_text[3], NULL, NULL);
 	pos_y += pos_vy;
+
+	/* HTML */
+	dp->edit_text[4] = malloc(9);
+	if(!dp->edit_text[4])
+	{
+		goto fail;
+	}
+	pa_color_to_html(*color, dp->edit_text[4]);
+	pos_x = space + x_offset;
+	pos_vx = al_get_text_width(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0], "HTML") + space;
+	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_text_proc, pos_x, pos_y, 640, al_get_font_line_height(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0]), 0, 0, 0, 0, "HTML", NULL, NULL);
+	pos_x += pos_vx;
+	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_edit_proc, pos_x, pos_y, al_get_text_width(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0], "000000000"), pos_vy, 0, 0, 8, 0, dp->edit_text[4], NULL, NULL);
 
 	return dp;
 
@@ -124,11 +143,12 @@ void pa_color_dialog_pre_logic(PA_POPUP_DIALOG * dp)
 	old_r = dp->element[PA_COLOR_DIALOG_ELEMENT_R_SLIDER]->d2;
 	strcpy(old_r_text, dp->edit_text[0]);
 	old_g = dp->element[PA_COLOR_DIALOG_ELEMENT_G_SLIDER]->d2;
-	strcpy(old_g_text, dp->edit_text[0]);
+	strcpy(old_g_text, dp->edit_text[1]);
 	old_b = dp->element[PA_COLOR_DIALOG_ELEMENT_B_SLIDER]->d2;
-	strcpy(old_b_text, dp->edit_text[0]);
+	strcpy(old_b_text, dp->edit_text[2]);
 	old_a = dp->element[PA_COLOR_DIALOG_ELEMENT_A_SLIDER]->d2;
-	strcpy(old_a_text, dp->edit_text[0]);
+	strcpy(old_a_text, dp->edit_text[3]);
+	strcpy(old_html_text, dp->edit_text[4]);
 }
 
 static void update_slider_or_text(T3GUI_ELEMENT * ep, int old, char * text, const char * old_text)
@@ -152,11 +172,35 @@ static void update_slider_or_text(T3GUI_ELEMENT * ep, int old, char * text, cons
 	}
 }
 
+static void update_color_dialog(PA_POPUP_DIALOG * dp)
+{
+	unsigned char r, g, b, a;
+
+	al_unmap_rgba(*edit_color, &r, &g, &b, &a);
+	sprintf(dp->edit_text[0], "%d", r);
+	sprintf(dp->edit_text[1], "%d", g);
+	sprintf(dp->edit_text[2], "%d", b);
+	sprintf(dp->edit_text[3], "%d", a);
+//	pa_color_to_html(*edit_color, dp->edit_text[4]);
+	dp->element[PA_COLOR_DIALOG_ELEMENT_R_SLIDER]->d2 = r;
+	dp->element[PA_COLOR_DIALOG_ELEMENT_G_SLIDER]->d2 = g;
+	dp->element[PA_COLOR_DIALOG_ELEMENT_B_SLIDER]->d2 = b;
+	dp->element[PA_COLOR_DIALOG_ELEMENT_A_SLIDER]->d2 = a;
+}
+
 void pa_color_dialog_post_logic(PA_POPUP_DIALOG * dp)
 {
 	update_slider_or_text(dp->element[PA_COLOR_DIALOG_ELEMENT_R_SLIDER], old_r, dp->edit_text[0], old_r_text);
 	update_slider_or_text(dp->element[PA_COLOR_DIALOG_ELEMENT_G_SLIDER], old_g, dp->edit_text[1], old_g_text);
 	update_slider_or_text(dp->element[PA_COLOR_DIALOG_ELEMENT_B_SLIDER], old_b, dp->edit_text[2], old_b_text);
 	update_slider_or_text(dp->element[PA_COLOR_DIALOG_ELEMENT_A_SLIDER], old_a, dp->edit_text[3], old_a_text);
+	if(strcmp(dp->edit_text[4], old_html_text))
+	{
+		if(strlen(dp->edit_text[4]) == 6 || strlen(dp->edit_text[4]) == 8)
+		{
+			*edit_color = pa_get_color_from_html(dp->edit_text[4]);
+		}
+		update_color_dialog(dp);
+	}
 	*edit_color = al_map_rgba(dp->element[PA_COLOR_DIALOG_ELEMENT_R_SLIDER]->d2, dp->element[PA_COLOR_DIALOG_ELEMENT_G_SLIDER]->d2, dp->element[PA_COLOR_DIALOG_ELEMENT_B_SLIDER]->d2, dp->element[PA_COLOR_DIALOG_ELEMENT_A_SLIDER]->d2);
 }
