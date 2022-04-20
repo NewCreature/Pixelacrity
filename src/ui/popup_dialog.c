@@ -99,8 +99,8 @@ void pa_close_popup_dialog(PA_POPUP_DIALOG * dp)
 	}
 	t3gui_close_dialog(dp->dialog);
 	t3gui_destroy_dialog(dp->dialog);
-	al_destroy_display(dp->display);
 	t3gui_unload_resources(dp->display, true);
 	pa_destroy_theme(dp->theme);
+	al_destroy_display(dp->display);
 	free(dp);
 }
