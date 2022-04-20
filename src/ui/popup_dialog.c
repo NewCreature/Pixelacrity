@@ -34,12 +34,12 @@ PA_POPUP_DIALOG * pa_create_popup_dialog(const char * theme_file, int w, int h, 
 		al_set_new_display_flags(ALLEGRO_WINDOWED);
 		get_center(t3f_display, w, h, &x, &y);
 		al_set_new_window_position(x, y);
-		popup_dialog->display = al_create_display(w, h);
-		if(!popup_dialog->display)
-		{
-			goto fail;
-		}
-		al_register_event_source(t3f_queue, al_get_display_event_source(popup_dialog->display));
+//		popup_dialog->display = al_create_display(w, h);
+//		if(!popup_dialog->display)
+//		{
+//			goto fail;
+//		}
+//		al_register_event_source(t3f_queue, al_get_display_event_source(popup_dialog->display));
 		val = al_get_config_value(t3f_config, "Settings", "font_size_override");
 		if(val)
 		{
@@ -98,8 +98,8 @@ void pa_close_popup_dialog(PA_POPUP_DIALOG * dp)
 	}
 	t3gui_close_dialog(dp->dialog);
 	t3gui_destroy_dialog(dp->dialog);
-	t3gui_unload_resources(dp->display, true);
-	pa_destroy_theme(dp->theme);
-	al_destroy_display(dp->display);
+//	t3gui_unload_resources(dp->display, true);
+//	pa_destroy_theme(dp->theme);
+//	al_destroy_display(dp->display);
 	free(dp);
 }
