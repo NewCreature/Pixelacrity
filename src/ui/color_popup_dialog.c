@@ -15,6 +15,7 @@ PA_POPUP_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color, PA_
 	int pos_y;
 	int pos_vy;
 	int space;
+	int scale;
 	int x_offset = al_get_display_width(t3f_display) / 2 - 640 / 2;
 	int y_offset = al_get_display_height(t3f_display) / 2 - 480 / 2;
 	unsigned char r, g, b, a;
@@ -34,8 +35,11 @@ PA_POPUP_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color, PA_
 	edit_color = color;
 	al_unmap_rgba(*color, &r, &g, &b, &a);
 	space = pa_get_theme_int(dp->theme, "edge_space_left", 4);
+	scale = pa_get_theme_int(dp->theme, "pixel_size", 1);
+	x_offset = al_get_display_width(t3f_display) / 2 - (640 * scale) / 2;
+	y_offset = al_get_display_height(t3f_display) / 2 - (480 * scale) / 2;
 	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_POPUP_BOX], t3gui_box_proc, 0, 0, al_get_display_width(t3f_display), al_get_display_height(t3f_display), 0, 0, 0, 0, NULL, NULL, NULL);
-	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_BOX], t3gui_box_proc, x_offset, y_offset, 640, 480, 0, 0, 0, 0, NULL, NULL, NULL);
+	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_BOX], t3gui_box_proc, x_offset, y_offset, 640 * scale, 480 * scale, 0, 0, 0, 0, NULL, NULL, NULL);
 	pos_y = pa_get_theme_int(dp->theme, "edge_top_space", 4) + y_offset;
 	pos_vy = al_get_font_line_height(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0]) + pa_get_theme_int(dp->theme, "edge_top_space", 4);
 
