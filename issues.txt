@@ -37,6 +37,11 @@ Pixelacrity 0.3.17 Issues
 
    [ ]Update the HTML color after changing an RGBA value.
 
+[ ]Implement proper palette editing. The user should be able to swap colors in
+   the palette by picking them up and dragging them to a new location. They
+   should also be able to drag the colors from the left and right color boxes
+   onto the palette to replace a color in the palette.
+
 [ ]Finish rotating selection implementation.
 
    [X]Make scaling work again.
