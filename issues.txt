@@ -3,6 +3,45 @@ Pixelacrity 0.3.17 Issues
 
 [ ]Look into crash when closing the color editor dialog on Linux.
 
+   [ ]I tracked the crash down to a glXDestroyContext() call inside of Allegro.
+      I was unable to consistently reproduce the crash. Furthermore, after
+      eliminating the extra window and just drawing the color editor dialog in
+      the main window I was still getting crashes sometimes when closing the
+      dialog. This suggests the error might be inside T3GUI's resource manager.
+
+[ ]Convert the popup dialog module into a dialog module and use that for all
+   dialogs, including the main editor dialog.
+
+[ ]Finish color editor dialog.
+
+   [ ]See if we can update the edit box routine to not scroll when we reach the
+      character limit. Presumably, the edit box scrolls when we reach this
+      position in anticipation of the user typing more, but we can't type more
+      if we are at the character limit.
+
+   [ ]Update the edit box routine to allow the user to provide a list of
+      allowable characters.
+
+   [ ]Add up/down arrows next to edit boxes to increment/decrement numerical
+      values.
+
+   [ ]Allow numerical values in edit boxes to be incremented/decremented by
+      using the arrow keys.
+
+   [ ]Calculate the ideal size of the popup window based on the current theme.
+
+   [ ]Fix position of text within edit boxes. The text should be centered within
+      the edit box with the option to apply an offset as specified in the
+      element's theme. Text should also be able to be offset on the x-axis so
+      padding can be added as needed through the theme.
+
+   [ ]Update the HTML color after changing an RGBA value.
+
+[ ]Implement proper palette editing. The user should be able to swap colors in
+   the palette by picking them up and dragging them to a new location. They
+   should also be able to drag the colors from the left and right color boxes
+   onto the palette to replace a color in the palette.
+
 [ ]Finish rotating selection implementation.
 
    [X]Make scaling work again.
