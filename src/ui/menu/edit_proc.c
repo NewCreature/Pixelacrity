@@ -127,8 +127,8 @@ int pa_menu_edit_paste(int id, void * data)
 		if(id < 0)
 		{
 			pos = 2;
-			ox = -app->ui->element[PA_UI_ELEMENT_CANVAS_EDITOR]->x;
-			oy = -app->ui->element[PA_UI_ELEMENT_CANVAS_EDITOR]->y;
+			ox = -pa_get_dialog_element(app->ui->main_dialog, PA_UI_ELEMENT_CANVAS_EDITOR)->x;
+			oy = -pa_get_dialog_element(app->ui->main_dialog, PA_UI_ELEMENT_CANVAS_EDITOR)->y;
 		}
 		pa_paste_clipboard(app->canvas_editor, pos, ox, oy, false);
 	}
@@ -160,8 +160,8 @@ int pa_menu_edit_paste_merged(int id, void * data)
 		if(id < 0)
 		{
 			pos = 2;
-			ox = -app->ui->element[PA_UI_ELEMENT_CANVAS_EDITOR]->x;
-			oy = -app->ui->element[PA_UI_ELEMENT_CANVAS_EDITOR]->y;
+			ox = -pa_get_dialog_element(app->ui->main_dialog, PA_UI_ELEMENT_CANVAS_EDITOR)->x;
+			oy = -pa_get_dialog_element(app->ui->main_dialog, PA_UI_ELEMENT_CANVAS_EDITOR)->y;
 		}
 		pa_paste_clipboard(app->canvas_editor, pos, ox, oy, true);
 	}

@@ -111,6 +111,18 @@
 #define PA_UI_ELEMENT_BUTTON_TOOL_MODE_COMPOSITE  49
 #define PA_UI_ELEMENT_BUTTON_TOOL_MODE_OUTLINE    50
 
+#define PA_UI_MAX_DIALOG_VARIABLES                16
+#define PA_UI_VAR_LEFT_SHADE_PICKER_INDEX          0
+#define PA_UI_VAR_LEFT_ALPHA_PICKER_INDEX          1
+#define PA_UI_VAR_RIGHT_SHADE_PICKER_INDEX         2
+#define PA_UI_VAR_RIGHT_ALPHA_PICKER_INDEX         3
+#define PA_UI_VAR_PALETTE_COLOR_INDEX              4
+
+#define PA_UI_MAX_DIALOG_STRINGS                   4
+#define PA_UI_STRING_LEFT_MESSAGE                  0
+#define PA_UI_STRING_MIDDLE_MESSAGE                1
+#define PA_UI_STRING_RIGHT_MESSAGE                 2
+
 #define PA_UI_MAX_THEMES  32
 
 #endif

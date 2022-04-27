@@ -2,6 +2,7 @@
 #include "t3gui/t3gui.h"
 #include "t3gui/resource.h"
 #include "dialog.h"
+#include "defines.h"
 
 static void get_center(ALLEGRO_DISPLAY * dp, int w, int h, int * x, int * y)
 {
@@ -47,13 +48,14 @@ PA_DIALOG * pa_create_dialog(ALLEGRO_DISPLAY * dp, const char * theme_file, int 
 		{
 			dialog->display = dp;
 		}
-		if(theme_file)
+		if(!theme_file)
 		{
-			dialog->theme = pa_load_theme(theme_file);
-			if(!dialog->theme)
-			{
-				goto fail;
-			}
+			theme_file = PA_DEFAULT_THEME;
+		}
+		dialog->theme = pa_load_theme(theme_file);
+		if(!dialog->theme)
+		{
+			goto fail;
 		}
 		dialog->dialog = t3gui_create_dialog();
 		if(!dialog->dialog)
@@ -62,6 +64,7 @@ PA_DIALOG * pa_create_dialog(ALLEGRO_DISPLAY * dp, const char * theme_file, int 
 		}
 	}
 	al_restore_state(&old_state);
+	dialog->user_data = data;
 	return dialog;
 
 	fail:
@@ -96,6 +99,13 @@ void pa_close_dialog(PA_DIALOG * dp)
 		if(dp->edit_text[i])
 		{
 			free(dp->edit_text[i]);
+		}
+	}
+	for(i = 0; i < PA_UI_MAX_BITMAPS; i++)
+	{
+		if(dp->bitmap[i])
+		{
+			al_destroy_bitmap(dp->bitmap[i]);
 		}
 	}
 	t3gui_close_dialog(dp->dialog);

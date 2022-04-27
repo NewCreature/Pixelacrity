@@ -10,11 +10,15 @@ typedef struct
 
 	ALLEGRO_DISPLAY * display;
 	PA_UI_THEME * theme;
+	ALLEGRO_BITMAP * bitmap[PA_UI_MAX_BITMAPS];
 	T3GUI_DIALOG * dialog;
 	char * edit_text[PA_UI_MAX_DIALOG_EDIT_BOXES];
 	T3GUI_ELEMENT * element[PA_UI_MAX_DIALOG_ELEMENTS];
 	int element_id[PA_UI_MAX_DIALOG_ELEMENTS];
 	int element_count;
+	int variable[PA_UI_MAX_DIALOG_VARIABLES];
+	char string[PA_UI_MAX_DIALOG_STRINGS][1024];
+	void * user_data;
 
 } PA_DIALOG;
 

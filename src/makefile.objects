@@ -90,4 +90,5 @@ ui/ui.o\
     ui/element/canvas_editor/MSG_MOUSEMOVE.o\
     ui/element/canvas_editor/MSG_WHEEL.o\
     ui/element/canvas_editor/MSG_IDLE.o\
-    ui/element/canvas_editor/MSG_DRAW.o
+    ui/element/canvas_editor/MSG_DRAW.o\
+    ui/dialog/main_init.o

@@ -336,13 +336,13 @@ void pa_handle_shortcuts(APP_INSTANCE * app)
 		}
 		if(t3f_key[ALLEGRO_KEY_MINUS] || t3f_key[ALLEGRO_KEY_PAD_MINUS])
 		{
-			pa_canvas_editor_MSG_WHEEL(app->ui->element[PA_UI_ELEMENT_CANVAS_EDITOR], -1);
+			pa_canvas_editor_MSG_WHEEL(pa_get_dialog_element(app->ui->main_dialog, PA_UI_ELEMENT_CANVAS_EDITOR), -1);
 			t3f_key[ALLEGRO_KEY_MINUS] = 0;
 			t3f_key[ALLEGRO_KEY_PAD_MINUS] = 0;
 		}
 		if(t3f_key[ALLEGRO_KEY_EQUALS] || t3f_key[ALLEGRO_KEY_PAD_PLUS])
 		{
-			pa_canvas_editor_MSG_WHEEL(app->ui->element[PA_UI_ELEMENT_CANVAS_EDITOR], 1);
+			pa_canvas_editor_MSG_WHEEL(pa_get_dialog_element(app->ui->main_dialog, PA_UI_ELEMENT_CANVAS_EDITOR), 1);
 			t3f_key[ALLEGRO_KEY_EQUALS] = 0;
 			t3f_key[ALLEGRO_KEY_PAD_PLUS] = 0;
 		}

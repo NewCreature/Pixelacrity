@@ -11,6 +11,7 @@
 #include "ui/menu/edit_proc.h"
 #include "ui/window.h"
 #include "shortcuts.h"
+#include "ui/dialog/main_init.h"
 
 void app_event_handler(ALLEGRO_EVENT * event, void * data)
 {
@@ -113,7 +114,7 @@ void app_logic(void * data)
 
 	if(app->restart_ui)
 	{
-		pa_resize_ui(app->ui);
+		pa_resize_main_dialog(app->ui);
 		app->restart_ui = false;
 	}
 	/* handle signals */
@@ -130,19 +131,19 @@ void app_logic(void * data)
 	}
 
 	pa_process_ui(app->ui);
-	strcpy(app->ui->status_left_message, "");
+	strcpy(app->ui->main_dialog->string[PA_UI_STRING_LEFT_MESSAGE], "");
 	if(app->canvas_editor->tool_state == PA_TOOL_STATE_DRAWING)
 	{
-		sprintf(app->ui->status_left_message, "(%d, %d)", abs((int)app->canvas_editor->start_x - (int)app->canvas_editor->end_x) + 1, abs((int)app->canvas_editor->start_y - (int)app->canvas_editor->end_y) + 1);
+		sprintf(app->ui->main_dialog->string[PA_UI_STRING_LEFT_MESSAGE], "(%d, %d)", abs((int)app->canvas_editor->start_x - (int)app->canvas_editor->end_x) + 1, abs((int)app->canvas_editor->start_y - (int)app->canvas_editor->end_y) + 1);
 	}
 	else if(app->canvas_editor->tool_state == PA_TOOL_STATE_EDITING)
 	{
-		sprintf(app->ui->status_left_message, "Selection: (%d, %d)", app->canvas_editor->selection.box.width, app->canvas_editor->selection.box.height);
+		sprintf(app->ui->main_dialog->string[PA_UI_STRING_LEFT_MESSAGE], "Selection: (%d, %d)", app->canvas_editor->selection.box.width, app->canvas_editor->selection.box.height);
 	}
 	else if(app->canvas_editor->current_frame < app->canvas->frame_max)
 	{
-		sprintf(app->ui->status_left_message, "(%d, %d)", app->canvas_editor->hover_x - app->canvas->frame[app->canvas_editor->current_frame]->box.start_x, app->canvas_editor->hover_y - app->canvas->frame[app->canvas_editor->current_frame]->box.start_y);
-		sprintf(app->ui->status_right_message, "\t%s", app->canvas->frame[app->canvas_editor->current_frame]->export_path ? app->canvas->frame[app->canvas_editor->current_frame]->export_path : "");
+		sprintf(app->ui->main_dialog->string[PA_UI_STRING_LEFT_MESSAGE], "(%d, %d)", app->canvas_editor->hover_x - app->canvas->frame[app->canvas_editor->current_frame]->box.start_x, app->canvas_editor->hover_y - app->canvas->frame[app->canvas_editor->current_frame]->box.start_y);
+		sprintf(app->ui->main_dialog->string[PA_UI_STRING_RIGHT_MESSAGE], "\t%s", app->canvas->frame[app->canvas_editor->current_frame]->export_path ? app->canvas->frame[app->canvas_editor->current_frame]->export_path : "");
 	}
 	if(!app->ui->color_popup_dialog && !app->ui->brush_popup_dialog)
 	{
@@ -227,10 +228,10 @@ bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 	{
 		return false;
 	}
-	t3f_debug_message("Resize UI\n");
-	pa_resize_ui(app->ui);
+	t3f_debug_message("Resize UI %lu\n");
+	pa_resize_main_dialog(app->ui->main_dialog);
 	t3f_debug_message("Show GUI\n");
-	t3gui_show_dialog(app->ui->dialog[PA_UI_DIALOG_MAIN], NULL, T3GUI_PLAYER_NO_ESCAPE | T3GUI_PLAYER_IGNORE_CLOSE, app);
+	t3gui_show_dialog(app->ui->main_dialog->dialog, NULL, T3GUI_PLAYER_NO_ESCAPE | T3GUI_PLAYER_IGNORE_CLOSE, app);
 	al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_INVERSE_ALPHA);
 
 	return true;
