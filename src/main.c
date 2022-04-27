@@ -114,7 +114,7 @@ void app_logic(void * data)
 
 	if(app->restart_ui)
 	{
-		pa_resize_main_dialog(app->ui);
+		pa_resize_main_dialog(app->ui->main_dialog);
 		app->restart_ui = false;
 	}
 	/* handle signals */

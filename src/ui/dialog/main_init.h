@@ -6,6 +6,6 @@
 
 PA_DIALOG * pa_create_main_dialog(PA_CANVAS_EDITOR * cep);
 
-void pa_resize_main_dialog(PA_UI * uip);
+void pa_resize_main_dialog(PA_DIALOG * dp);
 
 #endif
