@@ -1,17 +1,17 @@
 #include "t3gui/t3gui.h"
 #include "defines.h"
-#include "popup_dialog.h"
+#include "ui/dialog.h"
 #include "color_popup_dialog.h"
-#include "gui/color.h"
+#include "ui/element/color.h"
 #include "modules/color.h"
 
 static int old_r, old_g, old_b, old_a;
 static char old_r_text[8], old_g_text[8], old_b_text[8], old_a_text[8], old_html_text[10];
 static ALLEGRO_COLOR * edit_color = NULL;
 
-PA_POPUP_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color, PA_UI_THEME * theme)
+PA_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color, PA_UI_THEME * theme)
 {
-	PA_POPUP_DIALOG * dp;
+	PA_DIALOG * dp;
 	int pos_x;
 	int pos_vx;
 	int pos_y;
@@ -29,7 +29,7 @@ PA_POPUP_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color, PA_
 	{
 		val = PA_DEFAULT_THEME;
 	}
-	dp = pa_create_popup_dialog(NULL, 640, 480, NULL);
+	dp = pa_create_dialog(NULL, NULL, 640, 480, NULL);
 	if(!dp)
 	{
 		goto fail;
@@ -132,13 +132,13 @@ PA_POPUP_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color, PA_
 	{
 		if(dp)
 		{
-			pa_close_popup_dialog(dp);
+			pa_close_dialog(dp);
 		}
 		return NULL;
 	}
 }
 
-void pa_color_dialog_pre_logic(PA_POPUP_DIALOG * dp)
+void pa_color_dialog_pre_logic(PA_DIALOG * dp)
 {
 	old_r = dp->element[PA_COLOR_DIALOG_ELEMENT_R_SLIDER]->d2;
 	strcpy(old_r_text, dp->edit_text[0]);
@@ -172,7 +172,7 @@ static void update_slider_or_text(T3GUI_ELEMENT * ep, int old, char * text, cons
 	}
 }
 
-static void update_color_dialog(PA_POPUP_DIALOG * dp)
+static void update_color_dialog(PA_DIALOG * dp)
 {
 	unsigned char r, g, b, a;
 
@@ -188,7 +188,7 @@ static void update_color_dialog(PA_POPUP_DIALOG * dp)
 	dp->element[PA_COLOR_DIALOG_ELEMENT_A_SLIDER]->d2 = a;
 }
 
-void pa_color_dialog_post_logic(PA_POPUP_DIALOG * dp)
+void pa_color_dialog_post_logic(PA_DIALOG * dp)
 {
 	update_slider_or_text(dp->element[PA_COLOR_DIALOG_ELEMENT_R_SLIDER], old_r, dp->edit_text[0], old_r_text);
 	update_slider_or_text(dp->element[PA_COLOR_DIALOG_ELEMENT_G_SLIDER], old_g, dp->edit_text[1], old_g_text);

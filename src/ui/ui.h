@@ -6,7 +6,7 @@
 #include "modules/canvas/canvas.h"
 #include "canvas_editor/canvas_editor.h"
 #include "theme.h"
-#include "popup_dialog.h"
+#include "dialog.h"
 #include "ui_defines.h"
 
 typedef struct
@@ -29,8 +29,8 @@ typedef struct
 	char status_middle_message[1024];
 	char status_right_message[1024];
 
-	PA_POPUP_DIALOG * brush_popup_dialog;
-	PA_POPUP_DIALOG * color_popup_dialog;
+	PA_DIALOG * brush_popup_dialog;
+	PA_DIALOG * color_popup_dialog;
 
 } PA_UI;
 

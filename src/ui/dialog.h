@@ -1,5 +1,5 @@
-#ifndef PA_UI_POPUP_DIALOG_H
-#define PA_UI_POPUP_DIALOG_H
+#ifndef PA_UI_DIALOG_H
+#define PA_UI_DIALOG_H
 
 #include "t3f/t3f.h"
 #include "theme.h"
@@ -14,9 +14,9 @@ typedef struct
 	char * edit_text[PA_UI_MAX_DIALOG_EDIT_BOXES];
 	T3GUI_ELEMENT * element[PA_UI_MAX_DIALOG_ELEMENTS];
 
-} PA_POPUP_DIALOG;
+} PA_DIALOG;
 
-PA_POPUP_DIALOG * pa_create_popup_dialog(const char * theme_file, int w, int h, void * data);
-void pa_close_popup_dialog(PA_POPUP_DIALOG * dp);
+PA_DIALOG * pa_create_dialog(ALLEGRO_DISPLAY * dp, const char * theme_file, int w, int h, void * data);
+void pa_close_dialog(PA_DIALOG * dp);
 
 #endif

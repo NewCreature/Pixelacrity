@@ -4,7 +4,7 @@
 #include "ui/menu/edit_proc.h"
 #include "ui/menu/layer_proc.h"
 #include "ui/menu/frame_proc.h"
-#include "ui/gui/canvas_editor/MSG_WHEEL.h"
+#include "ui/element/canvas_editor/MSG_WHEEL.h"
 #include "modules/canvas/canvas_helpers.h"
 #include "modules/color.h"
 

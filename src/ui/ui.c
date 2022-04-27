@@ -6,24 +6,24 @@
 #include "menu/file.h"
 #include "menu/file_proc.h"
 #include "menu/edit_proc.h"
-#include "gui/button_proc.h"
+#include "element_proc/button_proc.h"
 #include "modules/mouse_cursor.h"
 #include "modules/canvas/canvas.h"
 #include "modules/canvas/canvas_file.h"
 #include "modules/canvas/canvas_helpers.h"
 #include "modules/bitmap.h"
-#include "gui/color.h"
-#include "gui/palette.h"
-#include "gui/map.h"
-#include "gui/canvas_editor/element.h"
+#include "element/color.h"
+#include "element/palette.h"
+#include "element/map.h"
+#include "element/canvas_editor/element.h"
 #include "modules/ega_palette.h"
-#include "gui/list_proc.h"
-#include "gui/layer_list_proc.h"
-#include "gui/brush.h"
+#include "element/list.h"
+#include "element_proc/layer_list_proc.h"
+#include "element/brush.h"
 #include "ui/canvas_editor/undo/undo.h"
 #include "defines.h"
-#include "popup_dialog.h"
-#include "color_popup_dialog.h"
+#include "dialog.h"
+#include "dialog/color_popup_dialog.h"
 
 static bool add_color_pickers(PA_UI * uip, PA_CANVAS_EDITOR * cep, T3GUI_DIALOG * dp, int x, int y)
 {
@@ -804,8 +804,6 @@ void pa_process_ui(PA_UI * uip)
 	int old_layer_d1;
 	int old_layer = cep->current_layer;
 	ALLEGRO_STATE old_state;
-	int old_r;
-	char old_r_text[8];
 
 	uip->element[PA_UI_ELEMENT_LAYER_LIST]->d1 = cep->canvas->layer_max - cep->current_layer - 1;
 	old_layer_d1 = uip->element[PA_UI_ELEMENT_LAYER_LIST]->d1;
@@ -834,7 +832,7 @@ void pa_process_ui(PA_UI * uip)
 	update_toolbar_flags(uip, cep);
 	if(uip->element[PA_UI_ELEMENT_BRUSH]->id1)
 	{
-		uip->brush_popup_dialog = pa_create_popup_dialog(al_get_config_value(t3f_config, "App Data", "theme"), 640, 480, NULL);
+		uip->brush_popup_dialog = pa_create_dialog(NULL, al_get_config_value(t3f_config, "App Data", "theme"), 640, 480, NULL);
 		t3gui_show_dialog(uip->brush_popup_dialog->dialog, t3f_queue, T3GUI_PLAYER_CLEAR, NULL);
 		uip->element[PA_UI_ELEMENT_BRUSH]->id1 = 0;
 	}
@@ -950,7 +948,7 @@ void pa_process_ui(PA_UI * uip)
 		}
 		else
 		{
-			pa_close_popup_dialog(uip->color_popup_dialog);
+			pa_close_dialog(uip->color_popup_dialog);
 			uip->color_popup_dialog = NULL;
 		}
 	}

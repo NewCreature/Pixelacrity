@@ -61,12 +61,12 @@ void app_event_handler(ALLEGRO_EVENT * event, void * data)
 			t3f_debug_message("Display close event start\n");
 			if(app->ui->brush_popup_dialog && event->display.source == app->ui->brush_popup_dialog->display)
 			{
-				pa_close_popup_dialog(app->ui->brush_popup_dialog);
+				pa_close_dialog(app->ui->brush_popup_dialog);
 				app->ui->brush_popup_dialog = NULL;
 			}
 			else if(app->ui->color_popup_dialog && event->display.source == app->ui->color_popup_dialog->display)
 			{
-				pa_close_popup_dialog(app->ui->color_popup_dialog);
+				pa_close_dialog(app->ui->color_popup_dialog);
 				app->ui->color_popup_dialog = NULL;
 			}
 			else

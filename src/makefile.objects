@@ -1,0 +1,93 @@
+# objects needed to utilize T3GUI in our project
+T3GUI_OBJECTS = \
+    t3gui/dialog.o\
+    t3gui/element_proc.o\
+    t3gui/nine_patch.o\
+    t3gui/player.o\
+    t3gui/resource.o\
+    t3gui/t3gui.o\
+    t3gui/theme.o\
+    t3gui/unicode.o
+
+# modules used by our project
+APP_MODULE_OBJECTS = \
+    modules/box.o\
+    modules/color.o\
+    modules/date.o\
+    modules/ega_palette.o\
+    modules/pixel_shader.o\
+    modules/primitives.o\
+    modules/queue.o\
+    modules/bitmap.o\
+    modules/snap.o\
+    modules/dynamic_array.o\
+    modules/multi_layer_bitmap.o\
+    modules/mouse_cursor.o\
+    modules/palette.o\
+    modules/canvas/canvas.o\
+    modules/canvas/canvas_helpers.o\
+    modules/canvas/canvas_file.o\
+    modules/canvas/flood_fill.o
+
+APP_CANVAS_EDITOR_OBJECTS = \
+    ui/canvas_editor/canvas_editor.o\
+    ui/canvas_editor/undo/undo.o\
+    ui/canvas_editor/undo/tool.o\
+    ui/canvas_editor/undo/frame.o\
+    ui/canvas_editor/undo/layer.o\
+    ui/canvas_editor/undo/flood_fill.o\
+    ui/canvas_editor/undo/import.o\
+    ui/canvas_editor/undo/selection/delete.o\
+    ui/canvas_editor/undo/selection/flip.o\
+    ui/canvas_editor/undo/selection/float.o\
+    ui/canvas_editor/undo/selection/paste.o\
+    ui/canvas_editor/undo/selection/turn.o\
+    ui/canvas_editor/undo/selection/unfloat.o\
+    ui/canvas_editor/clipboard.o\
+    ui/canvas_editor/selection.o\
+    ui/canvas_editor/brush.o\
+    ui/canvas_editor/frame.o\
+    ui/canvas_editor/tools/pixel.o\
+    ui/canvas_editor/tools/line.o\
+    ui/canvas_editor/tools/rectangle.o\
+    ui/canvas_editor/tools/filled_rectangle.o\
+    ui/canvas_editor/tools/oval.o\
+    ui/canvas_editor/tools/filled_oval.o\
+    ui/canvas_editor/tools/dropper.o\
+    ui/canvas_editor/tools/selection.o\
+
+APP_UI_OBJECTS = \
+ui/ui.o\
+    ui/window.o\
+    ui/theme.o\
+    ui/dialog.o\
+    ui/dialog/color_popup_dialog.o\
+    ui/menu/menu.o\
+    ui/menu/file.o\
+    ui/menu/file_proc.o\
+    ui/menu/edit.o\
+    ui/menu/edit_proc.o\
+    ui/menu/frame.o\
+    ui/menu/frame_proc.o\
+    ui/menu/layer.o\
+    ui/menu/layer_proc.o\
+    ui/menu/tool.o\
+    ui/menu/tool_proc.o\
+    ui/menu/palette.o\
+    ui/menu/palette_proc.o\
+    ui/element/color.o\
+    ui/element/palette.o\
+    ui/element/map.o\
+    ui/element_proc/button_proc.o\
+    ui/element/list.o\
+    ui/element_proc/layer_list_proc.o\
+    ui/element/brush.o\
+    ui/element/canvas_editor/element.o\
+    ui/element/canvas_editor/MSG_GOTMOUSE.o\
+    ui/element/canvas_editor/MSG_LOSTMOUSE.o\
+    ui/element/canvas_editor/MSG_MOUSEDOWN.o\
+    ui/element/canvas_editor/MSG_MOUSEUP.o\
+    ui/element/canvas_editor/MSG_MOUSEMOVE.o\
+    ui/element/canvas_editor/MSG_WHEEL.o\
+    ui/element/canvas_editor/MSG_IDLE.o\
+    ui/element/canvas_editor/MSG_DRAW.o

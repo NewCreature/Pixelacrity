@@ -1,5 +1,5 @@
 #include "ui/canvas_editor/canvas_editor.h"
-#include "ui/gui/canvas_editor/element.h"
+#include "ui/element/canvas_editor/element.h"
 #include "modules/canvas/canvas_helpers.h"
 
 static ALLEGRO_COLOR get_apparent_color(PA_CANVAS_EDITOR * cep, int x, int y)
