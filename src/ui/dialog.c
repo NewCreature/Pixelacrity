@@ -111,3 +111,18 @@ void pa_close_dialog(PA_DIALOG * dp)
 	}
 	free(dp);
 }
+
+void pa_track_dialog_element(PA_DIALOG * dp, T3GUI_ELEMENT * ep, int id)
+{
+	if(dp->element_count < PA_UI_MAX_DIALOG_ELEMENTS)
+	{
+		dp->element[dp->element_count] = ep;
+		dp->element_id[id] = dp->element_count;
+		dp->element_count++;
+	}
+}
+
+T3GUI_ELEMENT * pa_get_dialog_element(PA_DIALOG * dp, int id)
+{
+	return dp->element[dp->element_id[id]];
+}
