@@ -117,6 +117,8 @@
 #define PA_UI_VAR_RIGHT_SHADE_PICKER_INDEX         2
 #define PA_UI_VAR_RIGHT_ALPHA_PICKER_INDEX         3
 #define PA_UI_VAR_PALETTE_COLOR_INDEX              4
+#define PA_UI_VAR_OLD_LAYER_D1                     5
+#define PA_UI_VAR_OLD_LAYER                        6
 
 #define PA_UI_MAX_DIALOG_STRINGS                   4
 #define PA_UI_STRING_LEFT_MESSAGE                  0
