@@ -1,6 +1,8 @@
 Pixelacrity 0.3.17 Issues
 -------------------------
 
+[ ]Crash when undoing 3 times in a row after pasting twice.
+
 [ ]Look into crash when closing the color editor dialog on Linux.
 
    [ ]I tracked the crash down to a glXDestroyContext() call inside of Allegro.
