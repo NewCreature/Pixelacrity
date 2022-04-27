@@ -9,7 +9,7 @@ static int old_r, old_g, old_b, old_a;
 static char old_r_text[8], old_g_text[8], old_b_text[8], old_a_text[8], old_html_text[10];
 static ALLEGRO_COLOR * edit_color = NULL;
 
-PA_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color, PA_UI_THEME * theme)
+PA_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color)
 {
 	PA_DIALOG * dp;
 	int pos_x;
@@ -19,29 +19,37 @@ PA_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color, PA_UI_THE
 	int space;
 	int scale;
 	int edit_width;
-	int x_offset;
-	int y_offset;
+	int x_offset = 0;
+	int y_offset = 0;
 	unsigned char r, g, b, a;
 	const char * val;
+	bool no_popup = false;
 
+	val = al_get_config_value(t3f_config, "App Data", "disable_popup_windows");
+	if(val && !strcmp(val, "true"))
+	{
+		no_popup = true;
+	}
 	val = al_get_config_value(t3f_config, "App Data", "theme");
 	if(!val)
 	{
 		val = PA_DEFAULT_THEME;
 	}
-	dp = pa_create_dialog(NULL, NULL, 640, 480, NULL);
+	dp = pa_create_dialog(no_popup ? t3f_display : NULL, val, 640, 480, NULL);
 	if(!dp)
 	{
 		goto fail;
 	}
-	dp->theme = theme;
 	edit_color = color;
 	al_unmap_rgba(*color, &r, &g, &b, &a);
 	space = pa_get_theme_int(dp->theme, "edge_space_left", 4);
 	scale = pa_get_theme_int(dp->theme, "pixel_size", 1);
-	x_offset = al_get_display_width(t3f_display) / 2 - (640 * scale) / 2;
-	y_offset = al_get_display_height(t3f_display) / 2 - (480 * scale) / 2;
-	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_POPUP_BOX], t3gui_box_proc, 0, 0, al_get_display_width(t3f_display), al_get_display_height(t3f_display), 0, 0, 0, 0, NULL, NULL, NULL);
+	if(no_popup)
+	{
+		x_offset = al_get_display_width(dp->display) / 2 - (640 * scale) / 2;
+		y_offset = al_get_display_height(dp->display) / 2 - (480 * scale) / 2;
+	}
+	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_POPUP_BOX], t3gui_box_proc, 0, 0, al_get_display_width(dp->display), al_get_display_height(dp->display), 0, 0, 0, 0, NULL, NULL, NULL);
 	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_BOX], t3gui_box_proc, x_offset, y_offset, 640 * scale, 480 * scale, 0, 0, 0, 0, NULL, NULL, NULL);
 	pos_y = pa_get_theme_int(dp->theme, "edge_top_space", 4) + y_offset;
 	pos_vy = al_get_font_line_height(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0]) + pa_get_theme_int(dp->theme, "edge_top_space", 4);
