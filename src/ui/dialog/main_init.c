@@ -22,12 +22,6 @@ static bool load_bitmap(PA_DIALOG * dp, int slot, const char * name)
 
 static bool load_resources(PA_DIALOG * dp)
 {
-	dp->bitmap[PA_UI_BITMAP_BG] = pa_make_checkerboard_bitmap(t3f_color_white, al_map_rgba_f(0.9, 0.9, 0.9, 1.0));
-	if(!dp->bitmap[PA_UI_BITMAP_BG])
-	{
-		return false;
-	}
-
 	if(!load_bitmap(dp, PA_UI_BITMAP_TOOL_PIXEL, "tool_pixel"))
 	{
 		return false;

@@ -65,6 +65,7 @@ PA_UI * pa_create_ui(PA_CANVAS_EDITOR * cep)
 		pa_canvas_editor_update_pick_colors(cep);
 		cep->box_line_thickness = pa_get_theme_int(uip->main_dialog->theme, "box_line_thickness", 2);
 		cep->grid_thickness = pa_get_theme_float(uip->main_dialog->theme, "grid_thickness", 0.0);
+		cep->checkerboard_scale = pa_get_theme_int(uip->main_dialog->theme, "checkerboard_scale", 24);
 		cep->grid_offset = pa_get_theme_float(uip->main_dialog->theme, "grid_offset", 0.5);
 		cep->grid_color = pa_get_theme_color(uip->main_dialog->theme, "grid_color", al_map_rgba_f(0.0, 0.0, 0.0, 0.25));
 	}
@@ -144,31 +145,6 @@ void pa_process_ui(PA_UI * uip)
 void pa_render_ui(PA_UI * uip)
 {
 	PA_CANVAS_EDITOR * cep = (PA_CANVAS_EDITOR *)pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_CANVAS_EDITOR)->dp;
-	int i, j;
-	int tw, th;
-	int scale = pa_get_theme_int(uip->main_dialog->theme, "checkerboard_scale", 24);
-	bool held = al_is_bitmap_drawing_held();
-
-	if(held)
-	{
-		al_hold_bitmap_drawing(false);
-	}
-	al_hold_bitmap_drawing(true);
-	al_use_shader(cep->premultiplied_alpha_shader);
-	tw = pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_CANVAS_EDITOR)->w / scale + 1;
-	th = pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_CANVAS_EDITOR)->h / scale + 1;
-	for(i = 0; i < th; i++)
-	{
-		for(j = 0; j < tw; j++)
-		{
-			t3f_draw_scaled_bitmap(uip->main_dialog->bitmap[PA_UI_BITMAP_BG], t3f_color_white, pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_CANVAS_EDITOR)->x + j * scale, pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_CANVAS_EDITOR)->y + i * scale, 0, scale, scale, 0);
-		}
-	}
-	al_hold_bitmap_drawing(false);
-	if(held)
-	{
-		al_hold_bitmap_drawing(true);
-	}
 	t3gui_render();
 	if(uip->brush_popup_dialog)
 	{

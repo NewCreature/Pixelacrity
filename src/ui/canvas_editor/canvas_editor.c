@@ -7,6 +7,7 @@
 #include "modules/pixel_shader.h"
 #include "modules/color.h"
 #include "modules/dynamic_array.h"
+#include "modules/bitmap.h"
 #include "undo/undo.h"
 #include "selection.h"
 #include "clipboard.h"
@@ -102,6 +103,12 @@ PA_CANVAS_EDITOR * pa_create_canvas_editor(PA_CANVAS * cp)
 	}
 	al_store_state(&old_state, ALLEGRO_STATE_NEW_BITMAP_PARAMETERS);
 	al_set_new_bitmap_flags(0);
+	cep->bg_bitmap = pa_make_checkerboard_bitmap(t3f_color_white, al_map_rgba_f(0.9, 0.9, 0.9, 1.0));
+	if(!cep->bg_bitmap)
+	{
+		goto fail;
+	}
+
 	cep->color_scratch_bitmap = al_create_bitmap(1, 1);
 	if(!cep->color_scratch_bitmap)
 	{
@@ -153,6 +160,10 @@ void pa_destroy_canvas_editor(PA_CANVAS_EDITOR * cep)
 	if(cep->color_scratch_bitmap)
 	{
 		al_destroy_bitmap(cep->color_scratch_bitmap);
+	}
+	if(cep->bg_bitmap)
+	{
+		al_destroy_bitmap(cep->bg_bitmap);
 	}
 	if(cep->view)
 	{

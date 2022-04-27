@@ -4,7 +4,6 @@
 #define PA_UI_MAX_DIALOG_EDIT_BOXES        16
 
 #define PA_UI_MAX_BITMAPS                  48
-#define PA_UI_BITMAP_BG                     0
 #define PA_UI_BITMAP_TOOL_PIXEL             1
 #define PA_UI_BITMAP_TOOL_LINE              2
 #define PA_UI_BITMAP_TOOL_RECTANGLE         3
