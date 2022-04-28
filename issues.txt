@@ -1,18 +1,11 @@
 Pixelacrity 0.3.17 Issues
 -------------------------
 
+[ ]Look into window getting smaller and smaller each time the program is loaded
+   on Linux. It might be caused by the implicit resize event generated when
+   attaching the menu to the display.
+
 [ ]Crash when undoing 3 times in a row after pasting twice.
-
-[ ]Look into crash when closing the color editor dialog on Linux.
-
-   [ ]I tracked the crash down to a glXDestroyContext() call inside of Allegro.
-      I was unable to consistently reproduce the crash. Furthermore, after
-      eliminating the extra window and just drawing the color editor dialog in
-      the main window I was still getting crashes sometimes when closing the
-      dialog. This suggests the error might be inside T3GUI's resource manager.
-
-[ ]Convert the popup dialog module into a dialog module and use that for all
-   dialogs, including the main editor dialog.
 
 [ ]Finish color editor dialog.
 
@@ -1004,3 +997,17 @@ Closed Issues
 [X]Look into crash when bringing up the brush popup dialog on Linux.
 
    [X]Crash caused by theme not loading if the 'theme_file' argument was 'NULL'.
+
+[X]Convert the popup dialog module into a dialog module and use that for all
+   dialogs, including the main editor dialog.
+
+[X]Look into crash when closing the color editor dialog on Linux.
+
+   [X]I tracked the crash down to a glXDestroyContext() call inside of Allegro.
+      I was unable to consistently reproduce the crash. Furthermore, after
+      eliminating the extra window and just drawing the color editor dialog in
+      the main window I was still getting crashes sometimes when closing the
+      dialog. This suggests the error might be inside T3GUI's resource manager.
+
+   [X]The crash was actually being caused by memory bugs in T3GUI, as I
+      suspected.
