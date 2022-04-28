@@ -7,6 +7,10 @@ Pixelacrity 0.3.17 Issues
 
 [ ]Crash when undoing 3 times in a row after pasting twice.
 
+   [ ]I can reproduce this on MacOS by drawing some pixels, selecting them,
+      copying them, pasting 3 copies, then undoing 4-5 times. The second undo
+      doesn't bring back the previous floating selection.
+
 [ ]Finish color editor dialog.
 
    [ ]See if we can update the edit box routine to not scroll when we reach the
