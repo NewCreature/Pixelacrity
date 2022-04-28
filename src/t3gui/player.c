@@ -778,11 +778,13 @@ static void update_dialog(T3GUI_PLAYER * player)
         {
             al_emit_user_event(t3gui_get_event_source(), &my_event, t3gui_event_destructor);
         }
-        t3gui_close_dialog_by_element(player->dialog);
+        player->delete = true;
     }
-
-    /* Clear some status flags that should not be retained */
-    player->res &= ~D_USED_CHAR;
+    else
+    {
+      /* Clear some status flags that should not be retained */
+      player->res &= ~D_USED_CHAR;
+    }
 }
 
 /* TODO: secondary click, mouse wheel scrolling.
@@ -1059,7 +1061,8 @@ void t3gui_process_dialog(T3GUI_PLAYER * player)
 {
     ALLEGRO_EVENT event;
 
-    t3gui_dialog_message(player->dialog, MSG_IDLE, 0, &player->obj);    while(al_get_next_event(player->input, &event))
+    t3gui_dialog_message(player->dialog, MSG_IDLE, 0, &player->obj);
+    while(al_get_next_event(player->input, &event))
 	{
         dialog_thread_internal_event_handler(player, &event);
         if(!player->paused)
@@ -1067,6 +1070,11 @@ void t3gui_process_dialog(T3GUI_PLAYER * player)
             dialog_thread_event_handler(player, &event);
         }
         update_dialog(player);
+        if(player->delete)
+        {
+          t3gui_close_dialog_by_element(player->dialog);
+          break;
+        }
     }
 }
 

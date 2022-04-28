@@ -41,6 +41,7 @@ typedef struct T3GUI_PLAYER
     bool no_close_callback;
     bool shift;
     int click_count;
+    bool delete;
 } T3GUI_PLAYER;
 
 T3GUI_PLAYER * t3gui_init_dialog(T3GUI_ELEMENT * dialog, int focus_obj, int flags, ALLEGRO_EVENT_QUEUE * qp, void * user_data, void (*close_proc)(T3GUI_ELEMENT * ep));
