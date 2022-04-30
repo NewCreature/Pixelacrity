@@ -1,4 +1,4 @@
-Pixelacrity 0.3.17 Issues
+Pixelacrity 0.3.18 Issues
 -------------------------
 
 [ ]Look into window getting smaller and smaller each time the program is loaded
