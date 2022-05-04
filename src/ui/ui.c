@@ -146,7 +146,6 @@ void pa_process_ui(PA_UI * uip)
 void pa_render_ui(PA_UI * uip)
 {
 	PA_CANVAS_EDITOR * cep = (PA_CANVAS_EDITOR *)pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_CANVAS_EDITOR)->dp;
-	al_use_shader(cep->premultiplied_alpha_shader);
 	t3gui_render(t3f_display);
 	if(uip->brush_popup_dialog)
 	{

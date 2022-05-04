@@ -6,6 +6,7 @@
 #include "ui/element/list.h"
 #include "ui/element/map.h"
 #include "ui/element/palette.h"
+#include "ui/element/shader.h"
 #include "ui/element/canvas_editor/element.h"
 #include "ui/element_proc/button_proc.h"
 #include "ui/element_proc/layer_list_proc.h"
@@ -406,6 +407,7 @@ PA_DIALOG * pa_create_main_dialog(PA_CANVAS_EDITOR * cep)
 	{
 		goto fail;
 	}
+	t3gui_dialog_add_element(dp->dialog, NULL, pa_gui_shader_proc, 0, 0, 0, 0, 0, 0, 0, 0, NULL, cep->premultiplied_alpha_shader, NULL);
 	add_toolbar(dp, cep);
 	add_right_pane(dp, cep);
 	add_left_pane(dp, cep);
