@@ -8,17 +8,17 @@ int pa_gui_shader_proc(int msg, T3GUI_ELEMENT * d, int c)
 	{
 		case MSG_START:
 		{
-			if(!d->dp2)
+			if(!d->dp4 && d->dp)
 			{
-				d->dp2 = pa_create_pixel_shader(d->dp);
+				d->dp4 = pa_create_pixel_shader(d->dp);
 			}
 			break;
 		}
 		case MSG_END:
 		{
-			if(d->dp2)
+			if(d->dp4)
 			{
-				al_destroy_shader(d->dp2);
+				al_destroy_shader(d->dp4);
 			}
 			break;
 		}
@@ -27,6 +27,10 @@ int pa_gui_shader_proc(int msg, T3GUI_ELEMENT * d, int c)
 			if(d->dp2)
 			{
 				al_use_shader(d->dp2);
+			}
+			else if(d->dp4)
+			{
+				al_use_shader(d->dp4);
 			}
 			break;
 		}
