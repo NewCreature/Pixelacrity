@@ -351,13 +351,16 @@ void t3gui_logic(void)
 	}
 }
 
-void t3gui_render(void)
+void t3gui_render(ALLEGRO_DISPLAY * dp)
 {
 	int i;
 
 	for(i = 0; i < t3gui_dialog_players; i++)
 	{
-		t3gui_draw_dialog(t3gui_dialog_player[i]);
+		if(!dp || dp == al_get_current_display())
+		{
+			t3gui_draw_dialog(t3gui_dialog_player[i]);
+		}
 	}
 }
 

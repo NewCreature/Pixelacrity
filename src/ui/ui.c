@@ -12,6 +12,7 @@
 #include "modules/canvas/canvas_file.h"
 #include "modules/canvas/canvas_helpers.h"
 #include "modules/bitmap.h"
+#include "modules/pixel_shader.h"
 #include "element/color.h"
 #include "element/palette.h"
 #include "element/map.h"
@@ -146,16 +147,18 @@ void pa_render_ui(PA_UI * uip)
 {
 	PA_CANVAS_EDITOR * cep = (PA_CANVAS_EDITOR *)pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_CANVAS_EDITOR)->dp;
 	al_use_shader(cep->premultiplied_alpha_shader);
-	t3gui_render();
+	t3gui_render(t3f_display);
 	if(uip->brush_popup_dialog)
 	{
 		al_set_target_bitmap(al_get_backbuffer(uip->brush_popup_dialog->display));
+		t3gui_render(uip->brush_popup_dialog->display);
 		al_flip_display();
 		al_set_target_bitmap(al_get_backbuffer(t3f_display));
 	}
 	if(uip->color_popup_dialog && uip->color_popup_dialog->display != t3f_display)
 	{
 		al_set_target_bitmap(al_get_backbuffer(uip->color_popup_dialog->display));
+		t3gui_render(uip->color_popup_dialog->display);
 		al_flip_display();
 		al_set_target_bitmap(al_get_backbuffer(t3f_display));
 	}

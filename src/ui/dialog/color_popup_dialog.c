@@ -3,7 +3,9 @@
 #include "ui/dialog.h"
 #include "color_popup_dialog.h"
 #include "ui/element/color.h"
+#include "ui/element/shader.h"
 #include "modules/color.h"
+#include "modules/pixel_shader.h"
 
 static int old_r, old_g, old_b, old_a;
 static char old_r_text[8], old_g_text[8], old_b_text[8], old_a_text[8], old_html_text[10];
@@ -49,6 +51,7 @@ PA_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color)
 		x_offset = al_get_display_width(dp->display) / 2 - (640 * scale) / 2;
 		y_offset = al_get_display_height(dp->display) / 2 - (480 * scale) / 2;
 	}
+	t3gui_dialog_add_element(dp->dialog, NULL, pa_gui_shader_proc, 0, 0, 0, 0, 0, 0, 0, 0, "data/shaders/premultiplied_alpha_shader.glsl", NULL, NULL);
 	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_POPUP_BOX], t3gui_box_proc, 0, 0, al_get_display_width(dp->display), al_get_display_height(dp->display), 0, 0, 0, 0, NULL, NULL, NULL);
 	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_BOX], t3gui_box_proc, x_offset, y_offset, 640 * scale, 480 * scale, 0, 0, 0, 0, NULL, NULL, NULL);
 	pos_y = pa_get_theme_int(dp->theme, "edge_top_space", 4) + y_offset;
