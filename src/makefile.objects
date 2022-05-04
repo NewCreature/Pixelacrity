@@ -82,6 +82,7 @@ ui/ui.o\
     ui/element/list.o\
     ui/element_proc/layer_list_proc.o\
     ui/element/brush.o\
+    ui/element/shader.o\
     ui/element/canvas_editor/element.o\
     ui/element/canvas_editor/MSG_GOTMOUSE.o\
     ui/element/canvas_editor/MSG_LOSTMOUSE.o\
