@@ -159,11 +159,12 @@ void pa_color_dialog_pre_logic(PA_DIALOG * dp)
 	strcpy(old_html_text, dp->edit_text[4]);
 }
 
-static void update_slider_or_text(T3GUI_ELEMENT * ep, int old, char * text, const char * old_text)
+static bool update_slider_or_text(T3GUI_ELEMENT * ep, int old, char * text, const char * old_text)
 {
 	if(ep->d2 != old)
 	{
 		sprintf(text, "%d", ep->d2);
+		return true;
 	}
 	else if(strlen(text) && strcmp(old_text, text))
 	{
@@ -177,7 +178,9 @@ static void update_slider_or_text(T3GUI_ELEMENT * ep, int old, char * text, cons
 			ep->d2 = 255;
 		}
 		sprintf(text, "%d", ep->d2);
+		return true;
 	}
+	return false;
 }
 
 static void update_color_dialog(PA_DIALOG * dp)
@@ -196,12 +199,34 @@ static void update_color_dialog(PA_DIALOG * dp)
 	dp->element[PA_COLOR_DIALOG_ELEMENT_A_SLIDER]->d2 = a;
 }
 
+static void update_color_html(PA_DIALOG * dp)
+{
+	unsigned char r, g, b, a;
+
+	al_unmap_rgba(*edit_color, &r, &g, &b, &a);
+	sprintf(dp->edit_text[4], "%02X%02X%02X%02X", r, g, b, a);
+}
+
 void pa_color_dialog_post_logic(PA_DIALOG * dp)
 {
-	update_slider_or_text(dp->element[PA_COLOR_DIALOG_ELEMENT_R_SLIDER], old_r, dp->edit_text[0], old_r_text);
-	update_slider_or_text(dp->element[PA_COLOR_DIALOG_ELEMENT_G_SLIDER], old_g, dp->edit_text[1], old_g_text);
-	update_slider_or_text(dp->element[PA_COLOR_DIALOG_ELEMENT_B_SLIDER], old_b, dp->edit_text[2], old_b_text);
-	update_slider_or_text(dp->element[PA_COLOR_DIALOG_ELEMENT_A_SLIDER], old_a, dp->edit_text[3], old_a_text);
+	bool update_html = false;
+
+	if(update_slider_or_text(dp->element[PA_COLOR_DIALOG_ELEMENT_R_SLIDER], old_r, dp->edit_text[0], old_r_text))
+	{
+		update_html = true;
+	}
+	if(update_slider_or_text(dp->element[PA_COLOR_DIALOG_ELEMENT_G_SLIDER], old_g, dp->edit_text[1], old_g_text))
+	{
+		update_html = true;
+	}
+	if(update_slider_or_text(dp->element[PA_COLOR_DIALOG_ELEMENT_B_SLIDER], old_b, dp->edit_text[2], old_b_text))
+	{
+		update_html = true;
+	}
+	if(update_slider_or_text(dp->element[PA_COLOR_DIALOG_ELEMENT_A_SLIDER], old_a, dp->edit_text[3], old_a_text))
+	{
+		update_html = true;
+	}
 	if(strcmp(dp->edit_text[4], old_html_text))
 	{
 		if(strlen(dp->edit_text[4]) == 6 || strlen(dp->edit_text[4]) == 8)
@@ -211,4 +236,8 @@ void pa_color_dialog_post_logic(PA_DIALOG * dp)
 		update_color_dialog(dp);
 	}
 	*edit_color = al_map_rgba(dp->element[PA_COLOR_DIALOG_ELEMENT_R_SLIDER]->d2, dp->element[PA_COLOR_DIALOG_ELEMENT_G_SLIDER]->d2, dp->element[PA_COLOR_DIALOG_ELEMENT_B_SLIDER]->d2, dp->element[PA_COLOR_DIALOG_ELEMENT_A_SLIDER]->d2);
+	if(update_html)
+	{
+		update_color_html(dp);
+	}
 }
