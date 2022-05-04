@@ -14,6 +14,8 @@ static ALLEGRO_COLOR * edit_color = NULL;
 PA_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color)
 {
 	PA_DIALOG * dp;
+	T3GUI_ELEMENT * bg_box;
+	T3GUI_ELEMENT * frame_box;
 	int pos_x;
 	int pos_vx;
 	int pos_y;
@@ -24,6 +26,7 @@ PA_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color)
 	int x_offset = 0;
 	int y_offset = 0;
 	unsigned char r, g, b, a;
+	int min_x, min_y, max_x, max_y;
 	const char * val;
 
 	val = al_get_config_value(t3f_config, "App Data", "theme");
@@ -38,15 +41,15 @@ PA_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color)
 	}
 	edit_color = color;
 	al_unmap_rgba(*color, &r, &g, &b, &a);
-	space = pa_get_theme_int(dp->theme, "edge_space_left", 4);
 	scale = pa_get_theme_int(dp->theme, "pixel_size", 1);
-	x_offset = al_get_display_width(dp->display) / 2 - (640 * scale) / 2;
-	y_offset = al_get_display_height(dp->display) / 2 - (480 * scale) / 2;
+	space = pa_get_theme_int(dp->theme, "edge_space_left", 4) * scale;
+	x_offset = 0;
+	y_offset = 0;
 	t3gui_dialog_add_element(dp->dialog, NULL, pa_gui_shader_proc, 0, 0, 0, 0, 0, 0, 0, 0, "data/shaders/premultiplied_alpha_shader.glsl", NULL, NULL);
-	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_POPUP_BOX], t3gui_box_proc, 0, 0, al_get_display_width(dp->display), al_get_display_height(dp->display), 0, 0, 0, 0, NULL, NULL, NULL);
-	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_BOX], t3gui_box_proc, x_offset, y_offset, 640 * scale, 480 * scale, 0, 0, 0, 0, NULL, NULL, NULL);
-	pos_y = pa_get_theme_int(dp->theme, "edge_top_space", 4) + y_offset;
-	pos_vy = al_get_font_line_height(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0]) + pa_get_theme_int(dp->theme, "edge_top_space", 4);
+	bg_box = t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_POPUP_BOX], t3gui_box_proc, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL);
+	frame_box = t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_BOX], t3gui_box_proc, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL);
+	pos_y = 0;
+	pos_vy = al_get_font_line_height(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0]) + pa_get_theme_int(dp->theme, "edge_top_space", 4) * scale;
 	edit_width = al_get_text_width(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0], "0000") + space + space;
 
 	/* R */
@@ -56,15 +59,15 @@ PA_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color)
 		goto fail;
 	}
 	sprintf(dp->edit_text[0], "%d", r);
-	pos_x = space + x_offset;
-	pos_vx = al_get_text_width(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0], "R") + space;
+	pos_x = 0;
+	pos_vx = al_get_text_width(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0], "R") * scale + space;
 	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_text_proc, pos_x, pos_y, 640, al_get_font_line_height(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0]), 0, 0, 0, 0, "R", NULL, NULL);
 	pos_x += pos_vx;
 	dp->element[PA_COLOR_DIALOG_ELEMENT_R_SLIDER] = t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_SLIDER], t3gui_slider_proc, pos_x, pos_y, 256, pos_vy, 0, 0, 255, r, NULL, NULL, NULL);
 	pos_x += 256 + space;
 	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_edit_proc, pos_x, pos_y, edit_width, pos_vy, 0, 0, 3, 0, dp->edit_text[0], NULL, NULL);
 	pos_x += edit_width + space + space;
-	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_BOX], pa_gui_color_proc, pos_x, pos_y, 320, 320, 0, 0, 0, 0, color, NULL, NULL);
+	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_BOX], pa_gui_color_proc, pos_x, pos_y, 128 * scale, 128 * scale, 0, 0, 0, 0, color, NULL, NULL);
 	pos_y += pos_vy;
 
 	/* G */
@@ -74,8 +77,8 @@ PA_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color)
 		goto fail;
 	}
 	sprintf(dp->edit_text[1], "%d", g);
-	pos_x = space + x_offset;
-	pos_vx = al_get_text_width(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0], "R") + space;
+	pos_x = 0;
+	pos_vx = al_get_text_width(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0], "R") * scale + space;
 	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_text_proc, pos_x, pos_y, 640, al_get_font_line_height(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0]), 0, 0, 0, 0, "G", NULL, NULL);
 	pos_x += pos_vx;
 	dp->element[PA_COLOR_DIALOG_ELEMENT_G_SLIDER] = t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_SLIDER], t3gui_slider_proc, pos_x, pos_y, 256, pos_vy, 0, 0, 255, g, NULL, NULL, NULL);
@@ -90,8 +93,8 @@ PA_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color)
 		goto fail;
 	}
 	sprintf(dp->edit_text[2], "%d", b);
-	pos_x = space + x_offset;
-	pos_vx = al_get_text_width(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0], "R") + space;
+	pos_x = 0;
+	pos_vx = al_get_text_width(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0], "R") * scale + space;
 	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_text_proc, pos_x, pos_y, 640, al_get_font_line_height(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0]), 0, 0, 0, 0, "B", NULL, NULL);
 	pos_x += pos_vx;
 	dp->element[PA_COLOR_DIALOG_ELEMENT_B_SLIDER] = t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_SLIDER], t3gui_slider_proc, pos_x, pos_y, 256, pos_vy, 0, 0, 255, b, NULL, NULL, NULL);
@@ -106,8 +109,8 @@ PA_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color)
 		goto fail;
 	}
 	sprintf(dp->edit_text[3], "%d", a);
-	pos_x = space + x_offset;
-	pos_vx = al_get_text_width(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0], "R") + space;
+	pos_x = 0;
+	pos_vx = al_get_text_width(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0], "R") * scale + space;
 	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_text_proc, pos_x, pos_y, 640, al_get_font_line_height(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0]), 0, 0, 0, 0, "A", NULL, NULL);
 	pos_x += pos_vx;
 	dp->element[PA_COLOR_DIALOG_ELEMENT_A_SLIDER] = t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_SLIDER], t3gui_slider_proc, pos_x, pos_y, 256, pos_vy, 0, 0, 255, a, NULL, NULL, NULL);
@@ -122,11 +125,21 @@ PA_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color)
 		goto fail;
 	}
 	pa_color_to_html(*color, dp->edit_text[4]);
-	pos_x = space + x_offset;
+	pos_x = 0;
 	pos_vx = al_get_text_width(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0], "HTML") + space;
 	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_text_proc, pos_x, pos_y, 640, al_get_font_line_height(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0]), 0, 0, 0, 0, "HTML", NULL, NULL);
 	pos_x += pos_vx;
 	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_edit_proc, pos_x, pos_y, al_get_text_width(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0], "000000000"), pos_vy, 0, 0, 8, 0, dp->edit_text[4], NULL, NULL);
+	t3gui_get_dialog_bounding_box(dp->dialog->element, &min_x, &min_y, &max_x, &max_y);
+	frame_box->x = min_x - space;
+	frame_box->y = min_y - space;
+	frame_box->w = max_x - min_x + space * 2;
+	frame_box->h = max_y - min_y + space * 2;
+	t3gui_position_dialog(dp->dialog->element, al_get_display_width(t3f_display) / 2 - frame_box->w / 2, al_get_display_height(t3f_display) / 2 - frame_box->h / 2);
+	bg_box->x = 0;
+	bg_box->y = 0;
+	bg_box->w = al_get_display_width(t3f_display);
+	bg_box->h = al_get_display_height(t3f_display);
 
 	return dp;
 
