@@ -5,12 +5,6 @@ Pixelacrity 0.3.19 Issues
    on Linux. It might be caused by the implicit resize event generated when
    attaching the menu to the display.
 
-[ ]Crash when undoing 3 times in a row after pasting twice.
-
-   [ ]I can reproduce this on MacOS by drawing some pixels, selecting them,
-      copying them, pasting 3 copies, then undoing 4-5 times. The second undo
-      doesn't bring back the previous floating selection.
-
 [ ]Finish color editor dialog.
 
    [ ]See if we can update the edit box routine to not scroll when we reach the
@@ -1015,3 +1009,9 @@ Closed Issues
 
    [X]The crash was actually being caused by memory bugs in T3GUI, as I
       suspected.
+
+[X]Crash when undoing 3 times in a row after pasting twice.
+
+   [X]I can reproduce this on MacOS by drawing some pixels, selecting them,
+      copying them, pasting 3 copies, then undoing 4-5 times. The second undo
+      doesn't bring back the previous floating selection.
