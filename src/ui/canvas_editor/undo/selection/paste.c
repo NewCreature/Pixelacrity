@@ -203,7 +203,7 @@ bool pa_apply_paste_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp)
 		cep->undo_count++;
 	}
 	pa_free_selection(cep);
-	pa_apply_paste_clipboard(cep, pos, ox, oy, merge);
+	pa_apply_paste_clipboard(cep, pos, ox, oy, merge, true);
 	t3f_debug_message("Exit pa_apply_paste_undo()\n");
 
 	return true;

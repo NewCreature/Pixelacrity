@@ -179,8 +179,9 @@ static ALLEGRO_BITMAP * merge_clipboard(PA_CANVAS_EDITOR * cep)
 	return bp;
 }
 
-void pa_apply_paste_clipboard(PA_CANVAS_EDITOR * cep, int pos, int ox, int oy, bool merge)
+void pa_apply_paste_clipboard(PA_CANVAS_EDITOR * cep, int pos, int ox, int oy, bool merge, bool no_undo)
 {
+	char undo_path[1024];
 	ALLEGRO_STATE old_state;
 	int x, y, i, c = -1;
 
@@ -191,6 +192,13 @@ void pa_apply_paste_clipboard(PA_CANVAS_EDITOR * cep, int pos, int ox, int oy, b
 		if(cep->selection.bitmap_stack)
 		{
 			pa_unfloat_canvas_editor_selection(cep, &cep->selection.box);
+		}
+		if(!no_undo)
+		{
+			if(pa_make_paste_undo(cep, pos, ox, oy, merge, pa_get_undo_path("undo", cep->undo_count, undo_path, 1024)))
+			{
+				pa_finalize_undo(cep);
+			}
 		}
 		cep->selection.bitmap_stack = pa_create_bitmap_stack(cep->clipboard.bitmap_stack->layers, cep->clipboard.bitmap_stack->width, cep->clipboard.bitmap_stack->height);
 		if(cep->selection.bitmap_stack)
@@ -252,15 +260,9 @@ void pa_apply_paste_clipboard(PA_CANVAS_EDITOR * cep, int pos, int ox, int oy, b
 
 void pa_paste_clipboard(PA_CANVAS_EDITOR * cep, int pos, int ox, int oy, bool merge)
 {
-	char undo_path[1024];
-
 	t3f_debug_message("Enter pa_menu_edit_paste()\n");
 
-	if(pa_make_paste_undo(cep, pos, ox, oy, merge, pa_get_undo_path("undo", cep->undo_count, undo_path, 1024)))
-	{
-		pa_finalize_undo(cep);
-	}
-	pa_apply_paste_clipboard(cep, pos, ox, oy, merge);
+	pa_apply_paste_clipboard(cep, pos, ox, oy, merge, false);
 	cep->modified++;
 	pa_set_window_message(NULL);
 	t3f_debug_message("Exit pa_menu_edit_paste()\n");
