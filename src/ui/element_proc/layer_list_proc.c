@@ -3,7 +3,7 @@
 
 static char list_item_name_buffer[64] = {0};
 
-const char * pa_layer_list_proc(int index, int * num_elem, void * dp3)
+const char * pa_layer_list_proc(int index, int * num_elem, bool * multi, void * dp3)
 {
 	PA_CANVAS_EDITOR * canvas_editor = (PA_CANVAS_EDITOR *)dp3;
 
@@ -16,6 +16,10 @@ const char * pa_layer_list_proc(int index, int * num_elem, void * dp3)
 		else
 		{
 			*num_elem = 0;
+		}
+		if(multi)
+		{
+			*multi = false;
 		}
 		return NULL;
 	}
