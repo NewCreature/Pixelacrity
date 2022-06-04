@@ -72,7 +72,9 @@ int pa_gui_brush_proc(int msg, T3GUI_ELEMENT * d, int c)
 				}
 				cx = d->x + d->w / 2 - (al_get_bitmap_width(bp) * scale) / 2;
 				cy = d->y + d->h / 2 - (al_get_bitmap_height(bp) * scale) / 2;
+				pa_set_bitmap_flags(bp, ALLEGRO_MAG_LINEAR | ALLEGRO_MIN_LINEAR);
 				al_draw_tinted_scaled_bitmap(bp, color, 0, 0, al_get_bitmap_width(bp), al_get_bitmap_height(bp), cx, cy, al_get_bitmap_width(bp) * scale, al_get_bitmap_height(bp) * scale, 0);
+				pa_set_bitmap_flags(bp, 0);
 			}
 			break;
 		}
