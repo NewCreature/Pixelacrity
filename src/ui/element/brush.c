@@ -70,6 +70,8 @@ int pa_gui_brush_proc(int msg, T3GUI_ELEMENT * d, int c)
 				{
 					scale = usable_height / (float)al_get_bitmap_height(bp);
 				}
+				cx = d->x + d->w / 2 - (al_get_bitmap_width(bp) * scale) / 2;
+				cy = d->y + d->h / 2 - (al_get_bitmap_height(bp) * scale) / 2;
 				al_draw_tinted_scaled_bitmap(bp, color, 0, 0, al_get_bitmap_width(bp), al_get_bitmap_height(bp), cx, cy, al_get_bitmap_width(bp) * scale, al_get_bitmap_height(bp) * scale, 0);
 			}
 			break;
