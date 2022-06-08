@@ -276,10 +276,10 @@ void pa_resave_canvas_editor_state(PA_CANVAS_EDITOR * cep)
 			if(!strcasecmp(extension, PA_CANVAS_FILE_EXTENSION))
 			{
 				al_set_path_extension(pp, ".ini");
+				pa_save_canvas_editor_state(cep, pp ? al_path_cstr(pp, '/') : NULL);
 			}
 		}
 	}
-	pa_save_canvas_editor_state(cep, pp ? al_path_cstr(pp, '/') : NULL);
 	if(pp)
 	{
 		al_destroy_path(pp);
