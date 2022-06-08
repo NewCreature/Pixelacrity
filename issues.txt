@@ -1,4 +1,4 @@
-Pixelacrity 0.3.20 Issues
+Pixelacrity 0.3.21 Issues
 -------------------------
 
 [ ]Finish color editor dialog.
