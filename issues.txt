@@ -1,6 +1,16 @@
 Pixelacrity 0.3.21 Issues
 -------------------------
 
+[ ]Add floating selection scale factors. Pressing Modifier+Number should scale
+   the current selection up by that factor.
+
+[ ]Look into corruption of canvas when undoing import image.
+
+[ ]Look into undo states becoming buggy after undoing paste operations.
+
+[ ]Look into base color being lost when selecting black or white from the
+   shade picker.
+
 [ ]Finish color editor dialog.
 
    [ ]See if we can update the edit box routine to not scroll when we reach the
