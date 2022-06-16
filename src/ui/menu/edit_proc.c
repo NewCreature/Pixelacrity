@@ -180,7 +180,7 @@ static int scale_selection(PA_CANVAS_EDITOR * cep, int factor)
 
 static int shrink_selection(PA_CANVAS_EDITOR * cep, int factor)
 {
-	if(cep->selection.bitmap_stack)
+	if(cep->selection.bitmap_stack && cep->selection.bitmap_stack->width / factor > 0 && cep->selection.bitmap_stack->height / factor > 0)
 	{
 		pa_setup_box(&cep->selection.box, cep->selection.box.start_x, cep->selection.box.start_y, cep->selection.bitmap_stack->width / factor, cep->selection.bitmap_stack->height / factor, 0);
 	}
