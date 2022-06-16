@@ -169,6 +169,164 @@ int pa_menu_edit_paste_merged(int id, void * data)
 	return 0;
 }
 
+static int scale_selection(PA_CANVAS_EDITOR * cep, int factor)
+{
+	if(cep->selection.bitmap_stack)
+	{
+		pa_setup_box(&cep->selection.box, cep->selection.box.start_x, cep->selection.box.start_y, cep->selection.bitmap_stack->width * factor, cep->selection.bitmap_stack->height * factor, 0);
+	}
+	return 0;
+}
+
+static int shrink_selection(PA_CANVAS_EDITOR * cep, int factor)
+{
+	if(cep->selection.bitmap_stack)
+	{
+		pa_setup_box(&cep->selection.box, cep->selection.box.start_x, cep->selection.box.start_y, cep->selection.bitmap_stack->width / factor, cep->selection.bitmap_stack->height / factor, 0);
+	}
+	return 0;
+}
+
+int pa_menu_edit_scale_1x(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	return scale_selection(app->canvas_editor, 1);
+}
+
+int pa_menu_edit_scale_2x(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	return scale_selection(app->canvas_editor, 2);
+}
+
+int pa_menu_edit_scale_3x(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	return scale_selection(app->canvas_editor, 3);
+}
+
+int pa_menu_edit_scale_4x(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	return scale_selection(app->canvas_editor, 4);
+}
+
+int pa_menu_edit_scale_5x(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	return scale_selection(app->canvas_editor, 5);
+}
+
+int pa_menu_edit_scale_6x(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	return scale_selection(app->canvas_editor, 6);
+}
+
+int pa_menu_edit_scale_7x(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	return scale_selection(app->canvas_editor, 7);
+}
+
+int pa_menu_edit_scale_8x(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	return scale_selection(app->canvas_editor, 8);
+}
+
+int pa_menu_edit_scale_9x(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	return scale_selection(app->canvas_editor, 9);
+}
+
+int pa_menu_edit_scale_10x(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	return scale_selection(app->canvas_editor, 10);
+}
+
+int pa_menu_edit_shrink_1x(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	return shrink_selection(app->canvas_editor, 1);
+}
+
+int pa_menu_edit_shrink_2x(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	return shrink_selection(app->canvas_editor, 2);
+}
+
+int pa_menu_edit_shrink_3x(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	return shrink_selection(app->canvas_editor, 3);
+}
+
+int pa_menu_edit_shrink_4x(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	return shrink_selection(app->canvas_editor, 4);
+}
+
+int pa_menu_edit_shrink_5x(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	return shrink_selection(app->canvas_editor, 5);
+}
+
+int pa_menu_edit_shrink_6x(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	return shrink_selection(app->canvas_editor, 6);
+}
+
+int pa_menu_edit_shrink_7x(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	return shrink_selection(app->canvas_editor, 7);
+}
+
+int pa_menu_edit_shrink_8x(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	return shrink_selection(app->canvas_editor, 8);
+}
+
+int pa_menu_edit_shrink_9x(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	return shrink_selection(app->canvas_editor, 9);
+}
+
+int pa_menu_edit_shrink_10x(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	return shrink_selection(app->canvas_editor, 10);
+}
+
 int pa_menu_edit_flip_horizontal(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
@@ -337,6 +495,106 @@ int pa_menu_edit_multilayer_copy(int id, void * data)
 	t3f_debug_message("Exit pa_menu_edit_multilayer_copy()\n");
 
 	return 0;
+}
+
+int pa_menu_edit_multilayer_scale_1x(int id, void * data)
+{
+	return pa_menu_edit_scale_1x(id, data);
+}
+
+int pa_menu_edit_multilayer_scale_2x(int id, void * data)
+{
+	return pa_menu_edit_scale_2x(id, data);
+}
+
+int pa_menu_edit_multilayer_scale_3x(int id, void * data)
+{
+	return pa_menu_edit_scale_3x(id, data);
+}
+
+int pa_menu_edit_multilayer_scale_4x(int id, void * data)
+{
+	return pa_menu_edit_scale_4x(id, data);
+}
+
+int pa_menu_edit_multilayer_scale_5x(int id, void * data)
+{
+	return pa_menu_edit_scale_5x(id, data);
+}
+
+int pa_menu_edit_multilayer_scale_6x(int id, void * data)
+{
+	return pa_menu_edit_scale_6x(id, data);
+}
+
+int pa_menu_edit_multilayer_scale_7x(int id, void * data)
+{
+	return pa_menu_edit_scale_7x(id, data);
+}
+
+int pa_menu_edit_multilayer_scale_8x(int id, void * data)
+{
+	return pa_menu_edit_scale_8x(id, data);
+}
+
+int pa_menu_edit_multilayer_scale_9x(int id, void * data)
+{
+	return pa_menu_edit_scale_9x(id, data);
+}
+
+int pa_menu_edit_multilayer_scale_10x(int id, void * data)
+{
+	return pa_menu_edit_scale_10x(id, data);
+}
+
+int pa_menu_edit_multilayer_shrink_1x(int id, void * data)
+{
+	return pa_menu_edit_shrink_1x(id, data);
+}
+
+int pa_menu_edit_multilayer_shrink_2x(int id, void * data)
+{
+	return pa_menu_edit_shrink_2x(id, data);
+}
+
+int pa_menu_edit_multilayer_shrink_3x(int id, void * data)
+{
+	return pa_menu_edit_shrink_3x(id, data);
+}
+
+int pa_menu_edit_multilayer_shrink_4x(int id, void * data)
+{
+	return pa_menu_edit_shrink_4x(id, data);
+}
+
+int pa_menu_edit_multilayer_shrink_5x(int id, void * data)
+{
+	return pa_menu_edit_shrink_5x(id, data);
+}
+
+int pa_menu_edit_multilayer_shrink_6x(int id, void * data)
+{
+	return pa_menu_edit_shrink_6x(id, data);
+}
+
+int pa_menu_edit_multilayer_shrink_7x(int id, void * data)
+{
+	return pa_menu_edit_shrink_7x(id, data);
+}
+
+int pa_menu_edit_multilayer_shrink_8x(int id, void * data)
+{
+	return pa_menu_edit_shrink_8x(id, data);
+}
+
+int pa_menu_edit_multilayer_shrink_9x(int id, void * data)
+{
+	return pa_menu_edit_shrink_9x(id, data);
+}
+
+int pa_menu_edit_multilayer_shrink_10x(int id, void * data)
+{
+	return pa_menu_edit_shrink_10x(id, data);
 }
 
 int pa_menu_edit_multilayer_flip_horizontal(int id, void * data)

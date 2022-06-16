@@ -8,14 +8,141 @@
 #include "modules/canvas/canvas_helpers.h"
 #include "modules/color.h"
 
+static int used_scale_shortcuts(APP_INSTANCE * app)
+{
+	if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && (t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT]) && t3f_key[ALLEGRO_KEY_1])
+	{
+		pa_menu_edit_shrink_1x(0, app);
+		t3f_key[ALLEGRO_KEY_1] = 0;
+		return 1;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && t3f_key[ALLEGRO_KEY_1])
+	{
+		pa_menu_edit_scale_1x(0, app);
+		t3f_key[ALLEGRO_KEY_1] = 0;
+		return 1;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && (t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT]) && t3f_key[ALLEGRO_KEY_2])
+	{
+		pa_menu_edit_shrink_2x(0, app);
+		t3f_key[ALLEGRO_KEY_2] = 0;
+		return 1;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && t3f_key[ALLEGRO_KEY_2])
+	{
+		pa_menu_edit_scale_2x(0, app);
+		t3f_key[ALLEGRO_KEY_2] = 0;
+		return 1;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && (t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT]) && t3f_key[ALLEGRO_KEY_3])
+	{
+		pa_menu_edit_shrink_3x(0, app);
+		t3f_key[ALLEGRO_KEY_3] = 0;
+		return 1;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && t3f_key[ALLEGRO_KEY_3])
+	{
+		pa_menu_edit_scale_3x(0, app);
+		t3f_key[ALLEGRO_KEY_3] = 0;
+		return 1;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && (t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT]) && t3f_key[ALLEGRO_KEY_4])
+	{
+		pa_menu_edit_shrink_4x(0, app);
+		t3f_key[ALLEGRO_KEY_4] = 0;
+		return 1;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && t3f_key[ALLEGRO_KEY_4])
+	{
+		pa_menu_edit_scale_4x(0, app);
+		t3f_key[ALLEGRO_KEY_4] = 0;
+		return 1;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && (t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT]) && t3f_key[ALLEGRO_KEY_5])
+	{
+		pa_menu_edit_shrink_5x(0, app);
+		t3f_key[ALLEGRO_KEY_5] = 0;
+		return 1;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && t3f_key[ALLEGRO_KEY_5])
+	{
+		pa_menu_edit_scale_5x(0, app);
+		t3f_key[ALLEGRO_KEY_5] = 0;
+		return 1;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && (t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT]) && t3f_key[ALLEGRO_KEY_6])
+	{
+		pa_menu_edit_shrink_6x(0, app);
+		t3f_key[ALLEGRO_KEY_6] = 0;
+		return 1;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && t3f_key[ALLEGRO_KEY_6])
+	{
+		pa_menu_edit_scale_6x(0, app);
+		t3f_key[ALLEGRO_KEY_6] = 0;
+		return 1;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && (t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT]) && t3f_key[ALLEGRO_KEY_7])
+	{
+		pa_menu_edit_shrink_7x(0, app);
+		t3f_key[ALLEGRO_KEY_7] = 0;
+		return 1;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && t3f_key[ALLEGRO_KEY_7])
+	{
+		pa_menu_edit_scale_7x(0, app);
+		t3f_key[ALLEGRO_KEY_7] = 0;
+		return 1;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && (t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT]) && t3f_key[ALLEGRO_KEY_8])
+	{
+		pa_menu_edit_shrink_8x(0, app);
+		t3f_key[ALLEGRO_KEY_8] = 0;
+		return 1;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && t3f_key[ALLEGRO_KEY_8])
+	{
+		pa_menu_edit_scale_8x(0, app);
+		t3f_key[ALLEGRO_KEY_8] = 0;
+		return 1;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && (t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT]) && t3f_key[ALLEGRO_KEY_9])
+	{
+		pa_menu_edit_shrink_9x(0, app);
+		t3f_key[ALLEGRO_KEY_9] = 0;
+		return 1;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && t3f_key[ALLEGRO_KEY_9])
+	{
+		pa_menu_edit_scale_9x(0, app);
+		t3f_key[ALLEGRO_KEY_9] = 0;
+		return 1;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && (t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT]) && t3f_key[ALLEGRO_KEY_0])
+	{
+		pa_menu_edit_shrink_10x(0, app);
+		t3f_key[ALLEGRO_KEY_0] = 0;
+		return 1;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && t3f_key[ALLEGRO_KEY_0])
+	{
+		pa_menu_edit_scale_10x(0, app);
+		t3f_key[ALLEGRO_KEY_0] = 0;
+		return 1;
+	}
+	return 0;
+}
+
 void pa_handle_shortcuts(APP_INSTANCE * app)
 {
 	int x, y, width, height;
 	float speed;
 	bool step = false;
-	const char * val;
 
-	if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && (t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT]) && t3f_key[ALLEGRO_KEY_X])
+	if(used_scale_shortcuts(app))
+	{
+	}
+	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && (t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT]) && t3f_key[ALLEGRO_KEY_X])
 	{
 		pa_menu_edit_multilayer_cut(0, app);
 		t3f_key[ALLEGRO_KEY_X] = 0;
