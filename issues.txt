@@ -1,13 +1,12 @@
 Pixelacrity 0.3.21 Issues
 -------------------------
 
+[ ]Add option to convert current frame to a selection.
+
 [ ]Look into making it possible to resize subframes.
 
 [ ]See if we can enable multi-layer editing. When the user holds shift while
    drawing, the changes should affect all layers.
-
-[ ]Add floating selection scale factors. Pressing Modifier+Number should scale
-   the current selection up by that factor.
 
 [ ]Look into corruption of canvas when undoing import image.
 
@@ -1030,3 +1029,6 @@ Closed Issues
 [X]Look into window getting smaller and smaller each time the program is loaded
    on Linux. It might be caused by the implicit resize event generated when
    attaching the menu to the display.
+
+[X]Add floating selection scale factors. Pressing Modifier+Number should scale
+   the current selection up by that factor.
