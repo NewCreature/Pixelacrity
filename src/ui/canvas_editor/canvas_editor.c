@@ -212,6 +212,16 @@ bool pa_reload_canvas_editor_state(PA_CANVAS_EDITOR * cep)
 			}
 		}
 		pa_read_palette(cep->palette, cep->config);
+		val = al_get_config_value(cep->config, "State", "left_base_color");
+		if(val)
+		{
+			cep->left_color.base_color = pa_get_color_from_html(val);
+		}
+		val = al_get_config_value(cep->config, "State", "right_base_color");
+		if(val)
+		{
+			cep->right_color.base_color = pa_get_color_from_html(val);
+		}
 		val = al_get_config_value(cep->config, "State", "left_color");
 		if(val)
 		{
@@ -265,6 +275,10 @@ bool pa_save_canvas_editor_state(PA_CANVAS_EDITOR * cep, const char * fn)
 		}
 	}
 	pa_write_palette(cep->palette, cep->config);
+	pa_color_to_html(cep->left_color.base_color, buf);
+	al_set_config_value(cep->config, "State", "left_base_color", buf);
+	pa_color_to_html(cep->right_color.base_color, buf);
+	al_set_config_value(cep->config, "State", "right_base_color", buf);
 	pa_color_to_html(cep->left_color.color, buf);
 	al_set_config_value(cep->config, "State", "left_color", buf);
 	pa_color_to_html(cep->right_color.color, buf);
