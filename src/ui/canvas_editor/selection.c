@@ -145,7 +145,6 @@ void pa_handle_unfloat_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * 
 	float cx, cy;
 	int px, py;
 	int offset_x = 0, offset_y = 0;
-	ALLEGRO_BITMAP * sub_bitmap;
 	int preview_size;
 
 	t3f_debug_message("Enter pa_handle_unfloat_canvas_editor_selection()\n");
@@ -158,7 +157,6 @@ void pa_handle_unfloat_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * 
 	{
 		preview_size = cep->selection.box.height * 2;
 	}
-	sub_bitmap = al_create_sub_bitmap(cep->scratch_bitmap, 0, 0, preview_size, preview_size);
 	if(pa_handle_canvas_expansion(cep->canvas, bp->start_x, bp->start_y, bp->start_x + bp->width, bp->start_y + bp->height, &cep->shift_x, &cep->shift_y))
 	{
 		pa_shift_canvas_editor_variables(cep, cep->shift_x * cep->canvas->bitmap_size, cep->shift_y * cep->canvas->bitmap_size);
@@ -181,7 +179,6 @@ void pa_handle_unfloat_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * 
 			}
 		}
 	}
-	al_destroy_bitmap(sub_bitmap);
 	pa_free_selection(cep);
 	if(!nomod)
 	{
