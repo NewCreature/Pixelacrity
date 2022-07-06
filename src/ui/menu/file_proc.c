@@ -140,15 +140,67 @@ static PA_CANVAS * canvas_from_image(const char * fn)
 	}
 }
 
+bool pa_handle_load_canvas(APP_INSTANCE * app, const char * file_path)
+{
+	const char * extension;
+	bool import_image = false;
+	PA_CANVAS * new_canvas = NULL;
+	ALLEGRO_PATH * pp;
+
+	extension = t3f_get_path_extension(file_path);
+	if(extension)
+	{
+		if(strcasecmp(extension, PA_CANVAS_FILE_EXTENSION))
+		{
+			import_image = true;
+		}
+	}
+	if(import_image)
+	{
+		new_canvas = canvas_from_image(file_path);
+	}
+	else
+	{
+		new_canvas = pa_load_canvas(file_path, 2048);
+	}
+	if(new_canvas)
+	{
+		pa_resave_canvas_editor_state(app->canvas_editor);
+		if(app->canvas)
+		{
+			pa_destroy_canvas(app->canvas);
+		}
+		app->canvas = new_canvas;
+		app->canvas_editor->canvas = app->canvas;
+		app->canvas_editor->modified = 0;
+		pa_reset_canvas_editor(app->canvas_editor);
+		pa_center_canvas_editor(app->canvas_editor, 0);
+		strcpy(app->canvas_editor->canvas_path, file_path);
+		pa_set_window_message(NULL);
+		if(!import_image)
+		{
+			pp = al_create_path(file_path);
+			if(pp)
+			{
+				al_set_path_extension(pp, ".ini");
+				pa_load_canvas_editor_state(app->canvas_editor, al_path_cstr(pp, '/'));
+				al_set_path_filename(pp, "");
+				al_set_config_value(t3f_config, "App Data", "last_canvas_path", al_path_cstr(pp, '/'));
+				al_destroy_path(pp);
+			}
+		}
+		pa_optimize_canvas(app->canvas_editor, 0, 0);
+		t3f_refresh_menus();
+		return true;
+	}
+	return false;
+}
+
 int pa_menu_file_load(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 	ALLEGRO_FILECHOOSER * file_chooser;
 	const char * file_path;
-	const char * extension;
-	bool import_image = false;
-	PA_CANVAS * new_canvas = NULL;
-	ALLEGRO_PATH * pp;
 	const char * val;
 
 	t3f_debug_message("Enter pa_menu_file_load()\n");
@@ -166,54 +218,9 @@ int pa_menu_file_load(int id, void * data)
 					file_path = al_get_native_file_dialog_path(file_chooser, 0);
 					if(file_path)
 					{
-						extension = t3f_get_path_extension(file_path);
-						if(extension)
+						if(!pa_handle_load_canvas(app, file_path))
 						{
-							if(strcasecmp(extension, PA_CANVAS_FILE_EXTENSION))
-							{
-								import_image = true;
-							}
-						}
-						if(import_image)
-						{
-							new_canvas = canvas_from_image(file_path);
-						}
-						else
-						{
-							new_canvas = pa_load_canvas(file_path, 2048);
-						}
-						if(new_canvas)
-						{
-							pa_resave_canvas_editor_state(app->canvas_editor);
-							if(app->canvas)
-							{
-								pa_destroy_canvas(app->canvas);
-							}
-							app->canvas = new_canvas;
-							app->canvas_editor->canvas = app->canvas;
-							app->canvas_editor->modified = 0;
-							pa_reset_canvas_editor(app->canvas_editor);
-							pa_center_canvas_editor(app->canvas_editor, 0);
-							strcpy(app->canvas_editor->canvas_path, file_path);
-							pa_set_window_message(NULL);
-							if(!import_image)
-							{
-								pp = al_create_path(file_path);
-								if(pp)
-								{
-									al_set_path_extension(pp, ".ini");
-									pa_load_canvas_editor_state(app->canvas_editor, al_path_cstr(pp, '/'));
-									al_set_path_filename(pp, "");
-									al_set_config_value(t3f_config, "App Data", "last_canvas_path", al_path_cstr(pp, '/'));
-									al_destroy_path(pp);
-								}
-							}
-							pa_optimize_canvas(app->canvas_editor, 0, 0);
-							t3f_refresh_menus();
-						}
-						else
-						{
-							printf("Unable to load!\n");
+							printf("unable to load\n");
 						}
 					}
 				}

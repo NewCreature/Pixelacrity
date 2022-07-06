@@ -2,6 +2,7 @@
 #define PA_MENU_FILE_PROC_H
 
 int pa_menu_file_new(int id, void * data);
+bool pa_handle_load_canvas(APP_INSTANCE * app, const char * file_path);
 int pa_menu_file_load(int id, void * data);
 int pa_menu_file_save(int id, void * data);
 int pa_menu_file_save_as(int id, void * data);

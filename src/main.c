@@ -233,6 +233,10 @@ bool app_initialize(APP_INSTANCE * app, int argc, char * argv[])
 	t3f_debug_message("Show GUI\n");
 	t3gui_show_dialog(app->ui->main_dialog->dialog, NULL, T3GUI_PLAYER_NO_ESCAPE | T3GUI_PLAYER_IGNORE_CLOSE, app);
 	al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_INVERSE_ALPHA);
+	if(argc > 1)
+	{
+		pa_handle_load_canvas(app, argv[1]);
+	}
 
 	return true;
 }
