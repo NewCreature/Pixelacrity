@@ -1,8 +1,6 @@
 Pixelacrity 0.3.21 Issues
 -------------------------
 
-[ ]Add option to convert current frame to a selection.
-
 [ ]Look into making it possible to resize subframes.
 
 [ ]See if we can enable multi-layer editing. When the user holds shift while
@@ -1032,3 +1030,5 @@ Closed Issues
 
 [X]Add floating selection scale factors. Pressing Modifier+Number should scale
    the current selection up by that factor.
+
+[X]Add option to convert current frame to a selection.
