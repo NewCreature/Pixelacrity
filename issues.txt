@@ -6,10 +6,6 @@ Pixelacrity 0.3.21 Issues
 [ ]See if we can enable multi-layer editing. When the user holds shift while
    drawing, the changes should affect all layers.
 
-[ ]Look into corruption of canvas when undoing import image.
-
-[ ]Look into undo states becoming buggy after undoing paste operations.
-
 [ ]Look into base color being lost when selecting black or white from the
    shade picker.
 
@@ -1032,3 +1028,9 @@ Closed Issues
    the current selection up by that factor.
 
 [X]Add option to convert current frame to a selection.
+
+[X]Look into corruption of canvas when undoing import image.
+
+[X]Look into undo states becoming buggy after undoing paste operations.
+
+   [X]This bug was probably related to the import undo bug. Should be fixed.
