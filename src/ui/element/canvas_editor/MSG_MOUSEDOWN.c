@@ -283,6 +283,7 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 						canvas_editor->selection.box.hover_handle = 0;
 						canvas_editor->selection.box.state = PA_BOX_STATE_DRAWING;
 						canvas_editor->selection.layer = canvas_editor->current_layer;
+						canvas_editor->selection.linked_frame = -1;
 						break;
 					}
 					/* set box moving logic in motion */

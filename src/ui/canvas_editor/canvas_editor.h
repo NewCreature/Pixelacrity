@@ -45,6 +45,7 @@ typedef struct
 	int layer_max;
 	int layer;
 	PA_BOX box;
+	int linked_frame;
 
 	bool moving;
 	int pin_x, pin_y;

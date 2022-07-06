@@ -27,6 +27,7 @@ void pa_clear_canvas_editor_selection(PA_CANVAS_EDITOR * cep)
 	cep->selection.box.width = 0;
 	cep->selection.box.height = 0;
 	cep->selection.box.state = PA_BOX_STATE_IDLE;
+	cep->selection.linked_frame = -1;
 }
 
 static bool create_unfloat_undo(PA_CANVAS_EDITOR * cep)
@@ -251,6 +252,10 @@ void pa_update_selection(PA_CANVAS_EDITOR * canvas_editor, T3GUI_ELEMENT * d)
 		{
 			canvas_editor->selection.box.handle[8].type = PA_BOX_HANDLE_TYPE_NONE;
 		}
+	}
+	if(canvas_editor->selection.bitmap_stack && canvas_editor->selection.linked_frame >= 0)
+	{
+		pa_initialize_box(&canvas_editor->canvas->frame[canvas_editor->selection.linked_frame]->box, canvas_editor->selection.box.start_x, canvas_editor->selection.box.start_y, canvas_editor->selection.box.width, canvas_editor->selection.box.height);
 	}
 }
 

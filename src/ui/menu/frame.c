@@ -106,6 +106,8 @@ ALLEGRO_MENU * pa_create_frame_menu(ALLEGRO_MENU * add_mp)
 	t3f_add_menu_item(mp, NULL, 0, NULL, NULL, NULL);
 	t3f_add_menu_item(mp, "Previous", ALLEGRO_MENU_ITEM_DISABLED, NULL, pa_menu_frame_previous, menu_frame_delete_update_proc);
 	t3f_add_menu_item(mp, "Next", ALLEGRO_MENU_ITEM_DISABLED, NULL, pa_menu_frame_next, menu_frame_delete_update_proc);
+	t3f_add_menu_item(mp, NULL, 0, NULL, NULL, NULL);
+	t3f_add_menu_item(mp, "Float Frame", ALLEGRO_MENU_ITEM_DISABLED, NULL, pa_menu_frame_float_frame, menu_frame_delete_update_proc);
 
 	return mp;
 }

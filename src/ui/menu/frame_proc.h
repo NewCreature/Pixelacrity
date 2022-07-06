@@ -24,5 +24,6 @@ int pa_menu_frame_add_from_selection(int id, void * data);
 int pa_menu_frame_delete(int id, void * data);
 int pa_menu_frame_previous(int id, void * data);
 int pa_menu_frame_next(int id, void * data);
+int pa_menu_frame_float_frame(int id, void * data);
 
 #endif

@@ -33,6 +33,7 @@ bool pa_make_float_selection_undo(PA_CANVAS_EDITOR * cep, PA_BOX * box, bool mul
 	al_fwrite32le(fp, cep->current_layer);
 	al_fwrite32le(fp, box->start_x);
 	al_fwrite32le(fp, box->start_y);
+	al_fwrite32le(fp, cep->selection.linked_frame);
 	if(multi)
 	{
 		for(i = 0; i < cep->canvas->layer_max; i++)
@@ -94,6 +95,7 @@ bool pa_make_float_selection_redo(PA_CANVAS_EDITOR * cep, int layer, int new_x, 
 	al_fwrite32le(fp, new_height);
 	al_fwrite32le(fp, cep->selection.box.start_x);
 	al_fwrite32le(fp, cep->selection.box.start_y);
+	al_fwrite32le(fp, cep->selection.linked_frame);
 	al_fclose(fp);
 
 	t3f_debug_message("Exit pa_make_float_selection_redo()\n");
@@ -125,6 +127,7 @@ bool pa_apply_float_selection_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, co
 	layer = al_fread32le(fp);
 	new_x = al_fread32le(fp);
 	new_y = al_fread32le(fp);
+	cep->selection.linked_frame = al_fread32le(fp);
 	pa_get_canvas_shift(cep->canvas, new_x, new_y, &shift_x, &shift_y);
 	if(multi)
 	{
@@ -163,6 +166,11 @@ bool pa_apply_float_selection_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, co
 	pa_free_selection(cep);
 	pa_initialize_box(&cep->selection.box, new_x, new_y, new_width, new_height);
 	pa_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom, false);
+	if(cep->selection.linked_frame >= 0)
+	{
+		pa_initialize_box(&cep->canvas->frame[cep->selection.linked_frame]->box, cep->selection.box.start_x, cep->selection.box.start_y, cep->selection.box.width, cep->selection.box.height);
+		pa_clear_canvas_editor_selection(cep);
+	}
 	t3f_debug_message("Exit pa_apply_float_selection_undo()\n");
 	return true;
 
@@ -193,11 +201,13 @@ bool pa_apply_float_selection_redo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, co
 	cep->selection.box.height = al_fread32le(fp);
 	new_x = al_fread32le(fp);
 	new_y = al_fread32le(fp);
+	cep->selection.linked_frame = al_fread32le(fp);
 	pa_make_float_selection_undo(cep, &cep->selection.box, multi,  pa_get_undo_path("undo", cep->undo_count, undo_path, 1024));
 	cep->undo_count++;
 	pa_initialize_box(&cep->selection.box, cep->selection.box.start_x, cep->selection.box.start_y, cep->selection.box.width, cep->selection.box.height);
 	pa_handle_float_canvas_editor_selection(cep, &cep->selection.box, multi, true);
 	pa_initialize_box(&cep->selection.box, new_x, new_y, cep->selection.box.width, cep->selection.box.height);
+	pa_select_canvas_editor_tool(cep, PA_TOOL_SELECTION);
 	pa_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom, true);
 
 	t3f_debug_message("Exit pa_apply_float_selection_redo()\n");

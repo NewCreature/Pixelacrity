@@ -36,6 +36,7 @@ bool pa_make_unfloat_selection_undo(PA_CANVAS_EDITOR * cep, const char * fn)
 	al_fwrite32le(fp, cep->selection.box.height);
 	al_fwrite32le(fp, cep->selection.layer_max);
 	al_fwrite32le(fp, cep->selection.layer);
+	al_fwrite32le(fp, cep->selection.linked_frame);
 	for(i = 0; i < cep->selection.layer_max; i++)
 	{
 		if(cep->selection.bitmap_stack->bitmap[i])
@@ -132,6 +133,7 @@ bool pa_apply_unfloat_selection_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, 
 	}
 	cep->selection.layer_max = al_fread32le(fp);
 	cep->selection.layer = al_fread32le(fp);
+	cep->selection.linked_frame = al_fread32le(fp);
 	cep->selection.bitmap_stack = pa_create_bitmap_stack(cep->selection.layer_max, 0, 0);
 	if(cep->selection.bitmap_stack)
 	{
