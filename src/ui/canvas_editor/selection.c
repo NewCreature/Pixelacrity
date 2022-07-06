@@ -142,21 +142,9 @@ void pa_float_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp, bool 
 void pa_handle_unfloat_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp, bool nomod)
 {
 	int i;
-	float cx, cy;
-	int px, py;
 	int offset_x = 0, offset_y = 0;
-	int preview_size;
 
 	t3f_debug_message("Enter pa_handle_unfloat_canvas_editor_selection()\n");
-	cx = (float)cep->selection.box.width / 2.0 - 0.5;
-	cy = (float)cep->selection.box.height / 2.0;
-	px = bp->start_x - cx;
-	py = bp->start_y - cy;
-	preview_size = cep->selection.box.width * 2;
-	if(cep->selection.box.height * 2 > preview_size)
-	{
-		preview_size = cep->selection.box.height * 2;
-	}
 	if(pa_handle_canvas_expansion(cep->canvas, bp->start_x, bp->start_y, bp->start_x + bp->width, bp->start_y + bp->height, &cep->shift_x, &cep->shift_y))
 	{
 		pa_shift_canvas_editor_variables(cep, cep->shift_x * cep->canvas->bitmap_size, cep->shift_y * cep->canvas->bitmap_size);
