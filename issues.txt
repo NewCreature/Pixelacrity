@@ -34,6 +34,9 @@ Pixelacrity 0.3.22 Issues
 
    [ ]Update the HTML color after changing an RGBA value.
 
+   [ ]Figure out why the area underneath the dialog is blacked out when editing
+      the right color.
+
 [ ]Implement proper palette editing. The user should be able to swap colors in
    the palette by picking them up and dragging them to a new location. They
    should also be able to drag the colors from the left and right color boxes
@@ -97,8 +100,6 @@ Pixelacrity 0.3.22 Issues
    [ ]Allow selecting between copy and composite rendering for tools.
 
    [ ]Allow toggling outline mode for filled tools.
-
-[ ]Add color editor popup dialog.
 
 [ ]Allow contents of frame to be moved along with frame if Shift key is held
    when frame is first dragged. We can probably do this by piggybacking off
