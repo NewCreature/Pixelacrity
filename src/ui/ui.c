@@ -154,12 +154,5 @@ void pa_render_ui(PA_UI * uip)
 		al_flip_display();
 		al_set_target_bitmap(al_get_backbuffer(t3f_display));
 	}
-	if(uip->color_popup_dialog && uip->color_popup_dialog->display != t3f_display)
-	{
-		al_set_target_bitmap(al_get_backbuffer(uip->color_popup_dialog->display));
-		t3gui_render(uip->color_popup_dialog->display);
-		al_flip_display();
-		al_set_target_bitmap(al_get_backbuffer(t3f_display));
-	}
 	al_use_shader(cep->standard_shader);
 }

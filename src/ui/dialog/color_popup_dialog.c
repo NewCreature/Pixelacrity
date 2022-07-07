@@ -150,7 +150,6 @@ PA_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color, float ox,
 	frame_box->y = min_y - space;
 	frame_box->w = max_x - min_x + space * 2;
 	frame_box->h = max_y - min_y + space * 2;
-	printf("pos %f %f\n", ox, oy);
 	t3gui_position_dialog(dp->dialog->element, ox, oy);
 	bg_box->x = 0;
 	bg_box->y = 0;
