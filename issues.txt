@@ -34,7 +34,7 @@ Pixelacrity 0.3.22 Issues
 
    [ ]Update the HTML color after changing an RGBA value.
 
-   [ ]Figure out why the area underneath the dialog is blacked out when editing
+   [X]Figure out why the area underneath the dialog is blacked out when editing
       the right color.
 
 [ ]Implement proper palette editing. The user should be able to swap colors in
