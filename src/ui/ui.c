@@ -124,7 +124,7 @@ void pa_process_ui(PA_UI * uip)
 		uip->color_popup_dialog = pa_create_color_editor_popup_dialog(&cep->right_color.color, pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_RIGHT_COLOR)->x - pa_get_theme_int(uip->main_dialog->theme, "edge_left_space", 8), pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_RIGHT_COLOR)->y - pa_get_theme_int(uip->main_dialog->theme, "edge_right_space", 8));
 		al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP);
 		al_set_target_bitmap(al_get_backbuffer(uip->color_popup_dialog->display));
-		t3gui_show_dialog(uip->color_popup_dialog->dialog, t3f_queue, T3GUI_PLAYER_CLEAR, NULL);
+		t3gui_show_dialog(uip->color_popup_dialog->dialog, t3f_queue, 0, NULL);
 		al_restore_state(&old_state);
 		pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_RIGHT_COLOR)->id1 = 0;
 	}
