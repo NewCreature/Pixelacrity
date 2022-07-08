@@ -32,7 +32,7 @@ Pixelacrity 0.3.22 Issues
       element's theme. Text should also be able to be offset on the x-axis so
       padding can be added as needed through the theme.
 
-   [ ]Update the HTML color after changing an RGBA value.
+   [X]Update the HTML color after changing an RGBA value.
 
    [X]Figure out why the area underneath the dialog is blacked out when editing
       the right color.
