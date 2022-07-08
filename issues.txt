@@ -42,6 +42,22 @@ Pixelacrity 0.3.22 Issues
    should also be able to drag the colors from the left and right color boxes
    onto the palette to replace a color in the palette.
 
+   [ ]Add PA_GUI_COLOR_DATA type to hold all data needed by the color GUI
+      element.
+
+   [ ]Rework color GUI element module to work with the new PA_GUI_COLOR_DATA
+      type;
+
+   [ ]Rework all init code related to color GUI elements to utilize the new
+      PA_GUI_COLOR_DATA type.
+
+   [ ]Select color on MSG_MOUSEUP. Track mouse on MSG_MOUSEDOWN and only change
+      the selected color if the MOUSE_UP occurs on the same color element.
+   
+   [ ]Add GUI element for color that has been picked up. Add mechanism to color
+      element module to ignore element so we only see it when a color is being
+      dragged.
+
 [ ]Finish rotating selection implementation.
 
    [X]Make scaling work again.
