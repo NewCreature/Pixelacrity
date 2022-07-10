@@ -3,15 +3,50 @@
 #include "modules/color.h"
 #include "modules/bitmap.h"
 #include "instance.h"
+#include "color.h"
 
 static ALLEGRO_BITMAP * color_texture = NULL;
 static ALLEGRO_BITMAP * color_background = NULL;
 static T3F_ATLAS * color_atlas;
 
+PA_GUI_COLOR_DATA * pa_create_gui_color_data(ALLEGRO_COLOR * color, PA_COLOR_INFO * left_color, PA_COLOR_INFO * right_color, ALLEGRO_COLOR * left_target_color, ALLEGRO_COLOR * right_target_color, int * left_clicked, int * right_clicked)
+{
+	PA_GUI_COLOR_DATA * color_data;
+
+	color_data = malloc(sizeof(PA_GUI_COLOR_DATA));
+	if(!color_data)
+	{
+		goto fail;
+	}
+	memset(color_data, 0, sizeof(PA_GUI_COLOR_DATA));
+	color_data->color = color;
+	color_data->left_color = left_color;
+	color_data->right_color = right_color;
+	color_data->left_target_color = left_target_color;
+	color_data->right_target_color = right_target_color;
+	color_data->left_clicked = left_clicked;
+	color_data->right_clicked = right_clicked;
+
+	return color_data;
+
+	fail:
+	{
+		if(color_data)
+		{
+			pa_destroy_gui_color_data(color_data);
+		}
+		return NULL;
+	}
+}
+
+void pa_destroy_gui_color_data(PA_GUI_COLOR_DATA * dp)
+{
+	free(dp);
+}
+
 int pa_gui_color_proc(int msg, T3GUI_ELEMENT * d, int c)
 {
-	int * left_clicked = d->dp6;
-	int * right_clicked = d->dp7;
+	PA_GUI_COLOR_DATA * color_data = (PA_GUI_COLOR_DATA *)d->dp;
 
 	switch(msg)
 	{
@@ -37,51 +72,65 @@ int pa_gui_color_proc(int msg, T3GUI_ELEMENT * d, int c)
 			d->id1 = 0;
 			break;
 		}
+		case MSG_END:
+		{
+			pa_destroy_gui_color_data(d->dp);
+			break;
+		}
 		case MSG_MOUSEDOWN:
 		{
-			if(!d->dp2 && !d->dp3)
+			d->flags |= D_TRACKMOUSE;
+			break;
+		}
+		case MSG_MOUSEUP:
+		{
+			d->flags &= ~D_TRACKMOUSE;
+			if(t3gui_get_mouse_x() >= d->x && t3gui_get_mouse_x() < d->x + d->w && t3gui_get_mouse_y() >= d->y && t3gui_get_mouse_y() < d->y + d->h)
 			{
-				d->id1 = 1;
-			}
-			else
-			{
-				if(t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND])
+				if(!color_data->left_color && !color_data->right_color)
 				{
-					if(c == 1 && d->dp4)
-					{
-						*(ALLEGRO_COLOR *)d->dp = *(ALLEGRO_COLOR *)d->dp4;
-					}
-					else if(d->dp5)
-					{
-						*(ALLEGRO_COLOR *)d->dp = *(ALLEGRO_COLOR *)d->dp5;
-					}
+					d->id1 = 1;
 				}
 				else
 				{
-					if(c == 1 && d->dp2)
+					if(t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND])
 					{
-						*(ALLEGRO_COLOR *)d->dp2 = *(ALLEGRO_COLOR *)d->dp;
+						if(c == 1 && color_data->left_target_color)
+						{
+							*(color_data->color) = *(color_data->left_target_color);
+						}
+						else if(color_data->right_target_color)
+						{
+							*(color_data->color) = *(color_data->right_target_color);
+						}
 					}
-					else if(d->dp3)
+					else
 					{
-						*(ALLEGRO_COLOR *)d->dp3 = *(ALLEGRO_COLOR *)d->dp;
+						if(c == 1 && color_data->left_color)
+						{
+							color_data->left_color->base_color = *(color_data->color);
+						}
+						else if(color_data->right_color)
+						{
+							color_data->right_color->base_color = *(color_data->color);
+						}
 					}
 				}
-			}
-			if(c == 1 && left_clicked)
-			{
-				*left_clicked = 1;
-			}
-			else if(c == 2 && right_clicked)
-			{
-				*right_clicked = 1;
+				if(c == 1 && color_data->left_clicked)
+				{
+					*(color_data->left_clicked) = 1;
+				}
+				else if(c == 2 && color_data->right_clicked)
+				{
+					*(color_data->right_clicked) = 1;
+				}
 			}
 			break;
 		}
 		case MSG_DRAW:
 		{
 			al_draw_tinted_scaled_bitmap(color_background, t3f_color_white, 0, 0, al_get_bitmap_width(color_background), al_get_bitmap_height(color_background), d->x, d->y, d->w, d->h, 0);
-			al_draw_tinted_scaled_bitmap(color_texture, *(ALLEGRO_COLOR *)d->dp, 0, 0, al_get_bitmap_width(color_background), al_get_bitmap_height(color_background), d->x, d->y, d->w, d->h, 0);
+			al_draw_tinted_scaled_bitmap(color_texture, *(color_data->color), 0, 0, al_get_bitmap_width(color_background), al_get_bitmap_height(color_background), d->x, d->y, d->w, d->h, 0);
 			break;
 		}
 	}
