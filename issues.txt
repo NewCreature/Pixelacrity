@@ -54,9 +54,20 @@ Pixelacrity 0.3.22 Issues
    [X]Select color on MSG_MOUSEUP. Track mouse on MSG_MOUSEDOWN and only change
       the selected color if the MOUSE_UP occurs on the same color element.
    
-   [ ]Add GUI element for color that has been picked up. Add mechanism to color
+   [X]Add GUI element for color that has been picked up. Add mechanism to color
       element module to ignore element so we only see it when a color is being
       dragged.
+   
+   [ ]Implement drop or swap logic which depends on if the picked up color is
+      from the palette or the main color or color pickers.
+   
+   [ ]Finalize the look of the floating color. I think the picked up color
+      should be the size of a selected color and should be positioned below and
+      to the right of the mouse cursor.
+   
+   [ ]Add ability to highlight a color. We'll highlight the color the floating
+      color will be dropped into. We might also highlight the current color and
+      the hover color.
 
 [ ]Finish rotating selection implementation.
 
