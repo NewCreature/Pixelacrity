@@ -1059,7 +1059,7 @@ bool t3gui_resume_dialog(T3GUI_PLAYER *player)
    return true;
 }
 
-T3GUI_ELEMENT * t3gui_get_player_mouse_object(T3GUI_PLAYER * player)
+T3GUI_ELEMENT * t3gui_get_player_click_element(T3GUI_PLAYER * player)
 {
     if(player->click_obj >= 0)
     {

@@ -103,7 +103,7 @@ void pa_process_ui(PA_UI * uip)
 	}
 	t3gui_logic();
 	floating_ep = pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_FLOATING_COLOR);
-	ep = t3gui_get_mouse_object();
+	ep = t3gui_get_click_element();
 	if(ep && ep->proc == pa_gui_color_proc && (ep->flags & D_TRACKMOUSE))
 	{
 		floating_ep->dp = ep->dp;

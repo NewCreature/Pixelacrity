@@ -364,11 +364,11 @@ void t3gui_render(ALLEGRO_DISPLAY * dp)
 	}
 }
 
-T3GUI_ELEMENT * t3gui_get_mouse_object(void)
+T3GUI_ELEMENT * t3gui_get_click_element(void)
 {
 	if(t3gui_dialog_players)
 	{
-		return t3gui_get_player_mouse_object(t3gui_dialog_player[t3gui_dialog_players - 1]);
+		return t3gui_get_player_click_element(t3gui_dialog_player[t3gui_dialog_players - 1]);
 	}
 	return NULL;
 }
