@@ -92,6 +92,7 @@ void pa_process_ui(PA_UI * uip)
 	ALLEGRO_STATE old_state;
 	T3GUI_ELEMENT * ep;
 	T3GUI_ELEMENT * floating_ep;
+	T3GUI_ELEMENT * hover_ep;
 
 	if(uip->main_dialog)
 	{
@@ -104,6 +105,7 @@ void pa_process_ui(PA_UI * uip)
 	t3gui_logic();
 	floating_ep = pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_FLOATING_COLOR);
 	ep = t3gui_get_click_element();
+	hover_ep = t3gui_get_hover_element(pa_gui_color_proc);
 	if(ep && ep->proc == pa_gui_color_proc && (ep->flags & D_TRACKMOUSE))
 	{
 		floating_ep->dp = ep->dp;
@@ -115,8 +117,22 @@ void pa_process_ui(PA_UI * uip)
 	}
 	else
 	{
-		floating_ep->dp = NULL;
-		floating_ep->flags |= D_DISABLED;
+		/* if we weren't disabled, that means we were holding a color, see if we
+		   need to drop or swap the color */
+		if(!(floating_ep->flags & D_DISABLED))
+		{
+			if(hover_ep && hover_ep->proc == pa_gui_color_proc)
+			{
+				if(hover_ep->dp && floating_ep->dp)
+				{
+					pa_drop_or_swap_gui_color_data((PA_GUI_COLOR_DATA *)floating_ep->dp, (PA_GUI_COLOR_DATA *)hover_ep->dp);
+				}
+			}
+
+			/* disable the floating element */
+			floating_ep->dp = NULL;
+			floating_ep->flags |= D_DISABLED;
+		}
 	}
 	if(uip->main_dialog)
 	{

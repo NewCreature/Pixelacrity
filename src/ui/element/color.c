@@ -44,6 +44,25 @@ void pa_destroy_gui_color_data(PA_GUI_COLOR_DATA * dp)
 	free(dp);
 }
 
+void pa_drop_or_swap_gui_color_data(PA_GUI_COLOR_DATA * sdp, PA_GUI_COLOR_DATA * ddp)
+{
+	ALLEGRO_COLOR tcol;
+
+	tcol = *ddp->color;
+	if(ddp->left_target_color)
+	{
+		*ddp->color = *sdp->color;
+		if(sdp->left_target_color)
+		{
+			*sdp->color = tcol;
+		}
+	}
+	else
+	{
+		*ddp->color = *sdp->color;
+	}
+}
+
 int pa_gui_color_proc(int msg, T3GUI_ELEMENT * d, int c)
 {
 	PA_GUI_COLOR_DATA * color_data = (PA_GUI_COLOR_DATA *)d->dp;
