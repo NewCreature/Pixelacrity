@@ -1059,6 +1059,15 @@ bool t3gui_resume_dialog(T3GUI_PLAYER *player)
    return true;
 }
 
+T3GUI_ELEMENT * t3gui_get_player_mouse_object(T3GUI_PLAYER * player)
+{
+    if(player->click_obj >= 0)
+    {
+        return &player->dialog[player->click_obj];
+    }
+    return NULL;
+}
+
 void t3gui_process_dialog(T3GUI_PLAYER * player)
 {
     ALLEGRO_EVENT event;

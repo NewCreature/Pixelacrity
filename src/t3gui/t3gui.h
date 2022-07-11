@@ -35,6 +35,7 @@ bool t3gui_close_dialog(T3GUI_DIALOG * dp);
 bool t3gui_close_dialog_by_element(T3GUI_ELEMENT * ep);
 void t3gui_logic(void);
 void t3gui_render(ALLEGRO_DISPLAY * dp);
+T3GUI_ELEMENT * t3gui_get_mouse_object(void);
 int t3gui_get_active_dialogs(void);
 int t3gui_get_mouse_x(void);
 int t3gui_get_mouse_y(void);

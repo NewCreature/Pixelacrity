@@ -90,6 +90,8 @@ void pa_process_ui(PA_UI * uip)
 {
 	PA_CANVAS_EDITOR * cep = (PA_CANVAS_EDITOR *)pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_CANVAS_EDITOR)->dp;
 	ALLEGRO_STATE old_state;
+	T3GUI_ELEMENT * ep;
+	T3GUI_ELEMENT * floating_ep;
 
 	if(uip->main_dialog)
 	{
@@ -100,6 +102,22 @@ void pa_process_ui(PA_UI * uip)
 		pa_color_dialog_pre_logic(uip->color_popup_dialog);
 	}
 	t3gui_logic();
+	floating_ep = pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_FLOATING_COLOR);
+	ep = t3gui_get_mouse_object();
+	if(ep && ep->proc == pa_gui_color_proc && (ep->flags & D_TRACKMOUSE))
+	{
+		floating_ep->dp = ep->dp;
+		floating_ep->x = t3gui_get_mouse_x() - 32;
+		floating_ep->y = t3gui_get_mouse_y() - 32;
+		floating_ep->w = 64;
+		floating_ep->h = 64;
+		floating_ep->flags &= ~D_DISABLED;
+	}
+	else
+	{
+		floating_ep->dp = NULL;
+		floating_ep->flags |= D_DISABLED;
+	}
 	if(uip->main_dialog)
 	{
 		pa_main_dialog_post_logic(uip->main_dialog, cep);

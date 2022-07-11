@@ -74,63 +74,75 @@ int pa_gui_color_proc(int msg, T3GUI_ELEMENT * d, int c)
 		}
 		case MSG_END:
 		{
-			pa_destroy_gui_color_data(d->dp);
+			if(d->dp)
+			{
+				pa_destroy_gui_color_data(d->dp);
+			}
 			break;
 		}
 		case MSG_MOUSEDOWN:
 		{
-			d->flags |= D_TRACKMOUSE;
+			if(!(d->flags & D_DISABLED))
+			{
+				d->flags |= D_TRACKMOUSE;
+			}
 			break;
 		}
 		case MSG_MOUSEUP:
 		{
-			d->flags &= ~D_TRACKMOUSE;
-			if(t3gui_get_mouse_x() >= d->x && t3gui_get_mouse_x() < d->x + d->w && t3gui_get_mouse_y() >= d->y && t3gui_get_mouse_y() < d->y + d->h)
+			if(!(d->flags & D_DISABLED))
 			{
-				if(!color_data->left_color && !color_data->right_color)
+				d->flags &= ~D_TRACKMOUSE;
+				if(t3gui_get_mouse_x() >= d->x && t3gui_get_mouse_x() < d->x + d->w && t3gui_get_mouse_y() >= d->y && t3gui_get_mouse_y() < d->y + d->h)
 				{
-					d->id1 = 1;
-				}
-				else
-				{
-					if(t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND])
+					if(!color_data->left_color && !color_data->right_color)
 					{
-						if(c == 1 && color_data->left_target_color)
-						{
-							*(color_data->color) = *(color_data->left_target_color);
-						}
-						else if(color_data->right_target_color)
-						{
-							*(color_data->color) = *(color_data->right_target_color);
-						}
+						d->id1 = 1;
 					}
 					else
 					{
-						if(c == 1 && color_data->left_color)
+						if(t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND])
 						{
-							color_data->left_color->base_color = *(color_data->color);
+							if(c == 1 && color_data->left_target_color)
+							{
+								*(color_data->color) = *(color_data->left_target_color);
+							}
+							else if(color_data->right_target_color)
+							{
+								*(color_data->color) = *(color_data->right_target_color);
+							}
 						}
-						else if(color_data->right_color)
+						else
 						{
-							color_data->right_color->base_color = *(color_data->color);
+							if(c == 1 && color_data->left_color)
+							{
+								color_data->left_color->base_color = *(color_data->color);
+							}
+							else if(color_data->right_color)
+							{
+								color_data->right_color->base_color = *(color_data->color);
+							}
 						}
 					}
-				}
-				if(c == 1 && color_data->left_clicked)
-				{
-					*(color_data->left_clicked) = 1;
-				}
-				else if(c == 2 && color_data->right_clicked)
-				{
-					*(color_data->right_clicked) = 1;
+					if(c == 1 && color_data->left_clicked)
+					{
+						*(color_data->left_clicked) = 1;
+					}
+					else if(c == 2 && color_data->right_clicked)
+					{
+						*(color_data->right_clicked) = 1;
+					}
 				}
 			}
 			break;
 		}
 		case MSG_DRAW:
 		{
-			al_draw_tinted_scaled_bitmap(color_background, t3f_color_white, 0, 0, al_get_bitmap_width(color_background), al_get_bitmap_height(color_background), d->x, d->y, d->w, d->h, 0);
-			al_draw_tinted_scaled_bitmap(color_texture, *(color_data->color), 0, 0, al_get_bitmap_width(color_background), al_get_bitmap_height(color_background), d->x, d->y, d->w, d->h, 0);
+			if(!(d->flags & D_DISABLED))
+			{
+				al_draw_tinted_scaled_bitmap(color_background, t3f_color_white, 0, 0, al_get_bitmap_width(color_background), al_get_bitmap_height(color_background), d->x, d->y, d->w, d->h, 0);
+				al_draw_tinted_scaled_bitmap(color_texture, *(color_data->color), 0, 0, al_get_bitmap_width(color_background), al_get_bitmap_height(color_background), d->x, d->y, d->w, d->h, 0);
+			}
 			break;
 		}
 	}

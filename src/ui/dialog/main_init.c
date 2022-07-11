@@ -384,6 +384,7 @@ static void add_status_bar(PA_DIALOG * dp, PA_CANVAS_EDITOR * cep)
 PA_DIALOG * pa_create_main_dialog(PA_CANVAS_EDITOR * cep)
 {
 	PA_DIALOG * dp;
+	T3GUI_ELEMENT * ep;
 
 	dp = pa_create_dialog(t3f_display, al_get_config_value(t3f_config, "App Data", "theme"), 0, 0, NULL);
 	if(!dp)
@@ -411,6 +412,8 @@ PA_DIALOG * pa_create_main_dialog(PA_CANVAS_EDITOR * cep)
 
 	cep->editor_element = t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], pa_gui_canvas_editor_proc, 0, 0, 0, 0, 0, 0, 0, 0, cep, NULL, NULL);
 	pa_track_dialog_element(dp, cep->editor_element, PA_UI_ELEMENT_CANVAS_EDITOR);
+	ep = t3gui_dialog_add_element(dp->dialog, NULL, pa_gui_color_proc, 0, 0, 0, 0, 0, D_DISABLED, 0, 0, NULL, NULL, NULL);
+	pa_track_dialog_element(dp, ep, PA_UI_ELEMENT_FLOATING_COLOR);
 	cep->peg_bitmap = dp->bitmap[PA_UI_BITMAP_BOX_HANDLE];
 	cep->singlelayer_bitmap = dp->bitmap[PA_UI_BITMAP_SELECTION_SINGLE];
 	cep->multilayer_bitmap = dp->bitmap[PA_UI_BITMAP_SELECTION_MULTI];
