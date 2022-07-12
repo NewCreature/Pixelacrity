@@ -86,11 +86,26 @@ void pa_destroy_ui(PA_UI * uip)
 	free(uip);
 }
 
+static void clear_color_highlights(PA_UI * uip)
+{
+	int i;
+
+	for(i = 0; i < uip->main_dialog->dialog->elements; i++)
+	{
+		if(uip->main_dialog->dialog->element[i].proc == pa_gui_color_proc)
+		{
+			uip->main_dialog->dialog->element[i].flags &= ~D_SELECTED;
+		}
+	}
+}
+
 static void handle_color_drag_and_drop(PA_UI * uip)
 {
 	T3GUI_ELEMENT * ep;
 	T3GUI_ELEMENT * floating_ep;
 	T3GUI_ELEMENT * hover_ep;
+	int color_size = pa_get_theme_int(uip->main_dialog->theme, "color_size", 12);
+	int line_thickness = pa_get_theme_int(uip->main_dialog->theme, "box_line_thickness", 2);
 
 	floating_ep = pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_FLOATING_COLOR);
 	ep = t3gui_get_click_element();
@@ -98,11 +113,19 @@ static void handle_color_drag_and_drop(PA_UI * uip)
 	if(ep && ep->proc == pa_gui_color_proc && (ep->flags & D_TRACKMOUSE))
 	{
 		floating_ep->dp = ep->dp;
-		floating_ep->x = t3gui_get_mouse_x() - 32;
-		floating_ep->y = t3gui_get_mouse_y() - 32;
-		floating_ep->w = 64;
-		floating_ep->h = 64;
+		floating_ep->d1 = line_thickness;
+		floating_ep->x = t3gui_get_mouse_x() - color_size / 2;
+		floating_ep->y = t3gui_get_mouse_y() - color_size / 2;
+		floating_ep->w = color_size;
+		floating_ep->h = color_size;
 		floating_ep->flags &= ~D_DISABLED;
+		floating_ep->flags |= D_SELECTED;
+		if(hover_ep)
+		{
+			clear_color_highlights(uip);
+			hover_ep->d1 = line_thickness;
+			hover_ep->flags |= D_SELECTED;
+		}
 	}
 	else
 	{

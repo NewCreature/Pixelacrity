@@ -161,6 +161,10 @@ int pa_gui_color_proc(int msg, T3GUI_ELEMENT * d, int c)
 			{
 				al_draw_tinted_scaled_bitmap(color_background, t3f_color_white, 0, 0, al_get_bitmap_width(color_background), al_get_bitmap_height(color_background), d->x, d->y, d->w, d->h, 0);
 				al_draw_tinted_scaled_bitmap(color_texture, *(color_data->color), 0, 0, al_get_bitmap_width(color_background), al_get_bitmap_height(color_background), d->x, d->y, d->w, d->h, 0);
+				if(d->flags & D_SELECTED)
+				{
+					al_draw_rectangle(d->x + d->d1 / 2 + 0.5, d->y + d->d1 / 2 + 0.5, d->x + d->w - 1.0 - d->d1 / 2 + 0.5, d->y + d->h - 1.0 - d->d1 / 2 + 0.5, t3f_color_white, d->d1);
+				}
 			}
 			break;
 		}
