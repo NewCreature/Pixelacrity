@@ -69,13 +69,20 @@ Pixelacrity 0.3.22 Issues
 
       [ ]Don't allow color pickers to receive dropped colors.
    
-   [ ]Finalize the look of the floating color. I think the picked up color
-      should be the size of a selected color and should be positioned below and
-      to the right of the mouse cursor.
+   [ ]Finalize the look of the floating color. The floating color should be no
+      bigger than the color size defined in the current theme. We might need to
+      make it slightly smaller to make it easier to see the drop location.
    
    [ ]Add ability to highlight a color. We'll highlight the color the floating
       color will be dropped into. We might also highlight the current color and
       the hover color.
+
+      [ ]We should use the element's theme to render the highlight. The standard
+         and standard 2x themes should contain a color element theme.
+   
+   [ ]Draw a line connecting the floating color's origin to the floating color.
+      This will make it easier to understand what will happen when the color is
+      dropped.
 
 [ ]Finish rotating selection implementation.
 
