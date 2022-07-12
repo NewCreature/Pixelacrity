@@ -86,23 +86,12 @@ void pa_destroy_ui(PA_UI * uip)
 	free(uip);
 }
 
-void pa_process_ui(PA_UI * uip)
+static void handle_color_drag_and_drop(PA_UI * uip)
 {
-	PA_CANVAS_EDITOR * cep = (PA_CANVAS_EDITOR *)pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_CANVAS_EDITOR)->dp;
-	ALLEGRO_STATE old_state;
 	T3GUI_ELEMENT * ep;
 	T3GUI_ELEMENT * floating_ep;
 	T3GUI_ELEMENT * hover_ep;
 
-	if(uip->main_dialog)
-	{
-		pa_main_dialog_pre_logic(uip->main_dialog, cep);
-	}
-	if(uip->color_popup_dialog)
-	{
-		pa_color_dialog_pre_logic(uip->color_popup_dialog);
-	}
-	t3gui_logic();
 	floating_ep = pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_FLOATING_COLOR);
 	ep = t3gui_get_click_element();
 	hover_ep = t3gui_get_hover_element(pa_gui_color_proc);
@@ -134,6 +123,23 @@ void pa_process_ui(PA_UI * uip)
 			floating_ep->flags |= D_DISABLED;
 		}
 	}
+}
+
+void pa_process_ui(PA_UI * uip)
+{
+	PA_CANVAS_EDITOR * cep = (PA_CANVAS_EDITOR *)pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_CANVAS_EDITOR)->dp;
+	ALLEGRO_STATE old_state;
+
+	if(uip->main_dialog)
+	{
+		pa_main_dialog_pre_logic(uip->main_dialog, cep);
+	}
+	if(uip->color_popup_dialog)
+	{
+		pa_color_dialog_pre_logic(uip->color_popup_dialog);
+	}
+	t3gui_logic();
+	handle_color_drag_and_drop(uip);
 	if(uip->main_dialog)
 	{
 		pa_main_dialog_post_logic(uip->main_dialog, cep);
