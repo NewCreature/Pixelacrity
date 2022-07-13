@@ -63,7 +63,7 @@ Pixelacrity 0.3.22 Issues
 
       [X]Allow holding shift while dropping to copy instead of swap color.
 
-      [ ]Don't allow right mouse button to drag color.
+      [X]Don't allow right mouse button to drag color.
 
       [ ]Don't enable floating color element until a drag occurs.
 
