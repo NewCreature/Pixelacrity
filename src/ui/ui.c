@@ -106,7 +106,7 @@ static void handle_color_drag_and_drop(PA_UI * uip)
 	uip->floating_ep = pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_FLOATING_COLOR);
 	uip->click_ep = t3gui_get_click_element();
 	uip->hover_ep = t3gui_get_hover_element(pa_gui_color_proc);
-	if(uip->click_ep && uip->click_ep->proc == pa_gui_color_proc && (uip->click_ep->flags & D_TRACKMOUSE))
+	if(uip->click_ep && uip->click_ep->proc == pa_gui_color_proc && (uip->click_ep->flags & D_TRACKMOUSE) && uip->click_ep->d2 == 1)
 	{
 		uip->floating_ep->dp = uip->click_ep->dp;
 		uip->floating_ep->x = t3gui_get_mouse_x() - color_size / 2;
@@ -204,7 +204,7 @@ static void render_color_drag_and_drop_helpers(PA_UI * uip)
 {
 	int line_thickness = pa_get_theme_int(uip->main_dialog->theme, "box_line_thickness", 2);
 
-	if(uip->click_ep && uip->hover_ep && uip->click_ep != uip->hover_ep && uip->hover_ep != uip->floating_ep && uip->click_ep->flags & D_TRACKMOUSE && uip->hover_ep->d1)
+	if(uip->click_ep && uip->hover_ep && uip->click_ep != uip->hover_ep && uip->hover_ep != uip->floating_ep && uip->click_ep->flags & D_TRACKMOUSE && uip->hover_ep->d1 && uip->click_ep->d2 == 1)
 	{
 		al_draw_line(uip->click_ep->x + uip->click_ep->w / 2 + 0.5, uip->click_ep->y + uip->click_ep->h / 2 + 0.5, uip->hover_ep->x + uip->hover_ep->w / 2 + 0.5, uip->hover_ep->y + uip->hover_ep->h / 2 + 0.5, t3f_color_white, line_thickness);
 	}

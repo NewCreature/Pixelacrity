@@ -47,12 +47,21 @@ void pa_destroy_gui_color_data(PA_GUI_COLOR_DATA * dp)
 void pa_drop_or_swap_gui_color_data(PA_GUI_COLOR_DATA * sdp, PA_GUI_COLOR_DATA * ddp)
 {
 	ALLEGRO_COLOR tcol;
+	bool swap = false;
 
 	tcol = *ddp->color;
-	if(ddp->left_target_color)
+	if(!ddp->left_target_color && !sdp->left_target_color)
+	{
+		swap = true;
+	}
+	else if(ddp->left_target_color && sdp->left_target_color)
+	{
+		swap = true;
+	}
+	if(swap)
 	{
 		*ddp->color = *sdp->color;
-		if(sdp->left_target_color && !t3f_key[ALLEGRO_KEY_LSHIFT] && !t3f_key[ALLEGRO_KEY_RSHIFT])
+		if(!t3f_key[ALLEGRO_KEY_LSHIFT] && !t3f_key[ALLEGRO_KEY_RSHIFT])
 		{
 			*sdp->color = tcol;
 		}
@@ -101,6 +110,7 @@ int pa_gui_color_proc(int msg, T3GUI_ELEMENT * d, int c)
 		}
 		case MSG_MOUSEDOWN:
 		{
+			d->d2 = c;
 			if(!(d->flags & D_DISABLED))
 			{
 				d->flags |= D_TRACKMOUSE;
@@ -109,6 +119,7 @@ int pa_gui_color_proc(int msg, T3GUI_ELEMENT * d, int c)
 		}
 		case MSG_MOUSEUP:
 		{
+			d->d2 = 0;
 			if(!(d->flags & D_DISABLED))
 			{
 				d->flags &= ~D_TRACKMOUSE;
