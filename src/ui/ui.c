@@ -102,7 +102,9 @@ static void clear_color_highlights(PA_UI * uip)
 static void handle_color_drag_and_drop(PA_UI * uip)
 {
 	int color_size = pa_get_theme_int(uip->main_dialog->theme, "color_size", 12);
+	int line_thickness = pa_get_theme_int(uip->main_dialog->theme, "box_line_thickness", 2);
 
+	color_size -= line_thickness * 2;
 	uip->floating_ep = pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_FLOATING_COLOR);
 	uip->click_ep = t3gui_get_click_element();
 	uip->hover_ep = t3gui_get_hover_element(pa_gui_color_proc);
