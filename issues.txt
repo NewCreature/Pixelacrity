@@ -61,7 +61,7 @@ Pixelacrity 0.3.22 Issues
    [ ]Implement drop or swap logic which depends on if the picked up color is
       from the palette or the main color or color pickers.
 
-      [ ]Allow holding shift while dropping to copy instead of swap color.
+      [X]Allow holding shift while dropping to copy instead of swap color.
 
       [ ]Don't allow right mouse button to drag color.
 
@@ -80,7 +80,7 @@ Pixelacrity 0.3.22 Issues
       [ ]We should use the element's theme to render the highlight. The standard
          and standard 2x themes should contain a color element theme.
    
-   [ ]Draw a line connecting the floating color's origin to the floating color.
+   [X]Draw a line connecting the floating color's origin to the floating color.
       This will make it easier to understand what will happen when the color is
       dropped.
 
