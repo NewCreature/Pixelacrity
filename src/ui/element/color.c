@@ -110,6 +110,7 @@ int pa_gui_color_proc(int msg, T3GUI_ELEMENT * d, int c)
 		}
 		case MSG_MOUSEDOWN:
 		{
+			d->flags &= ~D_USER;
 			d->d2 = c;
 			if(!(d->flags & D_DISABLED))
 			{
@@ -163,6 +164,14 @@ int pa_gui_color_proc(int msg, T3GUI_ELEMENT * d, int c)
 						*(color_data->right_clicked) = 1;
 					}
 				}
+			}
+			break;
+		}
+		case MSG_MOUSEMOVE:
+		{
+			if(d->flags & D_TRACKMOUSE)
+			{
+				d->flags |= D_USER;
 			}
 			break;
 		}

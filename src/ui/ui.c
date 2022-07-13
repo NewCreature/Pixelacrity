@@ -106,7 +106,8 @@ static void handle_color_drag_and_drop(PA_UI * uip)
 	uip->floating_ep = pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_FLOATING_COLOR);
 	uip->click_ep = t3gui_get_click_element();
 	uip->hover_ep = t3gui_get_hover_element(pa_gui_color_proc);
-	if(uip->click_ep && uip->click_ep->proc == pa_gui_color_proc && (uip->click_ep->flags & D_TRACKMOUSE) && uip->click_ep->d2 == 1)
+	clear_color_highlights(uip);
+	if(uip->click_ep && uip->click_ep->proc == pa_gui_color_proc && (uip->click_ep->flags & D_TRACKMOUSE) && uip->click_ep->d2 == 1 && uip->click_ep->flags & D_USER)
 	{
 		uip->floating_ep->dp = uip->click_ep->dp;
 		uip->floating_ep->x = t3gui_get_mouse_x() - color_size / 2;
@@ -114,10 +115,8 @@ static void handle_color_drag_and_drop(PA_UI * uip)
 		uip->floating_ep->w = color_size;
 		uip->floating_ep->h = color_size;
 		uip->floating_ep->flags &= ~D_DISABLED;
-		uip->floating_ep->flags |= D_SELECTED;
 		if(uip->hover_ep && uip->hover_ep->d1)
 		{
-			clear_color_highlights(uip);
 			uip->hover_ep->flags |= D_SELECTED;
 		}
 	}
