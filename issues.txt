@@ -37,53 +37,6 @@ Pixelacrity 0.3.22 Issues
    [X]Figure out why the area underneath the dialog is blacked out when editing
       the right color.
 
-[ ]Implement proper palette editing. The user should be able to swap colors in
-   the palette by picking them up and dragging them to a new location. They
-   should also be able to drag the colors from the left and right color boxes
-   onto the palette to replace a color in the palette.
-
-   [X]Add PA_GUI_COLOR_DATA type to hold all data needed by the color GUI
-      element.
-
-   [X]Rework color GUI element module to work with the new PA_GUI_COLOR_DATA
-      type;
-
-   [X]Rework all init code related to color GUI elements to utilize the new
-      PA_GUI_COLOR_DATA type.
-
-   [X]Select color on MSG_MOUSEUP. Track mouse on MSG_MOUSEDOWN and only change
-      the selected color if the MOUSE_UP occurs on the same color element.
-   
-   [X]Add GUI element for color that has been picked up. Add mechanism to color
-      element module to ignore element so we only see it when a color is being
-      dragged.
-   
-   [X]Implement drop or swap logic which depends on if the picked up color is
-      from the palette or the main color or color pickers.
-
-      [X]Allow holding shift while dropping to copy instead of swap color.
-
-      [X]Don't allow right mouse button to drag color.
-
-      [X]Don't enable floating color element until a drag occurs.
-
-      [X]Don't allow color pickers to receive dropped colors.
-   
-   [X]Finalize the look of the floating color. The floating color should be no
-      bigger than the color size defined in the current theme. We might need to
-      make it slightly smaller to make it easier to see the drop location.
-   
-   [ ]Add ability to highlight a color. We'll highlight the color the floating
-      color will be dropped into. We might also highlight the current color and
-      the hover color.
-
-      [ ]We should use the element's theme to render the highlight. The standard
-         and standard 2x themes should contain a color element theme.
-   
-   [X]Draw a line connecting the floating color's origin to the floating color.
-      This will make it easier to understand what will happen when the color is
-      dropped.
-
 [ ]Finish rotating selection implementation.
 
    [X]Make scaling work again.
@@ -1076,3 +1029,50 @@ Closed Issues
 [X]Look into undo states becoming buggy after undoing paste operations.
 
    [X]This bug was probably related to the import undo bug. Should be fixed.
+
+[X]Implement proper palette editing. The user should be able to swap colors in
+   the palette by picking them up and dragging them to a new location. They
+   should also be able to drag the colors from the left and right color boxes
+   onto the palette to replace a color in the palette.
+
+   [X]Add PA_GUI_COLOR_DATA type to hold all data needed by the color GUI
+      element.
+
+   [X]Rework color GUI element module to work with the new PA_GUI_COLOR_DATA
+      type;
+
+   [X]Rework all init code related to color GUI elements to utilize the new
+      PA_GUI_COLOR_DATA type.
+
+   [X]Select color on MSG_MOUSEUP. Track mouse on MSG_MOUSEDOWN and only change
+      the selected color if the MOUSE_UP occurs on the same color element.
+   
+   [X]Add GUI element for color that has been picked up. Add mechanism to color
+      element module to ignore element so we only see it when a color is being
+      dragged.
+   
+   [X]Implement drop or swap logic which depends on if the picked up color is
+      from the palette or the main color or color pickers.
+
+      [X]Allow holding shift while dropping to copy instead of swap color.
+
+      [X]Don't allow right mouse button to drag color.
+
+      [X]Don't enable floating color element until a drag occurs.
+
+      [X]Don't allow color pickers to receive dropped colors.
+   
+   [X]Finalize the look of the floating color. The floating color should be no
+      bigger than the color size defined in the current theme. We might need to
+      make it slightly smaller to make it easier to see the drop location.
+   
+   [X]Add ability to highlight a color. We'll highlight the color the floating
+      color will be dropped into. We might also highlight the current color and
+      the hover color.
+
+      [X]We should use the element's theme to render the highlight. The standard
+         and standard 2x themes should contain a color element theme.
+   
+   [X]Draw a line connecting the floating color's origin to the floating color.
+      This will make it easier to understand what will happen when the color is
+      dropped.
