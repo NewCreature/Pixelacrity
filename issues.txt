@@ -126,6 +126,14 @@ Pixelacrity 0.3.22 Issues
 
 [ ]Line up positioning of brush preview with the brush preview grid.
 
+[ ]Add hover color comparison element. Hover color element should be able to
+   show the difference between the current left and/or right colors and the
+   hover color.
+
+   [ ]To show the hover color for the canvas, we can show both the current
+      layer color and the composite color or hold a modifier key to switch
+      between them.
+
 
 Allegro Issues
 --------------
