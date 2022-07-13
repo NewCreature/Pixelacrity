@@ -52,7 +52,7 @@ void pa_drop_or_swap_gui_color_data(PA_GUI_COLOR_DATA * sdp, PA_GUI_COLOR_DATA *
 	if(ddp->left_target_color)
 	{
 		*ddp->color = *sdp->color;
-		if(sdp->left_target_color)
+		if(sdp->left_target_color && !t3f_key[ALLEGRO_KEY_LSHIFT] && !t3f_key[ALLEGRO_KEY_RSHIFT])
 		{
 			*sdp->color = tcol;
 		}
