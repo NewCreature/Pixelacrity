@@ -143,9 +143,8 @@ Pixelacrity 0.3.22 Issues
 
    [ ]Allow toggling outline mode for filled tools.
 
-[ ]Allow contents of frame to be moved along with frame if Shift key is held
-   when frame is first dragged. We can probably do this by piggybacking off
-   of the floating selection code.
+[ ]Float frame by default if we drag the frame. Hold Ctrl to move the frame
+   without moving the contents.
 
 [ ]Add fallback software rendering method for exporting canvas so we can render
    it to a memory bitmap without relying on pre-multiplied alpha. We can't use
