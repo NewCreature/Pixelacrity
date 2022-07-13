@@ -28,7 +28,6 @@ int pa_get_hover_frame(PA_CANVAS_EDITOR * cep)
 void pa_update_hover_frame(PA_CANVAS_EDITOR * cep, T3GUI_ELEMENT * d)
 {
 	PA_BOX old_box;
-	PA_BOX temp_box;
 	bool snap = false;
 
 	if(cep->current_tool == PA_TOOL_FRAME && cep->tool_state == PA_TOOL_STATE_OFF)
@@ -86,7 +85,6 @@ void pa_update_hover_frame(PA_CANVAS_EDITOR * cep, T3GUI_ELEMENT * d)
 		{
 			if(cep->canvas->frame[cep->hover_frame]->box.state == PA_BOX_STATE_MOVING)
 			{
-				memcpy(&temp_box, &cep->canvas->frame[cep->hover_frame]->box, sizeof(PA_BOX));
 				memcpy(&cep->canvas->frame[cep->hover_frame]->box, &old_box, sizeof(PA_BOX));
 				pa_float_frame(cep, cep->hover_frame);
 				cep->selection.box.state = PA_BOX_STATE_MOVING;
