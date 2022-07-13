@@ -58,14 +58,14 @@ Pixelacrity 0.3.22 Issues
       element module to ignore element so we only see it when a color is being
       dragged.
    
-   [ ]Implement drop or swap logic which depends on if the picked up color is
+   [X]Implement drop or swap logic which depends on if the picked up color is
       from the palette or the main color or color pickers.
 
       [X]Allow holding shift while dropping to copy instead of swap color.
 
       [X]Don't allow right mouse button to drag color.
 
-      [ ]Don't enable floating color element until a drag occurs.
+      [X]Don't enable floating color element until a drag occurs.
 
       [X]Don't allow color pickers to receive dropped colors.
    
