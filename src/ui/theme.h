@@ -3,18 +3,19 @@
 
 #include "t3gui/t3gui.h"
 
-#define PA_UI_THEME_MAX        16
+#define PA_UI_THEME_MAX          16
 
-#define PA_UI_THEME_BOX         0
-#define PA_UI_THEME_TOP_PANE    1
-#define PA_UI_THEME_LEFT_PANE   2
-#define PA_UI_THEME_RIGHT_PANE  3
-#define PA_UI_THEME_BOTTOM_PANE 4
-#define PA_UI_THEME_BUTTON      5
-#define PA_UI_THEME_LIST_BOX    6
-#define PA_UI_THEME_SEPARATOR   7
-#define PA_UI_THEME_SLIDER      8
-#define PA_UI_THEME_POPUP_BOX   9
+#define PA_UI_THEME_BOX           0
+#define PA_UI_THEME_TOP_PANE      1
+#define PA_UI_THEME_LEFT_PANE     2
+#define PA_UI_THEME_RIGHT_PANE    3
+#define PA_UI_THEME_BOTTOM_PANE   4
+#define PA_UI_THEME_BUTTON        5
+#define PA_UI_THEME_LIST_BOX      6
+#define PA_UI_THEME_SEPARATOR     7
+#define PA_UI_THEME_SLIDER        8
+#define PA_UI_THEME_POPUP_BOX     9
+#define PA_UI_THEME_COLOR_SELECT 10
 
 typedef struct
 {

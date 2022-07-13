@@ -113,7 +113,6 @@ static void handle_color_drag_and_drop(PA_UI * uip)
 	if(ep && ep->proc == pa_gui_color_proc && (ep->flags & D_TRACKMOUSE))
 	{
 		floating_ep->dp = ep->dp;
-		floating_ep->d1 = line_thickness;
 		floating_ep->x = t3gui_get_mouse_x() - color_size / 2;
 		floating_ep->y = t3gui_get_mouse_y() - color_size / 2;
 		floating_ep->w = color_size;
@@ -123,7 +122,6 @@ static void handle_color_drag_and_drop(PA_UI * uip)
 		if(hover_ep)
 		{
 			clear_color_highlights(uip);
-			hover_ep->d1 = line_thickness;
 			hover_ep->flags |= D_SELECTED;
 		}
 	}

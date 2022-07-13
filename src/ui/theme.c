@@ -33,6 +33,7 @@ PA_UI_THEME * pa_load_theme(const char * fn)
 	tp->theme[PA_UI_THEME_SEPARATOR] = pa_load_theme_theme(tp, "separator");
 	tp->theme[PA_UI_THEME_SLIDER] = pa_load_theme_theme(tp, "slider");
 	tp->theme[PA_UI_THEME_POPUP_BOX] = pa_load_theme_theme(tp, "popup_box");
+	tp->theme[PA_UI_THEME_COLOR_SELECT] = pa_load_theme_theme(tp, "color_select");
 	return tp;
 
 	fail:
