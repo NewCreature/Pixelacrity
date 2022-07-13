@@ -3,5 +3,6 @@
 
 int pa_get_hover_frame(PA_CANVAS_EDITOR * cep);
 void pa_update_hover_frame(PA_CANVAS_EDITOR * cep, T3GUI_ELEMENT * d);
+bool pa_float_frame(PA_CANVAS_EDITOR * cep, int frame);
 
 #endif

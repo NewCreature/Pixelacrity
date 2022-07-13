@@ -1,6 +1,8 @@
 #include "t3f/t3f.h"
 #include "modules/box.h"
 #include "ui/canvas_editor/canvas_editor.h"
+#include "selection.h"
+#include "frame.h"
 
 int pa_get_hover_frame(PA_CANVAS_EDITOR * cep)
 {
@@ -26,6 +28,7 @@ int pa_get_hover_frame(PA_CANVAS_EDITOR * cep)
 void pa_update_hover_frame(PA_CANVAS_EDITOR * cep, T3GUI_ELEMENT * d)
 {
 	PA_BOX old_box;
+	PA_BOX temp_box;
 	bool snap = false;
 
 	if(cep->current_tool == PA_TOOL_FRAME && cep->tool_state == PA_TOOL_STATE_OFF)
@@ -79,9 +82,31 @@ void pa_update_hover_frame(PA_CANVAS_EDITOR * cep, T3GUI_ELEMENT * d)
 				cep->want_cursor = ALLEGRO_SYSTEM_MOUSE_CURSOR_PRECISION;
 			}
 		}
+		if(!cep->selection.bitmap_stack && !t3f_key[ALLEGRO_KEY_LCTRL] && !t3f_key[ALLEGRO_KEY_RCTRL] && !t3f_key[ALLEGRO_KEY_COMMAND] && (cep->canvas->frame[cep->hover_frame]->box.start_x != old_box.start_x || cep->canvas->frame[cep->hover_frame]->box.start_y != old_box.start_y))
+		{
+			if(cep->canvas->frame[cep->hover_frame]->box.state == PA_BOX_STATE_MOVING)
+			{
+				memcpy(&temp_box, &cep->canvas->frame[cep->hover_frame]->box, sizeof(PA_BOX));
+				memcpy(&cep->canvas->frame[cep->hover_frame]->box, &old_box, sizeof(PA_BOX));
+				pa_float_frame(cep, cep->hover_frame);
+				cep->selection.box.state = PA_BOX_STATE_MOVING;
+				cep->selection.moving = true;
+			}
+		}
 	}
 	else
 	{
 		cep->want_cursor = ALLEGRO_SYSTEM_MOUSE_CURSOR_PRECISION;
 	}
+}
+
+bool pa_float_frame(PA_CANVAS_EDITOR * cep, int frame)
+{
+	memcpy(&cep->selection.box, &cep->canvas->frame[frame]->box, sizeof(PA_BOX));
+	cep->canvas->frame[frame]->box.state = PA_BOX_STATE_IDLE;
+	pa_select_canvas_editor_tool(cep, PA_TOOL_SELECTION);
+	cep->current_tool = PA_TOOL_SELECTION;
+	cep->selection.linked_frame = frame;
+	pa_float_canvas_editor_selection(cep, &cep->selection.box, true);
+	return true;
 }

@@ -2,6 +2,7 @@
 #include "modules/canvas/canvas.h"
 #include "ui/canvas_editor/undo/undo.h"
 #include "ui/canvas_editor/undo/frame.h"
+#include "ui/canvas_editor/frame.h"
 #include "ui/window.h"
 #include "edit_proc.h"
 
@@ -252,10 +253,7 @@ int pa_menu_frame_float_frame(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	pa_initialize_box(&app->canvas_editor->selection.box, app->canvas->frame[app->canvas_editor->current_frame]->box.start_x, app->canvas->frame[app->canvas_editor->current_frame]->box.start_y, app->canvas->frame[app->canvas_editor->current_frame]->box.width, app->canvas->frame[app->canvas_editor->current_frame]->box.height);
-	pa_select_canvas_editor_tool(app->canvas_editor, PA_TOOL_SELECTION);
-	app->canvas_editor->selection.linked_frame = app->canvas_editor->current_frame;
-	pa_menu_edit_multilayer_float_selection(id, data);
+	pa_float_frame(app->canvas_editor, app->canvas_editor->current_frame);
 
 	return 0;
 }

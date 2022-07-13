@@ -133,9 +133,12 @@ bool pa_handle_float_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp
 void pa_float_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp, bool multilayer)
 {
 	t3f_debug_message("Enter pa_float_canvas_editor_selection()\n");
-	create_float_undo(cep, bp, multilayer);
-	pa_finalize_undo(cep);
-	pa_handle_float_canvas_editor_selection(cep, bp, multilayer, false);
+	if(cep->selection.box.width > 0 && cep->selection.box.height > 0)
+	{
+		create_float_undo(cep, bp, multilayer);
+		pa_finalize_undo(cep);
+		pa_handle_float_canvas_editor_selection(cep, bp, multilayer, false);
+	}
 	t3f_debug_message("Exit pa_float_canvas_editor_selection()\n");
 }
 

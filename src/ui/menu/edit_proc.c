@@ -683,10 +683,8 @@ int pa_menu_edit_multilayer_float_selection(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
-	if(app->canvas_editor->selection.box.width > 0 && app->canvas_editor->selection.box.height > 0)
-	{
-		pa_float_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box, true);
-		t3f_refresh_menus();
-	}
+	pa_float_canvas_editor_selection(app->canvas_editor, &app->canvas_editor->selection.box, true);
+	t3f_refresh_menus();
+
 	return 0;
 }
