@@ -101,47 +101,43 @@ static void clear_color_highlights(PA_UI * uip)
 
 static void handle_color_drag_and_drop(PA_UI * uip)
 {
-	T3GUI_ELEMENT * ep;
-	T3GUI_ELEMENT * floating_ep;
-	T3GUI_ELEMENT * hover_ep;
 	int color_size = pa_get_theme_int(uip->main_dialog->theme, "color_size", 12);
-	int line_thickness = pa_get_theme_int(uip->main_dialog->theme, "box_line_thickness", 2);
 
-	floating_ep = pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_FLOATING_COLOR);
-	ep = t3gui_get_click_element();
-	hover_ep = t3gui_get_hover_element(pa_gui_color_proc);
-	if(ep && ep->proc == pa_gui_color_proc && (ep->flags & D_TRACKMOUSE))
+	uip->floating_ep = pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_FLOATING_COLOR);
+	uip->click_ep = t3gui_get_click_element();
+	uip->hover_ep = t3gui_get_hover_element(pa_gui_color_proc);
+	if(uip->click_ep && uip->click_ep->proc == pa_gui_color_proc && (uip->click_ep->flags & D_TRACKMOUSE))
 	{
-		floating_ep->dp = ep->dp;
-		floating_ep->x = t3gui_get_mouse_x() - color_size / 2;
-		floating_ep->y = t3gui_get_mouse_y() - color_size / 2;
-		floating_ep->w = color_size;
-		floating_ep->h = color_size;
-		floating_ep->flags &= ~D_DISABLED;
-		floating_ep->flags |= D_SELECTED;
-		if(hover_ep)
+		uip->floating_ep->dp = uip->click_ep->dp;
+		uip->floating_ep->x = t3gui_get_mouse_x() - color_size / 2;
+		uip->floating_ep->y = t3gui_get_mouse_y() - color_size / 2;
+		uip->floating_ep->w = color_size;
+		uip->floating_ep->h = color_size;
+		uip->floating_ep->flags &= ~D_DISABLED;
+		uip->floating_ep->flags |= D_SELECTED;
+		if(uip->hover_ep && uip->hover_ep->d1)
 		{
 			clear_color_highlights(uip);
-			hover_ep->flags |= D_SELECTED;
+			uip->hover_ep->flags |= D_SELECTED;
 		}
 	}
 	else
 	{
 		/* if we weren't disabled, that means we were holding a color, see if we
 		   need to drop or swap the color */
-		if(!(floating_ep->flags & D_DISABLED))
+		if(!(uip->floating_ep->flags & D_DISABLED))
 		{
-			if(hover_ep && hover_ep->proc == pa_gui_color_proc)
+			if(uip->hover_ep && uip->hover_ep->proc == pa_gui_color_proc)
 			{
-				if(hover_ep->dp && floating_ep->dp)
+				if(uip->hover_ep->dp && uip->hover_ep->d1 && uip->floating_ep->dp)
 				{
-					pa_drop_or_swap_gui_color_data((PA_GUI_COLOR_DATA *)floating_ep->dp, (PA_GUI_COLOR_DATA *)hover_ep->dp);
+					pa_drop_or_swap_gui_color_data((PA_GUI_COLOR_DATA *)uip->floating_ep->dp, (PA_GUI_COLOR_DATA *)uip->hover_ep->dp);
 				}
 			}
 
 			/* disable the floating element */
-			floating_ep->dp = NULL;
-			floating_ep->flags |= D_DISABLED;
+			uip->floating_ep->dp = NULL;
+			uip->floating_ep->flags |= D_DISABLED;
 		}
 	}
 }
@@ -204,10 +200,21 @@ void pa_process_ui(PA_UI * uip)
 	}
 }
 
+static void render_color_drag_and_drop_helpers(PA_UI * uip)
+{
+	int line_thickness = pa_get_theme_int(uip->main_dialog->theme, "box_line_thickness", 2);
+
+	if(uip->click_ep && uip->hover_ep && uip->click_ep != uip->hover_ep && uip->hover_ep != uip->floating_ep && uip->click_ep->flags & D_TRACKMOUSE && uip->hover_ep->d1)
+	{
+		al_draw_line(uip->click_ep->x + uip->click_ep->w / 2 + 0.5, uip->click_ep->y + uip->click_ep->h / 2 + 0.5, uip->hover_ep->x + uip->hover_ep->w / 2 + 0.5, uip->hover_ep->y + uip->hover_ep->h / 2 + 0.5, t3f_color_white, line_thickness);
+	}
+}
+
 void pa_render_ui(PA_UI * uip)
 {
 	PA_CANVAS_EDITOR * cep = (PA_CANVAS_EDITOR *)pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_CANVAS_EDITOR)->dp;
 	t3gui_render(t3f_display);
+	render_color_drag_and_drop_helpers(uip);
 	if(uip->brush_popup_dialog)
 	{
 		al_set_target_bitmap(al_get_backbuffer(uip->brush_popup_dialog->display));

@@ -19,6 +19,11 @@ typedef struct
 	PA_DIALOG * brush_popup_dialog;
 	PA_DIALOG * color_popup_dialog;
 
+	/* color drag and drop helpers */
+	T3GUI_ELEMENT * click_ep;
+	T3GUI_ELEMENT * hover_ep;
+	T3GUI_ELEMENT * floating_ep;
+
 } PA_UI;
 
 PA_UI * pa_create_ui(PA_CANVAS_EDITOR * cep);
