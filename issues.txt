@@ -67,7 +67,7 @@ Pixelacrity 0.3.22 Issues
 
       [ ]Don't enable floating color element until a drag occurs.
 
-      [ ]Don't allow color pickers to receive dropped colors.
+      [X]Don't allow color pickers to receive dropped colors.
    
    [ ]Finalize the look of the floating color. The floating color should be no
       bigger than the color size defined in the current theme. We might need to
