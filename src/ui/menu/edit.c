@@ -121,7 +121,7 @@ ALLEGRO_MENU * pa_create_edit_menu(ALLEGRO_MENU * multilayer_mp)
 	t3f_add_menu_item(mp, "Undo", ALLEGRO_MENU_ITEM_DISABLED, NULL, pa_menu_edit_undo, menu_undo_update_proc);
 	t3f_add_menu_item(mp, "Redo", ALLEGRO_MENU_ITEM_DISABLED, NULL, pa_menu_edit_redo, menu_redo_update_proc);
 	t3f_add_menu_item(mp, NULL, 0, NULL, NULL, NULL);
-	t3f_add_menu_item(mp, "Multi-Layer", 0, multilayer_mp, NULL, NULL);
+	t3f_add_menu_item(mp, "Multi-Layer", 0, multilayer_mp, NULL, menu_edit_copy_update_proc);
 	t3f_add_menu_item(mp, "Cut", 0, NULL, pa_menu_edit_cut, menu_edit_copy_update_proc);
 	t3f_add_menu_item(mp, "Copy", 0, NULL, pa_menu_edit_copy, menu_edit_copy_update_proc);
 	t3f_add_menu_item(mp, "Paste", 0, NULL, pa_menu_edit_paste, menu_edit_paste_update_proc);
