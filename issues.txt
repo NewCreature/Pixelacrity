@@ -24,10 +24,12 @@ Pixelacrity 0.3.23 Issues
 
    [ ]Allow numerical values in edit boxes to be incremented/decremented by
       using the arrow keys.
+   
+   [ ]Update shade picker colors after editing color.
 
    [X]Calculate the ideal size of the popup window based on the current theme.
 
-   [ ]Fix position of text within edit boxes. The text should be centered within
+   [X]Fix position of text within edit boxes. The text should be centered within
       the edit box with the option to apply an offset as specified in the
       element's theme. Text should also be able to be offset on the x-axis so
       padding can be added as needed through the theme.
