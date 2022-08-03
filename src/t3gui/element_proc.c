@@ -2234,7 +2234,7 @@ int t3gui_list_proc(int msg, T3GUI_ELEMENT *d, int c)
     return ret;
 }
 
-bool char_allowed(int c, const char * charlist)
+static bool char_allowed(int c, const char * charlist)
 {
     int i;
 
@@ -2250,6 +2250,26 @@ bool char_allowed(int c, const char * charlist)
         }
     }
     return false;
+}
+
+static bool is_integar(const char * buffer)
+{
+    int i;
+    int c;
+
+    if(!buffer)
+    {
+        return false;
+    }
+    for(i = 0; i < ustrlen(buffer); i++)
+    {
+        c = ugetat(buffer, i);
+        if(c < '0' || c > '9')
+        {
+            return false;
+        }
+    }
+    return true;
 }
 
 /* d_edit_proc:
@@ -2459,6 +2479,22 @@ int t3gui_edit_proc(int msg, T3GUI_ELEMENT *d, int c)
             if (d->d2 > 0) {
                d->d2--;
                uremove(s, d->d2);
+            }
+         }
+         else if(c == ALLEGRO_KEY_UP)
+         {
+            if(is_integar(d->dp2))
+            {
+                i = atoi(d->dp);
+                sprintf(d->dp, "%d", i + 1);
+            }
+         }
+         else if(c == ALLEGRO_KEY_DOWN)
+         {
+            if(is_integar(d->dp2))
+            {
+                i = atoi(d->dp);
+                sprintf(d->dp, "%d", i - 1);
             }
          }
          else if (c == ALLEGRO_KEY_ENTER) {
