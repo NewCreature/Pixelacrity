@@ -2486,7 +2486,7 @@ int t3gui_edit_proc(int msg, T3GUI_ELEMENT *d, int c)
             if(is_integar(d->dp2))
             {
                 i = atoi(d->dp);
-                sprintf(d->dp, "%d", i + 1);
+                usprintf(d->dp, "%d", i + 1);
             }
          }
          else if(c == ALLEGRO_KEY_DOWN)
