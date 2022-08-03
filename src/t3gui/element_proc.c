@@ -2358,7 +2358,7 @@ int t3gui_edit_proc(int msg, T3GUI_ELEMENT *d, int c)
 
             if (f && d->tick % 2 == 0) {
                scale = d->theme->state[0].scale;
-               al_draw_filled_rectangle(d->x + x + scale, d->y + y, d->x + x + scale + scale, d->y + y + al_get_font_line_height(font), d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].color[T3GUI_THEME_COLOR_FG]);
+               al_draw_filled_rectangle(d->x + x - scale, d->y + y, d->x + x, d->y + y + al_get_font_line_height(font), d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].color[T3GUI_THEME_COLOR_FG]);
             }
             al_draw_text(font, tc, d->x + x, d->y + y, 0, buf);
             x += w;
