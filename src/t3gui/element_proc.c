@@ -2009,7 +2009,7 @@ int t3gui_list_proc(int msg, T3GUI_ELEMENT *d, int c)
         case MSG_KEYDOWN:
         case MSG_KEYREPEAT:
         {
-            int last_idx = d->d2 + d->h / al_get_font_line_height(font)-1;
+            int last_idx = d->d2 + d->h / element_size - 1;
 
             if(c == ALLEGRO_KEY_DOWN)
             {
