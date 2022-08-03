@@ -909,6 +909,7 @@ int t3gui_slider_proc(int msg, T3GUI_ELEMENT *d, int c)
    int range = d->d1;
    int value = d->d2;
    int offset = 0;
+   int handle_size = d->theme->state[0].size;
    assert(d);
 
    /* check for slider direction */
@@ -935,7 +936,14 @@ int t3gui_slider_proc(int msg, T3GUI_ELEMENT *d, int c)
 
    /* set up the metrics for the control */
    if (vert) {
-      hh = d->h * d->h / (range + d->h);
+      if(handle_size >= 0)
+      {
+        hh = handle_size;
+      }
+      else
+      {
+        hh = d->h * d->h / (range + d->h);
+      }
 
       if (hh > d->h) hh = d->h;
 
@@ -945,7 +953,14 @@ int t3gui_slider_proc(int msg, T3GUI_ELEMENT *d, int c)
           hh = get_nine_patch_bitmap_min_height(p9);
       }
    } else {
-      hh = d->w * d->w / (range + d->w);
+      if(handle_size >= 0)
+      {
+        hh = handle_size;
+      }
+      else
+      {
+          hh = d->w * d->w / (range + d->w);
+      }
 
       if (hh > d->w) hh = d->w;
 
@@ -958,7 +973,7 @@ int t3gui_slider_proc(int msg, T3GUI_ELEMENT *d, int c)
 
    hmar = hh/2;
    irange = (vert) ? d->h : d->w;
-   slmax = irange-hh-1;
+   slmax = irange - hh - 1;
    slratio = slmax / (d->d1);
    slpos = slratio * d->d2;
    slp = slpos;
@@ -1989,7 +2004,7 @@ int t3gui_list_proc(int msg, T3GUI_ELEMENT *d, int c)
         case MSG_START:
         {
             /* Query size of required text box (d1) and size of scroll bar (d3) */
-            d->d3 = d->theme->state[0].scrollbar_size >= 0 ? d->theme->state[0].scrollbar_size : 16;
+            d->d3 = d->theme->state[0].width >= 0 ? d->theme->state[0].width : 16;
             d->id1 = -1;
             d->id2 = -1;
             //d->d1 = draw_textbox(d, false, &d->d3);
