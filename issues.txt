@@ -16,7 +16,7 @@ Pixelacrity 0.3.23 Issues
       position in anticipation of the user typing more, but we can't type more
       if we are at the character limit.
 
-   [ ]Update the edit box routine to allow the user to provide a list of
+   [X]Update the edit box routine to allow the user to provide a list of
       allowable characters.
 
    [ ]Add up/down arrows next to edit boxes to increment/decrement numerical
