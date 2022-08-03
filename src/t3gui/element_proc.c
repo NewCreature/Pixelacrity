@@ -1935,6 +1935,7 @@ int t3gui_list_proc(int msg, T3GUI_ELEMENT *d, int c)
     int visible_elements;
     int y = d->y;
     bool multi;
+    int element_size = al_get_font_line_height(font) + d->theme->state[0].top_margin + d->theme->state[0].bottom_margin;
 
     assert(func);
 
@@ -1966,7 +1967,7 @@ int t3gui_list_proc(int msg, T3GUI_ELEMENT *d, int c)
       dp2 = d->dp2;
     }
 
-    visible_elements = d->h / al_get_font_line_height(d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].font[0]);
+    visible_elements = d->h / element_size;
 
     T3GUI_ELEMENT dd =
     {
@@ -1977,8 +1978,8 @@ int t3gui_list_proc(int msg, T3GUI_ELEMENT *d, int c)
         .h = d->h,
         .theme = d->theme,
         .flags = d->flags,
-        .d1 = (nelem + 1) * al_get_font_line_height(font) - d->h,
-        .d2 = d->d2 * al_get_font_line_height(font),
+        .d1 = (nelem + 1) * element_size - d->h,
+        .d2 = d->d2 * element_size,
         .mousex = d->mousex,
         .mousey = d->mousey
     };
@@ -2061,7 +2062,7 @@ int t3gui_list_proc(int msg, T3GUI_ELEMENT *d, int c)
             {
                 if (d->d1 < d->d2) d->d2--;
                 if (d->d1 > last_idx) d->d2++;
-                dd.d2 = d->d2 * al_get_font_line_height(font);
+                dd.d2 = d->d2 * element_size;
 
                 ret |= D_REDRAWME;
             }
@@ -2087,7 +2088,7 @@ int t3gui_list_proc(int msg, T3GUI_ELEMENT *d, int c)
             }
             else
             {
-                int idx = d->d2 + (d->mousey - d->y) / al_get_font_line_height(font);
+                int idx = d->d2 + (d->mousey - d->y) / element_size;
                 if(idx >= nelem) idx = nelem-1;
                 if(idx < 0) idx = 0;
                 set_selection(d, idx, nelem);
@@ -2128,15 +2129,15 @@ int t3gui_list_proc(int msg, T3GUI_ELEMENT *d, int c)
                 al_set_clipping_rectangle(d->x, d->y, list_width, d->h);
                 if(((d->d1 == n) || (dp2 && dp2[n])) && d->flags & D_GOTFOCUS)
                 {
-                    al_draw_filled_rectangle(d->x+2.5,y+1.5,d->x+d->w-1.5,y+al_get_font_line_height(font)+1.5, d->theme->state[T3GUI_ELEMENT_STATE_SELECTED].color[T3GUI_THEME_COLOR_BG]);
+                    al_draw_filled_rectangle(d->x, y, d->x + d->w, y + al_get_font_line_height(font) + d->theme->state[0].top_margin + d->theme->state[0].bottom_margin, d->theme->state[T3GUI_ELEMENT_STATE_SELECTED].color[T3GUI_THEME_COLOR_BG]);
                     fg = d->theme->state[T3GUI_ELEMENT_STATE_SELECTED].color[T3GUI_THEME_COLOR_FG];
                     if(n == d->id2)
                     {
                         fg = d->theme->state[T3GUI_ELEMENT_STATE_SELECTED].color[T3GUI_THEME_COLOR_EG];
                     }
                 }
-                render_split_text(font, fg, d->x + 4, y + 2, list_width - 8, 4, func(n, NULL, NULL, d->dp3));
-                y += al_get_font_line_height(font);
+                render_split_text(font, fg, d->x + d->theme->state[0].left_margin, y + d->theme->state[0].top_margin, list_width - 8, 4, func(n, NULL, NULL, d->dp3));
+                y += element_size;
                 if(y > d->y + d->h)
                 {
                     break;
@@ -2179,7 +2180,7 @@ int t3gui_list_proc(int msg, T3GUI_ELEMENT *d, int c)
 
     if(msg != MSG_START)
     {
-        d->d2 = dd.d2 / al_get_font_line_height(font);
+        d->d2 = dd.d2 / element_size;
         if(d->d2 >= nelem) d->d2 = nelem-1;
         if(d->d2 < 0) d->d2 = 0;
         d->flags = dd.flags;
