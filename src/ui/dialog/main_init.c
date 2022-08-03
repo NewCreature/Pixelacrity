@@ -638,7 +638,7 @@ void pa_resize_main_dialog(PA_DIALOG * dp)
 	}
 	resize_element(pa_get_dialog_element(dp, PA_UI_ELEMENT_BUTTON_FRAME), pos_x + offset_x, pos_y, pos_vx, pos_vy);
 	pos_y += pos_vy + mt + mb + esb;
-	s = (al_get_font_line_height(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0]) + dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].top_margin + dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].bottom_margin) * 4 + 20;
+	s = (al_get_font_line_height(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0]) + dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].top_margin + dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].bottom_margin) * 4;
 	resize_element(pa_get_dialog_element(dp, PA_UI_ELEMENT_LAYER_LIST), t3f_default_view->width - right_pane_width + esl + ml, pos_y, right_pane_width - mr - ml - mr - ml - esl - esr, s);
 	pos_y += s;
 	resize_element(pa_get_dialog_element(dp, PA_UI_ELEMENT_BUTTON_ADD_LAYER), t3f_default_view->width - right_pane_width + ml + mr + esl, pos_y, button_size, button_size);
