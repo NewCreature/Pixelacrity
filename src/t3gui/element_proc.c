@@ -1160,19 +1160,47 @@ int t3gui_slider_proc(int msg, T3GUI_ELEMENT *d, int c)
       case MSG_MOUSEDOWN:
          if(c == 1)
          {
+             if(vert)
+             {
+                offset = (int)(d->h - hh) * value / range;
+                d->d4 = (d->y + offset) - d->mousey;
+             }
+             else
+             {
+                offset = (int)(d->w - hh) * value / range;
+                d->d4 = (d->x + offset) - d->mousex;
+             }
+             if(d->d4 < -hh || d->d4 >= 0)
+             {
+                d->d4 = -hh / 2;
+             }
+             if(vert)
+             {
+                if(d->mousey < d->y + offset || d->mousey >= d->y + offset + hh)
+                {
+                    retval |= t3gui_slider_proc(MSG_MOUSEMOVE, d, 0);
+                }
+             }
+             else
+             {
+                if(d->mousex < d->x + offset || d->mousex >= d->x + offset + hh)
+                {
+                    retval |= t3gui_slider_proc(MSG_MOUSEMOVE, d, 0);
+                }
+             }
              d->flags |= D_TRACKMOUSE;
          }
          break;
 
       case MSG_MOUSEMOVE:
-         msx = d->mousex;
-         msy = d->mousey;
+         msx = d->mousex + (!vert ? d->d4 : 0);
+         msy = d->mousey + (vert ? d->d4 : 0);
          oldval = d->d2;
          if (vert)
             //mp = (d->y+d->h-hmar)-msy;
-            mp = msy - d->y - hmar;
+            mp = msy - d->y;
          else
-            mp = msx - d->x - hmar;
+            mp = msx - d->x;
          if (mp < 0)
             mp = 0;
          if (mp > irange-hh-1)
@@ -1995,6 +2023,7 @@ int t3gui_list_proc(int msg, T3GUI_ELEMENT *d, int c)
         .flags = d->flags,
         .d1 = nelem * element_size - (d->h - d->h % element_size),
         .d2 = d->d2 * element_size,
+        .d4 = d->d4,
         .mousex = d->mousex,
         .mousey = d->mousey
     };
@@ -2100,6 +2129,7 @@ int t3gui_list_proc(int msg, T3GUI_ELEMENT *d, int c)
             if(d->d3 > 0 && dd.d1 > 0 && d->mousex > dd.x)
             {
                 ret |= t3gui_scroll_proc(msg, &dd, c);
+                d->d4 = dd.d4;
             }
             else
             {
