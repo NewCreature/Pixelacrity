@@ -83,7 +83,7 @@ PA_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color, float ox,
 	pos_x += pos_vx;
 	dp->element[PA_COLOR_DIALOG_ELEMENT_R_SLIDER] = t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_SLIDER], t3gui_slider_proc, pos_x, pos_y, slider_width, pos_vy, 0, 0, 255, r, NULL, NULL, NULL);
 	pos_x += slider_width + space;
-	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_edit_proc, pos_x, pos_y, edit_width, pos_vy, 0, 0, 3, 0, dp->edit_text[0], NULL, NULL);
+	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_edit_proc, pos_x, pos_y, edit_width, pos_vy, 0, 0, 3, 0, dp->edit_text[0], "0123456789", NULL);
 	pos_x += edit_width + space + space;
 	pos_y += pos_vy;
 
@@ -100,7 +100,7 @@ PA_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color, float ox,
 	pos_x += pos_vx;
 	dp->element[PA_COLOR_DIALOG_ELEMENT_G_SLIDER] = t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_SLIDER], t3gui_slider_proc, pos_x, pos_y, slider_width, pos_vy, 0, 0, 255, g, NULL, NULL, NULL);
 	pos_x += slider_width + space;
-	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_edit_proc, pos_x, pos_y, edit_width, pos_vy, 0, 0, 3, 0, dp->edit_text[1], NULL, NULL);
+	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_edit_proc, pos_x, pos_y, edit_width, pos_vy, 0, 0, 3, 0, dp->edit_text[1], "0123456789", NULL);
 	pos_y += pos_vy;
 
 	/* B */
@@ -116,7 +116,7 @@ PA_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color, float ox,
 	pos_x += pos_vx;
 	dp->element[PA_COLOR_DIALOG_ELEMENT_B_SLIDER] = t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_SLIDER], t3gui_slider_proc, pos_x, pos_y, slider_width, pos_vy, 0, 0, 255, b, NULL, NULL, NULL);
 	pos_x += slider_width + space;
-	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_edit_proc, pos_x, pos_y, edit_width, pos_vy, 0, 0, 3, 0, dp->edit_text[2], NULL, NULL);
+	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_edit_proc, pos_x, pos_y, edit_width, pos_vy, 0, 0, 3, 0, dp->edit_text[2], "0123456789", NULL);
 	pos_y += pos_vy;
 
 	/* A */
@@ -132,7 +132,7 @@ PA_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color, float ox,
 	pos_x += pos_vx;
 	dp->element[PA_COLOR_DIALOG_ELEMENT_A_SLIDER] = t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_SLIDER], t3gui_slider_proc, pos_x, pos_y, slider_width, pos_vy, 0, 0, 255, a, NULL, NULL, NULL);
 	pos_x += slider_width + space;
-	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_edit_proc, pos_x, pos_y, edit_width, pos_vy, 0, 0, 3, 0, dp->edit_text[3], NULL, NULL);
+	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_edit_proc, pos_x, pos_y, edit_width, pos_vy, 0, 0, 3, 0, dp->edit_text[3], "0123456789", NULL);
 	pos_y += pos_vy;
 
 	/* HTML */
@@ -146,7 +146,7 @@ PA_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color, float ox,
 	pos_vx = al_get_text_width(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0], "HTML") + space;
 	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_text_proc, pos_x, pos_y, al_get_text_width(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0], "HTML"), al_get_font_line_height(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0]), 0, 0, 0, 0, "HTML", NULL, NULL);
 	pos_x += pos_vx;
-	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_edit_proc, pos_x, pos_y, al_get_text_width(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0], "000000000"), pos_vy, 0, 0, 8, 0, dp->edit_text[4], NULL, NULL);
+	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_edit_proc, pos_x, pos_y, al_get_text_width(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0], "000000000"), pos_vy, 0, 0, 8, 0, dp->edit_text[4], "0123456789aAbBcCdDeEfF", NULL);
 	t3gui_get_dialog_bounding_box(dp->dialog->element, &min_x, &min_y, &max_x, &max_y);
 	frame_box->x = min_x - space;
 	frame_box->y = min_y - space;
