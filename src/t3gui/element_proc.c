@@ -1988,7 +1988,7 @@ int t3gui_list_proc(int msg, T3GUI_ELEMENT *d, int c)
         case MSG_START:
         {
             /* Query size of required text box (d1) and size of scroll bar (d3) */
-            d->d3 = 16;
+            d->d3 = d->theme->state[0].scrollbar_size >= 0 ? d->theme->state[0].scrollbar_size : 16;
             d->id1 = -1;
             d->id2 = -1;
             //d->d1 = draw_textbox(d, false, &d->d3);
