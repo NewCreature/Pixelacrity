@@ -64,7 +64,7 @@ PA_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color, float ox,
 	pos_y = 0;
 	pos_vy = al_get_font_line_height(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0]) + pa_get_theme_int(dp->theme, "edge_top_space", 4) * scale;
 	edit_width = al_get_text_width(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0], "0000") + space + space;
-	slider_width = (256 + 16) * scale;
+	slider_width = (256) * scale + dp->theme->theme[PA_UI_THEME_SLIDER]->state[0].size;
 
 	pos_x = 0;
 	pos_y = 0;
