@@ -1978,7 +1978,7 @@ int t3gui_list_proc(int msg, T3GUI_ELEMENT *d, int c)
         .h = d->h,
         .theme = d->theme,
         .flags = d->flags,
-        .d1 = (nelem + 1) * element_size - d->h,
+        .d1 = nelem * element_size - (d->h - d->h % element_size),
         .d2 = d->d2 * element_size,
         .mousex = d->mousex,
         .mousey = d->mousey
@@ -2119,7 +2119,7 @@ int t3gui_list_proc(int msg, T3GUI_ELEMENT *d, int c)
                 flush_render();
                 list_width = d->w - d->d3;
             }
-            for(n = d->d2; n < nelem; n++)
+            for(n = d->d2; n < nelem && n < d->d2 + visible_elements + 1; n++)
             {
                 ALLEGRO_COLOR fg = d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].color[T3GUI_THEME_COLOR_FG];
                 if(n == d->id2)
