@@ -27,7 +27,7 @@ Pixelacrity 0.3.23 Issues
    
    [ ]Update shade picker colors after editing color.
 
-   [ ]Fix position of cursor in edit boxes.
+   [X]Fix position of cursor in edit boxes.
 
    [X]Calculate the ideal size of the popup window based on the current theme.
 
