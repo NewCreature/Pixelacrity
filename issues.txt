@@ -25,7 +25,7 @@ Pixelacrity 0.3.23 Issues
    [ ]Allow numerical values in edit boxes to be incremented/decremented by
       using the arrow keys.
 
-   [ ]Calculate the ideal size of the popup window based on the current theme.
+   [X]Calculate the ideal size of the popup window based on the current theme.
 
    [ ]Fix position of text within edit boxes. The text should be centered within
       the edit box with the option to apply an offset as specified in the
