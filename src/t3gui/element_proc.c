@@ -2483,7 +2483,7 @@ int t3gui_edit_proc(int msg, T3GUI_ELEMENT *d, int c)
       case MSG_CHAR:
          if ((c >= ' ') && (uisok(c)) && ~d->flags & D_INTERNAL) {
             if (l < d->d1 && char_allowed(c, d->dp2)) {
-               uinsert(s, d->d2, c);
+               uinsert(s, d->d2, (d->flags & D_USER) ? utoupper(c) : c);
                d->d2++;
 
                d->flags |= D_DIRTY;
