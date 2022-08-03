@@ -96,9 +96,6 @@ Pixelacrity 0.3.23 Issues
 
    [ ]Allow toggling outline mode for filled tools.
 
-[ ]Float frame by default if we drag the frame. Hold Ctrl to move the frame
-   without moving the contents.
-
 [ ]Add fallback software rendering method for exporting canvas so we can render
    it to a memory bitmap without relying on pre-multiplied alpha. We can't use
    the pre-multiplied alpha shader when the target is a memory bitmap.
@@ -1084,3 +1081,6 @@ Closed Issues
    [X]Draw a line connecting the floating color's origin to the floating color.
       This will make it easier to understand what will happen when the color is
       dropped.
+
+[X]Float frame by default if we drag the frame. Hold Ctrl to move the frame
+   without moving the contents.
