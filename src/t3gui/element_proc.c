@@ -2234,6 +2234,24 @@ int t3gui_list_proc(int msg, T3GUI_ELEMENT *d, int c)
     return ret;
 }
 
+bool char_allowed(int c, const char * charlist)
+{
+    int i;
+
+    if(!charlist)
+    {
+        return true;
+    }
+    for(i = 0; i < ustrlen(charlist); i++)
+    {
+        if(c == ugetat(charlist, i))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 /* d_edit_proc:
  *  An editable text object (the dp field points to the string). When it
  *  has the input focus (obtained by clicking on it with the mouse), text
@@ -2464,7 +2482,7 @@ int t3gui_edit_proc(int msg, T3GUI_ELEMENT *d, int c)
 
       case MSG_CHAR:
          if ((c >= ' ') && (uisok(c)) && ~d->flags & D_INTERNAL) {
-            if (l < d->d1) {
+            if (l < d->d1 && char_allowed(c, d->dp2)) {
                uinsert(s, d->d2, c);
                d->d2++;
 
