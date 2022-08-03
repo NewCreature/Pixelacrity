@@ -1,4 +1,4 @@
-Pixelacrity 0.3.23 Issues
+Pixelacrity 0.3.24 Issues
 -------------------------
 
 [ ]Look into making it possible to resize subframes.
