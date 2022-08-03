@@ -2264,9 +2264,10 @@ int t3gui_edit_proc(int msg, T3GUI_ELEMENT *d, int c)
    const ALLEGRO_FONT *font = d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].font[0];
    ALLEGRO_COLOR fg, tc;
    int last_was_space, new_pos, i, k;
-   int f, l, p, w, x, b, scroll, h;
+   int f, l, p, w, x, y, b, scroll, h;
    char buf[16];
    char *s, *t;
+   int scale = 1;
    assert(d);
 
    s = d->dp;
@@ -2316,7 +2317,8 @@ int t3gui_edit_proc(int msg, T3GUI_ELEMENT *d, int c)
         draw_nine_patch_bitmap(d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].bitmap[0], d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].color[T3GUI_THEME_COLOR_BG], d->x, d->y, d->w, d->h);
          h = min(d->h, al_get_font_line_height(font)+3);
          fg = (d->flags & D_DISABLED) ? d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].color[T3GUI_THEME_COLOR_MG] : d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].color[T3GUI_THEME_COLOR_FG];
-         x = 0;
+         x = d->theme->state[0].left_margin;
+         y = d->theme->state[0].top_margin;
 
          if (scroll) {
             p = d->d2-b+1;
@@ -2329,18 +2331,16 @@ int t3gui_edit_proc(int msg, T3GUI_ELEMENT *d, int c)
             f = ugetat(s, p);
             usetc(buf+usetc(buf, (f) ? f : ' '), 0);
             w = al_get_text_width(font, buf);
-            if (x+4+w > d->w - 4)
+            if (x + w > d->w - d->theme->state[0].right_margin)
                break;
             f = ((p == d->d2) && (d->flags & D_GOTFOCUS));
             tc = d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].color[T3GUI_THEME_COLOR_FG];
 
             if (f && d->tick % 2 == 0) {
-               int dx, dy, w, hh;
-               al_get_text_dimensions(font, buf, &dx, &dy, &w, &hh);
-               if (w == 0) al_get_text_dimensions(font, "x", &dx, &dy, &w, &hh);
-               al_draw_line(d->x+x+4+dx+0.5 - 1, d->y+0.5, d->x+x+4+dx+0.5 - 1, d->y+h-0.5, d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].color[T3GUI_THEME_COLOR_FG], 1.0);
+               scale = d->theme->state[0].scale;
+               al_draw_filled_rectangle(d->x + x + scale, d->y + y, d->x + x + scale + scale, d->y + y + al_get_font_line_height(font), d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].color[T3GUI_THEME_COLOR_FG]);
             }
-            al_draw_text(font, tc, d->x+x+4, d->y+1, 0, buf);
+            al_draw_text(font, tc, d->x + x, d->y + y, 0, buf);
             x += w;
          }
          if(d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].bitmap[1])
