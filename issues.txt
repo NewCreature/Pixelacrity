@@ -22,10 +22,12 @@ Pixelacrity 0.3.23 Issues
    [ ]Add up/down arrows next to edit boxes to increment/decrement numerical
       values.
 
-   [ ]Allow numerical values in edit boxes to be incremented/decremented by
+   [X]Allow numerical values in edit boxes to be incremented/decremented by
       using the arrow keys.
    
    [ ]Update shade picker colors after editing color.
+
+   [ ]Fix position of cursor in edit boxes.
 
    [X]Calculate the ideal size of the popup window based on the current theme.
 
