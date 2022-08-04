@@ -252,3 +252,17 @@ int pa_layer_remove_button_proc(T3GUI_ELEMENT * d, void * dp3)
 
 	return 0;
 }
+
+int pa_color_okay_button_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)dp3;
+
+	return 0;
+}
+
+int pa_color_cancel_button_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)dp3;
+
+	return 0;
+}
