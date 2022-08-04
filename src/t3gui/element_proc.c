@@ -2370,7 +2370,7 @@ int t3gui_edit_proc(int msg, T3GUI_ELEMENT *d, int c)
          break;
 
       case MSG_MOUSEDOWN:
-         x = d->x;
+         x = d->x + d->theme->state[0].left_margin;
 
          if (scroll) {
             p = d->d2-b+1;
@@ -2382,7 +2382,7 @@ int t3gui_edit_proc(int msg, T3GUI_ELEMENT *d, int c)
          for (; p<b; p++) {
             usetc(buf+usetc(buf, ugetat(s, p)), 0);
             x += al_get_text_width(font, buf);
-            if (x > d->mousex)
+            if (x - al_get_text_width(font, buf) / 2 > d->mousex)
                break;
          }
          d->d2 = clamp(0, p, l);
@@ -2391,8 +2391,11 @@ int t3gui_edit_proc(int msg, T3GUI_ELEMENT *d, int c)
 
       case MSG_WANTFOCUS:
       {
+        if(!(d->flags & D_DIRTY))
+        {
           d->d2 = l;
-          return D_WANTKEYBOARD;
+        }
+        return D_WANTKEYBOARD;
       }
       case MSG_LOSTFOCUS:
       case MSG_KEY:
