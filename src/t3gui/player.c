@@ -177,7 +177,7 @@ static int move_focus(T3GUI_ELEMENT *d, int keycode, bool shift, int *focus_obj)
    /* fill temporary table */
    for (c=0; d[c].proc; c++) {
       if (((*focus_obj < 0) || (c != *focus_obj))
-            && !(d[c].flags & (D_DISABLED | D_HIDDEN))) {
+            && !(d[c].flags & (D_DISABLED | D_HIDDEN | D_NOFOCUS))) {
          obj[obj_count].index = c;
          if (*focus_obj >= 0)
             obj[obj_count].diff = cmp(d+*focus_obj, d+c);
