@@ -146,6 +146,7 @@ typedef struct
 	int modified;
 	PA_COLOR_INFO left_color;
 	PA_COLOR_INFO right_color;
+	ALLEGRO_COLOR last_color;
 	ALLEGRO_COLOR left_shade_color[PA_COLOR_PICKER_SHADES];
 	ALLEGRO_COLOR left_alpha_color[PA_COLOR_PICKER_SHADES];
 	ALLEGRO_COLOR right_shade_color[PA_COLOR_PICKER_SHADES];

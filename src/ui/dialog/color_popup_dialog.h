@@ -8,6 +8,7 @@
 #define PA_COLOR_DIALOG_ELEMENT_G_SLIDER 1
 #define PA_COLOR_DIALOG_ELEMENT_B_SLIDER 2
 #define PA_COLOR_DIALOG_ELEMENT_A_SLIDER 3
+#define PA_COLOR_DIALOG_ELEMENT_COLOR    4
 
 PA_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color, float ox, float oy);
 

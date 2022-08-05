@@ -27,6 +27,7 @@
 #include "dialog/color_popup_dialog.h"
 #include "dialog/main_init.h"
 #include "dialog/main.h"
+#include "modules/color.h"
 
 static bool create_gui(PA_UI * uip, PA_CANVAS_EDITOR * cep)
 {
@@ -170,19 +171,21 @@ void pa_process_ui(PA_UI * uip)
 	}
 	if(pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_LEFT_COLOR)->id1)
 	{
+		cep->last_color = cep->left_color.color;
 		uip->color_popup_dialog = pa_create_color_editor_popup_dialog(&cep->left_color.color, pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_LEFT_COLOR)->x - pa_get_theme_int(uip->main_dialog->theme, "edge_left_space", 8), pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_LEFT_COLOR)->y - pa_get_theme_int(uip->main_dialog->theme, "edge_right_space", 8));
 		al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP);
 		al_set_target_bitmap(al_get_backbuffer(uip->color_popup_dialog->display));
-		t3gui_show_dialog(uip->color_popup_dialog->dialog, t3f_queue, 0, NULL);
+		t3gui_show_dialog(uip->color_popup_dialog->dialog, t3f_queue, 0, uip);
 		al_restore_state(&old_state);
 		pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_LEFT_COLOR)->id1 = 0;
 	}
 	if(pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_RIGHT_COLOR)->id1)
 	{
+		cep->last_color = cep->right_color.color;
 		uip->color_popup_dialog = pa_create_color_editor_popup_dialog(&cep->right_color.color, pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_RIGHT_COLOR)->x - pa_get_theme_int(uip->main_dialog->theme, "edge_left_space", 8), pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_RIGHT_COLOR)->y - pa_get_theme_int(uip->main_dialog->theme, "edge_right_space", 8));
 		al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP);
 		al_set_target_bitmap(al_get_backbuffer(uip->color_popup_dialog->display));
-		t3gui_show_dialog(uip->color_popup_dialog->dialog, t3f_queue, 0, NULL);
+		t3gui_show_dialog(uip->color_popup_dialog->dialog, t3f_queue, 0, uip);
 		al_restore_state(&old_state);
 		pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_RIGHT_COLOR)->id1 = 0;
 	}

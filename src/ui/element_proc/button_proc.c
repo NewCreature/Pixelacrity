@@ -6,6 +6,9 @@
 #include "ui/menu/layer_proc.h"
 #include "ui/menu/file_proc.h"
 #include "ui/menu/edit_proc.h"
+#include "ui/element/color.h"
+#include "ui/dialog/color_popup_dialog.h"
+#include "modules/color.h"
 
 int pa_toolbar_new_button_proc(T3GUI_ELEMENT * d, void * dp3)
 {
@@ -262,7 +265,11 @@ int pa_color_okay_button_proc(T3GUI_ELEMENT * d, void * dp3)
 
 int pa_color_cancel_button_proc(T3GUI_ELEMENT * d, void * dp3)
 {
-	APP_INSTANCE * app = (APP_INSTANCE *)dp3;
+	PA_UI * uip = (PA_UI *)dp3;
+	PA_CANVAS_EDITOR * cep = (PA_CANVAS_EDITOR *)pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_CANVAS_EDITOR)->dp;
+	PA_GUI_COLOR_DATA * color_data = (PA_GUI_COLOR_DATA *)(uip->color_popup_dialog->element[PA_COLOR_DIALOG_ELEMENT_COLOR]->dp);
+
+	*(color_data->color) = cep->last_color;
 
 	return 0;
 }
