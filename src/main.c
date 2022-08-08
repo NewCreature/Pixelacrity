@@ -65,11 +65,6 @@ void app_event_handler(ALLEGRO_EVENT * event, void * data)
 				pa_close_dialog(app->ui->brush_popup_dialog);
 				app->ui->brush_popup_dialog = NULL;
 			}
-			else if(app->ui->color_popup_dialog && event->display.source == app->ui->color_popup_dialog->display)
-			{
-				pa_close_dialog(app->ui->color_popup_dialog);
-				app->ui->color_popup_dialog = NULL;
-			}
 			else
 			{
 				pa_menu_file_exit(0, data);
