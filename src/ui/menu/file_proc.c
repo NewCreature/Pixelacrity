@@ -11,9 +11,10 @@
 #include "ui/canvas_editor/undo/import.h"
 #include "defines.h"
 
-static bool close_canvas(APP_INSTANCE * app)
+static int close_canvas(APP_INSTANCE * app)
 {
-	int ret = true;
+	int ret = 0;
+	int button;
 
 	t3f_debug_message("Enter close_canvas()\n");
 	if(app->canvas)
@@ -22,12 +23,12 @@ static bool close_canvas(APP_INSTANCE * app)
 		if(app->canvas_editor->modified)
 		{
 			al_stop_timer(t3f_timer);
-			ret = al_show_native_message_box(t3f_display, "Unsaved Work", "", "You have unsaved work. What do you want to do?", "Save|Discard|Cancel", ALLEGRO_MESSAGEBOX_QUESTION);
-			switch(ret)
+			button = al_show_native_message_box(t3f_display, "Unsaved Work", "", "You have unsaved work. What do you want to do?", "Save|Discard|Cancel", ALLEGRO_MESSAGEBOX_QUESTION);
+			switch(button)
 			{
 				case 1:
 				{
-					pa_menu_file_save(0, app);
+					ret = pa_menu_file_save(0, app);
 					break;
 				}
 				case 2:
@@ -52,7 +53,7 @@ int pa_menu_file_new(int id, void * data)
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
 	t3f_debug_message("Enter pa_menu_file_new()\n");
-	if(close_canvas(app))
+	if(!close_canvas(app))
 	{
 		if(app->canvas)
 		{
@@ -205,7 +206,7 @@ int pa_menu_file_load(int id, void * data)
 
 	t3f_debug_message("Enter pa_menu_file_load()\n");
 	val = al_get_config_value(t3f_config, "App Data", "last_canvas_path");
-	if(close_canvas(app))
+	if(!close_canvas(app))
 	{
 		file_chooser = al_create_native_file_dialog(val, "Choose canvas or image file...", "*" PA_CANVAS_FILE_EXTENSION ";*.png;*.tga;*.pcx;*.bmp;*.jpg", ALLEGRO_FILECHOOSER_FILE_MUST_EXIST);
 		if(file_chooser)
@@ -236,11 +237,12 @@ int pa_menu_file_load(int id, void * data)
 int pa_menu_file_save(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
+	int ret = -1;
 
 	t3f_debug_message("Enter pa_menu_file_save()\n");
 	if(strcasecmp(t3f_get_path_extension(app->canvas_editor->canvas_path), PA_CANVAS_FILE_EXTENSION))
 	{
-		pa_menu_file_save_as(id, data);
+		ret = pa_menu_file_save_as(id, data);
 	}
 	else
 	{
@@ -249,10 +251,11 @@ int pa_menu_file_save(int id, void * data)
 		{
 			app->canvas_editor->modified = 0;
 		}
+		ret = 0;
 	}
 	pa_resave_canvas_editor_state(app->canvas_editor);
 	t3f_debug_message("Exit pa_menu_file_save()\n");
-	return 0;
+	return ret;
 }
 
 int pa_menu_file_save_as(int id, void * data)
@@ -262,6 +265,7 @@ int pa_menu_file_save_as(int id, void * data)
 	const char * file_path;
 	ALLEGRO_PATH * path;
 	const char * val;
+	int ret = -1;
 
 	t3f_debug_message("Enter pa_menu_file_save_as()\n");
 	val = al_get_config_value(t3f_config, "App Data", "last_canvas_path");
@@ -287,13 +291,14 @@ int pa_menu_file_save_as(int id, void * data)
 						al_destroy_path(path);
 					}
 				}
+				ret = 0;
 			}
 		}
 		al_destroy_native_file_dialog(file_chooser);
 		al_start_timer(t3f_timer);
 	}
 	t3f_debug_message("Exit pa_menu_file_save_as()\n");
-	return 0;
+	return ret;
 }
 
 static bool export(PA_CANVAS * cp, int x, int y, int width, int height, const char * fn, ALLEGRO_SHADER * shader)
@@ -520,7 +525,7 @@ int pa_menu_file_exit(int id, void * data)
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 
 	t3f_debug_message("Enter pa_menu_file_exit()\n");
-	if(close_canvas(app))
+	if(!close_canvas(app))
 	{
 		t3f_exit();
 	}
