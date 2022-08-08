@@ -18,6 +18,7 @@ PA_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color, float ox,
 	PA_DIALOG * dp;
 	T3GUI_ELEMENT * bg_box;
 	T3GUI_ELEMENT * frame_box;
+	T3GUI_ELEMENT * button[2];
 	int pos_x;
 	int pos_vx;
 	int pos_y;
@@ -154,12 +155,16 @@ PA_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color, float ox,
 
 	/* buttons */
 	pos_x = esl;
-	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, pos_x, pos_y, 240, 32 + dp->theme->theme[PA_UI_THEME_BUTTON]->state[0].top_margin + dp->theme->theme[PA_UI_THEME_BUTTON]->state[0].bottom_margin, 27, D_EXIT, 0, 0, "Cancel", pa_color_cancel_button_proc, NULL);
+	button[0] = t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, pos_x, pos_y, 240, 32 + dp->theme->theme[PA_UI_THEME_BUTTON]->state[0].top_margin + dp->theme->theme[PA_UI_THEME_BUTTON]->state[0].bottom_margin, 27, D_EXIT, 0, 0, "Cancel", pa_color_cancel_button_proc, NULL);
 	pos_x += 240 + esl;
-	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, pos_x, pos_y, 240, 32 + dp->theme->theme[PA_UI_THEME_BUTTON]->state[0].top_margin + dp->theme->theme[PA_UI_THEME_BUTTON]->state[0].bottom_margin, '\r', D_EXIT, 0, 0, "Okay", pa_color_okay_button_proc, NULL);
+	button[1] = t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, pos_x, pos_y, 240, 32 + dp->theme->theme[PA_UI_THEME_BUTTON]->state[0].top_margin + dp->theme->theme[PA_UI_THEME_BUTTON]->state[0].bottom_margin, '\r', D_EXIT, 0, 0, "Okay", pa_color_okay_button_proc, NULL);
 
 	/* fix size of dialog */
 	t3gui_get_dialog_bounding_box(dp->dialog->element, &min_x, &min_y, &max_x, &max_y);
+	button[0]->x = min_x;
+	button[0]->w = (max_x - min_x) / 2 - space / 2;
+	button[1]->x = (max_x - min_x) / 2 + space / 2;
+	button[1]->w = button[0]->w;
 	frame_box->x = min_x - space;
 	frame_box->y = min_y - space;
 	frame_box->w = max_x - min_x + space * 2;
@@ -169,6 +174,7 @@ PA_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color, float ox,
 	bg_box->y = 0;
 	bg_box->w = al_get_display_width(t3f_display);
 	bg_box->h = al_get_display_height(t3f_display);
+
 
 	return dp;
 
