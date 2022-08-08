@@ -16,6 +16,7 @@
 #define PA_UI_THEME_SLIDER        8
 #define PA_UI_THEME_POPUP_BOX     9
 #define PA_UI_THEME_COLOR_SELECT 10
+#define PA_UI_THEME_TEXT_BUTTON  11
 
 typedef struct
 {
