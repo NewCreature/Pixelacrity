@@ -9,6 +9,8 @@ Pixelacrity 0.3.24 Issues
 [ ]Look into base color being lost when selecting black or white from the
    shade picker.
 
+[ ]Swapping left and right color does not update shade pickers.
+
 [ ]Finish color editor dialog.
 
    [ ]See if we can update the edit box routine to not scroll when we reach the
