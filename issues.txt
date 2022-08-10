@@ -9,7 +9,15 @@ Pixelacrity 0.3.24 Issues
 [ ]Look into base color being lost when selecting black or white from the
    shade picker.
 
+   [ ]Picking colors from the shade picker should update the color not the
+      base color.
+
 [ ]Swapping left and right color does not update shade pickers.
+
+   [ ]We should swap the entire contents of PA_COLOR_INFO in cases where both
+      the source and destination colors are derived from a PA_COLOR_INFO
+      data structure. When a swap like this occurs we should update the shade
+      pickers.
 
 [ ]Finish color editor dialog.
 
@@ -28,6 +36,12 @@ Pixelacrity 0.3.24 Issues
       using the arrow keys.
    
    [ ]Update shade picker colors after editing color.
+
+      [ ]We should make the base color the current color so the shade picker
+         will update itself. We need a way to know which base color to update.
+         The PA_GUI_COLOR_DATA data structure should point to the PA_COLOR_INFO
+         the color is derived from so we can set the base color when Okay is
+         hit.
 
    [X]Fix position of cursor in edit boxes.
 
