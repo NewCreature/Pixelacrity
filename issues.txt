@@ -12,13 +12,6 @@ Pixelacrity 0.3.24 Issues
    [ ]Picking colors from the shade picker should update the color not the
       base color.
 
-[ ]Swapping left and right color does not update shade pickers.
-
-   [ ]We should swap the entire contents of PA_COLOR_INFO in cases where both
-      the source and destination colors are derived from a PA_COLOR_INFO
-      data structure. When a swap like this occurs we should update the shade
-      pickers.
-
 [ ]Finish color editor dialog.
 
    [ ]See if we can update the edit box routine to not scroll when we reach the
@@ -1104,3 +1097,10 @@ Closed Issues
 
 [X]Float frame by default if we drag the frame. Hold Ctrl to move the frame
    without moving the contents.
+
+[X]Swapping left and right color does not update shade pickers.
+
+   [X]We should swap the entire contents of PA_COLOR_INFO in cases where both
+      the source and destination colors are derived from a PA_COLOR_INFO
+      data structure. When a swap like this occurs we should update the shade
+      pickers.
