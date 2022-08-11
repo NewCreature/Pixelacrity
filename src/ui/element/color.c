@@ -9,7 +9,7 @@ static ALLEGRO_BITMAP * color_texture = NULL;
 static ALLEGRO_BITMAP * color_background = NULL;
 static T3F_ATLAS * color_atlas;
 
-PA_GUI_COLOR_DATA * pa_create_gui_color_data(ALLEGRO_COLOR * color, PA_COLOR_INFO * left_color, PA_COLOR_INFO * right_color, ALLEGRO_COLOR * left_target_color, ALLEGRO_COLOR * right_target_color, int * left_clicked, int * right_clicked)
+PA_GUI_COLOR_DATA * pa_create_gui_color_data(ALLEGRO_COLOR * color, PA_COLOR_INFO * color_info, PA_COLOR_INFO * left_color, PA_COLOR_INFO * right_color, ALLEGRO_COLOR * left_target_color, ALLEGRO_COLOR * right_target_color, int * left_clicked, int * right_clicked)
 {
 	PA_GUI_COLOR_DATA * color_data;
 
@@ -20,6 +20,7 @@ PA_GUI_COLOR_DATA * pa_create_gui_color_data(ALLEGRO_COLOR * color, PA_COLOR_INF
 	}
 	memset(color_data, 0, sizeof(PA_GUI_COLOR_DATA));
 	color_data->color = color;
+	color_data->color_info = color_info;
 	color_data->left_color = left_color;
 	color_data->right_color = right_color;
 	color_data->left_target_color = left_target_color;
@@ -46,10 +47,25 @@ void pa_destroy_gui_color_data(PA_GUI_COLOR_DATA * dp)
 
 void pa_drop_or_swap_gui_color_data(PA_GUI_COLOR_DATA * sdp, PA_GUI_COLOR_DATA * ddp)
 {
-	ALLEGRO_COLOR tcol;
+	ALLEGRO_COLOR tcol, * scol, * dcol;
+	PA_COLOR_INFO color_info;
 	bool swap = false;
 
-	tcol = *ddp->color;
+	/* swap color info if source and destintation have them */
+	if(ddp->color_info && sdp->color_info)
+	{
+		tcol = ddp->color_info->last_base_color;
+		memcpy(&color_info, ddp->color_info, sizeof(PA_COLOR_INFO));
+		memcpy(ddp->color_info, sdp->color_info, sizeof(PA_COLOR_INFO));
+		memcpy(sdp->color_info, &color_info, sizeof(PA_COLOR_INFO));
+		sdp->color_info->last_base_color = ddp->color_info->last_base_color;
+		ddp->color_info->last_base_color = tcol;
+		return;
+	}
+
+	tcol = ddp->color_info ? ddp->color_info->color : *(ddp->color);
+	dcol = ddp->color_info ? &ddp->color_info->color : ddp->color;
+	scol = sdp->color_info ? &sdp->color_info->color : sdp->color;
 	if(!ddp->left_target_color && !sdp->left_target_color)
 	{
 		swap = true;
@@ -60,15 +76,27 @@ void pa_drop_or_swap_gui_color_data(PA_GUI_COLOR_DATA * sdp, PA_GUI_COLOR_DATA *
 	}
 	if(swap)
 	{
-		*ddp->color = *sdp->color;
+		*dcol = *scol;
+		if(ddp->color_info)
+		{
+			ddp->color_info->base_color = *dcol;
+		}
 		if(!t3f_key[ALLEGRO_KEY_LSHIFT] && !t3f_key[ALLEGRO_KEY_RSHIFT])
 		{
-			*sdp->color = tcol;
+			*scol = tcol;
+			if(sdp->color_info)
+			{
+				sdp->color_info->base_color = *scol;
+			}
 		}
 	}
 	else
 	{
-		*ddp->color = *sdp->color;
+		*dcol = *scol;
+		if(ddp->color_info)
+		{
+			ddp->color_info->base_color = *dcol;
+		}
 	}
 }
 
@@ -179,8 +207,9 @@ int pa_gui_color_proc(int msg, T3GUI_ELEMENT * d, int c)
 		{
 			if(!(d->flags & D_DISABLED))
 			{
+				ALLEGRO_COLOR color = color_data->color_info ? color_data->color_info->color : *(color_data->color);
 				al_draw_tinted_scaled_bitmap(color_background, t3f_color_white, 0, 0, al_get_bitmap_width(color_background), al_get_bitmap_height(color_background), d->x, d->y, d->w, d->h, 0);
-				al_draw_tinted_scaled_bitmap(color_texture, *(color_data->color), 0, 0, al_get_bitmap_width(color_background), al_get_bitmap_height(color_background), d->x, d->y, d->w, d->h, 0);
+				al_draw_tinted_scaled_bitmap(color_texture, color, 0, 0, al_get_bitmap_width(color_background), al_get_bitmap_height(color_background), d->x, d->y, d->w, d->h, 0);
 				if(d->flags & D_SELECTED)
 				{
 					draw_nine_patch_bitmap(d->theme->state[0].bitmap[0], t3f_color_white, d->x, d->y, d->w, d->h);
