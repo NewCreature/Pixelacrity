@@ -258,7 +258,11 @@ int pa_layer_remove_button_proc(T3GUI_ELEMENT * d, void * dp3)
 
 int pa_color_okay_button_proc(T3GUI_ELEMENT * d, void * dp3)
 {
-	APP_INSTANCE * app = (APP_INSTANCE *)dp3;
+	PA_UI * uip = (PA_UI *)dp3;
+	PA_CANVAS_EDITOR * cep = (PA_CANVAS_EDITOR *)pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_CANVAS_EDITOR)->dp;
+	PA_GUI_COLOR_DATA * color_data = (PA_GUI_COLOR_DATA *)(uip->color_popup_dialog->element[PA_COLOR_DIALOG_ELEMENT_COLOR]->dp);
+
+	color_data->color_info->base_color = color_data->color_info->color;
 
 	return 0;
 }
@@ -269,7 +273,7 @@ int pa_color_cancel_button_proc(T3GUI_ELEMENT * d, void * dp3)
 	PA_CANVAS_EDITOR * cep = (PA_CANVAS_EDITOR *)pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_CANVAS_EDITOR)->dp;
 	PA_GUI_COLOR_DATA * color_data = (PA_GUI_COLOR_DATA *)(uip->color_popup_dialog->element[PA_COLOR_DIALOG_ELEMENT_COLOR]->dp);
 
-	*(color_data->color) = cep->last_color;
+	color_data->color_info->color = cep->last_color;
 
 	return 0;
 }

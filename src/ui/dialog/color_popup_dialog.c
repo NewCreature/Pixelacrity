@@ -11,9 +11,9 @@
 
 static int old_r, old_g, old_b, old_a;
 static char old_r_text[8], old_g_text[8], old_b_text[8], old_a_text[8], old_html_text[10];
-static ALLEGRO_COLOR * edit_color = NULL;
+static PA_COLOR_INFO * edit_color_info = NULL;
 
-PA_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color, float ox, float oy)
+PA_DIALOG * pa_create_color_editor_popup_dialog(PA_COLOR_INFO * color_info, float ox, float oy)
 {
 	PA_DIALOG * dp;
 	T3GUI_ELEMENT * bg_box;
@@ -54,8 +54,8 @@ PA_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color, float ox,
 	left_pane_width = PA_COLOR_PICKER_SHADES * color_size + esl + esr;
 	s = left_pane_width / 2 - esl - esl / 2;
 
-	edit_color = color;
-	al_unmap_rgba(*color, &r, &g, &b, &a);
+	edit_color_info = color_info;
+	al_unmap_rgba(color_info->color, &r, &g, &b, &a);
 	scale = pa_get_theme_int(dp->theme, "pixel_size", 1);
 	space = pa_get_theme_int(dp->theme, "edge_space_left", 4) * scale;
 	x_offset = 0;
@@ -72,7 +72,7 @@ PA_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color, float ox,
 
 	pos_x = 0;
 	pos_y = 0;
-	dp->element[PA_COLOR_DIALOG_ELEMENT_COLOR] = t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_BOX], pa_gui_color_proc, pos_x, pos_y, s, s, 0, D_NOFOCUS, 0, 0, pa_create_gui_color_data(color, NULL, NULL, NULL, NULL, NULL, NULL, NULL), NULL, NULL);
+	dp->element[PA_COLOR_DIALOG_ELEMENT_COLOR] = t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_BOX], pa_gui_color_proc, pos_x, pos_y, s, s, 0, D_NOFOCUS, 0, 0, pa_create_gui_color_data(NULL, color_info, NULL, NULL, NULL, NULL, NULL, NULL), NULL, NULL);
 
 	/* R */
 	dp->edit_text[0] = malloc(4);
@@ -145,7 +145,7 @@ PA_DIALOG * pa_create_color_editor_popup_dialog(ALLEGRO_COLOR * color, float ox,
 	{
 		goto fail;
 	}
-	pa_color_to_html(*color, dp->edit_text[4]);
+	pa_color_to_html(color_info->color, dp->edit_text[4]);
 	pos_x = s + esl + esr;
 	pos_vx = al_get_text_width(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0], "HTML") + space;
 	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_text_proc, pos_x, pos_y, al_get_text_width(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0], "HTML"), al_get_font_line_height(dp->theme->theme[PA_UI_THEME_LIST_BOX]->state[0].font[0]), 0, 0, 0, 0, "HTML", NULL, NULL);
@@ -229,7 +229,7 @@ static void update_color_dialog(PA_DIALOG * dp)
 {
 	unsigned char r, g, b, a;
 
-	al_unmap_rgba(*edit_color, &r, &g, &b, &a);
+	al_unmap_rgba(edit_color_info->color, &r, &g, &b, &a);
 	sprintf(dp->edit_text[0], "%d", r);
 	sprintf(dp->edit_text[1], "%d", g);
 	sprintf(dp->edit_text[2], "%d", b);
@@ -245,7 +245,7 @@ static void update_color_html(PA_DIALOG * dp)
 {
 	unsigned char r, g, b, a;
 
-	al_unmap_rgba(*edit_color, &r, &g, &b, &a);
+	al_unmap_rgba(edit_color_info->color, &r, &g, &b, &a);
 	sprintf(dp->edit_text[4], "%02X%02X%02X%02X", r, g, b, a);
 }
 
@@ -273,11 +273,11 @@ void pa_color_dialog_post_logic(PA_DIALOG * dp)
 	{
 		if(strlen(dp->edit_text[4]) == 6 || strlen(dp->edit_text[4]) == 8)
 		{
-			*edit_color = pa_get_color_from_html(dp->edit_text[4]);
+			edit_color_info->color = pa_get_color_from_html(dp->edit_text[4]);
 		}
 		update_color_dialog(dp);
 	}
-	*edit_color = al_map_rgba(dp->element[PA_COLOR_DIALOG_ELEMENT_R_SLIDER]->d2, dp->element[PA_COLOR_DIALOG_ELEMENT_G_SLIDER]->d2, dp->element[PA_COLOR_DIALOG_ELEMENT_B_SLIDER]->d2, dp->element[PA_COLOR_DIALOG_ELEMENT_A_SLIDER]->d2);
+	edit_color_info->color = al_map_rgba(dp->element[PA_COLOR_DIALOG_ELEMENT_R_SLIDER]->d2, dp->element[PA_COLOR_DIALOG_ELEMENT_G_SLIDER]->d2, dp->element[PA_COLOR_DIALOG_ELEMENT_B_SLIDER]->d2, dp->element[PA_COLOR_DIALOG_ELEMENT_A_SLIDER]->d2);
 	if(update_html)
 	{
 		update_color_html(dp);
