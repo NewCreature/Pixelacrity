@@ -28,13 +28,13 @@ Pixelacrity 0.3.24 Issues
    [X]Allow numerical values in edit boxes to be incremented/decremented by
       using the arrow keys.
    
-   [ ]Update shade picker colors after editing color.
+   [X]Update shade picker colors after editing color.
 
-      [ ]The color dialog color element should use the left or right color info
+      [X]The color dialog color element should use the left or right color info
          instead of directly referencing the colors so the base color can be
          updated on Okay.
       
-      [ ]We should make the base color the current color so the shade picker
+      [X]We should make the base color the current color so the shade picker
          will update itself. We need a way to know which base color to update.
          The PA_GUI_COLOR_DATA data structure should point to the PA_COLOR_INFO
          the color is derived from so we can set the base color when Okay is
