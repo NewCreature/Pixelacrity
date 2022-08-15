@@ -89,8 +89,8 @@ PA_DIALOG * pa_create_color_editor_popup_dialog(PA_COLOR_INFO * color_info, floa
 	pos_x += slider_width + space;
 	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_edit_proc, pos_x, pos_y, edit_width, edit_height, 0, D_SETFOCUS, 3, 0, dp->edit_text[0], "0123456789", NULL);
 	pos_x += edit_width + space;
-	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_TEXT_BUTTON], t3gui_push_button_proc, pos_x, pos_y, edit_height, edit_height / 2, 0, 0, 0, 0, ">", pa_color_r_up_button_proc, NULL);
-	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_TEXT_BUTTON], t3gui_push_button_proc, pos_x, pos_y + edit_height / 2, edit_height, edit_height / 2, 0, 0, 0, 0, "<", pa_color_r_down_button_proc, NULL);
+	dp->element[PA_COLOR_DIALOG_ELEMENT_R_UP_BUTTON] = t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_TEXT_BUTTON], t3gui_push_button_proc, pos_x, pos_y, edit_height, edit_height / 2, 0, 0, 0, 0, ">", pa_color_r_up_button_proc, NULL);
+	dp->element[PA_COLOR_DIALOG_ELEMENT_R_DOWN_BUTTON] = t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_TEXT_BUTTON], t3gui_push_button_proc, pos_x, pos_y + edit_height / 2, edit_height, edit_height / 2, 0, 0, 0, 0, "<", pa_color_r_down_button_proc, NULL);
 	pos_y += pos_vy;
 
 	/* G */
@@ -108,8 +108,8 @@ PA_DIALOG * pa_create_color_editor_popup_dialog(PA_COLOR_INFO * color_info, floa
 	pos_x += slider_width + space;
 	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_edit_proc, pos_x, pos_y, edit_width, edit_height, 0, 0, 3, 0, dp->edit_text[1], "0123456789", NULL);
 	pos_x += edit_width + space;
-	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_TEXT_BUTTON], t3gui_push_button_proc, pos_x, pos_y, edit_height, edit_height / 2, 0, 0, 0, 0, ">", pa_color_g_up_button_proc, NULL);
-	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_TEXT_BUTTON], t3gui_push_button_proc, pos_x, pos_y + edit_height / 2, edit_height, edit_height / 2, 0, 0, 0, 0, "<", pa_color_g_down_button_proc, NULL);
+	dp->element[PA_COLOR_DIALOG_ELEMENT_G_UP_BUTTON] = t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_TEXT_BUTTON], t3gui_push_button_proc, pos_x, pos_y, edit_height, edit_height / 2, 0, 0, 0, 0, ">", pa_color_g_up_button_proc, NULL);
+	dp->element[PA_COLOR_DIALOG_ELEMENT_G_DOWN_BUTTON] = t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_TEXT_BUTTON], t3gui_push_button_proc, pos_x, pos_y + edit_height / 2, edit_height, edit_height / 2, 0, 0, 0, 0, "<", pa_color_g_down_button_proc, NULL);
 	pos_y += pos_vy;
 
 	/* B */
@@ -127,8 +127,8 @@ PA_DIALOG * pa_create_color_editor_popup_dialog(PA_COLOR_INFO * color_info, floa
 	pos_x += slider_width + space;
 	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_edit_proc, pos_x, pos_y, edit_width, edit_height, 0, 0, 3, 0, dp->edit_text[2], "0123456789", NULL);
 	pos_x += edit_width + space;
-	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_TEXT_BUTTON], t3gui_push_button_proc, pos_x, pos_y, edit_height, edit_height / 2, 0, 0, 0, 0, ">", pa_color_b_up_button_proc, NULL);
-	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_TEXT_BUTTON], t3gui_push_button_proc, pos_x, pos_y + edit_height / 2, edit_height, edit_height / 2, 0, 0, 0, 0, "<", pa_color_b_down_button_proc, NULL);
+	dp->element[PA_COLOR_DIALOG_ELEMENT_B_UP_BUTTON] = t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_TEXT_BUTTON], t3gui_push_button_proc, pos_x, pos_y, edit_height, edit_height / 2, 0, 0, 0, 0, ">", pa_color_b_up_button_proc, NULL);
+	dp->element[PA_COLOR_DIALOG_ELEMENT_B_DOWN_BUTTON] = t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_TEXT_BUTTON], t3gui_push_button_proc, pos_x, pos_y + edit_height / 2, edit_height, edit_height / 2, 0, 0, 0, 0, "<", pa_color_b_down_button_proc, NULL);
 	pos_y += pos_vy;
 
 	/* A */
@@ -146,8 +146,8 @@ PA_DIALOG * pa_create_color_editor_popup_dialog(PA_COLOR_INFO * color_info, floa
 	pos_x += slider_width + space;
 	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_LIST_BOX], t3gui_edit_proc, pos_x, pos_y, edit_width, edit_height, 0, 0, 3, 0, dp->edit_text[3], "0123456789", NULL);
 	pos_x += edit_width + space;
-	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_TEXT_BUTTON], t3gui_push_button_proc, pos_x, pos_y, edit_height, edit_height / 2, 0, 0, 0, 0, ">", pa_color_a_up_button_proc, NULL);
-	t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_TEXT_BUTTON], t3gui_push_button_proc, pos_x, pos_y + edit_height / 2, edit_height, edit_height / 2, 0, 0, 0, 0, "<", pa_color_a_down_button_proc, NULL);
+	dp->element[PA_COLOR_DIALOG_ELEMENT_A_UP_BUTTON] = t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_TEXT_BUTTON], t3gui_push_button_proc, pos_x, pos_y, edit_height, edit_height / 2, 0, 0, 0, 0, ">", pa_color_a_up_button_proc, NULL);
+	dp->element[PA_COLOR_DIALOG_ELEMENT_A_DOWN_BUTTON] = t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_TEXT_BUTTON], t3gui_push_button_proc, pos_x, pos_y + edit_height / 2, edit_height, edit_height / 2, 0, 0, 0, 0, "<", pa_color_a_down_button_proc, NULL);
 	pos_y += pos_vy;
 
 	/* HTML */
@@ -210,6 +210,70 @@ void pa_color_dialog_pre_logic(PA_DIALOG * dp)
 	old_a = dp->element[PA_COLOR_DIALOG_ELEMENT_A_SLIDER]->d2;
 	strcpy(old_a_text, dp->edit_text[3]);
 	strcpy(old_html_text, dp->edit_text[4]);
+	if(old_r >= 255)
+	{
+		dp->element[PA_COLOR_DIALOG_ELEMENT_R_UP_BUTTON]->flags |= D_DISABLED;
+	}
+	else
+	{
+		dp->element[PA_COLOR_DIALOG_ELEMENT_R_UP_BUTTON]->flags &= ~D_DISABLED;
+	}
+	if(old_r <= 0)
+	{
+		dp->element[PA_COLOR_DIALOG_ELEMENT_R_DOWN_BUTTON]->flags |= D_DISABLED;
+	}
+	else
+	{
+		dp->element[PA_COLOR_DIALOG_ELEMENT_R_DOWN_BUTTON]->flags &= ~D_DISABLED;
+	}
+	if(old_g >= 255)
+	{
+		dp->element[PA_COLOR_DIALOG_ELEMENT_G_UP_BUTTON]->flags |= D_DISABLED;
+	}
+	else
+	{
+		dp->element[PA_COLOR_DIALOG_ELEMENT_G_UP_BUTTON]->flags &= ~D_DISABLED;
+	}
+	if(old_g <= 0)
+	{
+		dp->element[PA_COLOR_DIALOG_ELEMENT_G_DOWN_BUTTON]->flags |= D_DISABLED;
+	}
+	else
+	{
+		dp->element[PA_COLOR_DIALOG_ELEMENT_G_DOWN_BUTTON]->flags &= ~D_DISABLED;
+	}
+	if(old_b >= 255)
+	{
+		dp->element[PA_COLOR_DIALOG_ELEMENT_B_UP_BUTTON]->flags |= D_DISABLED;
+	}
+	else
+	{
+		dp->element[PA_COLOR_DIALOG_ELEMENT_B_UP_BUTTON]->flags &= ~D_DISABLED;
+	}
+	if(old_b <= 0)
+	{
+		dp->element[PA_COLOR_DIALOG_ELEMENT_B_DOWN_BUTTON]->flags |= D_DISABLED;
+	}
+	else
+	{
+		dp->element[PA_COLOR_DIALOG_ELEMENT_B_DOWN_BUTTON]->flags &= ~D_DISABLED;
+	}
+	if(old_a >= 255)
+	{
+		dp->element[PA_COLOR_DIALOG_ELEMENT_A_UP_BUTTON]->flags |= D_DISABLED;
+	}
+	else
+	{
+		dp->element[PA_COLOR_DIALOG_ELEMENT_A_UP_BUTTON]->flags &= ~D_DISABLED;
+	}
+	if(old_a <= 0)
+	{
+		dp->element[PA_COLOR_DIALOG_ELEMENT_A_DOWN_BUTTON]->flags |= D_DISABLED;
+	}
+	else
+	{
+		dp->element[PA_COLOR_DIALOG_ELEMENT_A_DOWN_BUTTON]->flags &= ~D_DISABLED;
+	}
 }
 
 static bool update_slider_or_text(T3GUI_ELEMENT * ep, int old, char * text, const char * old_text)
