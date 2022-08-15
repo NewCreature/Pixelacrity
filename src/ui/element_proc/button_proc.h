@@ -33,7 +33,17 @@ int pa_tool_selection_button_proc(T3GUI_ELEMENT * d, void * dp3);
 int pa_tool_frame_button_proc(T3GUI_ELEMENT * d, void * dp3);
 int pa_layer_add_button_proc(T3GUI_ELEMENT * d, void * dp3);
 int pa_layer_remove_button_proc(T3GUI_ELEMENT * d, void * dp3);
+
 int pa_color_okay_button_proc(T3GUI_ELEMENT * d, void * dp3);
 int pa_color_cancel_button_proc(T3GUI_ELEMENT * d, void * dp3);
+int pa_color_r_up_button_proc(T3GUI_ELEMENT * d, void * dp3);
+int pa_color_r_down_button_proc(T3GUI_ELEMENT * d, void * dp3);
+int pa_color_g_up_button_proc(T3GUI_ELEMENT * d, void * dp3);
+int pa_color_g_down_button_proc(T3GUI_ELEMENT * d, void * dp3);
+int pa_color_b_up_button_proc(T3GUI_ELEMENT * d, void * dp3);
+int pa_color_b_down_button_proc(T3GUI_ELEMENT * d, void * dp3);
+int pa_color_a_up_button_proc(T3GUI_ELEMENT * d, void * dp3);
+int pa_color_a_down_button_proc(T3GUI_ELEMENT * d, void * dp3);
+
 
 #endif

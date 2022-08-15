@@ -277,3 +277,132 @@ int pa_color_cancel_button_proc(T3GUI_ELEMENT * d, void * dp3)
 
 	return 0;
 }
+
+int pa_color_r_up_button_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	PA_UI * uip = (PA_UI *)dp3;
+	int i;
+
+	i = atoi(uip->color_popup_dialog->edit_text[0]);
+	i++;
+	if(i > 255)
+	{
+		i = 255;
+	}
+	sprintf(uip->color_popup_dialog->edit_text[0], "%d", i);
+
+	return 0;
+}
+
+int pa_color_r_down_button_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	PA_UI * uip = (PA_UI *)dp3;
+	int i;
+
+	i = atoi(uip->color_popup_dialog->edit_text[0]);
+	i--;
+	if(i < 0)
+	{
+		i = 0;
+	}
+	sprintf(uip->color_popup_dialog->edit_text[0], "%d", i);
+
+	return 0;
+}
+
+int pa_color_g_up_button_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	PA_UI * uip = (PA_UI *)dp3;
+	int i;
+
+	i = atoi(uip->color_popup_dialog->edit_text[1]);
+	i++;
+	if(i > 255)
+	{
+		i = 255;
+	}
+	sprintf(uip->color_popup_dialog->edit_text[1], "%d", i);
+
+	return 0;
+}
+
+int pa_color_g_down_button_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	PA_UI * uip = (PA_UI *)dp3;
+	int i;
+
+	i = atoi(uip->color_popup_dialog->edit_text[1]);
+	i--;
+	if(i < 0)
+	{
+		i = 0;
+	}
+	sprintf(uip->color_popup_dialog->edit_text[1], "%d", i);
+
+	return 0;
+}
+
+int pa_color_b_up_button_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	PA_UI * uip = (PA_UI *)dp3;
+	int i;
+
+	i = atoi(uip->color_popup_dialog->edit_text[2]);
+	i++;
+	if(i > 255)
+	{
+		i = 255;
+	}
+	sprintf(uip->color_popup_dialog->edit_text[2], "%d", i);
+
+	return 0;
+}
+
+int pa_color_b_down_button_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	PA_UI * uip = (PA_UI *)dp3;
+	int i;
+
+	i = atoi(uip->color_popup_dialog->edit_text[2]);
+	i--;
+	if(i < 0)
+	{
+		i = 0;
+	}
+	sprintf(uip->color_popup_dialog->edit_text[2], "%d", i);
+
+	return 0;
+}
+
+int pa_color_a_up_button_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	PA_UI * uip = (PA_UI *)dp3;
+	int i;
+
+	i = atoi(uip->color_popup_dialog->edit_text[3]);
+	i++;
+	if(i > 255)
+	{
+		i = 255;
+	}
+	sprintf(uip->color_popup_dialog->edit_text[3], "%d", i);
+
+	return 0;
+}
+
+int pa_color_a_down_button_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	PA_UI * uip = (PA_UI *)dp3;
+	int i;
+
+	i = atoi(uip->color_popup_dialog->edit_text[3]);
+	i--;
+	if(i < 0)
+	{
+		i = 0;
+	}
+	sprintf(uip->color_popup_dialog->edit_text[3], "%d", i);
+
+	return 0;
+}
+
