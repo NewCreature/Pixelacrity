@@ -16,48 +16,6 @@ Pixelacrity 0.3.24 Issues
    the mouse is moved. This allows the user to press the button even though it
    is disabled.
 
-[ ]Finish color editor dialog.
-
-   [ ]See if we can update the edit box routine to not scroll when we reach the
-      character limit. Presumably, the edit box scrolls when we reach this
-      position in anticipation of the user typing more, but we can't type more
-      if we are at the character limit.
-
-   [X]Update the edit box routine to allow the user to provide a list of
-      allowable characters.
-
-   [X]Add up/down arrows next to edit boxes to increment/decrement numerical
-      values.
-
-   [X]Allow numerical values in edit boxes to be incremented/decremented by
-      using the arrow keys.
-   
-   [X]Update shade picker colors after editing color.
-
-      [X]The color dialog color element should use the left or right color info
-         instead of directly referencing the colors so the base color can be
-         updated on Okay.
-      
-      [X]We should make the base color the current color so the shade picker
-         will update itself. We need a way to know which base color to update.
-         The PA_GUI_COLOR_DATA data structure should point to the PA_COLOR_INFO
-         the color is derived from so we can set the base color when Okay is
-         hit.
-
-   [X]Fix position of cursor in edit boxes.
-
-   [X]Calculate the ideal size of the popup window based on the current theme.
-
-   [X]Fix position of text within edit boxes. The text should be centered within
-      the edit box with the option to apply an offset as specified in the
-      element's theme. Text should also be able to be offset on the x-axis so
-      padding can be added as needed through the theme.
-
-   [X]Update the HTML color after changing an RGBA value.
-
-   [X]Figure out why the area underneath the dialog is blacked out when editing
-      the right color.
-
 [ ]Finish rotating selection implementation.
 
    [X]Make scaling work again.
@@ -1112,3 +1070,40 @@ Closed Issues
       the source and destination colors are derived from a PA_COLOR_INFO
       data structure. When a swap like this occurs we should update the shade
       pickers.
+
+[X]Finish color editor dialog.
+
+   [X]Update the edit box routine to allow the user to provide a list of
+      allowable characters.
+
+   [X]Add up/down arrows next to edit boxes to increment/decrement numerical
+      values.
+
+   [X]Allow numerical values in edit boxes to be incremented/decremented by
+      using the arrow keys.
+   
+   [X]Update shade picker colors after editing color.
+
+      [X]The color dialog color element should use the left or right color info
+         instead of directly referencing the colors so the base color can be
+         updated on Okay.
+      
+      [X]We should make the base color the current color so the shade picker
+         will update itself. We need a way to know which base color to update.
+         The PA_GUI_COLOR_DATA data structure should point to the PA_COLOR_INFO
+         the color is derived from so we can set the base color when Okay is
+         hit.
+
+   [X]Fix position of cursor in edit boxes.
+
+   [X]Calculate the ideal size of the popup window based on the current theme.
+
+   [X]Fix position of text within edit boxes. The text should be centered within
+      the edit box with the option to apply an offset as specified in the
+      element's theme. Text should also be able to be offset on the x-axis so
+      padding can be added as needed through the theme.
+
+   [X]Update the HTML color after changing an RGBA value.
+
+   [X]Figure out why the area underneath the dialog is blacked out when editing
+      the right color.
