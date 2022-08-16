@@ -12,10 +12,6 @@ Pixelacrity 0.3.24 Issues
    [ ]Picking colors from the shade picker should update the color not the
       base color.
 
-[ ]Push button that is disabled by the callback remains in hover state until
-   the mouse is moved. This allows the user to press the button even though it
-   is disabled.
-
 [ ]Finish rotating selection implementation.
 
    [X]Make scaling work again.
@@ -1107,3 +1103,7 @@ Closed Issues
 
    [X]Figure out why the area underneath the dialog is blacked out when editing
       the right color.
+
+[X]Push button that is disabled by the callback remains in hover state until
+   the mouse is moved. This allows the user to press the button even though it
+   is disabled.
