@@ -757,6 +757,13 @@ static void update_dialog(T3GUI_PLAYER * player)
         player->keyboard_obj = -1;
     }
 
+    /* remove focus from disabled items */
+    if(player->dialog[player->mouse_obj].flags & D_DISABLED)
+    {
+        player->dialog[player->mouse_obj].flags &= ~D_GOTMOUSE;
+        player->mouse_obj = -1;
+    }
+
     if(player->res & D_REDRAW_ANY)
     {
         player->redraw = true;
