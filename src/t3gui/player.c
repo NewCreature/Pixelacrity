@@ -1079,6 +1079,7 @@ void t3gui_process_dialog(T3GUI_PLAYER * player)
 {
     ALLEGRO_EVENT event;
 
+    update_dialog(player);
     t3gui_dialog_message(player->dialog, MSG_IDLE, 0, &player->obj);
     while(al_get_next_event(player->input, &event))
 	{
