@@ -62,6 +62,7 @@ ui/ui.o\
     ui/theme.o\
     ui/dialog.o\
     ui/dialog/color_popup_dialog.o\
+    ui/dialog/brush_popup_dialog.o\
     ui/menu/menu.o\
     ui/menu/file.o\
     ui/menu/file_proc.o\

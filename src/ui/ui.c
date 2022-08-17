@@ -25,6 +25,7 @@
 #include "defines.h"
 #include "dialog.h"
 #include "dialog/color_popup_dialog.h"
+#include "dialog/brush_popup_dialog.h"
 #include "dialog/main_init.h"
 #include "dialog/main.h"
 #include "modules/color.h"
@@ -148,6 +149,7 @@ void pa_process_ui(PA_UI * uip)
 {
 	PA_CANVAS_EDITOR * cep = (PA_CANVAS_EDITOR *)pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_CANVAS_EDITOR)->dp;
 	ALLEGRO_STATE old_state;
+	T3GUI_ELEMENT * ep;
 
 	if(uip->main_dialog)
 	{
@@ -163,11 +165,12 @@ void pa_process_ui(PA_UI * uip)
 	{
 		pa_main_dialog_post_logic(uip->main_dialog, cep);
 	}
-	if(pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_BRUSH)->id1)
+	ep = pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_BRUSH);
+	if(ep->id1)
 	{
-		uip->brush_popup_dialog = pa_create_dialog(NULL, al_get_config_value(t3f_config, "App Data", "theme"), 640, 480, NULL);
-		t3gui_show_dialog(uip->brush_popup_dialog->dialog, t3f_queue, T3GUI_PLAYER_CLEAR, NULL);
-		pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_BRUSH)->id1 = 0;
+		uip->brush_popup_dialog = pa_create_brush_popup_dialog(cep, ep->x, ep->y, ep->w, ep->h);
+		t3gui_show_dialog(uip->brush_popup_dialog->dialog, t3f_queue, 0, uip);
+		ep->id1 = 0;
 	}
 	if(pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_LEFT_COLOR)->id1)
 	{
@@ -202,6 +205,14 @@ void pa_process_ui(PA_UI * uip)
 			uip->color_popup_dialog = NULL;
 		}
 	}
+	if(uip->brush_popup_dialog)
+	{
+		if(t3gui_get_active_dialogs() <= 1)
+		{
+			pa_close_dialog(uip->brush_popup_dialog);
+			uip->brush_popup_dialog = NULL;
+		}
+	}
 }
 
 static void render_color_drag_and_drop_helpers(PA_UI * uip)
@@ -219,12 +230,5 @@ void pa_render_ui(PA_UI * uip)
 	PA_CANVAS_EDITOR * cep = (PA_CANVAS_EDITOR *)pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_CANVAS_EDITOR)->dp;
 	t3gui_render(t3f_display);
 	render_color_drag_and_drop_helpers(uip);
-	if(uip->brush_popup_dialog)
-	{
-		al_set_target_bitmap(al_get_backbuffer(uip->brush_popup_dialog->display));
-		t3gui_render(uip->brush_popup_dialog->display);
-		al_flip_display();
-		al_set_target_bitmap(al_get_backbuffer(t3f_display));
-	}
 	al_use_shader(cep->standard_shader);
 }

@@ -406,3 +406,18 @@ int pa_color_a_down_button_proc(T3GUI_ELEMENT * d, void * dp3)
 	return 0;
 }
 
+int pa_brush_okay_button_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	PA_UI * uip = (PA_UI *)dp3;
+	PA_CANVAS_EDITOR * cep = (PA_CANVAS_EDITOR *)pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_CANVAS_EDITOR)->dp;
+
+	return 0;
+}
+
+int pa_brush_cancel_button_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	PA_UI * uip = (PA_UI *)dp3;
+	PA_CANVAS_EDITOR * cep = (PA_CANVAS_EDITOR *)pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_CANVAS_EDITOR)->dp;
+
+	return 0;
+}

@@ -45,5 +45,7 @@ int pa_color_b_down_button_proc(T3GUI_ELEMENT * d, void * dp3);
 int pa_color_a_up_button_proc(T3GUI_ELEMENT * d, void * dp3);
 int pa_color_a_down_button_proc(T3GUI_ELEMENT * d, void * dp3);
 
+int pa_brush_okay_button_proc(T3GUI_ELEMENT * d, void * dp3);
+int pa_brush_cancel_button_proc(T3GUI_ELEMENT * d, void * dp3);
 
 #endif

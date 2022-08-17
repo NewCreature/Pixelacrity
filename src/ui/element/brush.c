@@ -23,7 +23,7 @@ int pa_gui_brush_proc(int msg, T3GUI_ELEMENT * d, int c)
 	{
 		case MSG_MOUSEDOWN:
 		{
-			//d->id1 = 1;
+			d->id1 = 1;
 			break;
 		}
 		case MSG_DRAW:
