@@ -4,6 +4,14 @@ Pixelacrity 0.3.24 Issues
 [ ]Color dialog theme reverts to default after it is closed and reopened a
    number of times.
 
+[ ]Finish brush dialog.
+
+   [ ]Show scaled and unscaled versions of brush.
+
+      [ ]Make brush element able to display non-scaled version as an option.
+   
+   [ ]Align shape buttons vertically in pairs.
+
 [ ]Look into making it possible to resize subframes.
 
 [ ]See if we can enable multi-layer editing. When the user holds shift while
