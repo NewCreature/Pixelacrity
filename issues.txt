@@ -9,18 +9,6 @@ Pixelacrity 0.3.24 Issues
 [ ]See if we can enable multi-layer editing. When the user holds shift while
    drawing, the changes should affect all layers.
 
-[ ]Look into base color being lost when selecting black or white from the
-   shade picker.
-
-   [ ]Picking colors from the shade picker should only update the base color if
-      the shade is being picked from the row corresponding to the clicked mouse
-      button.
-
-      [ ]Specifying the mouse button in the PA_GUI_COLOR_DATA should be enough
-         to let us make an informed decision on whether to update the base
-         color. We should only update the base color if the mouse button (check
-         the 'c' argument) does not match the specified button.
-
 [ ]Finish rotating selection implementation.
 
    [X]Make scaling work again.
@@ -1116,3 +1104,15 @@ Closed Issues
 [X]Push button that is disabled by the callback remains in hover state until
    the mouse is moved. This allows the user to press the button even though it
    is disabled.
+
+[X]Look into base color being lost when selecting black or white from the
+   shade picker.
+
+   [X]Picking colors from the shade picker should only update the base color if
+      the shade is being picked from the row corresponding to the clicked mouse
+      button.
+
+      [X]Specifying the mouse button in the PA_GUI_COLOR_DATA should be enough
+         to let us make an informed decision on whether to update the base
+         color. We should only update the base color if the mouse button (check
+         the 'c' argument) does not match the specified button.
