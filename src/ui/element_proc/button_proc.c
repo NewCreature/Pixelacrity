@@ -408,36 +408,203 @@ int pa_color_a_down_button_proc(T3GUI_ELEMENT * d, void * dp3)
 
 int pa_brush_square_proc(T3GUI_ELEMENT * d, void * dp3)
 {
+	PA_UI * uip = (PA_UI *)dp3;
+	PA_CANVAS_EDITOR * cep = (PA_CANVAS_EDITOR *)pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_CANVAS_EDITOR)->dp;
+	ALLEGRO_STATE old_state;
+	ALLEGRO_TRANSFORM identity;
+	int brush_size = cep->brush_size > 0 ? cep->brush_size : 1;
+
+	if(cep->brush)
+	{
+		al_destroy_bitmap(cep->brush);
+	}
+	cep->brush = al_create_bitmap(brush_size, brush_size);
+	if(cep->brush)
+	{
+		al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_TRANSFORM);
+		al_identity_transform(&identity);
+		al_set_target_bitmap(cep->brush);
+		al_use_transform(&identity);
+		al_clear_to_color(t3f_color_black);
+		al_restore_state(&old_state);
+	}
+
 	return 0;
 }
 
 int pa_brush_circle_proc(T3GUI_ELEMENT * d, void * dp3)
 {
+	PA_UI * uip = (PA_UI *)dp3;
+	PA_CANVAS_EDITOR * cep = (PA_CANVAS_EDITOR *)pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_CANVAS_EDITOR)->dp;
+	ALLEGRO_STATE old_state;
+	ALLEGRO_TRANSFORM identity;
+	int brush_size = cep->brush_size > 2 ? cep->brush_size : 3;
+	ALLEGRO_BITMAP * pixel;
+
+	if(cep->brush)
+	{
+		al_destroy_bitmap(cep->brush);
+	}
+	cep->brush = al_create_bitmap(brush_size, brush_size);
+	if(cep->brush)
+	{
+		al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_TRANSFORM);
+		al_identity_transform(&identity);
+		al_set_target_bitmap(cep->brush);
+		al_use_transform(&identity);
+		al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
+		pa_draw_filled_oval(0, 0, brush_size - 1, brush_size - 1, NULL, t3f_color_white, NULL);
+		al_restore_state(&old_state);
+	}
+
 	return 0;
 }
 
 int pa_brush_vline_proc(T3GUI_ELEMENT * d, void * dp3)
 {
+	PA_UI * uip = (PA_UI *)dp3;
+	PA_CANVAS_EDITOR * cep = (PA_CANVAS_EDITOR *)pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_CANVAS_EDITOR)->dp;
+	ALLEGRO_STATE old_state;
+	ALLEGRO_TRANSFORM identity;
+	int brush_size = cep->brush_size > 2 ? cep->brush_size : 3;
+
+	if(cep->brush)
+	{
+		al_destroy_bitmap(cep->brush);
+	}
+	cep->brush = al_create_bitmap(brush_size, brush_size);
+	if(cep->brush)
+	{
+		al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_TRANSFORM);
+		al_identity_transform(&identity);
+		al_set_target_bitmap(cep->brush);
+		al_use_transform(&identity);
+		al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
+		pa_draw_line(brush_size / 2 + 0.5, 0, brush_size / 2 + 0.5, brush_size - 1 + 0.5, NULL, t3f_color_white, NULL);
+		al_restore_state(&old_state);
+	}
+
 	return 0;
 }
 
 int pa_brush_dline_ur_proc(T3GUI_ELEMENT * d, void * dp3)
 {
+	PA_UI * uip = (PA_UI *)dp3;
+	PA_CANVAS_EDITOR * cep = (PA_CANVAS_EDITOR *)pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_CANVAS_EDITOR)->dp;
+	ALLEGRO_STATE old_state;
+	ALLEGRO_TRANSFORM identity;
+	int brush_size = cep->brush_size > 2 ? cep->brush_size : 3;
+
+	if(cep->brush)
+	{
+		al_destroy_bitmap(cep->brush);
+	}
+	cep->brush = al_create_bitmap(brush_size, brush_size);
+	if(cep->brush)
+	{
+		al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_TRANSFORM);
+		al_identity_transform(&identity);
+		al_set_target_bitmap(cep->brush);
+		al_use_transform(&identity);
+		al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
+		pa_draw_line(0 + 0.5, brush_size - 2 + 0.5, brush_size - 2 + 0.5, 0 + 0.5, NULL, t3f_color_white, NULL);
+		pa_draw_line(0 + 0.5, brush_size - 1 + 0.5, brush_size - 1 + 0.5, 0 + 0.5, NULL, t3f_color_white, NULL);
+		pa_draw_line(1 + 0.5, brush_size - 1 + 0.5, brush_size - 1 + 0.5, 1 + 0.5, NULL, t3f_color_white, NULL);
+		al_restore_state(&old_state);
+	}
+
 	return 0;
 }
 
 int pa_brush_hline_proc(T3GUI_ELEMENT * d, void * dp3)
 {
+	PA_UI * uip = (PA_UI *)dp3;
+	PA_CANVAS_EDITOR * cep = (PA_CANVAS_EDITOR *)pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_CANVAS_EDITOR)->dp;
+	ALLEGRO_STATE old_state;
+	ALLEGRO_TRANSFORM identity;
+	int brush_size = cep->brush_size > 2 ? cep->brush_size : 3;
+
+	if(cep->brush)
+	{
+		al_destroy_bitmap(cep->brush);
+	}
+	cep->brush = al_create_bitmap(brush_size, brush_size);
+	if(cep->brush)
+	{
+		al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_TRANSFORM);
+		al_identity_transform(&identity);
+		al_set_target_bitmap(cep->brush);
+		al_use_transform(&identity);
+		al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
+		pa_draw_line(0 + 0.5, brush_size / 2 + 0.5, brush_size - 1 + 0.5, brush_size / 2 + 0.5, NULL, t3f_color_white, NULL);
+		al_restore_state(&old_state);
+	}
+
 	return 0;
 }
 
 int pa_brush_dline_dr_proc(T3GUI_ELEMENT * d, void * dp3)
 {
+	PA_UI * uip = (PA_UI *)dp3;
+	PA_CANVAS_EDITOR * cep = (PA_CANVAS_EDITOR *)pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_CANVAS_EDITOR)->dp;
+	ALLEGRO_STATE old_state;
+	ALLEGRO_TRANSFORM identity;
+	int brush_size = cep->brush_size > 2 ? cep->brush_size : 3;
+
+	if(cep->brush)
+	{
+		al_destroy_bitmap(cep->brush);
+	}
+	cep->brush = al_create_bitmap(brush_size, brush_size);
+	if(cep->brush)
+	{
+		al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_TRANSFORM);
+		al_identity_transform(&identity);
+		al_set_target_bitmap(cep->brush);
+		al_use_transform(&identity);
+		al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
+		pa_draw_line(1 + 0.5, 0 + 0.5, brush_size - 1 + 0.5, brush_size - 2 + 0.5, NULL, t3f_color_white, NULL);
+		pa_draw_line(0 + 0.5, 0 + 0.5, brush_size - 1 + 0.5, brush_size - 1 + 0.5, NULL, t3f_color_white, NULL);
+		pa_draw_line(0 + 0.5, 1 + 0.5, brush_size - 2 + 0.5, brush_size - 1 + 0.5, NULL, t3f_color_white, NULL);
+		al_restore_state(&old_state);
+	}
+
 	return 0;
 }
 
 int pa_brush_diamond_proc(T3GUI_ELEMENT * d, void * dp3)
 {
+	PA_UI * uip = (PA_UI *)dp3;
+	PA_CANVAS_EDITOR * cep = (PA_CANVAS_EDITOR *)pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_CANVAS_EDITOR)->dp;
+	ALLEGRO_STATE old_state;
+	ALLEGRO_TRANSFORM identity;
+	int brush_size = cep->brush_size > 2 ? cep->brush_size : 3;
+	int i, ni;
+
+	if(cep->brush)
+	{
+		al_destroy_bitmap(cep->brush);
+	}
+	cep->brush = al_create_bitmap(brush_size, brush_size);
+	if(cep->brush)
+	{
+		al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_TRANSFORM);
+		al_identity_transform(&identity);
+		al_set_target_bitmap(cep->brush);
+		al_use_transform(&identity);
+		al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
+		for(i = 0; i < brush_size / 2; i++)
+		{
+			pa_draw_line(brush_size / 2 - i + 0.5, i + 0.5, brush_size / 2 + i + 0.5, i + 0.5, NULL, t3f_color_white, NULL);
+		}
+		for(i = brush_size / 2; i < brush_size; i++)
+		{
+			ni = i - brush_size / 2;
+			pa_draw_line(ni + 0.5, i, brush_size - 1 - ni + 0.5, i, NULL, t3f_color_white, NULL);
+		}
+		al_restore_state(&old_state);
+	}
+
 	return 0;
 }
 
