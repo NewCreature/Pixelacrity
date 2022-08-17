@@ -5,6 +5,14 @@
 #include "ui/theme.h"
 #include "ui/canvas_editor/canvas_editor.h"
 
-PA_DIALOG * pa_create_brush_popup_dialog(PA_COLOR_INFO * color_info, float ox, float oy, int width, int height);
+#define PA_UI_BITMAP_BRUSH_SQUARE          0
+#define PA_UI_BITMAP_BRUSH_CIRCLE          1
+#define PA_UI_BITMAP_BRUSH_VLINE           2
+#define PA_UI_BITMAP_BRUSH_DLINE_UR        3
+#define PA_UI_BITMAP_BRUSH_HLINE           4
+#define PA_UI_BITMAP_BRUSH_DLINE_DR        5
+#define PA_UI_BITMAP_BRUSH_DIAMOND         6
+
+PA_DIALOG * pa_create_brush_popup_dialog(PA_CANVAS_EDITOR * cep, float ox, float oy, int width, int height);
 
 #endif

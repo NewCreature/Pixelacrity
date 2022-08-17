@@ -406,6 +406,41 @@ int pa_color_a_down_button_proc(T3GUI_ELEMENT * d, void * dp3)
 	return 0;
 }
 
+int pa_brush_square_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	return 0;
+}
+
+int pa_brush_circle_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	return 0;
+}
+
+int pa_brush_vline_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	return 0;
+}
+
+int pa_brush_dline_ur_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	return 0;
+}
+
+int pa_brush_hline_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	return 0;
+}
+
+int pa_brush_dline_dr_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	return 0;
+}
+
+int pa_brush_diamond_proc(T3GUI_ELEMENT * d, void * dp3)
+{
+	return 0;
+}
+
 int pa_brush_okay_button_proc(T3GUI_ELEMENT * d, void * dp3)
 {
 	PA_UI * uip = (PA_UI *)dp3;
