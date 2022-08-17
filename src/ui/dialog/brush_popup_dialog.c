@@ -10,6 +10,8 @@
 #include "ui/element_proc/button_proc.h"
 #include "brush_popup_dialog.h"
 
+static int old_size;
+
 static bool load_bitmap(PA_DIALOG * dp, int slot, const char * name)
 {
 	dp->bitmap[slot] = pa_load_theme_bitmap(dp->theme, name);
@@ -26,7 +28,6 @@ PA_DIALOG * pa_create_brush_popup_dialog(PA_CANVAS_EDITOR * cep, float ox, float
 	T3GUI_ELEMENT * bg_box;
 	T3GUI_ELEMENT * frame_box;
 	T3GUI_ELEMENT * button[2];
-  T3GUI_ELEMENT * brush_element;
 	int pos_x;
 	int pos_vx;
 	int pos_y;
@@ -97,7 +98,8 @@ PA_DIALOG * pa_create_brush_popup_dialog(PA_CANVAS_EDITOR * cep, float ox, float
 
 	pos_x = 0;
 	pos_y = 0;
-	brush_element = t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_BOX], pa_gui_brush_proc, pos_x, pos_y, width, height, 0, D_NOFOCUS, 0, 0, cep, NULL, NULL);
+	dp->element[PA_BRUSH_DIALOG_ELEMENT_BRUSH] = t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_BOX], pa_gui_brush_proc, pos_x, pos_y, width, height, 0, D_NOFOCUS, 0, 0, cep, NULL, NULL);
+  dp->element[PA_BRUSH_DIALOG_ELEMENT_SIZE_SLIDER] = t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_SLIDER], t3gui_slider_proc, pos_x, pos_y + height + space, width, dp->theme->theme[PA_UI_THEME_SLIDER]->state[0].size, 0, 0, 64, cep->brush_size - 1, NULL, NULL, NULL);
   pos_x = pos_x - button_size - esl;
   t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, pos_x, pos_y, button_size, button_size, 0, 0, graphics_scale, 0, "Diamond", pa_brush_diamond_proc, dp->bitmap[PA_UI_BITMAP_BRUSH_DIAMOND]);
   pos_x = pos_x - button_size;
@@ -112,7 +114,7 @@ PA_DIALOG * pa_create_brush_popup_dialog(PA_CANVAS_EDITOR * cep, float ox, float
   t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, pos_x, pos_y, button_size, button_size, 0, 0, graphics_scale, 0, "Circle", pa_brush_circle_proc, dp->bitmap[PA_UI_BITMAP_BRUSH_CIRCLE]);
   pos_x = pos_x - button_size;
   t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_BUTTON], t3gui_push_button_proc, pos_x, pos_y, button_size, button_size, 0, 0, graphics_scale, 0, "Square", pa_brush_square_proc, dp->bitmap[PA_UI_BITMAP_BRUSH_SQUARE]);
-  pos_y += est + height;
+  pos_y += est + height + space + dp->theme->theme[PA_UI_THEME_SLIDER]->state[0].size;
 
 	/* buttons */
 	button[0] = t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_TEXT_BUTTON], t3gui_push_button_proc, pos_x, pos_y, 240, 32 + dp->theme->theme[PA_UI_THEME_BUTTON]->state[0].top_margin + dp->theme->theme[PA_UI_THEME_BUTTON]->state[0].bottom_margin, 27, D_EXIT, 0, 0, "Cancel", pa_brush_cancel_button_proc, NULL);
@@ -129,7 +131,7 @@ PA_DIALOG * pa_create_brush_popup_dialog(PA_CANVAS_EDITOR * cep, float ox, float
 	frame_box->y = min_y - space;
 	frame_box->w = max_x - min_x + space * 2;
 	frame_box->h = max_y - min_y + space * 2;
-	t3gui_align_dialog_element(dp->dialog->element, brush_element, ox, oy);
+	t3gui_align_dialog_element(dp->dialog->element, dp->element[PA_BRUSH_DIALOG_ELEMENT_BRUSH], ox, oy);
 	bg_box->x = 0;
 	bg_box->y = 0;
 	bg_box->w = al_get_display_width(t3f_display);
@@ -146,4 +148,20 @@ PA_DIALOG * pa_create_brush_popup_dialog(PA_CANVAS_EDITOR * cep, float ox, float
 		}
 		return NULL;
 	}
+}
+
+void pa_brush_dialog_pre_logic(PA_DIALOG * dp)
+{
+  old_size = dp->element[PA_BRUSH_DIALOG_ELEMENT_SIZE_SLIDER]->d2;
+}
+
+void pa_brush_dialog_post_logic(PA_DIALOG * dp, void * dp3)
+{
+  PA_CANVAS_EDITOR * cep = (PA_CANVAS_EDITOR *)dp->element[PA_BRUSH_DIALOG_ELEMENT_BRUSH]->dp;
+
+  if(old_size != dp->element[PA_BRUSH_DIALOG_ELEMENT_SIZE_SLIDER]->d2)
+  {
+    cep->brush_size = dp->element[PA_BRUSH_DIALOG_ELEMENT_SIZE_SLIDER]->d2 + 1;
+    pa_brush_square_proc(NULL, dp3);
+  }
 }

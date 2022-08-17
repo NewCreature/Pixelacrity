@@ -159,6 +159,10 @@ void pa_process_ui(PA_UI * uip)
 	{
 		pa_color_dialog_pre_logic(uip->color_popup_dialog);
 	}
+	if(uip->brush_popup_dialog)
+	{
+		pa_brush_dialog_pre_logic(uip->brush_popup_dialog);
+	}
 	t3gui_logic();
 	handle_color_drag_and_drop(uip);
 	if(uip->main_dialog)
@@ -207,7 +211,11 @@ void pa_process_ui(PA_UI * uip)
 	}
 	if(uip->brush_popup_dialog)
 	{
-		if(t3gui_get_active_dialogs() <= 1)
+		if(t3gui_get_active_dialogs() > 1)
+		{
+			pa_brush_dialog_post_logic(uip->brush_popup_dialog, uip);
+		}
+		else
 		{
 			pa_close_dialog(uip->brush_popup_dialog);
 			uip->brush_popup_dialog = NULL;
