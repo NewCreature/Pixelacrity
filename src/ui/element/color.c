@@ -9,7 +9,7 @@ static ALLEGRO_BITMAP * color_texture = NULL;
 static ALLEGRO_BITMAP * color_background = NULL;
 static T3F_ATLAS * color_atlas;
 
-PA_GUI_COLOR_DATA * pa_create_gui_color_data(ALLEGRO_COLOR * color, PA_COLOR_INFO * color_info, PA_COLOR_INFO * left_color, PA_COLOR_INFO * right_color, ALLEGRO_COLOR * left_target_color, ALLEGRO_COLOR * right_target_color, int * left_clicked, int * right_clicked)
+PA_GUI_COLOR_DATA * pa_create_gui_color_data(ALLEGRO_COLOR * color, PA_COLOR_INFO * color_info, PA_COLOR_INFO * left_color, PA_COLOR_INFO * right_color, ALLEGRO_COLOR * left_target_color, ALLEGRO_COLOR * right_target_color, int * left_clicked, int * right_clicked, int button)
 {
 	PA_GUI_COLOR_DATA * color_data;
 
@@ -27,6 +27,7 @@ PA_GUI_COLOR_DATA * pa_create_gui_color_data(ALLEGRO_COLOR * color, PA_COLOR_INF
 	color_data->right_target_color = right_target_color;
 	color_data->left_clicked = left_clicked;
 	color_data->right_clicked = right_clicked;
+	color_data->button = button;
 
 	return color_data;
 
@@ -175,11 +176,25 @@ int pa_gui_color_proc(int msg, T3GUI_ELEMENT * d, int c)
 						{
 							if(c == 1 && color_data->left_color)
 							{
-								color_data->left_color->base_color = *(color_data->color);
+								if(c != color_data->button)
+								{
+									color_data->left_color->base_color = *(color_data->color);
+								}
+								else
+								{
+									color_data->left_color->color = *(color_data->color);
+								}
 							}
 							else if(color_data->right_color)
 							{
-								color_data->right_color->base_color = *(color_data->color);
+								if(c != color_data->button)
+								{
+									color_data->right_color->base_color = *(color_data->color);
+								}
+								else
+								{
+									color_data->right_color->color = *(color_data->color);
+								}
 							}
 						}
 					}
