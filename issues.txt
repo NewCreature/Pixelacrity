@@ -1,6 +1,9 @@
 Pixelacrity 0.3.24 Issues
 -------------------------
 
+[ ]Color dialog theme reverts to default after it is closed and reopened a
+   number of times.
+
 [ ]Look into making it possible to resize subframes.
 
 [ ]See if we can enable multi-layer editing. When the user holds shift while
