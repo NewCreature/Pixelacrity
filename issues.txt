@@ -1,6 +1,8 @@
 Pixelacrity 0.3.25 Issues
 -------------------------
 
+[ ]Cancelling discard changes dialog closes app.
+
 [ ]Color dialog theme reverts to default after it is closed and reopened a
    number of times.
 
