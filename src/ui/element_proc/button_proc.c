@@ -421,6 +421,7 @@ int pa_brush_square_proc(T3GUI_ELEMENT * d, void * dp3)
 	cep->brush = al_create_bitmap(brush_size, brush_size);
 	if(cep->brush)
 	{
+		uip->brush_popup_dialog->variable[0] = 0;
 		al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_TRANSFORM);
 		al_identity_transform(&identity);
 		al_set_target_bitmap(cep->brush);
@@ -448,6 +449,7 @@ int pa_brush_circle_proc(T3GUI_ELEMENT * d, void * dp3)
 	cep->brush = al_create_bitmap(brush_size, brush_size);
 	if(cep->brush)
 	{
+		uip->brush_popup_dialog->variable[0] = 1;
 		al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_TRANSFORM);
 		al_identity_transform(&identity);
 		al_set_target_bitmap(cep->brush);
@@ -475,6 +477,7 @@ int pa_brush_vline_proc(T3GUI_ELEMENT * d, void * dp3)
 	cep->brush = al_create_bitmap(brush_size, brush_size);
 	if(cep->brush)
 	{
+		uip->brush_popup_dialog->variable[0] = 2;
 		al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_TRANSFORM);
 		al_identity_transform(&identity);
 		al_set_target_bitmap(cep->brush);
@@ -502,6 +505,7 @@ int pa_brush_dline_ur_proc(T3GUI_ELEMENT * d, void * dp3)
 	cep->brush = al_create_bitmap(brush_size, brush_size);
 	if(cep->brush)
 	{
+		uip->brush_popup_dialog->variable[0] = 3;
 		al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_TRANSFORM);
 		al_identity_transform(&identity);
 		al_set_target_bitmap(cep->brush);
@@ -531,6 +535,7 @@ int pa_brush_hline_proc(T3GUI_ELEMENT * d, void * dp3)
 	cep->brush = al_create_bitmap(brush_size, brush_size);
 	if(cep->brush)
 	{
+		uip->brush_popup_dialog->variable[0] = 4;
 		al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_TRANSFORM);
 		al_identity_transform(&identity);
 		al_set_target_bitmap(cep->brush);
@@ -558,6 +563,7 @@ int pa_brush_dline_dr_proc(T3GUI_ELEMENT * d, void * dp3)
 	cep->brush = al_create_bitmap(brush_size, brush_size);
 	if(cep->brush)
 	{
+		uip->brush_popup_dialog->variable[0] = 5;
 		al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_TRANSFORM);
 		al_identity_transform(&identity);
 		al_set_target_bitmap(cep->brush);
@@ -588,6 +594,7 @@ int pa_brush_diamond_proc(T3GUI_ELEMENT * d, void * dp3)
 	cep->brush = al_create_bitmap(brush_size, brush_size);
 	if(cep->brush)
 	{
+		uip->brush_popup_dialog->variable[0] = 6;
 		al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_TRANSFORM);
 		al_identity_transform(&identity);
 		al_set_target_bitmap(cep->brush);

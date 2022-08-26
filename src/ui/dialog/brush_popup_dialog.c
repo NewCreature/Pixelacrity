@@ -161,7 +161,44 @@ void pa_brush_dialog_post_logic(PA_DIALOG * dp, void * dp3)
 
   if(old_size != dp->element[PA_BRUSH_DIALOG_ELEMENT_SIZE_SLIDER]->d2)
   {
-    cep->brush_size = dp->element[PA_BRUSH_DIALOG_ELEMENT_SIZE_SLIDER]->d2 + 1;
-    pa_brush_square_proc(NULL, dp3);
+		cep->brush_size = dp->element[PA_BRUSH_DIALOG_ELEMENT_SIZE_SLIDER]->d2 + 1;
+		switch(dp->variable[0])
+		{
+			case 0:
+			{
+    		pa_brush_square_proc(NULL, dp3);
+				break;
+			}
+			case 1:
+			{
+    		pa_brush_circle_proc(NULL, dp3);
+				break;
+			}
+			case 2:
+			{
+    		pa_brush_vline_proc(NULL, dp3);
+				break;
+			}
+			case 3:
+			{
+    		pa_brush_dline_ur_proc(NULL, dp3);
+				break;
+			}
+			case 4:
+			{
+    		pa_brush_hline_proc(NULL, dp3);
+				break;
+			}
+			case 5:
+			{
+    		pa_brush_dline_dr_proc(NULL, dp3);
+				break;
+			}
+			case 6:
+			{
+    		pa_brush_diamond_proc(NULL, dp3);
+				break;
+			}
+		}
   }
 }
