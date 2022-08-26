@@ -1,51 +1,24 @@
 Pixelacrity 0.4.1 Issues
 ------------------------
 
-[ ]Color dialog theme reverts to default after it is closed and reopened a
-   number of times.
+[ ]Hold shift to set the hover color to a composite of what's under the cursor.
 
-[ ]Finish brush dialog.
-
-   [ ]Show scaled and unscaled versions of brush.
-
-      [ ]Make brush element able to display non-scaled version as an option.
-   
-   [ ]Align shape buttons vertically in pairs.
+[ ]Add about screen.
 
 [ ]Look into making it possible to resize subframes.
+
+   [ ]Rewrite hover frame code to allow multiple frames to be 'hovered' at
+      once. If more than one frame is 'hovered' we'll show a context menu to
+      allow the user to pick out which frame they wanted.
 
 [ ]See if we can enable multi-layer editing. When the user holds shift while
    drawing, the changes should affect all layers.
 
-[ ]Finish rotating selection implementation.
+[ ]Finish selection rotation and scaling implementation.
 
-   [X]Make scaling work again.
+   [ ]Implement rotation.
 
-   [X]Make rotated selection render to the canvas properly.
-
-      [X]Render the rotated selection to scratch then use the quad primitive to
-         get it onto the canvas.
-
-      [X]Figure out why scaling of final render seems to be off by one pixel.
-
-         [X]Preview is offset by one pixel in the scratch bitmap for odd width/
-            height values. Check pa_tool_selection_render_layer_preview() for
-            issues with position calculation.
-
-   [ ]Ensure the undo state includes enough area around the selection box so
-      the undo works properly.
-
-   [ ]Render angle line as part of the selection box rendering.
-
-   [ ]Use different handle graphic for rotate handle so we know what it's for.
-
-   [X]Make rendering rotated multi-layer selections to canvas work.
-
-   [ ]Fix floated odd-sized selection not scaled properly.
-
-      [ ]Snapping cx/cy to an integer value seems to fix the issue. We need to
-         test to see if rotating an odd-sized object properly rotates around the
-         center pixel.
+   [ ]Implement bilinear filter toggle.
 
 [ ]Add pane-specific edge space settings to themes. Some themes might need to
    have these settings for fine-tuning the overall look.
@@ -101,15 +74,10 @@ Pixelacrity 0.4.1 Issues
 
 [ ]Add recent documents option to File menu.
 
-[ ]Line up positioning of brush preview with the brush preview grid.
+[ ]Hold shift to make hover color a composite of what's under the cursor.
 
-[ ]Add hover color comparison element. Hover color element should be able to
-   show the difference between the current left and/or right colors and the
-   hover color.
-
-   [ ]To show the hover color for the canvas, we can show both the current
-      layer color and the composite color or hold a modifier key to switch
-      between them.
+[ ]Add tile view. We'll repeat what's in the current frame across the entire
+   screen when this view is enabled.
 
 
 Allegro Issues
@@ -1126,3 +1094,14 @@ Closed Issues
          the 'c' argument) does not match the specified button.
 
 [X]Cancelling discard changes dialog closes app.
+
+[X]Finish brush dialog.
+
+[X]Color dialog theme reverts to default after it is closed and reopened a
+   number of times.
+
+[X]Line up positioning of brush preview with the brush preview grid.
+
+[X]Add hover color comparison element. Hover color element should be able to
+   show the difference between the current left and/or right colors and the
+   hover color.
