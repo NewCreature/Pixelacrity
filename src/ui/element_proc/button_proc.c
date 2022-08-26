@@ -587,6 +587,10 @@ int pa_brush_diamond_proc(T3GUI_ELEMENT * d, void * dp3)
 	int brush_size = cep->brush_size > 2 ? cep->brush_size : 3;
 	int i, ni;
 
+	if(brush_size % 2 == 0)
+	{
+		brush_size++;
+	}
 	if(cep->brush)
 	{
 		al_destroy_bitmap(cep->brush);
