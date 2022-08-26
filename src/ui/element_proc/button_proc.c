@@ -425,7 +425,7 @@ int pa_brush_square_proc(T3GUI_ELEMENT * d, void * dp3)
 		al_identity_transform(&identity);
 		al_set_target_bitmap(cep->brush);
 		al_use_transform(&identity);
-		al_clear_to_color(t3f_color_black);
+		al_clear_to_color(t3f_color_white);
 		al_restore_state(&old_state);
 	}
 
