@@ -1,5 +1,5 @@
-Pixelacrity 0.3.25 Issues
--------------------------
+Pixelacrity 0.4.1 Issues
+------------------------
 
 [ ]Color dialog theme reverts to default after it is closed and reopened a
    number of times.
