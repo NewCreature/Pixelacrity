@@ -1,8 +1,6 @@
 Pixelacrity 0.3.25 Issues
 -------------------------
 
-[ ]Cancelling discard changes dialog closes app.
-
 [ ]Color dialog theme reverts to default after it is closed and reopened a
    number of times.
 
@@ -1126,3 +1124,5 @@ Closed Issues
          to let us make an informed decision on whether to update the base
          color. We should only update the base color if the mouse button (check
          the 'c' argument) does not match the specified button.
+
+[X]Cancelling discard changes dialog closes app.
