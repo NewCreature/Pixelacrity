@@ -37,7 +37,7 @@ static int close_canvas(APP_INSTANCE * app)
 				}
 				case 3:
 				{
-					ret = false;
+					ret = 1;
 					break;
 				}
 			}
