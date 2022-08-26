@@ -3,6 +3,8 @@ Pixelacrity 0.4.1 Issues
 
 [ ]Hold shift to set the hover color to a composite of what's under the cursor.
 
+[ ]See if we can use the image file selector to get image previews.
+
 [ ]Add about screen.
 
 [ ]Look into making it possible to resize subframes.
@@ -41,13 +43,13 @@ Pixelacrity 0.4.1 Issues
          brush doesn't fit within the preview area it should be scaled down to
          fit.
 
-   [ ]Add brush palette for selecting from some basic brush shapes.
+   [X]Add brush palette for selecting from some basic brush shapes.
 
-      [ ]This should be implemented as a popup dialog.
+      [X]This should be implemented as a popup dialog.
 
    [ ]Allow selecting between copy and composite rendering for tools.
 
-   [ ]Allow toggling outline mode for filled tools.
+   [X]Allow toggling outline mode for filled tools.
 
 [ ]Add fallback software rendering method for exporting canvas so we can render
    it to a memory bitmap without relying on pre-multiplied alpha. We can't use
