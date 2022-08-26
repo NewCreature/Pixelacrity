@@ -171,7 +171,7 @@ void pa_canvas_editor_MSG_IDLE(T3GUI_ELEMENT * d, int c)
 		canvas_editor->view_fy = canvas_editor->view_y;
 		t3f_key[ALLEGRO_KEY_C] = 0;
 	}
-	if(canvas_editor->tool_state == PA_TOOL_STATE_OFF)
+	if(canvas_editor->tool_state == PA_TOOL_STATE_OFF && d->flags & D_GOTMOUSE)
 	{
 		canvas_editor->hover_color = pa_get_canvas_pixel(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y);
 	}

@@ -52,6 +52,8 @@ void pa_resize_palette(int width, int height)
 
 int pa_gui_palette_proc(int msg, T3GUI_ELEMENT * d, int c)
 {
+	ALLEGRO_COLOR * hover_color = d->dp3;
+
 	switch(msg)
 	{
 		case MSG_START:
@@ -65,6 +67,14 @@ int pa_gui_palette_proc(int msg, T3GUI_ELEMENT * d, int c)
 			{
 				al_destroy_bitmap(_palette_bitmap);
 				_palette_bitmap = NULL;
+			}
+			break;
+		}
+		case MSG_IDLE:
+		{
+			if(d->flags & D_GOTMOUSE)
+			{
+				*hover_color = al_get_pixel(_palette_bitmap, t3gui_get_mouse_x() - d->x, t3gui_get_mouse_y() - d->y);
 			}
 			break;
 		}

@@ -9,7 +9,7 @@ static ALLEGRO_BITMAP * color_texture = NULL;
 static ALLEGRO_BITMAP * color_background = NULL;
 static T3F_ATLAS * color_atlas;
 
-PA_GUI_COLOR_DATA * pa_create_gui_color_data(ALLEGRO_COLOR * color, PA_COLOR_INFO * color_info, PA_COLOR_INFO * left_color, PA_COLOR_INFO * right_color, ALLEGRO_COLOR * left_target_color, ALLEGRO_COLOR * right_target_color, int * left_clicked, int * right_clicked, int button)
+PA_GUI_COLOR_DATA * pa_create_gui_color_data(ALLEGRO_COLOR * color, PA_COLOR_INFO * color_info, PA_COLOR_INFO * left_color, PA_COLOR_INFO * right_color, ALLEGRO_COLOR * left_target_color, ALLEGRO_COLOR * right_target_color, ALLEGRO_COLOR * hover_target_color, int * left_clicked, int * right_clicked, int button)
 {
 	PA_GUI_COLOR_DATA * color_data;
 
@@ -25,6 +25,7 @@ PA_GUI_COLOR_DATA * pa_create_gui_color_data(ALLEGRO_COLOR * color, PA_COLOR_INF
 	color_data->right_color = right_color;
 	color_data->left_target_color = left_target_color;
 	color_data->right_target_color = right_target_color;
+	color_data->hover_target_color = hover_target_color;
 	color_data->left_clicked = left_clicked;
 	color_data->right_clicked = right_clicked;
 	color_data->button = button;
@@ -101,6 +102,21 @@ void pa_drop_or_swap_gui_color_data(PA_GUI_COLOR_DATA * sdp, PA_GUI_COLOR_DATA *
 	}
 }
 
+static void set_hover_color(PA_GUI_COLOR_DATA * color_data)
+{
+	if(color_data->hover_target_color)
+	{
+		if(color_data->color_info)
+		{
+			*color_data->hover_target_color = color_data->color_info->color;
+		}
+		else if(color_data->color)
+		{
+			*color_data->hover_target_color = *color_data->color;
+		}
+	}
+}
+
 int pa_gui_color_proc(int msg, T3GUI_ELEMENT * d, int c)
 {
 	PA_GUI_COLOR_DATA * color_data = (PA_GUI_COLOR_DATA *)d->dp;
@@ -135,6 +151,11 @@ int pa_gui_color_proc(int msg, T3GUI_ELEMENT * d, int c)
 			{
 				pa_destroy_gui_color_data(d->dp);
 			}
+			break;
+		}
+		case MSG_GOTMOUSE:
+		{
+			set_hover_color(color_data);
 			break;
 		}
 		case MSG_MOUSEDOWN:

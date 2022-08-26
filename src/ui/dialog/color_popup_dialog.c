@@ -72,7 +72,7 @@ PA_DIALOG * pa_create_color_editor_popup_dialog(PA_COLOR_INFO * color_info, floa
 
 	pos_x = 0;
 	pos_y = 0;
-	dp->element[PA_COLOR_DIALOG_ELEMENT_COLOR] = t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_BOX], pa_gui_color_proc, pos_x, pos_y, s, s, 0, D_NOFOCUS, 0, 0, pa_create_gui_color_data(NULL, color_info, NULL, NULL, NULL, NULL, NULL, NULL, 0), NULL, NULL);
+	dp->element[PA_COLOR_DIALOG_ELEMENT_COLOR] = t3gui_dialog_add_element(dp->dialog, dp->theme->theme[PA_UI_THEME_BOX], pa_gui_color_proc, pos_x, pos_y, s, s, 0, D_NOFOCUS, 0, 0, pa_create_gui_color_data(NULL, color_info, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0), NULL, NULL);
 
 	/* R */
 	dp->edit_text[0] = malloc(4);
