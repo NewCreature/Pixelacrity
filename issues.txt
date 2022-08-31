@@ -1,6 +1,8 @@
 Pixelacrity 0.4.1 Issues
 ------------------------
 
+[ ]Brush editor cancel button doesn't revert to original brush.
+
 [ ]Make map have a full canvas preview instead of just outlines and boxes.
 
 [ ]Hold shift to set the hover color to a composite of what's under the cursor.
