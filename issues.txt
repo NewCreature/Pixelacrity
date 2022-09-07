@@ -1,6 +1,8 @@
 Pixelacrity 0.4.1 Issues
 ------------------------
 
+[ ]Hold Ctrl when resizing selection to maintain aspect ratio.
+
 [ ]Brush editor cancel button doesn't revert to original brush.
 
 [ ]Make map have a full canvas preview instead of just outlines and boxes.
