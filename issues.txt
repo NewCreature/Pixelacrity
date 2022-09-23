@@ -6,6 +6,19 @@ Pixelacrity 0.4.1 Issues
 
 [ ]Add ability to copy a frame directly into the clipboard.
 
+[ ]Fix bug in slider_proc() which causes it to not scroll all the way to the
+   bottom in certain circumstances.
+
+   [ ]Rewrite logic to handle slider position calculations outside of the
+      drawing routine.
+
+   [ ]Handle edge case where slider handle is slightly too large to allow the
+      scroll bar to go all the way to the bottom.
+
+      We might click it into the last possible position if it tries to go over.
+      Otherwise, we might make the scroll bar slightly smaller if it can't fit
+      into the last position.
+
 [ ]Hold Ctrl when resizing selection to maintain aspect ratio.
 
 [ ]Brush editor cancel button doesn't revert to original brush.
@@ -1012,11 +1025,11 @@ Closed Issues
 
    [X]Select color on MSG_MOUSEUP. Track mouse on MSG_MOUSEDOWN and only change
       the selected color if the MOUSE_UP occurs on the same color element.
-   
+
    [X]Add GUI element for color that has been picked up. Add mechanism to color
       element module to ignore element so we only see it when a color is being
       dragged.
-   
+
    [X]Implement drop or swap logic which depends on if the picked up color is
       from the palette or the main color or color pickers.
 
@@ -1027,18 +1040,18 @@ Closed Issues
       [X]Don't enable floating color element until a drag occurs.
 
       [X]Don't allow color pickers to receive dropped colors.
-   
+
    [X]Finalize the look of the floating color. The floating color should be no
       bigger than the color size defined in the current theme. We might need to
       make it slightly smaller to make it easier to see the drop location.
-   
+
    [X]Add ability to highlight a color. We'll highlight the color the floating
       color will be dropped into. We might also highlight the current color and
       the hover color.
 
       [X]We should use the element's theme to render the highlight. The standard
          and standard 2x themes should contain a color element theme.
-   
+
    [X]Draw a line connecting the floating color's origin to the floating color.
       This will make it easier to understand what will happen when the color is
       dropped.
@@ -1063,13 +1076,13 @@ Closed Issues
 
    [X]Allow numerical values in edit boxes to be incremented/decremented by
       using the arrow keys.
-   
+
    [X]Update shade picker colors after editing color.
 
       [X]The color dialog color element should use the left or right color info
          instead of directly referencing the colors so the base color can be
          updated on Okay.
-      
+
       [X]We should make the base color the current color so the shade picker
          will update itself. We need a way to know which base color to update.
          The PA_GUI_COLOR_DATA data structure should point to the PA_COLOR_INFO
