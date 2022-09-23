@@ -1,6 +1,11 @@
 Pixelacrity 0.4.1 Issues
 ------------------------
 
+[ ]Pasting while a frame is floating causes the frame to connect to the pasted
+   selection.
+
+[ ]Add ability to copy a frame directly into the clipboard.
+
 [ ]Hold Ctrl when resizing selection to maintain aspect ratio.
 
 [ ]Brush editor cancel button doesn't revert to original brush.
