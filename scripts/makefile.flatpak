@@ -1,0 +1,12 @@
+include makefile.linux
+
+../debian/control_gen: ../debian/control_gen.o
+	$(CC) $(T3F_CFLAGS) ../debian/control_gen.o -o ../debian/control_gen
+
+#generate Debian package
+flatpak:
+	mkdir -p ../temp
+	cp ../misc/flatpak_manifest.yaml ../temp/$(APP_ID).yaml
+	$(SED_COMMAND) "s|T3F_APP_ID|$(APP_ID)|" ../temp/$(APP_ID).yaml
+	$(SED_COMMAND) "s|T3F_APP_COMMAND|$(APP_NAME)|" ../temp/$(APP_ID).yaml
+	flatpak-builder --user ../temp/build ../temp/$(APP_ID).yaml
