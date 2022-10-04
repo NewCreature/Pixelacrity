@@ -86,6 +86,11 @@ binary_package_temp: $(APP_EXE_NAME)
 	@$(SED_COMMAND) 's|T3F_APP_NAME|$(APP_NAME)|' ../temp/$(APP_PACKAGE_NAME)/install.sh
 	@$(SED_COMMAND) 's|T3F_APP_DIR|$(DEBIAN_DIR)|' ../temp/$(APP_PACKAGE_NAME)/install.sh
 	@$(SED_COMMAND) 's|T3F_APP_CATEGORIES|$(DEBIAN_DESKTOP_CATEGORIES)|' ../temp/$(APP_PACKAGE_NAME)/install.sh
+	@cp ../misc/binary_uninstall.sh ../temp/$(APP_PACKAGE_NAME)/uninstall.sh
+	@$(SED_COMMAND) 's|T3F_APP_TITLE|$(APP_TITLE)|' ../temp/$(APP_PACKAGE_NAME)/uninstall.sh
+	@$(SED_COMMAND) 's|T3F_APP_NAME|$(APP_NAME)|' ../temp/$(APP_PACKAGE_NAME)/uninstall.sh
+	@$(SED_COMMAND) 's|T3F_APP_DIR|$(DEBIAN_DIR)|' ../temp/$(APP_PACKAGE_NAME)/uninstall.sh
+	@$(SED_COMMAND) 's|T3F_APP_CATEGORIES|$(DEBIAN_DESKTOP_CATEGORIES)|' ../temp/$(APP_PACKAGE_NAME)/uninstall.sh
 
 binary_package: binary_package_temp
 	@echo "Build archive..."
