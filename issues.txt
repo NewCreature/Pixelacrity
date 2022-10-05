@@ -1,6 +1,18 @@
 Pixelacrity 0.4.1 Issues
 ------------------------
 
+[ ]Finish implementing flatpak packaging.
+
+   [ ]Move Debian descriptions to APP_SUMMARY and APP_DESCRIPTION.
+
+   [ ]Export APP_SUMMARY and APP_DESCRIPTION to AppStream data.
+
+   [ ]Add APP_SCREENSHOT_URL.
+
+   [ ]Add screenshot section to AppStream data.
+
+   [ ]Export APP_SCREENSHOT_URL to AppStream data.
+
 [ ]Pasting while a frame is floating causes the frame to connect to the pasted
    selection.
 
