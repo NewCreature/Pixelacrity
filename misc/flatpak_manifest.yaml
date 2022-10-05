@@ -6,7 +6,7 @@ finish-args:
   - --share=ipc
   - --socket=x11
   - --socket=wayland
-  - --share=network'
+  - --share=network
   - --filesystem=xdg-documents
 command: T3F_APP_COMMAND
 
@@ -36,4 +36,4 @@ modules:
       - type: dir
         path: ../
     build-commands:
-      - cd src; make clean; make; make install
+      - cd src; make clean; make; INSTALL_PREFIX=$FLATPAK_DEST make install_flatpak

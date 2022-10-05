@@ -97,3 +97,6 @@ install:
 
 uninstall:
 	$(MAKE) -f ../scripts/makefile.$(SYSTEM) -I ../scripts uninstall
+
+install_flatpak:
+	$(MAKE) -f ../scripts/makefile.$(SYSTEM) -I ../scripts install_flatpak
