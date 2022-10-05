@@ -8,6 +8,7 @@ finish-args:
   - --socket=wayland
   - --share=network
   - --filesystem=xdg-documents
+  - --device=dri
 command: T3F_APP_COMMAND
 
 modules:
