@@ -203,7 +203,34 @@ static void draw_canvas_layer(PA_CANVAS * cp, int layer, int flags, ALLEGRO_BITM
 	}
 }
 
-static void draw_canvas_layers(PA_CANVAS * cp, int start_layer, int end_layer, int flags_filter, ALLEGRO_BITMAP * bp, int offset_x, int offset_y, int width, int height)
+static void draw_background(ALLEGRO_BITMAP * bp, int x, int y, int width, int height, int scale)
+{
+	int i, j;
+	int tw, th;
+	bool held = al_is_bitmap_drawing_held();
+
+	if(held)
+	{
+		al_hold_bitmap_drawing(false);
+	}
+	al_hold_bitmap_drawing(true);
+	tw = width / scale + 1;
+	th = height / scale + 1;
+	for(i = 0; i < th; i++)
+	{
+		for(j = 0; j < tw; j++)
+		{
+			t3f_draw_scaled_bitmap(bp, t3f_color_white, x + j * scale, y + i * scale, 0, scale, scale, 0);
+		}
+	}
+	al_hold_bitmap_drawing(false);
+	if(held)
+	{
+		al_hold_bitmap_drawing(true);
+	}
+}
+
+static void draw_canvas_layers(PA_CANVAS * cp, int start_layer, int end_layer, int flags_filter, ALLEGRO_BITMAP * bp, int offset_x, int offset_y, int width, int height, ALLEGRO_SHADER * shader)
 {
 	ALLEGRO_TRANSFORM identity;
 	int flags;
@@ -211,8 +238,8 @@ static void draw_canvas_layers(PA_CANVAS * cp, int start_layer, int end_layer, i
 
 	al_identity_transform(&identity);
 	al_set_target_bitmap(bp);
+	pa_set_target_pixel_shader(shader);
 	al_use_transform(&identity);
-	al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
 	for(i = start_layer; i < end_layer; i++)
 	{
 		if(i == start_layer)
@@ -239,12 +266,9 @@ void pa_render_canvas_to_bitmap(PA_CANVAS * cp, int start_layer, int end_layer, 
 	ALLEGRO_STATE old_state;
 
 	al_store_state(&old_state, ALLEGRO_STATE_TRANSFORM | ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_BLENDER);
-	al_set_target_bitmap(bp);
-	pa_set_target_pixel_shader(shader);
-	al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
 	if(start_layer < cp->layer_max && end_layer <= cp->layer_max)
 	{
-		draw_canvas_layers(cp, start_layer, end_layer, flags_filter, bp, x, y, w, h);
+		draw_canvas_layers(cp, start_layer, end_layer, flags_filter, bp, x, y, w, h, shader);
 	}
 	al_restore_state(&old_state);
 }
