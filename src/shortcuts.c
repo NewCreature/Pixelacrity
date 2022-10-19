@@ -133,6 +133,71 @@ static int used_scale_shortcuts(APP_INSTANCE * app)
 	return 0;
 }
 
+int used_layer_shortcuts(APP_INSTANCE * app)
+{
+	if((t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT]) && t3f_key[ALLEGRO_KEY_1])
+	{
+		pa_select_canvas_editor_layer(app->canvas_editor, 0);
+		return 1;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT]) && t3f_key[ALLEGRO_KEY_2])
+	{
+		pa_select_canvas_editor_layer(app->canvas_editor, 1);
+		return 1;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT]) && t3f_key[ALLEGRO_KEY_3])
+	{
+		pa_select_canvas_editor_layer(app->canvas_editor, 2);
+		return 1;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT]) && t3f_key[ALLEGRO_KEY_4])
+	{
+		pa_select_canvas_editor_layer(app->canvas_editor, 3);
+		return 1;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT]) && t3f_key[ALLEGRO_KEY_5])
+	{
+		pa_select_canvas_editor_layer(app->canvas_editor, 4);
+		return 1;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT]) && t3f_key[ALLEGRO_KEY_6])
+	{
+		pa_select_canvas_editor_layer(app->canvas_editor, 5);
+		return 1;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT]) && t3f_key[ALLEGRO_KEY_7])
+	{
+		pa_select_canvas_editor_layer(app->canvas_editor, 6);
+		return 1;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT]) && t3f_key[ALLEGRO_KEY_8])
+	{
+		pa_select_canvas_editor_layer(app->canvas_editor, 7);
+		return 1;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT]) && t3f_key[ALLEGRO_KEY_9])
+	{
+		pa_select_canvas_editor_layer(app->canvas_editor, 8);
+		return 1;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT]) && t3f_key[ALLEGRO_KEY_0])
+	{
+		pa_select_canvas_editor_layer(app->canvas_editor, 9);
+		return 1;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT]) && t3f_key[ALLEGRO_KEY_HOME])
+	{
+		pa_select_canvas_editor_layer(app->canvas_editor, 0);
+		return 1;
+	}
+	else if((t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT]) && t3f_key[ALLEGRO_KEY_END])
+	{
+		pa_select_canvas_editor_layer(app->canvas_editor, app->canvas->layer_max - 1);
+		return 1;
+	}
+	return 0;
+}
+
 void pa_handle_shortcuts(APP_INSTANCE * app)
 {
 	int x, y, width, height;
@@ -140,6 +205,9 @@ void pa_handle_shortcuts(APP_INSTANCE * app)
 	bool step = false;
 
 	if(used_scale_shortcuts(app))
+	{
+	}
+	else if(used_layer_shortcuts(app))
 	{
 	}
 	else if((t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]) && (t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT]) && t3f_key[ALLEGRO_KEY_X])
