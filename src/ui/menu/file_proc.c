@@ -5,6 +5,7 @@
 #include "ui/window.h"
 #include "modules/canvas/canvas_file.h"
 #include "modules/canvas/canvas_helpers.h"
+#include "modules/bitmap.h"
 #include "file.h"
 #include "file_proc.h"
 #include "ui/canvas_editor/undo/undo.h"
@@ -313,6 +314,7 @@ static bool export(PA_CANVAS * cp, int x, int y, int width, int height, const ch
 	if(bp)
 	{
 		pa_render_canvas_to_bitmap(cp, 0, cp->layer_max, x, y, width, height, 0, bp, shader);
+		pa_unpremultiply_bitmap_alpha(bp);
 		al_save_bitmap(fn, bp);
 		al_destroy_bitmap(bp);
 		return true;
