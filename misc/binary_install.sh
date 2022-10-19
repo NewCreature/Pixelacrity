@@ -29,7 +29,7 @@ else
     cp icons/icon.svg $prefix/share/icons/$app_name.svg || true
     cp icons/icon.png $prefix/share/icons/$app_name.png || true
     cp bin/$app_name $prefix/$app_dir/$app_name
-    printf "[Desktop Entry]\nName="$app_title"\nExec=$prefix/$app_dir/$app_name\nIcon=$app_name\nTerminal=false\nType=Application\nCategories=$app_categories;" > $prefix/share/applications/$app_name.desktop
+    printf "[Desktop Entry]\nName="$app_title"\nExec=$prefix/$app_dir/$app_name %%F\nIcon=$app_name\nTerminal=false\nType=Application\nCategories=$app_categories;" > $prefix/share/applications/$app_name.desktop
     chmod 755 $prefix/$app_dir/$app_name
     find $prefix/share/$app_name -type f -exec chmod 644 {} \;
     chmod 644 $prefix/share/doc/$app_name/README || true
