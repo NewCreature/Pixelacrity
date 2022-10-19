@@ -176,3 +176,36 @@ void pa_set_bitmap_flags(ALLEGRO_BITMAP * bp, int flags)
 	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_BORDER);
 	glBindTexture(GL_TEXTURE_2D, old_texture);
 }
+
+/* When compositing to a bitmap to save, we need to remove the pre-
+   multiplication so the image file does not contain the pre-multiplied 
+	 RGB values. */
+void pa_unpremultiply_bitmap_alpha(ALLEGRO_BITMAP * bp)
+{
+	int i, j;
+	ALLEGRO_COLOR c;
+	float r, g, b, a;
+	ALLEGRO_STATE old_state;
+
+	al_store_state(&old_state, ALLEGRO_STATE_TRANSFORM | ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_BLENDER);
+	al_lock_bitmap(bp, ALLEGRO_PIXEL_FORMAT_ANY, ALLEGRO_LOCK_READWRITE);
+	al_set_target_bitmap(bp);
+	for(i = 0; i < al_get_bitmap_height(bp); i++)
+	{
+		for(j = 0; j < al_get_bitmap_width(bp); j++)
+		{
+			c = al_get_pixel(bp, j, i);
+			al_unmap_rgba_f(c, &r, &g, &b, &a);
+			if(a > 0.0)
+			{
+				al_put_pixel(j, i, al_map_rgba_f(r / a, g / a, b / a, a));
+			}
+			else
+			{
+				al_put_pixel(j, i, al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
+			}
+		}
+	}
+	al_unlock_bitmap(bp);
+	al_restore_state(&old_state);
+}
