@@ -23,6 +23,7 @@ else
     rm -f $prefix/share/doc/$app_name/README
     rm -f $prefix/share/doc/$app_name/copyright
     rm -f $prefix/share/icons/$app_name.svg
+    rm -f $prefix/share/icons/$app_name.png
     rm -f $prefix/$app_dir/$app_name
     rm -f $prefix/share/applications/$app_name.desktop
     update-desktop-database
