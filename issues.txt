@@ -1,6 +1,8 @@
 Pixelacrity 0.4.2 Issues
 ------------------------
 
+[ ]Look into paste undo not working properly.
+
 [ ]Finish implementing flatpak packaging.
 
    [ ]Move Debian descriptions to APP_SUMMARY and APP_DESCRIPTION.
