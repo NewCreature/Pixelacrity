@@ -3,6 +3,10 @@ Pixelacrity 0.4.2 Issues
 
 [ ]Look into paste undo not working properly.
 
+[ ]Look into Paste Merged leaving artifacts on the merged image.
+
+[ ]Ensure Paste Merged handles pre-multiplied alpha correctly.
+
 [ ]Finish implementing flatpak packaging.
 
    [ ]Move Debian descriptions to APP_SUMMARY and APP_DESCRIPTION.
