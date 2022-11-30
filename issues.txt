@@ -1,6 +1,12 @@
 Pixelacrity 0.4.2 Issues
 ------------------------
 
+[ ]Shift-clicking does not consistently retrieve the combine color of the
+   current pixel on Ubuntu 22.
+
+[ ]Ctrl-clicking to drag a selection along an axis does not work correctly on
+   Ubuntu 22.
+
 [ ]Look into paste undo not working properly.
 
 [ ]Look into Paste Merged leaving artifacts on the merged image.
