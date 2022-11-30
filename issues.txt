@@ -1,6 +1,8 @@
 Pixelacrity 0.4.2 Issues
 ------------------------
 
+[ ]Zoom in/out should center around the cursor.
+
 [ ]Last path not remembered when loading an image as a canvas.
 
 [ ]Shift-clicking does not consistently retrieve the combine color of the
