@@ -19,7 +19,7 @@ APP_ID = com.tcubedsoftware.pixelacrity
 APP_URL = https://wwww.tcubedsoftware.com/scripts/pages/project.php?id=pixelacrity
 APP_OBJECTS = $(T3GUI_OBJECTS) $(APP_MODULE_OBJECTS) $(APP_CANVAS_EDITOR_OBJECTS) $(APP_UI_OBJECTS) main.o shortcuts.o
 APP_PACKAGE_DIR = ../packages
-#APP_LIBS =
+#APP_LIBS = -lsharpyuv
 APP_CFLAGS = -O2 -Wall -I. -DT3F_NO_KEEP_AWAKE
 #APP_EXTRA_TARGET =
 app_clean:
@@ -40,7 +40,7 @@ app_clean:
 #LINUX_CFLAGS =
 #LINUX_PLATFORM_OBJECTS =
 #LINUX_PLATFORM_LIBS =
-LINUX_DEPEND_LIBS = -lGL
+LINUX_DEPEND_LIBS = -lGL -lsharpyuv
 #LINUX_PLATFORM_TARGET =
 
 ################################################

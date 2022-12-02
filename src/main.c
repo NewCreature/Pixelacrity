@@ -18,6 +18,7 @@ void app_event_handler(ALLEGRO_EVENT * event, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 	ALLEGRO_STATE old_state;
+	int i;
 
 	switch(event->type)
 	{
@@ -73,20 +74,25 @@ void app_event_handler(ALLEGRO_EVENT * event, void * data)
 			break;
 		}
 
-		/* On SWITCH_OUT, start timer. If timer reaches 0 before SWITCH_IN, this
-		   should indicate the user actually switched out of the app. If a
-			 SWITCH_IN occurs before the timer expires, this is probably a SWITCH_OUT
-			 caused by the new GNOME behaviour. We'll reset the timer to 0 to prevent
-			 the keyboard state from being cleared in this case. Some user inputs
-			 don't work properly under the newest GNOME without this workaround. */
+		/*  */
 		case ALLEGRO_EVENT_DISPLAY_SWITCH_OUT:
 		{
-			app->clear_keyboard_state_ticks = PA_CLEAR_KEYBOARD_STATE_WAIT_TICKS;
+			if(app->clear_keyboard_state_ticks)
+			{
+				app->clear_keyboard_state_ticks = 0;
+			}
+			else
+			{
+				for(i = 0; i < ALLEGRO_KEY_MAX; i++)
+				{
+					t3f_key[i] = 0;
+				}
+			}
 			break;
 		}
 		case ALLEGRO_EVENT_DISPLAY_SWITCH_IN:
 		{
-			app->clear_keyboard_state_ticks = 0;
+			app->clear_keyboard_state_ticks = PA_CLEAR_KEYBOARD_STATE_WAIT_TICKS;
 			break;
 		}
 		case ALLEGRO_EVENT_MOUSE_ENTER_DISPLAY:
@@ -114,7 +120,6 @@ void app_event_handler(ALLEGRO_EVENT * event, void * data)
 void app_logic(void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
-	int i;
 
 	if(app->restart_ui)
 	{
@@ -124,14 +129,6 @@ void app_logic(void * data)
 	if(app->clear_keyboard_state_ticks)
 	{
 		app->clear_keyboard_state_ticks--;
-		if(app->clear_keyboard_state_ticks <= 0)
-		{
-			printf("clear keys\n");
-			for(i = 0; i < ALLEGRO_KEY_MAX; i++)
-			{
-				t3f_key[i] = 0;
-			}
-		}
 	}
 	/* handle signals */
 	if(app->canvas_editor)
