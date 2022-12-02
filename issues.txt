@@ -5,11 +5,16 @@ Pixelacrity 0.4.2 Issues
 
 [ ]Last path not remembered when loading an image as a canvas.
 
-[ ]Shift-clicking does not consistently retrieve the combine color of the
-   current pixel on Ubuntu 22.
+[ ]Shift-click and Ctrl-click cause SWITCH_OUT and SWITCH_IN events to trigger
+   on newer versions of GNOME. This triggers Pixelacrity to clear the keyboard
+   state to prevent keys from sticking.
 
-[ ]Ctrl-clicking to drag a selection along an axis does not work correctly on
-   Ubuntu 22.
+   The proposed workaround is to start a timer on SWITCH_OUT and clear the
+   keyboard state after a set amount of time. We might be able to the SWITCH_IN
+   event handler as well. It shouldn't be needed.
+
+   The SWITCH_OUT timer should trigger keyboard state clearing immediately on
+   all platforms not affected by this issue.
 
 [ ]Look into paste undo not working properly.
 
