@@ -14,6 +14,7 @@ typedef struct
 	PA_UI * ui;
 	PA_CANVAS_EDITOR * canvas_editor;
 	bool restart_ui;
+	int clear_keyboard_state_ticks;
 	ALLEGRO_BITMAP * icon;
 	ALLEGRO_SYSTEM_MOUSE_CURSOR last_cursor;
 
