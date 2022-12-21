@@ -142,6 +142,72 @@ static PA_CANVAS * canvas_from_image(const char * fn)
 	}
 }
 
+static void remove_recent_file(int item)
+{
+	const char * val;
+	char buf[256];
+	int i, c;
+
+	val = al_get_config_value(t3f_config, "Settings", "max_recent_files");
+	if(val)
+	{
+		c = atoi(val);
+		for(i = item; i < c; i++)
+		{
+			sprintf(buf, "recent_file_%d", i + 1);
+			val = al_get_config_value(t3f_config, "App Data", buf);
+			sprintf(buf, "recent_file_%d", i);
+			al_set_config_value(t3f_config, "App Data", buf, val ? val : "");
+		}
+	}
+}
+
+static void add_recent_file(const char * fn)
+{
+	const char * val;
+	char buf[256];
+	int i, c;
+
+	val = al_get_config_value(t3f_config, "Settings", "max_recent_files");
+	if(val)
+	{
+		c = atoi(val);
+		for(i = c - 1; i > 0; i--)
+		{
+			sprintf(buf, "recent_file_%d", i - 1);
+			val = al_get_config_value(t3f_config, "App Data", buf);
+			sprintf(buf, "recent_file_%d", i);
+			al_set_config_value(t3f_config, "App Data", buf, val ? val : "");
+		}
+		al_set_config_value(t3f_config, "App Data", "recent_file_0", fn);
+	}
+}
+
+static void update_recent_list(const char * fn)
+{
+	const char * val;
+	char buf[256];
+	int i, c;
+
+	val = al_get_config_value(t3f_config, "Settings", "max_recent_files");
+	if(val)
+	{
+		c = atoi(val);
+		/* remove fn from list if it exists */
+		for(i = c - 1; i >= 0; i--)
+		{
+			sprintf(buf, "recent_file_%d", i);
+			val = al_get_config_value(t3f_config, "App Data", buf);
+			if(val && !strcmp(val, fn))
+			{
+				remove_recent_file(i);
+			}
+		}
+		/* add file to top of list */
+		add_recent_file(fn);
+	}
+}
+
 bool pa_handle_load_canvas(APP_INSTANCE * app, const char * file_path)
 {
 	const char * extension;
@@ -192,6 +258,7 @@ bool pa_handle_load_canvas(APP_INSTANCE * app, const char * file_path)
 			}
 		}
 		pa_optimize_canvas(app->canvas_editor, 0, 0);
+		update_recent_list(file_path);
 		t3f_refresh_menus();
 		return true;
 	}
@@ -204,31 +271,48 @@ int pa_menu_file_load(int id, void * data)
 	ALLEGRO_FILECHOOSER * file_chooser;
 	const char * file_path;
 	const char * val;
+	char * recent_file_path;
 
 	t3f_debug_message("Enter pa_menu_file_load()\n");
 	val = al_get_config_value(t3f_config, "App Data", "last_canvas_path");
 	if(!close_canvas(app))
 	{
-		file_chooser = al_create_native_file_dialog(val, "Choose canvas or image file...", "*" PA_CANVAS_FILE_EXTENSION ";*.png;*.tga;*.pcx;*.bmp;*.jpg", ALLEGRO_FILECHOOSER_FILE_MUST_EXIST);
-		if(file_chooser)
+		if(app->ui->load_recent_fn)
 		{
-			al_stop_timer(t3f_timer);
-			if(al_show_native_file_dialog(t3f_display, file_chooser))
+			recent_file_path = strdup(app->ui->load_recent_fn);
+			if(recent_file_path)
 			{
-				if(al_get_native_file_dialog_count(file_chooser) > 0)
+				if(!pa_handle_load_canvas(app, recent_file_path))
 				{
-					file_path = al_get_native_file_dialog_path(file_chooser, 0);
-					if(file_path)
+					printf("unable to load\n");
+				}
+				free(recent_file_path);
+			}
+			app->ui->load_recent_fn = NULL;
+		}
+		else
+		{
+			file_chooser = al_create_native_file_dialog(val, "Choose canvas or image file...", "*" PA_CANVAS_FILE_EXTENSION ";*.png;*.tga;*.pcx;*.bmp;*.jpg", ALLEGRO_FILECHOOSER_FILE_MUST_EXIST);
+			if(file_chooser)
+			{
+				al_stop_timer(t3f_timer);
+				if(al_show_native_file_dialog(t3f_display, file_chooser))
+				{
+					if(al_get_native_file_dialog_count(file_chooser) > 0)
 					{
-						if(!pa_handle_load_canvas(app, file_path))
+						file_path = al_get_native_file_dialog_path(file_chooser, 0);
+						if(file_path)
 						{
-							printf("unable to load\n");
+							if(!pa_handle_load_canvas(app, file_path))
+							{
+								printf("unable to load\n");
+							}
 						}
 					}
 				}
+				al_destroy_native_file_dialog(file_chooser);
+				al_start_timer(t3f_timer);
 			}
-			al_destroy_native_file_dialog(file_chooser);
-			al_start_timer(t3f_timer);
 		}
 	}
 	t3f_debug_message("Exit pa_menu_file_load()\n");

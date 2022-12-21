@@ -44,11 +44,18 @@ static bool create_gui(PA_UI * uip, PA_CANVAS_EDITOR * cep)
 PA_UI * pa_create_ui(PA_CANVAS_EDITOR * cep)
 {
 	PA_UI * uip;
+	const char * val;
 
 	uip = malloc(sizeof(PA_UI));
 	if(uip)
 	{
 		memset(uip, 0, sizeof(PA_UI));
+
+		val = al_get_config_value(t3f_config, "Settings", "max_recent_files");
+		if(!val)
+		{
+			al_set_config_value(t3f_config, "Settings", "max_recent_files", "10");
+		}	
 
 		if(!create_gui(uip, cep))
 		{

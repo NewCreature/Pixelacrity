@@ -15,7 +15,13 @@ int pa_menu_base_update_proc(ALLEGRO_MENU * mp, int item, void * data)
 
 bool pa_setup_menus(PA_UI * uip)
 {
-	uip->menu[PA_UI_MENU_FILE] = pa_create_file_menu();
+	uip->menu[PA_UI_MENU_LOAD_RECENT] = pa_create_load_recent_menu(uip);
+	if(!uip->menu[PA_UI_MENU_LOAD_RECENT])
+	{
+		return false;
+	}
+
+	uip->menu[PA_UI_MENU_FILE] = pa_create_file_menu(uip->menu[PA_UI_MENU_LOAD_RECENT]);
 	if(!uip->menu[PA_UI_MENU_FILE])
 	{
 		return false;
