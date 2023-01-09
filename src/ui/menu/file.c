@@ -261,7 +261,7 @@ void pa_update_recent_menu(PA_UI * uip)
 	{
 		sprintf(buf, "recent_file_%d", i);
 		val = al_get_config_value(t3f_config, "App Data", buf);
-		if(val)
+		if(val && strlen(val))
 		{
 			pa_expand_load_recent_menu(uip, i);
 		}
