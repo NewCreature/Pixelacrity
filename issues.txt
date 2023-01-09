@@ -1,6 +1,12 @@
 Pixelacrity 0.4.4 Issues
 ------------------------
 
+[ ]Finish recent menu implementation.
+
+   [ ]Only show filename in menu.
+
+   [ ]Fix load image not in recents adds '-' instead of file to the menu.
+
 [ ]Zoom in/out should center around the cursor.
 
 [ ]Last path not remembered when loading an image as a canvas.
