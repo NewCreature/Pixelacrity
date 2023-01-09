@@ -222,41 +222,87 @@ static int menu_file_load_recent(int id, void * data)
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 	const char * val;
 	char buf[256];
+	int i;
 
-	sprintf(buf, "recent_file_%d", id - app->ui->load_recent_start_id);
-	val = al_get_config_value(t3f_config, "App Data", buf);
-	if(val)
+	for(i = 0; i < app->ui->load_recent_menu_item_size; i++)
 	{
-		app->ui->load_recent_fn = val;
-		return pa_menu_file_load(0, data);
+		if(app->ui->load_recent_menu_item[i] == id)
+		{
+			sprintf(buf, "recent_file_%d", i);
+			val = al_get_config_value(t3f_config, "App Data", buf);
+			if(val)
+			{
+				app->ui->load_recent_fn = val;
+				return pa_menu_file_load(0, data);
+			}
+			break;
+		}
 	}
 	return 0;
+}
+
+bool pa_expand_load_recent_menu(PA_UI * uip, int pos)
+{
+	if(uip->load_recent_menu_item[pos] == 0)
+	{
+		uip->load_recent_menu_item[pos] = t3f_add_menu_item(uip->menu[PA_UI_MENU_LOAD_RECENT], "-", 0, NULL, menu_file_load_recent, menu_recent_file_update_proc);
+		return true;
+	}
+	return false;
+}
+
+void pa_update_recent_menu(PA_UI * uip)
+{
+	const char * val;
+	char buf[256];
+	int i;
+
+	for(i = 0; i < uip->load_recent_menu_item_size; i++)
+	{
+		sprintf(buf, "recent_file_%d", i);
+		val = al_get_config_value(t3f_config, "App Data", buf);
+		if(val)
+		{
+			pa_expand_load_recent_menu(uip, i);
+		}
+	}
+	t3f_refresh_menus();
 }
 
 ALLEGRO_MENU * pa_create_load_recent_menu(PA_UI * uip)
 {
 	ALLEGRO_MENU * mp = NULL;
 	const char * val;
-	int i, c, id;
 
 	mp = al_create_menu();
 	if(!mp)
 	{
-		return NULL;
+		goto fail;
 	}
 	val = al_get_config_value(t3f_config, "Settings", "max_recent_files");
 	if(val)
 	{
-		c = atoi(val);
-		for(i = 0; i < c; i++)
+		uip->load_recent_menu_item_size = atoi(val);
+		uip->load_recent_menu_item = malloc(sizeof(int) * uip->load_recent_menu_item_size);
+		if(!uip->load_recent_menu_item)
 		{
-			id = t3f_add_menu_item(mp, "-", 0, NULL, menu_file_load_recent, menu_recent_file_update_proc);
-			if(uip->load_recent_start_id <= 0)
-			{
-				uip->load_recent_start_id = id;
-			}
+			goto fail;
 		}
+		memset(uip->load_recent_menu_item, 0, sizeof(int) * uip->load_recent_menu_item_size);
 	}
-
 	return mp;
+
+	fail:
+	{
+		if(mp)
+		{
+			free(mp);
+		}
+		if(uip->load_recent_menu_item)
+		{
+			free(uip->load_recent_menu_item);
+			uip->load_recent_menu_item = NULL;
+		}
+		return NULL;
+	}
 }

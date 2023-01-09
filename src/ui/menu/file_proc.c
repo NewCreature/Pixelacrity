@@ -157,7 +157,14 @@ static void remove_recent_file(int item)
 			sprintf(buf, "recent_file_%d", i + 1);
 			val = al_get_config_value(t3f_config, "App Data", buf);
 			sprintf(buf, "recent_file_%d", i);
-			al_set_config_value(t3f_config, "App Data", buf, val ? val : "");
+			if(val)
+			{
+				al_set_config_value(t3f_config, "App Data", buf, val ? val : "");
+			}
+			else
+			{
+				al_remove_config_key(t3f_config, "App Data", buf);
+			}
 		}
 	}
 }
@@ -177,7 +184,10 @@ static void add_recent_file(const char * fn)
 			sprintf(buf, "recent_file_%d", i - 1);
 			val = al_get_config_value(t3f_config, "App Data", buf);
 			sprintf(buf, "recent_file_%d", i);
-			al_set_config_value(t3f_config, "App Data", buf, val ? val : "");
+			if(val)
+			{
+				al_set_config_value(t3f_config, "App Data", buf, val);
+			}
 		}
 		al_set_config_value(t3f_config, "App Data", "recent_file_0", fn);
 	}
@@ -259,6 +269,7 @@ bool pa_handle_load_canvas(APP_INSTANCE * app, const char * file_path)
 		}
 		pa_optimize_canvas(app->canvas_editor, 0, 0);
 		update_recent_list(file_path);
+		pa_update_recent_menu(app->ui);
 		t3f_refresh_menus();
 		return true;
 	}

@@ -14,7 +14,8 @@ typedef struct
 
 	ALLEGRO_MENU * menu[PA_UI_MAX_MENUS];
 	int tool_menu_item[16];
-	int load_recent_start_id;
+	int * load_recent_menu_item;
+	int load_recent_menu_item_size;
 	const char * load_recent_fn;
 
 	PA_DIALOG * main_dialog;

@@ -20,6 +20,7 @@ bool pa_setup_menus(PA_UI * uip)
 	{
 		return false;
 	}
+	pa_update_recent_menu(uip);
 
 	uip->menu[PA_UI_MENU_FILE] = pa_create_file_menu(uip->menu[PA_UI_MENU_LOAD_RECENT]);
 	if(!uip->menu[PA_UI_MENU_FILE])
