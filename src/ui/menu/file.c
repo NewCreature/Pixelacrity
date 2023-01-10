@@ -3,6 +3,7 @@
 #include "instance.h"
 #include "defines.h"
 #include "modules/canvas/canvas_helpers.h"
+#include "modules/filename.h"
 #include "menu.h"
 #include "file_proc.h"
 
@@ -143,7 +144,7 @@ static int menu_recent_file_update_proc(ALLEGRO_MENU * mp, int item, void * data
 	val = al_get_config_value(t3f_config, "App Data",  buf);
 	if(val && strlen(val))
 	{
-		al_set_menu_item_caption(mp, item, val);
+		al_set_menu_item_caption(mp, item, pa_get_path_filename(val));
 		t3f_set_menu_item_flags(mp, item, 0);
 	}
 	else
@@ -241,11 +242,11 @@ static int menu_file_load_recent(int id, void * data)
 	return 0;
 }
 
-bool pa_expand_load_recent_menu(PA_UI * uip, int pos)
+bool pa_expand_load_recent_menu(PA_UI * uip, int pos, const char * val)
 {
 	if(uip->load_recent_menu_item[pos] == 0)
 	{
-		uip->load_recent_menu_item[pos] = t3f_add_menu_item(uip->menu[PA_UI_MENU_LOAD_RECENT], "-", 0, NULL, menu_file_load_recent, menu_recent_file_update_proc);
+		uip->load_recent_menu_item[pos] = t3f_add_menu_item(uip->menu[PA_UI_MENU_LOAD_RECENT], pa_get_path_filename(val), 0, NULL, menu_file_load_recent, menu_recent_file_update_proc);
 		return true;
 	}
 	return false;
@@ -263,7 +264,7 @@ void pa_update_recent_menu(PA_UI * uip)
 		val = al_get_config_value(t3f_config, "App Data", buf);
 		if(val && strlen(val))
 		{
-			pa_expand_load_recent_menu(uip, i);
+			pa_expand_load_recent_menu(uip, i, val);
 		}
 	}
 	t3f_refresh_menus();

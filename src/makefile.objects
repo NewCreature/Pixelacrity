@@ -24,10 +24,11 @@ APP_MODULE_OBJECTS = \
     modules/multi_layer_bitmap.o\
     modules/mouse_cursor.o\
     modules/palette.o\
+    modules/filename.o\
     modules/canvas/canvas.o\
     modules/canvas/canvas_helpers.o\
     modules/canvas/canvas_file.o\
-    modules/canvas/flood_fill.o
+    modules/canvas/flood_fill.o\
 
 APP_CANVAS_EDITOR_OBJECTS = \
     ui/canvas_editor/canvas_editor.o\
