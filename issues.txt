@@ -1,22 +1,6 @@
 Pixelacrity 0.4.4 Issues
 ------------------------
 
-[ ]Finish recent menu implementation.
-
-   [X]Only show filename in menu.
-
-   [ ]Fix load image not in recents adds '-' instead of file to the menu.
-
-      [ ]For some reason the menu update triggered by t3f_refresh_menus()
-         isn't able to read the updated recent files list right away. Needs
-         more testing.
-         
-         If the issue can't be resolved, the menu code can be reworked to
-         require a manual update. We would just call the manual update function
-         upon successful load of an image/canvas. This option would probably be
-         simpler anyway since we won't need to rely on as many moving parts to
-         sync up.
-
 [ ]Zoom in/out should center around the cursor.
 
 [ ]Last path not remembered when loading an image as a canvas.
@@ -1172,3 +1156,20 @@ Closed Issues
 [X]Add hover color comparison element. Hover color element should be able to
    show the difference between the current left and/or right colors and the
    hover color.
+
+[X]Finish recent menu implementation.
+
+   [X]Only show filename in menu.
+
+   [X]Fix load image not in recents adds '-' instead of file to the menu.
+
+      [X]For some reason the menu update triggered by t3f_refresh_menus()
+         isn't able to read the updated recent files list right away. Needs
+         more testing.
+         
+         If the issue can't be resolved, the menu code can be reworked to
+         require a manual update. We would just call the manual update function
+         upon successful load of an image/canvas. This option would probably be
+         simpler anyway since we won't need to rely on as many moving parts to
+         sync up.
+
