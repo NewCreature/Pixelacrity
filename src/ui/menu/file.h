@@ -9,7 +9,6 @@ bool pa_can_reexport(PA_CANVAS_EDITOR * cep);
 bool pa_can_reexport_all(PA_CANVAS_EDITOR * cep);
 bool pa_resave_allowed(PA_CANVAS_EDITOR * cep);
 ALLEGRO_MENU * pa_create_file_menu(ALLEGRO_MENU * recent_menu);
-bool pa_expand_load_recent_menu(PA_UI * uip, int pos);
 void pa_update_recent_menu(PA_UI * uip);
 ALLEGRO_MENU * pa_create_load_recent_menu(PA_UI * uip);
 

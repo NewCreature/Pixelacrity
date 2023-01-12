@@ -135,26 +135,6 @@ static int menu_resave_update_proc(ALLEGRO_MENU * mp, int item, void * data)
 	return 0;
 }
 
-static int menu_recent_file_update_proc(ALLEGRO_MENU * mp, int item, void * data)
-{
-	const char * val;
-	char buf[256];
-
-	sprintf(buf, "recent_file_%d", item - 1);
-	val = al_get_config_value(t3f_config, "App Data",  buf);
-	if(val && strlen(val))
-	{
-		al_set_menu_item_caption(mp, item, pa_get_path_filename(val));
-		t3f_set_menu_item_flags(mp, item, 0);
-	}
-	else
-	{
-		al_set_menu_item_caption(mp, item, "-");
-		t3f_set_menu_item_flags(mp, item, ALLEGRO_MENU_ITEM_DISABLED);
-	}
-	return 0;
-}
-
 static int menu_recent_update_proc(ALLEGRO_MENU * mp, int item, void * data)
 {
 	const char * val;
@@ -242,11 +222,11 @@ static int menu_file_load_recent(int id, void * data)
 	return 0;
 }
 
-bool pa_expand_load_recent_menu(PA_UI * uip, int pos, const char * val)
+static bool expand_load_recent_menu(PA_UI * uip, int pos, const char * val)
 {
 	if(uip->load_recent_menu_item[pos] == 0)
 	{
-		uip->load_recent_menu_item[pos] = t3f_add_menu_item(uip->menu[PA_UI_MENU_LOAD_RECENT], pa_get_path_filename(val), 0, NULL, menu_file_load_recent, menu_recent_file_update_proc);
+		uip->load_recent_menu_item[pos] = t3f_add_menu_item(uip->menu[PA_UI_MENU_LOAD_RECENT], pa_get_path_filename(val), 0, NULL, menu_file_load_recent, NULL);
 		return true;
 	}
 	return false;
@@ -264,7 +244,8 @@ void pa_update_recent_menu(PA_UI * uip)
 		val = al_get_config_value(t3f_config, "App Data", buf);
 		if(val && strlen(val))
 		{
-			pa_expand_load_recent_menu(uip, i, val);
+			expand_load_recent_menu(uip, i, val);
+			al_set_menu_item_caption(uip->menu[PA_UI_MENU_LOAD_RECENT], -i, pa_get_path_filename(val));
 		}
 	}
 	t3f_refresh_menus();
