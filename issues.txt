@@ -3,6 +3,18 @@ Pixelacrity 0.4.4 Issues
 
 [ ]Zoom in/out should center around the cursor.
 
+   [ ]We know which pixel we are zooming around (hover_x/y). We need to
+      calculate where view_x/y needs to be to put that same pixel under the
+      mouse cursor at the new zoom level.
+
+      view_x/y represents which canvas pixel is located at the upper-left
+      corner of the canvas editor GUI element.
+
+      view_x = hover_x - (canvas_editor->x - mouse_x) / canvas_editor->zoom
+
+      We should be able to get the correct view position by subtracting the new
+      hover position from the old.
+
 [ ]Last path not remembered when loading an image as a canvas.
 
 [ ]Look into paste undo not working properly.
