@@ -1,6 +1,7 @@
 #include "canvas_editor.h"
 #include "modules/canvas/canvas_helpers.h"
 #include "modules/dynamic_array.h"
+#include "modules/bitmap.h"
 #include "selection.h"
 #include "undo/undo.h"
 #include "undo/selection/selection.h"
@@ -175,6 +176,7 @@ static ALLEGRO_BITMAP * merge_clipboard(PA_CANVAS_EDITOR * cep)
 			}
 		}
 		al_restore_state(&old_state);
+		pa_unpremultiply_bitmap_alpha(bp);
 	}
 	return bp;
 }
