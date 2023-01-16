@@ -195,7 +195,7 @@ void pa_set_color(PA_COLOR_INFO * cip, ALLEGRO_COLOR color);
 
 void pa_center_canvas_editor(PA_CANVAS_EDITOR * cep, int frame);
 void pa_center_canvas_editor_at(PA_CANVAS_EDITOR * cep, int x, int y);
-void pa_set_canvas_editor_zoom(PA_CANVAS_EDITOR * cep, int level);
+void pa_set_canvas_editor_zoom(PA_CANVAS_EDITOR * cep, int level, bool at_mouse);
 void pa_shift_canvas_editor_variables(PA_CANVAS_EDITOR * cep, int ox, int oy);
 void pa_select_canvas_editor_tool(PA_CANVAS_EDITOR * cep, int tool);
 void pa_select_canvas_editor_layer(PA_CANVAS_EDITOR * cep, int layer);

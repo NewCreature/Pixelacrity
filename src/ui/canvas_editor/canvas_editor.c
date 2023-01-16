@@ -185,7 +185,7 @@ bool pa_reload_canvas_editor_state(PA_CANVAS_EDITOR * cep)
 		cep->view_fx = cep->view_x;
 		cep->view_fy = cep->view_y;
 		cep->view_zoom = get_config_val(cep->config, "State", "view_zoom", 1);
-		pa_set_canvas_editor_zoom(cep, cep->view_zoom);
+		pa_set_canvas_editor_zoom(cep, cep->view_zoom, false);
 		cep->current_tool = get_config_val(cep->config, "State", "current_tool", 0);
 		cep->current_layer = get_config_val(cep->config, "State", "current_layer", 0);
 		cep->frame_id = get_config_val(cep->config, "State", "frame_id", 0);
@@ -358,7 +358,7 @@ void pa_center_canvas_editor_at(PA_CANVAS_EDITOR * cep, int x, int y)
 	cep->view_fy = cep->view_y;
 }
 
-void pa_set_canvas_editor_zoom(PA_CANVAS_EDITOR * cep, int level)
+void pa_set_canvas_editor_zoom(PA_CANVAS_EDITOR * cep, int level, bool at_mouse)
 {
 	int cx, cy;
 
@@ -372,8 +372,16 @@ void pa_set_canvas_editor_zoom(PA_CANVAS_EDITOR * cep, int level)
 		cep->view_zoom = level;
 		if(cep->editor_element)
 		{
-			cep->view_x = cx - (cep->editor_element->w / cep->view_zoom) / 2;
-			cep->view_y = cy - (cep->editor_element->h / cep->view_zoom) / 2;
+			if(at_mouse)
+			{
+				cep->view_x = cep->hover_x - (t3gui_get_mouse_x() - cep->editor_element->x) / cep->view_zoom;
+				cep->view_y = cep->hover_y - (t3gui_get_mouse_y() - cep->editor_element->y) / cep->view_zoom;
+			}
+			else
+			{
+				cep->view_x = cx - (cep->editor_element->w / cep->view_zoom) / 2;
+				cep->view_y = cy - (cep->editor_element->h / cep->view_zoom) / 2;
+			}
 			cep->view_fx = cep->view_x;
 			cep->view_fy = cep->view_y;
 			cep->view_width = cep->editor_element->w / cep->view_zoom;

@@ -69,7 +69,7 @@ void pa_canvas_editor_MSG_WHEEL(T3GUI_ELEMENT * d, int c)
 				{
 					new_zoom = get_previous_step(canvas_editor->view_zoom);
 				}
-				pa_set_canvas_editor_zoom(canvas_editor, new_zoom);
+				pa_set_canvas_editor_zoom(canvas_editor, new_zoom, true);
 			}
 		}
 		else if(c > 0)
@@ -82,7 +82,7 @@ void pa_canvas_editor_MSG_WHEEL(T3GUI_ELEMENT * d, int c)
 			{
 				new_zoom = get_next_step(canvas_editor->view_zoom);
 			}
-			pa_set_canvas_editor_zoom(canvas_editor, new_zoom);
+			pa_set_canvas_editor_zoom(canvas_editor, new_zoom, true);
 		}
 	}
 }

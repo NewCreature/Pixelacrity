@@ -699,6 +699,6 @@ void pa_resize_main_dialog(PA_DIALOG * dp)
 
 	canvas_editor = (PA_CANVAS_EDITOR *)pa_get_dialog_element(dp, PA_UI_ELEMENT_CANVAS_EDITOR)->dp;
 	t3f_adjust_view(canvas_editor->view, 0, 0, al_get_display_width(t3f_display), al_get_display_height(t3f_display), pa_get_dialog_element(dp, PA_UI_ELEMENT_CANVAS_EDITOR)->w / 2, pa_get_dialog_element(dp, PA_UI_ELEMENT_CANVAS_EDITOR)->h / 2, T3F_NO_SCALE);
-	pa_set_canvas_editor_zoom(canvas_editor, canvas_editor->view_zoom);
+	pa_set_canvas_editor_zoom(canvas_editor, canvas_editor->view_zoom, false);
 	canvas_editor->frame_text_offset = est + esb;
 }
