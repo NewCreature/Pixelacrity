@@ -255,17 +255,17 @@ bool pa_handle_load_canvas(APP_INSTANCE * app, const char * file_path)
 		pa_center_canvas_editor(app->canvas_editor, 0);
 		strcpy(app->canvas_editor->canvas_path, file_path);
 		pa_set_window_message(NULL);
-		if(!import_image)
+		pp = al_create_path(file_path);
+		if(pp)
 		{
-			pp = al_create_path(file_path);
-			if(pp)
+			al_set_path_extension(pp, ".ini");
+			if(!import_image)
 			{
-				al_set_path_extension(pp, ".ini");
 				pa_load_canvas_editor_state(app->canvas_editor, al_path_cstr(pp, '/'));
-				al_set_path_filename(pp, "");
-				al_set_config_value(t3f_config, "App Data", "last_canvas_path", al_path_cstr(pp, '/'));
-				al_destroy_path(pp);
 			}
+			al_set_path_filename(pp, "");
+			al_set_config_value(t3f_config, "App Data", "last_canvas_path", al_path_cstr(pp, '/'));
+			al_destroy_path(pp);
 		}
 		pa_optimize_canvas(app->canvas_editor, 0, 0);
 		update_recent_list(file_path);
