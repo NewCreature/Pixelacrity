@@ -5,8 +5,6 @@ Pixelacrity 0.4.4 Issues
 
 [ ]Look into Paste Merged leaving artifacts on the merged image.
 
-[ ]Ensure Paste Merged handles pre-multiplied alpha correctly.
-
 [ ]Finish implementing flatpak packaging.
 
    [ ]Move Debian descriptions to APP_SUMMARY and APP_DESCRIPTION.
@@ -1172,3 +1170,5 @@ Closed Issues
 [X]Zoom in/out should center around the cursor.
 
 [X]Last path not remembered when loading an image as a canvas.
+
+[X]Ensure Paste Merged handles pre-multiplied alpha correctly.
