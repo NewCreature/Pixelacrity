@@ -1,8 +1,6 @@
 Pixelacrity 0.4.4 Issues
 ------------------------
 
-[ ]Last path not remembered when loading an image as a canvas.
-
 [ ]Look into paste undo not working properly.
 
 [ ]Look into Paste Merged leaving artifacts on the merged image.
@@ -1172,3 +1170,5 @@ Closed Issues
          sync up.
 
 [X]Zoom in/out should center around the cursor.
+
+[X]Last path not remembered when loading an image as a canvas.
