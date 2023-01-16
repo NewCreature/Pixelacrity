@@ -372,7 +372,7 @@ void pa_set_canvas_editor_zoom(PA_CANVAS_EDITOR * cep, int level, bool at_mouse)
 		cep->view_zoom = level;
 		if(cep->editor_element)
 		{
-			if(at_mouse)
+			if(at_mouse && t3gui_get_mouse_x() >= cep->editor_element->x && t3gui_get_mouse_x() < cep->editor_element->x + cep->editor_element->w && t3gui_get_mouse_y() >= cep->editor_element->y && t3gui_get_mouse_y() < cep->editor_element->y + cep->editor_element->h)
 			{
 				cep->view_x = cep->hover_x - (t3gui_get_mouse_x() - cep->editor_element->x) / cep->view_zoom;
 				cep->view_y = cep->hover_y - (t3gui_get_mouse_y() - cep->editor_element->y) / cep->view_zoom;
