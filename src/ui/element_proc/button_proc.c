@@ -631,6 +631,15 @@ int pa_brush_cancel_button_proc(T3GUI_ELEMENT * d, void * dp3)
 {
 	PA_UI * uip = (PA_UI *)dp3;
 	PA_CANVAS_EDITOR * cep = (PA_CANVAS_EDITOR *)pa_get_dialog_element(uip->main_dialog, PA_UI_ELEMENT_CANVAS_EDITOR)->dp;
+	if(cep->old_brush)
+	{
+		if(cep->brush)
+		{
+			al_destroy_bitmap(cep->brush);
+		}
+		cep->brush = cep->old_brush;
+		cep->old_brush = NULL;
+	}
 
 	return 0;
 }

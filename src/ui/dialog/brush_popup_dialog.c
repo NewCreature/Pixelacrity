@@ -81,6 +81,14 @@ PA_DIALOG * pa_create_brush_popup_dialog(PA_CANVAS_EDITOR * cep, float ox, float
 	{
     goto fail;
 	}
+	if(cep->brush)
+	{
+		cep->old_brush = al_clone_bitmap(cep->brush);
+		if(!cep->old_brush)
+		{
+			goto fail;
+		}
+	}
 	esl = pa_get_theme_int(dp->theme, "edge_left_space", 8);
 	esr = pa_get_theme_int(dp->theme, "edge_right_space", 8);
 	est = pa_get_theme_int(dp->theme, "edge_top_space", 8);
@@ -142,6 +150,11 @@ PA_DIALOG * pa_create_brush_popup_dialog(PA_CANVAS_EDITOR * cep, float ox, float
 
 	fail:
 	{
+		if(cep->old_brush)
+		{
+			al_destroy_bitmap(cep->old_brush);
+			cep->old_brush = NULL;
+		}
 		if(dp)
 		{
 			pa_close_dialog(dp);

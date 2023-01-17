@@ -107,6 +107,7 @@ typedef struct
 	ALLEGRO_BITMAP * multilayer_bitmap;
 	ALLEGRO_BITMAP * singlelayer_bitmap;
 	ALLEGRO_BITMAP * brush;
+	ALLEGRO_BITMAP * old_brush;
 	int brush_size;
 	ALLEGRO_BITMAP * color_scratch_bitmap;
 	ALLEGRO_BITMAP * bg_bitmap;
