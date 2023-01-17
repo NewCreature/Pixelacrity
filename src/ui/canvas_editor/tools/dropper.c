@@ -28,7 +28,7 @@ void pa_tool_dropper_logic(PA_CANVAS_EDITOR * cep, int button)
 	}
 	else
 	{
-		c = pa_get_canvas_pixel(cep->canvas, cep->current_layer, cep->hover_x, cep->hover_y);
+		c = pa_get_canvas_pixel(cep->canvas, cep->current_layer, cep->hover_x, cep->hover_y, NULL, NULL);
 	}
 
 	if(button == 1)

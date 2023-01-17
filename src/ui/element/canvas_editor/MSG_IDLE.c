@@ -125,6 +125,7 @@ void pa_canvas_editor_MSG_IDLE(T3GUI_ELEMENT * d, int c)
 {
 	PA_CANVAS_EDITOR * canvas_editor = (PA_CANVAS_EDITOR *)d->dp;
 	int frame_x, frame_y, frame_width, frame_height;
+	int i;
 
 	if(canvas_editor->backup_tick > 0)
 	{
@@ -173,7 +174,15 @@ void pa_canvas_editor_MSG_IDLE(T3GUI_ELEMENT * d, int c)
 	}
 	if(canvas_editor->tool_state == PA_TOOL_STATE_OFF && d->flags & D_GOTMOUSE)
 	{
-		canvas_editor->hover_color = pa_get_canvas_pixel(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y);
+		if(t3f_key[ALLEGRO_KEY_LSHIFT] || t3f_key[ALLEGRO_KEY_RSHIFT])
+		{
+			i = -1;
+		}
+		else
+		{
+			i = canvas_editor->current_layer;
+		}
+		canvas_editor->hover_color = pa_get_canvas_pixel(canvas_editor->canvas, i, canvas_editor->hover_x, canvas_editor->hover_y, canvas_editor->color_scratch_bitmap, canvas_editor->premultiplied_alpha_shader);
 	}
 	if(canvas_editor->current_tool == PA_TOOL_SELECTION)
 	{

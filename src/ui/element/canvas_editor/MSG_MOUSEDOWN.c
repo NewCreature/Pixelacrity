@@ -127,7 +127,7 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 						flood_fill_queue = pa_create_queue("Flood Fill");
 						if(flood_fill_queue)
 						{
-							color = pa_get_canvas_pixel(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y);
+							color = pa_get_canvas_pixel(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y, canvas_editor->color_scratch_bitmap, canvas_editor->premultiplied_alpha_shader);
 							if(pa_flood_fill_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y, c == 1 ? canvas_editor->left_color.color : canvas_editor->right_color.color, flood_fill_queue))
 							{
 								made_undo = create_flood_fill_undo(canvas_editor, color, flood_fill_queue, 0, 0);
@@ -153,7 +153,7 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 							top = canvas_editor->canvas->frame[hover_frame]->box.start_y;
 							right = left + canvas_editor->canvas->frame[hover_frame]->box.width;
 							bottom = top + canvas_editor->canvas->frame[hover_frame]->box.height;
-							color = pa_get_canvas_pixel(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y);
+							color = pa_get_canvas_pixel(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y, canvas_editor->color_scratch_bitmap, canvas_editor->premultiplied_alpha_shader);
 							pa_handle_canvas_expansion(canvas_editor->canvas, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_x + canvas_editor->view_width, canvas_editor->view_y + canvas_editor->view_height, &shift_x, &shift_y);
 							pa_shift_canvas_editor_variables(canvas_editor, shift_x * canvas_editor->canvas->bitmap_size, shift_y * canvas_editor->canvas->bitmap_size);
 							left += shift_x * canvas_editor->canvas->bitmap_size;
@@ -183,7 +183,7 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 						top = canvas_editor->view_y;
 						right = canvas_editor->view_x + canvas_editor->view_width;
 						bottom = canvas_editor->view_y + canvas_editor->view_height;
-						color = pa_get_canvas_pixel(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y);
+						color = pa_get_canvas_pixel(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y, canvas_editor->color_scratch_bitmap, canvas_editor->premultiplied_alpha_shader);
 						pa_handle_canvas_expansion(canvas_editor->canvas, canvas_editor->view_x, canvas_editor->view_y, canvas_editor->view_x + canvas_editor->view_width, canvas_editor->view_y + canvas_editor->view_height, &shift_x, &shift_y);
 						pa_shift_canvas_editor_variables(canvas_editor, shift_x * canvas_editor->canvas->bitmap_size, shift_y * canvas_editor->canvas->bitmap_size);
 						left += shift_x * canvas_editor->canvas->bitmap_size;
@@ -220,7 +220,7 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 							top = canvas_editor->canvas->frame[hover_frame]->box.start_y;
 							right = left + canvas_editor->canvas->frame[hover_frame]->box.width;
 							bottom = top + canvas_editor->canvas->frame[hover_frame]->box.height;
-							color = pa_get_canvas_pixel(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y);
+							color = pa_get_canvas_pixel(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y, canvas_editor->color_scratch_bitmap, canvas_editor->premultiplied_alpha_shader);
 							if(pa_replace_canvas_color_area(canvas_editor->canvas, canvas_editor->current_layer, color, c == 1 ? canvas_editor->left_color.color : canvas_editor->right_color.color, left, top, right, bottom, flood_fill_queue))
 							{
 								made_undo = create_flood_fill_undo(canvas_editor, color, flood_fill_queue, 0, 0);
@@ -239,7 +239,7 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 					flood_fill_queue = pa_create_queue("Replace Color");
 					if(flood_fill_queue)
 					{
-						color = pa_get_canvas_pixel(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y);
+						color = pa_get_canvas_pixel(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->hover_x, canvas_editor->hover_y, canvas_editor->color_scratch_bitmap, canvas_editor->premultiplied_alpha_shader);
 						if(pa_replace_canvas_color(canvas_editor->canvas, canvas_editor->current_layer, color, c == 1 ? canvas_editor->left_color.color : canvas_editor->right_color.color, flood_fill_queue))
 						{
 							made_undo = create_flood_fill_undo(canvas_editor, color, flood_fill_queue, 0, 0);

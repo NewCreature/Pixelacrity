@@ -14,7 +14,7 @@ ALLEGRO_BITMAP * pa_get_bitmap_from_canvas(PA_CANVAS * cp, int start_layer, int 
 void pa_import_bitmap_to_canvas(PA_CANVAS * cp, ALLEGRO_BITMAP * bp, int layer, int x, int y);
 void pa_update_canvas_dimensions(PA_CANVAS * cp, int layer, int left, int top, int right, int bottom);
 void pa_draw_primitive_to_canvas(PA_CANVAS * cp, int layer, int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_COLOR color, ALLEGRO_BITMAP * texture, int mode, ALLEGRO_SHADER * shader, void (*primitive_proc)(int x1, int y1, int x2, int y2, ALLEGRO_BITMAP * bp, ALLEGRO_COLOR color, ALLEGRO_BITMAP * texture));
-ALLEGRO_COLOR pa_get_canvas_pixel(PA_CANVAS * cp, int layer, int x, int y);
+ALLEGRO_COLOR pa_get_canvas_pixel(PA_CANVAS * cp, int layer, int x, int y, ALLEGRO_BITMAP * scratch, ALLEGRO_SHADER * shader);
 void pa_get_canvas_shift(PA_CANVAS * cp, int x, int y, int * shift_x, int * shift_y);
 bool pa_handle_canvas_expansion(PA_CANVAS * cp, int left, int top, int right, int bottom, int * shift_x, int * shift_y);
 void pa_swap_canvas_layer(PA_CANVAS * cp, int layer1, int layer2);

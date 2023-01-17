@@ -3,6 +3,7 @@
 #include "canvas_helpers.h"
 #include "modules/pixel_shader.h"
 #include "modules/primitives.h"
+#include "modules/bitmap.h"
 
 /* assume all canvas bitmaps are already locked */
 static int get_canvas_alpha(PA_CANVAS * cp, int layer, int x, int y)
@@ -441,14 +442,37 @@ void pa_draw_primitive_to_canvas(PA_CANVAS * cp, int layer, int x1, int y1, int 
 	al_restore_state(&old_state);
 }
 
-ALLEGRO_COLOR pa_get_canvas_pixel(PA_CANVAS * cp, int layer, int x, int y)
+ALLEGRO_COLOR pa_get_canvas_pixel(PA_CANVAS * cp, int layer, int x, int y, ALLEGRO_BITMAP * scratch, ALLEGRO_SHADER * shader)
 {
+	ALLEGRO_TRANSFORM identity;
+	ALLEGRO_STATE old_state;
 	int tx, ty;
+	ALLEGRO_COLOR color;
+	int i;
 
 	tx = x / cp->bitmap_size;
 	ty = y / cp->bitmap_size;
 
-	if(layer < cp->layer_max && tx >= 0 && tx < cp->layer_width && ty >= 0 && ty < cp->layer_height && cp->layer[layer]->bitmap && cp->layer[layer]->bitmap[ty][tx])
+	if(layer < 0)
+	{
+		al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_TRANSFORM | ALLEGRO_STATE_BLENDER);
+		al_identity_transform(&identity);
+		al_set_target_bitmap(scratch);
+		al_use_transform(&identity);
+		al_use_shader(shader);
+		al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
+		al_draw_filled_rectangle(0, 0, al_get_bitmap_width(scratch), al_get_bitmap_height(scratch), al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
+		al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_INVERSE_ALPHA);
+		for(i = 0; i < cp->layer_max; i++)
+		{
+			color = pa_get_canvas_pixel(cp, i, x, y, NULL, NULL);
+			al_draw_filled_rectangle(0, 0, al_get_bitmap_width(scratch), al_get_bitmap_height(scratch), color);
+		}
+		pa_unpremultiply_bitmap_alpha(scratch);
+		al_restore_state(&old_state);
+		return al_get_pixel(scratch, 0, 0);
+	}
+	else if(layer < cp->layer_max && tx >= 0 && tx < cp->layer_width && ty >= 0 && ty < cp->layer_height && cp->layer[layer]->bitmap && cp->layer[layer]->bitmap[ty][tx])
 	{
 		return al_get_pixel(cp->layer[layer]->bitmap[ty][tx], x % cp->bitmap_size, y % cp->bitmap_size);
 	}
