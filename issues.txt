@@ -34,8 +34,6 @@ Pixelacrity 0.4.4 Issues
 
 [ ]Hold Ctrl when resizing selection to maintain aspect ratio.
 
-[ ]Brush editor cancel button doesn't revert to original brush.
-
 [ ]Make map have a full canvas preview instead of just outlines and boxes.
 
 [ ]Hold shift to set the hover color to a composite of what's under the cursor.
@@ -1172,3 +1170,5 @@ Closed Issues
 
 [X]Pasting while a frame is floating causes the frame to connect to the pasted
    selection.
+
+[X]Brush editor cancel button doesn't revert to original brush.
