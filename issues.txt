@@ -17,9 +17,6 @@ Pixelacrity 0.4.4 Issues
 
    [ ]Export APP_SCREENSHOT_URL to AppStream data.
 
-[ ]Pasting while a frame is floating causes the frame to connect to the pasted
-   selection.
-
 [ ]Add ability to copy a frame directly into the clipboard.
 
 [ ]Fix bug in slider_proc() which causes it to not scroll all the way to the
@@ -1172,3 +1169,6 @@ Closed Issues
 [X]Last path not remembered when loading an image as a canvas.
 
 [X]Ensure Paste Merged handles pre-multiplied alpha correctly.
+
+[X]Pasting while a frame is floating causes the frame to connect to the pasted
+   selection.
