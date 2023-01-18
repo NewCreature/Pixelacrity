@@ -11,8 +11,8 @@ include makefile.objects
 APP_COMPANY = tcubedsoftware
 APP_NAME = pixelacrity
 APP_TITLE = Pixelacrity
-APP_VERSION = 0.4.3
-APP_RELEASE = 47
+APP_VERSION = 0.4.4
+APP_RELEASE = 48
 APP_PUBLISHER = T\ Cubed\ Software
 APP_COPYRIGHT = Copyright\ (C)\ 2022\ T\ Cubed\ Software
 APP_ID = com.tcubedsoftware.pixelacrity

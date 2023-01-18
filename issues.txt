@@ -1,4 +1,4 @@
-Pixelacrity 0.4.4 Issues
+Pixelacrity 0.4.5 Issues
 ------------------------
 
 [ ]Look into paste undo not working properly.
