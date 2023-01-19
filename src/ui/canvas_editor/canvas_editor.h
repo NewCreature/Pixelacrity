@@ -41,7 +41,6 @@ typedef struct
 {
 
 	PA_BITMAP_STACK * bitmap_stack;
-//	ALLEGRO_BITMAP ** bitmap;
 	int layer_max;
 	int layer;
 	PA_BOX box;
@@ -56,7 +55,6 @@ typedef struct
 {
 
 	PA_BITMAP_STACK * bitmap_stack;
-//	ALLEGRO_BITMAP ** bitmap;
 	int layer_max;
 	int layer;
 	int x, y;
