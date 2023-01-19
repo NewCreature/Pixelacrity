@@ -88,6 +88,11 @@ Pixelacrity 0.4.5 Issues
    it to a memory bitmap without relying on pre-multiplied alpha. We can't use
    the pre-multiplied alpha shader when the target is a memory bitmap.
 
+   [ ]This is needed for exporting very large images that won't fit into a
+      video bitmap. An alternative here would be to render small sections to a
+      temporary video bitmap where pre-multiplied alpha could be applied during
+      rendering, then copy that to the memory bitmap.
+
 [ ]Implement full screen preview.
 
 [ ]Allow scrolling the canvas by holding the mouse wheel button and moving the
