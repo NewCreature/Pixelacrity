@@ -37,6 +37,11 @@ Pixelacrity 0.4.5 Issues
 
 [ ]Hold Ctrl when resizing selection to maintain aspect ratio.
 
+   [ ]The box should resize such that the box edge is always touching the mouse
+      cursor.
+   
+   [ ]Implement enforcement for all eight possible handles.
+
 [ ]Make map have a full canvas preview instead of just outlines and boxes.
 
 [ ]See if we can use the image file selector to get image previews.
