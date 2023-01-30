@@ -234,6 +234,7 @@ void pa_update_selection(PA_CANVAS_EDITOR * canvas_editor, T3GUI_ELEMENT * d)
 			if(canvas_editor->selection.box.state == PA_BOX_STATE_MOVING)
 			{
 				pa_float_canvas_editor_selection(canvas_editor, &old_box, multilayer);
+				canvas_editor->selection.box.aspect_ratio = (float)canvas_editor->selection.box.width / (float)canvas_editor->selection.box.height;
 			}
 		}
 		if(!canvas_editor->selection.bitmap_stack)

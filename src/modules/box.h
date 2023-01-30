@@ -54,6 +54,7 @@ typedef struct
 	int click_tick;
 	int click_x, click_y;
 	int click_start_x, click_start_y;
+	float aspect_ratio;
 	int state;
 
 } PA_BOX;

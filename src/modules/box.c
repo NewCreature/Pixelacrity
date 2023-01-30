@@ -223,6 +223,23 @@ void pa_get_box_hover_handle(PA_BOX * bp, int offset_x, int offset_y, int peg_of
 	}
 }
 
+static void enforce_box_aspect_ratio(PA_BOX * bp)
+{
+	float width, height;
+
+	switch(bp->handle[bp->hover_handle].type)
+	{
+		case PA_BOX_HANDLE_TYPE_TOP_LEFT:
+		{
+			width = bp->end_x - bp->start_x;
+			height = width * bp->aspect_ratio;
+			bp->start_x = bp->end_x - width;
+			bp->start_y = bp->end_y - height;
+			break;
+		}
+	}
+}
+
 /* handle user interaction with boxes */
 void pa_box_logic(PA_BOX * bp, int view_x, int view_y, int view_zoom, int offset_x, int offset_y, bool snap, ALLEGRO_BITMAP * handle_bitmap, bool floating)
 {
@@ -312,6 +329,10 @@ void pa_box_logic(PA_BOX * bp, int view_x, int view_y, int view_zoom, int offset
 				bp->handle[bp->hover_handle].screen_y = t3gui_get_mouse_y() - offset_y;
 				*bp->handle[bp->hover_handle].link_y = (bp->handle[bp->hover_handle].screen_y) / view_zoom + view_y;
 				bp->handle[bp->hover_handle].screen_y = (*bp->handle[bp->hover_handle].link_y - view_y) * view_zoom + bp->handle[bp->hover_handle].offset_y;
+			}
+			if(bp->aspect_ratio > 0.0 && (t3f_key[ALLEGRO_KEY_LCTRL] || t3f_key[ALLEGRO_KEY_RCTRL] || t3f_key[ALLEGRO_KEY_COMMAND]))
+			{
+				enforce_box_aspect_ratio(bp);
 			}
 			update_box(bp);
 			pa_update_box_handles(bp, view_x, view_y, view_zoom, floating);
