@@ -1,6 +1,9 @@
 Pixelacrity 0.4.5 Issues
 ------------------------
 
+[ ]Look into undo rectangle on new layer leaving artifacts. This was happening
+   on an Ubuntu 22 desktop.
+
 [ ]Look into paste undo not working properly.
 
 [ ]Look into Paste Merged leaving artifacts on the merged image.
