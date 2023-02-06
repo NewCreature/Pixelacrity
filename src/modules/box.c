@@ -237,6 +237,13 @@ static void enforce_box_aspect_ratio(PA_BOX * bp)
 			width = height * bp->aspect_ratio;
 			break;
 		}
+		case PA_BOX_HANDLE_TYPE_LEFT:
+		case PA_BOX_HANDLE_TYPE_RIGHT:
+		{
+			width = bp->end_x - bp->start_x;
+			height = width / bp->aspect_ratio;
+			break;
+		}
 		default:
 		{
 			width = bp->end_x - bp->start_x;
