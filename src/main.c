@@ -140,9 +140,16 @@ void app_logic(void * data)
 	{
 		sprintf(app->ui->main_dialog->string[PA_UI_STRING_LEFT_MESSAGE], "(%d, %d)", abs((int)app->canvas_editor->start_x - (int)app->canvas_editor->end_x) + 1, abs((int)app->canvas_editor->start_y - (int)app->canvas_editor->end_y) + 1);
 	}
-	else if(app->canvas_editor->tool_state == PA_TOOL_STATE_EDITING)
+	else if(app->canvas_editor->selection.box.width > 0 || app->canvas_editor->tool_state == PA_TOOL_STATE_EDITING)
 	{
-		sprintf(app->ui->main_dialog->string[PA_UI_STRING_LEFT_MESSAGE], "Selection: (%d, %d)", app->canvas_editor->selection.box.width, app->canvas_editor->selection.box.height);
+		if(app->canvas_editor->selection.bitmap_stack)
+		{
+			sprintf(app->ui->main_dialog->string[PA_UI_STRING_LEFT_MESSAGE], "Selection: (%d, %d) (%0.2f%%, %0.2f%%)", app->canvas_editor->selection.box.width, app->canvas_editor->selection.box.height, ((float)app->canvas_editor->selection.box.width / pa_get_bitmap_stack_width(app->canvas_editor->selection.bitmap_stack)) * 100.0, ((float)app->canvas_editor->selection.box.height / pa_get_bitmap_stack_height(app->canvas_editor->selection.bitmap_stack)) * 100.0);
+		}
+		else
+		{
+			sprintf(app->ui->main_dialog->string[PA_UI_STRING_LEFT_MESSAGE], "Selection: (%d, %d)", app->canvas_editor->selection.box.width, app->canvas_editor->selection.box.height);
+		}
 	}
 	else if(app->canvas_editor->current_frame < app->canvas->frame_max)
 	{
