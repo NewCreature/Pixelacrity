@@ -255,6 +255,10 @@ void pa_apply_paste_clipboard(PA_CANVAS_EDITOR * cep, int pos, int ox, int oy, b
 			pa_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom, true);
 			cep->current_tool = PA_TOOL_SELECTION;
 			al_restore_state(&old_state);
+			if(cep->selection.filter)
+			{
+				pa_set_bitmap_stack_flags(cep->selection.bitmap_stack, ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
+			}
 			t3f_refresh_menus();
 		}
 	}
