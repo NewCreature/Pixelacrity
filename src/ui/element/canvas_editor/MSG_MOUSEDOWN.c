@@ -309,6 +309,7 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 						}
 						else
 						{
+							pa_anchor_box(&canvas_editor->selection.box);
 							canvas_editor->selection.box.state = PA_BOX_STATE_RESIZING;
 						}
 						break;

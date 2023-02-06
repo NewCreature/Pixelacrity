@@ -227,14 +227,85 @@ static void enforce_box_aspect_ratio(PA_BOX * bp)
 {
 	float width, height;
 
+	/* get box size after enforcement */
+	switch(bp->handle[bp->hover_handle].type)
+	{
+		case PA_BOX_HANDLE_TYPE_TOP:
+		case PA_BOX_HANDLE_TYPE_BOTTOM:
+		{
+			height = bp->end_y - bp->start_y;
+			width = height * bp->aspect_ratio;
+			break;
+		}
+		default:
+		{
+			width = bp->end_x - bp->start_x;
+			height = bp->end_y - bp->start_y;
+			if(width > height)
+			{
+				height = width / bp->aspect_ratio;
+			}
+			else
+			{
+				width = height * bp->aspect_ratio;
+			}
+			break;
+		}
+	}
+
+	/* adjust box position dependending on which handle is being moved */
 	switch(bp->handle[bp->hover_handle].type)
 	{
 		case PA_BOX_HANDLE_TYPE_TOP_LEFT:
 		{
-			width = bp->end_x - bp->start_x;
-			height = width * bp->aspect_ratio;
 			bp->start_x = bp->end_x - width;
 			bp->start_y = bp->end_y - height;
+			break;
+		}
+		case PA_BOX_HANDLE_TYPE_TOP_RIGHT:
+		{
+			bp->end_x = bp->start_x + width;
+			bp->start_y = bp->end_y - height;
+			break;
+		}
+		case PA_BOX_HANDLE_TYPE_BOTTOM_LEFT:
+		{
+			bp->start_x = bp->end_x - width;
+			bp->end_y = bp->start_y + height;
+			break;
+		}
+		case PA_BOX_HANDLE_TYPE_BOTTOM_RIGHT:
+		{
+			bp->end_x = bp->start_x + width;
+			bp->end_y = bp->start_y + height;
+			break;
+		}
+		case PA_BOX_HANDLE_TYPE_TOP:
+		{
+			bp->start_x = bp->anchor_middle_x - width / 2.0;
+			bp->end_x = bp->anchor_middle_x + width / 2.0;
+			bp->start_y = bp->end_y - height;
+			break;
+		}
+		case PA_BOX_HANDLE_TYPE_BOTTOM:
+		{
+			bp->start_x = bp->anchor_middle_x - width / 2.0;
+			bp->end_x = bp->anchor_middle_x + width / 2.0;
+			bp->end_y = bp->start_y + height;
+			break;
+		}
+		case PA_BOX_HANDLE_TYPE_LEFT:
+		{
+			bp->start_y = bp->anchor_middle_y - height / 2.0;
+			bp->end_y = bp->anchor_middle_y + height / 2.0;
+			bp->start_x = bp->end_x - width;
+			break;
+		}
+		case PA_BOX_HANDLE_TYPE_RIGHT:
+		{
+			bp->start_y = bp->anchor_middle_y - height / 2.0;
+			bp->end_y = bp->anchor_middle_y + height / 2.0;
+			bp->end_x = bp->start_x + width;
 			break;
 		}
 	}
@@ -387,4 +458,15 @@ void pa_box_render(PA_BOX * bp, int style, int view_x, int view_y, int view_zoom
 			}
 		}
 	}
+}
+
+void pa_update_box_aspect_ratio(PA_BOX * bp)
+{
+	bp->aspect_ratio = (float)bp->width / (float)bp->height;
+}
+
+void pa_anchor_box(PA_BOX * bp)
+{
+	bp->anchor_middle_x = bp->middle_x;
+	bp->anchor_middle_y = bp->middle_y;
 }
