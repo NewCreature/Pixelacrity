@@ -35,13 +35,6 @@ Pixelacrity 0.4.5 Issues
       Otherwise, we might make the scroll bar slightly smaller if it can't fit
       into the last position.
 
-[ ]Hold Ctrl when resizing selection to maintain aspect ratio.
-
-   [ ]The box should resize such that the box edge is always touching the mouse
-      cursor.
-   
-   [ ]Implement enforcement for all eight possible handles.
-
 [ ]Make map have a full canvas preview instead of just outlines and boxes.
 
 [ ]See if we can use the image file selector to get image previews.
@@ -1185,3 +1178,10 @@ Closed Issues
 [X]Brush editor cancel button doesn't revert to original brush.
 
 [X]Hold shift to set the hover color to a composite of what's under the cursor.
+
+[X]Hold Ctrl when resizing selection to maintain aspect ratio.
+
+   [X]The box should resize such that the box edge is always touching the mouse
+      cursor.
+   
+   [X]Implement enforcement for all eight possible handles.
