@@ -450,15 +450,13 @@ ALLEGRO_COLOR pa_get_canvas_pixel(PA_CANVAS * cp, int layer, int x, int y, ALLEG
 	ALLEGRO_COLOR color;
 	int i;
 
-	tx = x / cp->bitmap_size;
-	ty = y / cp->bitmap_size;
-
 	if(layer < 0)
 	{
 		al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_TRANSFORM | ALLEGRO_STATE_BLENDER);
 		al_identity_transform(&identity);
 		al_set_target_bitmap(scratch);
 		al_use_transform(&identity);
+		pa_set_target_pixel_shader(shader);
 		al_use_shader(shader);
 		al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
 		al_draw_filled_rectangle(0, 0, al_get_bitmap_width(scratch), al_get_bitmap_height(scratch), al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
@@ -469,11 +467,14 @@ ALLEGRO_COLOR pa_get_canvas_pixel(PA_CANVAS * cp, int layer, int x, int y, ALLEG
 			al_draw_filled_rectangle(0, 0, al_get_bitmap_width(scratch), al_get_bitmap_height(scratch), color);
 		}
 		pa_unpremultiply_bitmap_alpha(scratch);
+		pa_set_target_pixel_shader(NULL);
 		al_restore_state(&old_state);
 		return al_get_pixel(scratch, 0, 0);
 	}
 	else if(layer < cp->layer_max && tx >= 0 && tx < cp->layer_width && ty >= 0 && ty < cp->layer_height && cp->layer[layer]->bitmap && cp->layer[layer]->bitmap[ty][tx])
 	{
+		tx = x / cp->bitmap_size;
+		ty = y / cp->bitmap_size;
 		return al_get_pixel(cp->layer[layer]->bitmap[ty][tx], x % cp->bitmap_size, y % cp->bitmap_size);
 	}
 	return al_map_rgba_f(0.0, 0.0, 0.0, 0.0);
