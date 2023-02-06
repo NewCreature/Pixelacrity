@@ -259,6 +259,7 @@ void pa_apply_paste_clipboard(PA_CANVAS_EDITOR * cep, int pos, int ox, int oy, b
 			{
 				pa_set_bitmap_stack_flags(cep->selection.bitmap_stack, ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
 			}
+			pa_update_box_aspect_ratio(&cep->selection.box);
 			t3f_refresh_menus();
 		}
 	}
