@@ -259,6 +259,10 @@ static void enforce_box_aspect_ratio(PA_BOX * bp)
 			break;
 		}
 	}
+	if(width < 1 || height < 1)
+	{
+		return;
+	}
 
 	/* adjust box position dependending on which handle is being moved */
 	switch(bp->handle[bp->hover_handle].type)
