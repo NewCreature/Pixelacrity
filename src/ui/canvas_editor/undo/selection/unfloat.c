@@ -168,6 +168,10 @@ bool pa_apply_unfloat_selection_undo(PA_CANVAS_EDITOR * cep, ALLEGRO_FILE * fp, 
 	}
 	pa_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom, true);
 	pa_select_canvas_editor_tool(cep, PA_TOOL_SELECTION);
+	if(cep->selection.filter)
+	{
+		pa_set_bitmap_stack_flags(cep->selection.bitmap_stack, ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
+	}
 	t3f_debug_message("Exit pa_apply_unfloat_selection_undo()\n");
 	return true;
 

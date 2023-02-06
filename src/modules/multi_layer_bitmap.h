@@ -16,5 +16,6 @@ bool pa_add_layer_to_bitmap_stack(PA_BITMAP_STACK * bp, ALLEGRO_BITMAP * bitmap,
 bool pa_remove_layer_from_bitmap_stack(PA_BITMAP_STACK * bp, int layer);
 int pa_get_bitmap_stack_width(PA_BITMAP_STACK * bp);
 int pa_get_bitmap_stack_height(PA_BITMAP_STACK * bp);
+void pa_set_bitmap_stack_flags(PA_BITMAP_STACK * bp, int flags);
 
 #endif

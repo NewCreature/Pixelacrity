@@ -488,6 +488,10 @@ bool pa_import_image(PA_CANVAS_EDITOR * cep, const char * fn)
 			pa_update_box_handles(&cep->selection.box, cep->view_x, cep->view_y, cep->view_zoom, cep->selection.bitmap_stack);
 			cep->selection.layer_max = cep->canvas->layer_max;
 			cep->selection.layer = cep->current_layer;
+			if(cep->selection.filter)
+			{
+				pa_set_bitmap_stack_flags(cep->selection.bitmap_stack, ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
+			}
 		}
 	}
 	t3f_debug_message("Exit pa_import_image()\n");

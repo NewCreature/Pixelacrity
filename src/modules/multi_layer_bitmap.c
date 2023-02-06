@@ -1,4 +1,5 @@
 #include "t3f/t3f.h"
+#include "bitmap.h"
 #include "multi_layer_bitmap.h"
 
 static ALLEGRO_BITMAP ** allocate_bitmap_array(int count)
@@ -167,4 +168,17 @@ int pa_get_bitmap_stack_height(PA_BITMAP_STACK * bp)
 		}
 	}
 	return -1;
+}
+
+void pa_set_bitmap_stack_flags(PA_BITMAP_STACK * bp, int flags)
+{
+	int i;
+
+	for(i = 0; i < bp->layers; i++)
+	{
+		if(bp->bitmap[i])
+		{
+			pa_set_bitmap_flags(bp->bitmap[i], flags);
+		}
+	}
 }

@@ -49,6 +49,21 @@ static int menu_edit_copy_update_proc(ALLEGRO_MENU * mp, int item, void * data)
 	return 0;
 }
 
+static int menu_edit_filter_update_proc(ALLEGRO_MENU * mp, int item, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	if(app->canvas_editor->selection.filter)
+	{
+		t3f_set_menu_item_flags(mp, item, ALLEGRO_MENU_ITEM_CHECKED);
+	}
+	else
+	{
+		t3f_set_menu_item_flags(mp, item, 0);
+	}
+	return 0;
+}
+
 static int menu_edit_paste_update_proc(ALLEGRO_MENU * mp, int item, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
@@ -137,6 +152,8 @@ ALLEGRO_MENU * pa_create_edit_menu(ALLEGRO_MENU * multilayer_mp)
 	t3f_add_menu_item(mp, "Unfloat Selection", 0, NULL, pa_menu_edit_unfloat_selection, menu_edit_unfloat_update_proc);
 	t3f_add_menu_item(mp, NULL, 0, NULL, NULL, NULL);
 	t3f_add_menu_item(mp, "Delete", 0, NULL, pa_menu_edit_delete, menu_edit_copy_update_proc);
+	t3f_add_menu_item(mp, NULL, 0, NULL, NULL, NULL);
+	t3f_add_menu_item(mp, "Enable Filtering", ALLEGRO_MENU_ITEM_CHECKBOX, NULL, pa_menu_edit_enable_filtering, menu_edit_filter_update_proc);
 
 	return mp;
 }

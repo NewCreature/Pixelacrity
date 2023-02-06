@@ -112,6 +112,10 @@ bool pa_handle_float_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp
 			pa_draw_primitive_to_canvas(cep->canvas, i, bp->start_x, bp->start_y, bp->start_x + bp->width - 1, bp->start_y + bp->height - 1, NULL, al_map_rgba_f(0, 0, 0, 0), NULL, PA_RENDER_COPY, NULL, pa_draw_filled_rectangle);
 		}
 	}
+	if(cep->selection.filter)
+	{
+		pa_set_bitmap_stack_flags(cep->selection.bitmap_stack, ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
+	}
 	if(!nomod)
 	{
 		cep->modified++;
@@ -275,6 +279,10 @@ bool pa_add_layer_to_selection(PA_CANVAS_EDITOR * cep, int layer)
 		{
 			cep->selection.layer_max++;
 			pa_destroy_bitmap_stack(old_bitmap);
+			if(cep->selection.filter)
+			{
+				pa_set_bitmap_stack_flags(cep->selection.bitmap_stack, ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
+			}
 			t3f_debug_message("pa_add_layer_to_selection() success\n");
 			return true;
 		}

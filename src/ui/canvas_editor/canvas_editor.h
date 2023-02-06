@@ -45,6 +45,7 @@ typedef struct
 	int layer;
 	PA_BOX box;
 	int linked_frame;
+	bool filter;
 
 	bool moving;
 	int pin_x, pin_y;

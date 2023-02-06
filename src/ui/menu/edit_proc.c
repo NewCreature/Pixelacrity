@@ -688,3 +688,28 @@ int pa_menu_edit_multilayer_float_selection(int id, void * data)
 
 	return 0;
 }
+
+int pa_menu_edit_enable_filtering(int id, void * data)
+{
+	APP_INSTANCE * app = (APP_INSTANCE *)data;
+
+	if(app->canvas_editor->selection.filter)
+	{
+		app->canvas_editor->selection.filter = false;
+		if(app->canvas_editor->selection.bitmap_stack)
+		{
+			pa_set_bitmap_stack_flags(app->canvas_editor->selection.bitmap_stack, 0);
+		}
+	}
+	else
+	{
+		app->canvas_editor->selection.filter = true;
+		if(app->canvas_editor->selection.bitmap_stack)
+		{
+			pa_set_bitmap_stack_flags(app->canvas_editor->selection.bitmap_stack, ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
+		}
+	}
+	t3f_refresh_menus();
+
+	return 0;
+}
