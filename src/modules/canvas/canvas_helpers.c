@@ -450,6 +450,9 @@ ALLEGRO_COLOR pa_get_canvas_pixel(PA_CANVAS * cp, int layer, int x, int y, ALLEG
 	ALLEGRO_COLOR color;
 	int i;
 
+	tx = x / cp->bitmap_size;
+	ty = y / cp->bitmap_size;
+
 	if(layer < 0)
 	{
 		al_store_state(&old_state, ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_TRANSFORM | ALLEGRO_STATE_BLENDER);
@@ -473,8 +476,6 @@ ALLEGRO_COLOR pa_get_canvas_pixel(PA_CANVAS * cp, int layer, int x, int y, ALLEG
 	}
 	else if(layer < cp->layer_max && tx >= 0 && tx < cp->layer_width && ty >= 0 && ty < cp->layer_height && cp->layer[layer]->bitmap && cp->layer[layer]->bitmap[ty][tx])
 	{
-		tx = x / cp->bitmap_size;
-		ty = y / cp->bitmap_size;
 		return al_get_pixel(cp->layer[layer]->bitmap[ty][tx], x % cp->bitmap_size, y % cp->bitmap_size);
 	}
 	return al_map_rgba_f(0.0, 0.0, 0.0, 0.0);
@@ -563,4 +564,40 @@ static int sort_frame_by_xy(const void * d1, const void * d2)
 void pa_sort_canvas_frames(PA_CANVAS * cp)
 {
 	qsort(cp->frame, cp->frame_max, sizeof(PA_CANVAS_FRAME *), sort_frame_by_xy);
+}
+
+void pa_render_canvas_preview(PA_CANVAS * cp, ALLEGRO_BITMAP * bp, ALLEGRO_SHADER * shader)
+{
+	ALLEGRO_STATE old_state;
+	ALLEGRO_TRANSFORM transform;
+	int i;
+	int x, y, width, height;
+	int ox = 0, oy = 0;
+	float scale;
+
+	al_store_state(&old_state, ALLEGRO_STATE_TRANSFORM | ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_BLENDER);
+	pa_get_canvas_dimensions(cp, &x, &y, &width, &height, 0, false);
+	scale = (float)al_get_bitmap_width(bp) / (float)width;
+	if((float)height * scale > al_get_bitmap_height(bp))
+	{
+		scale = (float)al_get_bitmap_height(bp) / (float)height;
+	}
+	else
+	{
+	}
+	al_build_transform(&transform, ox / scale, oy / scale, scale, scale, 0.0);
+	al_set_target_bitmap(bp);
+	al_clear_to_color(al_map_rgba_f(0.5, 0.5, 0.5, 1.0));
+	pa_set_target_pixel_shader(shader);
+	al_use_transform(&transform);
+	al_draw_filled_rectangle(0, 0, width, height, al_map_rgba_f(1.0, 1.0, 1.0, 1.0));
+	for(i = 0; i < cp->layer_max; i++)
+	{
+		al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_INVERSE_ALPHA);
+		if(!(cp->layer[i]->flags & PA_CANVAS_FLAG_HIDDEN))
+		{
+			draw_canvas_layer(cp, i, cp->layer[i]->flags, bp, x, y, width, height);
+		}
+	}
+	al_restore_state(&old_state);
 }

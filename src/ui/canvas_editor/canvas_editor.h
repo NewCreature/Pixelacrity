@@ -110,6 +110,8 @@ typedef struct
 	int brush_size;
 	ALLEGRO_BITMAP * color_scratch_bitmap;
 	ALLEGRO_BITMAP * bg_bitmap;
+	ALLEGRO_BITMAP * preview_bitmap;
+	bool update_preview;
 	PA_CLIPBOARD_DATA clipboard;
 	PA_GRID_DATA grid[PA_MAX_GRIDS];
 	int scratch_offset_x; // offset of scratch in relation to view

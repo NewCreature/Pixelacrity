@@ -85,7 +85,24 @@ int pa_gui_map_proc(int msg, T3GUI_ELEMENT * d, int c)
 		}
 		case MSG_DRAW:
 		{
+			/*
+			if(!cep->preview_bitmap)
+			{
+				cep->preview_bitmap = al_create_bitmap(d->w, d->h);
+				pa_render_canvas_preview(cep->canvas, cep->preview_bitmap, cep->premultiplied_alpha_shader);
+			}
+			al_draw_bitmap(cep->preview_bitmap, d->x, d->y, 0); */
 			render_map(cep, d->x, d->y, d->w, d->h);
+			break;
+		}
+		case MSG_IDLE:
+		{
+			/*
+			if(cep->update_preview && cep->preview_bitmap)
+			{
+				pa_render_canvas_preview(cep->canvas, cep->preview_bitmap, cep->premultiplied_alpha_shader);
+				cep->update_preview = false;
+			} */
 			break;
 		}
 	}
