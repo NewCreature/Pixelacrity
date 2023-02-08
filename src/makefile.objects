@@ -48,6 +48,7 @@ APP_CANVAS_EDITOR_OBJECTS = \
     ui/canvas_editor/selection.o\
     ui/canvas_editor/brush.o\
     ui/canvas_editor/frame.o\
+    ui/canvas_editor/preview.o\
     ui/canvas_editor/tools/pixel.o\
     ui/canvas_editor/tools/line.o\
     ui/canvas_editor/tools/rectangle.o\

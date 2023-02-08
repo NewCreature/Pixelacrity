@@ -2,6 +2,7 @@
 #include "t3gui/t3gui.h"
 #include "modules/canvas/canvas_helpers.h"
 #include "ui/canvas_editor/canvas_editor.h"
+#include "ui/canvas_editor/preview.h"
 
 static void render_map(PA_CANVAS_EDITOR * cep, int x, int y, int width, int height)
 {
@@ -85,24 +86,25 @@ int pa_gui_map_proc(int msg, T3GUI_ELEMENT * d, int c)
 		}
 		case MSG_DRAW:
 		{
-			/*
-			if(!cep->preview_bitmap)
+			if(!cep->preview)
 			{
-				cep->preview_bitmap = al_create_bitmap(d->w, d->h);
-				pa_render_canvas_preview(cep->canvas, cep->preview_bitmap, cep->premultiplied_alpha_shader);
+				cep->preview = pa_create_canvas_editor_preview(d->w, d->h);
+				pa_update_canvas_editor_preview(cep->preview, cep->canvas, cep->premultiplied_alpha_shader);
 			}
-			al_draw_bitmap(cep->preview_bitmap, d->x, d->y, 0); */
-			render_map(cep, d->x, d->y, d->w, d->h);
+			if(cep->preview && cep->preview->bitmap)
+			{
+				al_draw_bitmap(cep->preview->bitmap, d->x, d->y, 0);
+			}
+//			render_map(cep, d->x, d->y, d->w, d->h);
 			break;
 		}
 		case MSG_IDLE:
 		{
-			/*
-			if(cep->update_preview && cep->preview_bitmap)
+			if(cep->update_preview && cep->preview)
 			{
-				pa_render_canvas_preview(cep->canvas, cep->preview_bitmap, cep->premultiplied_alpha_shader);
+				pa_update_canvas_editor_preview(cep->preview, cep->canvas, cep->premultiplied_alpha_shader);
 				cep->update_preview = false;
-			} */
+			}
 			break;
 		}
 	}

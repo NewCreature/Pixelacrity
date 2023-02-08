@@ -6,6 +6,7 @@
 #include "modules/box.h"
 #include "modules/multi_layer_bitmap.h"
 #include "modules/palette.h"
+#include "preview.h"
 
 #define PA_CANVAS_EDITOR_SIGNAL_NONE         0
 #define PA_CANVAS_EDITOR_SIGNAL_DELETE_LAYER 1
@@ -110,7 +111,7 @@ typedef struct
 	int brush_size;
 	ALLEGRO_BITMAP * color_scratch_bitmap;
 	ALLEGRO_BITMAP * bg_bitmap;
-	ALLEGRO_BITMAP * preview_bitmap;
+	PA_CANVAS_EDITOR_PREVIEW * preview;
 	bool update_preview;
 	PA_CLIPBOARD_DATA clipboard;
 	PA_GRID_DATA grid[PA_MAX_GRIDS];
