@@ -647,7 +647,7 @@ void pa_resize_main_dialog(PA_DIALOG * dp)
 	resize_element(pa_get_dialog_element(dp, PA_UI_ELEMENT_BUTTON_ADD_LAYER), t3f_default_view->width - right_pane_width + ml + mr + esl, pos_y, button_size, button_size);
 	resize_element(pa_get_dialog_element(dp, PA_UI_ELEMENT_BUTTON_REMOVE_LAYER), t3f_default_view->width - ml - mr - esr - pos_vx, pos_y, button_size, button_size);
 	pos_y += button_size + mt + mb + est + esb;
-	resize_element(pa_get_dialog_element(dp, PA_UI_ELEMENT_MAP), t3f_default_view->width - right_pane_width + esl, pos_y, right_pane_width - esl - esr, 128);
+	resize_element(pa_get_dialog_element(dp, PA_UI_ELEMENT_MAP), t3f_default_view->width - right_pane_width + esl, pos_y, right_pane_width - esl - esr, right_pane_width - esl - esr);
 
 	left_pane_width = PA_COLOR_PICKER_SHADES * color_size + esl + esr;
 	pos_x = esl;
