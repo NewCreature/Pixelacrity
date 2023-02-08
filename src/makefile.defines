@@ -11,10 +11,10 @@ include makefile.objects
 APP_COMPANY = tcubedsoftware
 APP_NAME = pixelacrity
 APP_TITLE = Pixelacrity
-APP_VERSION = 0.4.4
-APP_RELEASE = 48
+APP_VERSION = 0.4.5
+APP_RELEASE = 49
 APP_PUBLISHER = T\ Cubed\ Software
-APP_COPYRIGHT = Copyright\ (C)\ 2022\ T\ Cubed\ Software
+APP_COPYRIGHT = Copyright\ (C)\ 2023\ T\ Cubed\ Software
 APP_ID = com.tcubedsoftware.pixelacrity
 APP_URL = https://wwww.tcubedsoftware.com/scripts/pages/project.php?id=pixelacrity
 APP_OBJECTS = $(T3GUI_OBJECTS) $(APP_MODULE_OBJECTS) $(APP_CANVAS_EDITOR_OBJECTS) $(APP_UI_OBJECTS) main.o shortcuts.o
