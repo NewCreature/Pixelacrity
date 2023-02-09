@@ -251,6 +251,7 @@ bool pa_handle_load_canvas(APP_INSTANCE * app, const char * file_path)
 		app->canvas = new_canvas;
 		app->canvas_editor->canvas = app->canvas;
 		app->canvas_editor->modified = 0;
+		app->canvas_editor->preview->update = true;
 		pa_reset_canvas_editor(app->canvas_editor);
 		pa_center_canvas_editor(app->canvas_editor, 0);
 		strcpy(app->canvas_editor->canvas_path, file_path);

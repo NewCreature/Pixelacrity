@@ -131,6 +131,11 @@ PA_CANVAS_EDITOR * pa_create_canvas_editor(PA_CANVAS * cp)
 	{
 		goto fail;
 	}
+	cep->preview = pa_create_canvas_editor_preview(0, 0);
+	if(!cep->preview)
+	{
+		goto fail;
+	}
 	cep->canvas = cp;
 	cep->auto_backup = true;
 	pa_reset_canvas_editor(cep);
@@ -153,6 +158,10 @@ void pa_destroy_canvas_editor(PA_CANVAS_EDITOR * cep)
 		free(cep->export_path);
 	}
 	pa_free_clipboard(cep);
+	if(cep->preview)
+	{
+		pa_destroy_canvas_editor_preview(cep->preview);
+	}
 	if(cep->scratch_bitmap)
 	{
 		al_destroy_bitmap(cep->scratch_bitmap);

@@ -17,6 +17,23 @@ PA_CANVAS_EDITOR_PREVIEW * pa_create_canvas_editor_preview(int width, int height
   return pp;
 }
 
+void pa_resize_canvas_editor_preview(PA_CANVAS_EDITOR_PREVIEW * pp, int width, int height)
+{
+	bool recreate = false;
+
+	if(pp->bitmap)
+	{
+		al_destroy_bitmap(pp->bitmap);
+		recreate = true;
+	}
+	pp->width = width;
+	pp->height = height;
+	if(recreate)
+	{
+		pp->bitmap = al_create_bitmap(pp->width, pp->height);
+	}
+}
+
 void pa_destroy_canvas_editor_preview(PA_CANVAS_EDITOR_PREVIEW * pp)
 {
   if(pp->bitmap)
@@ -40,7 +57,6 @@ void pa_update_canvas_editor_preview(PA_CANVAS_EDITOR_PREVIEW * pp, PA_CANVAS * 
 	}
   if(!pp->bitmap)
   {
-    printf("bitmap\n");
     pp->bitmap = al_create_bitmap(pp->width, pp->height);
   }
   if(!pp->bitmap)

@@ -469,6 +469,7 @@ static void resize_color_palette(PA_DIALOG * dp, int x, int y)
 void pa_resize_main_dialog(PA_DIALOG * dp)
 {
 	PA_CANVAS_EDITOR * canvas_editor = NULL;
+	T3GUI_ELEMENT * ep = NULL;
 	T3GUI_THEME * default_theme;
 	int left_pane_width;
 	int right_pane_width;
@@ -697,8 +698,12 @@ void pa_resize_main_dialog(PA_DIALOG * dp)
 
 	resize_element(pa_get_dialog_element(dp, PA_UI_ELEMENT_CANVAS_EDITOR), left_pane_width, pos_vy + mt + mb + mt + mb + est + esb, t3f_default_view->width - left_pane_width - right_pane_width, t3f_default_view->height - pos_vy - mt - mb - mt - mb - est - esb - status_height);
 
-	canvas_editor = (PA_CANVAS_EDITOR *)pa_get_dialog_element(dp, PA_UI_ELEMENT_CANVAS_EDITOR)->dp;
+	ep = pa_get_dialog_element(dp, PA_UI_ELEMENT_CANVAS_EDITOR);
+	canvas_editor = ep->dp;
 	t3f_adjust_view(canvas_editor->view, 0, 0, al_get_display_width(t3f_display), al_get_display_height(t3f_display), pa_get_dialog_element(dp, PA_UI_ELEMENT_CANVAS_EDITOR)->w / 2, pa_get_dialog_element(dp, PA_UI_ELEMENT_CANVAS_EDITOR)->h / 2, T3F_NO_SCALE);
 	pa_set_canvas_editor_zoom(canvas_editor, canvas_editor->view_zoom, false);
+
+	ep = pa_get_dialog_element(dp, PA_UI_ELEMENT_MAP);
+	pa_resize_canvas_editor_preview(canvas_editor->preview, ep->w, ep->h);
 	canvas_editor->frame_text_offset = est + esb;
 }

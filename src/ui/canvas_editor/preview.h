@@ -12,12 +12,14 @@ typedef struct
   int offset_x;
   int offset_y;
   float scale;
+  bool update;
 
 } PA_CANVAS_EDITOR_PREVIEW;
 
 PA_CANVAS_EDITOR_PREVIEW * pa_create_canvas_editor_preview(int width, int height);
 void pa_destroy_canvas_editor_preview(PA_CANVAS_EDITOR_PREVIEW * pp);
 
+void pa_resize_canvas_editor_preview(PA_CANVAS_EDITOR_PREVIEW * pp, int width, int height);
 void pa_update_canvas_editor_preview(PA_CANVAS_EDITOR_PREVIEW * pp, PA_CANVAS * cp, ALLEGRO_SHADER * shader);
 
 #endif

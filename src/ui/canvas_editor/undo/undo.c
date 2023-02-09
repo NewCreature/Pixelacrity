@@ -378,6 +378,7 @@ bool pa_apply_undo(PA_CANVAS_EDITOR * cep, const char * fn, bool revert)
 		{
 			update_canvas_size(cep, hp);
 			cep->modified--;
+			cep->preview->update = true;
 			pa_set_window_message(NULL);
 		}
 		t3f_debug_message("Exit pa_apply_undo()\n");
@@ -407,6 +408,7 @@ bool pa_apply_redo(PA_CANVAS_EDITOR * cep, const char * fn)
 		{
 			update_canvas_size(cep, hp);
 			cep->modified++;
+			cep->preview->update = true;
 			pa_set_window_message(NULL);
 		}
 		t3f_debug_message("Exit pa_apply_redo()\n");

@@ -393,6 +393,7 @@ int pa_menu_edit_delete(int id, void * data)
 			pa_draw_primitive_to_canvas(app->canvas_editor->canvas, app->canvas_editor->current_layer, app->canvas_editor->selection.box.start_x, app->canvas_editor->selection.box.start_y, app->canvas_editor->selection.box.end_x, app->canvas_editor->selection.box.end_y, NULL, al_map_rgba_f(0.0, 0.0, 0.0, 0.0), NULL, PA_RENDER_COPY, NULL,  pa_draw_filled_rectangle);
 			pa_clear_canvas_editor_selection(app->canvas_editor);
 			app->canvas_editor->modified++;
+			app->canvas_editor->preview->update = true;
 			pa_set_window_message(NULL);
 		}
 		else
@@ -667,6 +668,7 @@ int pa_menu_edit_multilayer_delete(int id, void * data)
 			}
 			pa_clear_canvas_editor_selection(app->canvas_editor);
 			app->canvas_editor->modified++;
+			app->canvas_editor->preview->update = true;
 		}
 		else
 		{

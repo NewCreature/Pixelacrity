@@ -129,6 +129,7 @@ void pa_canvas_editor_MSG_MOUSEUP(T3GUI_ELEMENT * d, int c)
 					pa_finalize_undo(canvas_editor);
 				}
 				canvas_editor->modified++;
+				canvas_editor->preview->update = true;
 				pa_set_window_message(NULL);
 				canvas_editor->tool_state = PA_TOOL_STATE_OFF;
 			}
@@ -154,6 +155,7 @@ void pa_canvas_editor_MSG_MOUSEUP(T3GUI_ELEMENT * d, int c)
 					pa_finalize_undo(canvas_editor);
 				}
 				canvas_editor->modified++;
+				canvas_editor->preview->update = true;
 				pa_set_window_message(NULL);
 				canvas_editor->tool_state = PA_TOOL_STATE_OFF;
 			}
@@ -179,6 +181,7 @@ void pa_canvas_editor_MSG_MOUSEUP(T3GUI_ELEMENT * d, int c)
 					pa_finalize_undo(canvas_editor);
 				}
 				canvas_editor->modified++;
+				canvas_editor->preview->update = true;
 				pa_set_window_message(NULL);
 				canvas_editor->tool_state = PA_TOOL_STATE_OFF;
 			}
@@ -202,13 +205,13 @@ void pa_canvas_editor_MSG_MOUSEUP(T3GUI_ELEMENT * d, int c)
 				{
 					pa_draw_primitive_to_canvas(canvas_editor->canvas, canvas_editor->current_layer, canvas_editor->click_x, canvas_editor->click_y, canvas_editor->snap_end_x, canvas_editor->snap_end_y, canvas_editor->brush, canvas_editor->click_outline_color, NULL, PA_RENDER_COPY, canvas_editor->conditional_copy_shader, pa_draw_rectangle);
 				}
-				canvas_editor->update_preview = true;
 				al_use_shader(canvas_editor->standard_shader);
 				if(made_undo)
 				{
 					pa_finalize_undo(canvas_editor);
 				}
 				canvas_editor->modified++;
+				canvas_editor->preview->update = true;
 				pa_set_window_message(NULL);
 				canvas_editor->tool_state = PA_TOOL_STATE_OFF;
 			}
@@ -234,6 +237,7 @@ void pa_canvas_editor_MSG_MOUSEUP(T3GUI_ELEMENT * d, int c)
 					pa_finalize_undo(canvas_editor);
 				}
 				canvas_editor->modified++;
+				canvas_editor->preview->update = true;
 				pa_set_window_message(NULL);
 				canvas_editor->tool_state = PA_TOOL_STATE_OFF;
 			}
@@ -263,6 +267,7 @@ void pa_canvas_editor_MSG_MOUSEUP(T3GUI_ELEMENT * d, int c)
 					pa_finalize_undo(canvas_editor);
 				}
 				canvas_editor->modified++;
+				canvas_editor->preview->update = true;
 				pa_set_window_message(NULL);
 				canvas_editor->tool_state = PA_TOOL_STATE_OFF;
 			}

@@ -90,6 +90,7 @@ int pa_menu_layer_delete(int id, void * data)
 			}
 		}
 		app->canvas_editor->modified++;
+		app->canvas_editor->preview->update = true;
 		pa_set_window_message(NULL);
 		t3f_refresh_menus();
 	}

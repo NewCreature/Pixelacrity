@@ -136,6 +136,7 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 									pa_finalize_undo(canvas_editor);
 								}
 								canvas_editor->modified++;
+								canvas_editor->preview->update = true;
 							}
 							pa_destroy_queue(flood_fill_queue);
 						}
@@ -168,6 +169,7 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 									pa_finalize_undo(canvas_editor);
 								}
 								canvas_editor->modified++;
+								canvas_editor->preview->update = true;
 							}
 							pa_destroy_queue(flood_fill_queue);
 							pa_update_canvas_dimensions(canvas_editor->canvas, canvas_editor->current_layer, left, top, right, bottom);
@@ -198,6 +200,7 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 								pa_finalize_undo(canvas_editor);
 							}
 							canvas_editor->modified++;
+							canvas_editor->preview->update = true;
 						}
 						pa_destroy_queue(flood_fill_queue);
 						pa_update_canvas_dimensions(canvas_editor->canvas, canvas_editor->current_layer, left, top, right, bottom);
@@ -229,6 +232,7 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 									pa_finalize_undo(canvas_editor);
 								}
 								canvas_editor->modified++;
+								canvas_editor->preview->update = true;
 							}
 						}
 						pa_destroy_queue(flood_fill_queue);
@@ -248,6 +252,7 @@ void pa_canvas_editor_MSG_MOUSEDOWN(T3GUI_ELEMENT * d, int c)
 								pa_finalize_undo(canvas_editor);
 							}
 							canvas_editor->modified++;
+							canvas_editor->preview->update = true;
 						}
 						pa_destroy_queue(flood_fill_queue);
 					}

@@ -119,6 +119,7 @@ bool pa_handle_float_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * bp
 	if(!nomod)
 	{
 		cep->modified++;
+		cep->preview->update = true;
 		pa_set_window_message(NULL);
 	}
 	t3f_debug_message("Exit pa_handle_float_canvas_editor_selection()\n");
@@ -178,6 +179,7 @@ void pa_handle_unfloat_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * 
 	if(!nomod)
 	{
 		cep->modified++;
+		cep->preview->update = true;
 		pa_set_window_message(NULL);
 	}
 	t3f_debug_message("Exit pa_handle_unfloat_canvas_editor_selection()\n");
@@ -348,6 +350,7 @@ bool pa_handle_flip_selection(PA_CANVAS_EDITOR * cep, bool horizontal, bool vert
 	if(!nomod)
 	{
 		cep->modified++;
+		cep->preview->update = true;
 		pa_set_window_message(NULL);
 	}
 
@@ -398,6 +401,7 @@ bool pa_handle_turn_selection(PA_CANVAS_EDITOR * cep, int amount, bool multi, bo
 	if(!nomod)
 	{
 		cep->modified++;
+		cep->preview->update = true;
 		pa_set_window_message(NULL);
 	}
 	return true;

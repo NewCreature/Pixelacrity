@@ -86,12 +86,7 @@ int pa_gui_map_proc(int msg, T3GUI_ELEMENT * d, int c)
 		}
 		case MSG_DRAW:
 		{
-			if(!cep->preview)
-			{
-				cep->preview = pa_create_canvas_editor_preview(d->w, d->h);
-				pa_update_canvas_editor_preview(cep->preview, cep->canvas, cep->premultiplied_alpha_shader);
-			}
-			if(cep->preview && cep->preview->bitmap)
+			if(cep->preview->bitmap)
 			{
 				al_draw_bitmap(cep->preview->bitmap, d->x, d->y, 0);
 			}
@@ -100,10 +95,10 @@ int pa_gui_map_proc(int msg, T3GUI_ELEMENT * d, int c)
 		}
 		case MSG_IDLE:
 		{
-			if(cep->update_preview && cep->preview)
+			if(cep->preview->update)
 			{
 				pa_update_canvas_editor_preview(cep->preview, cep->canvas, cep->premultiplied_alpha_shader);
-				cep->update_preview = false;
+				cep->preview->update = false;
 			}
 			break;
 		}
