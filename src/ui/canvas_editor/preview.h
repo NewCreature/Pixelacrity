@@ -7,6 +7,8 @@ typedef struct
 {
 
   ALLEGRO_BITMAP * bitmap;
+  ALLEGRO_BITMAP * background_bitmap;
+  int background_scale;
   int width, height;
   int canvas_x, canvas_y, canvas_width, canvas_height;
   int offset_x;

@@ -209,3 +209,30 @@ void pa_unpremultiply_bitmap_alpha(ALLEGRO_BITMAP * bp)
 	al_unlock_bitmap(bp);
 	al_restore_state(&old_state);
 }
+
+void pa_draw_tiled_background(ALLEGRO_BITMAP * bp, int x, int y, int width, int height, int scale)
+{
+	int i, j;
+	int tw, th;
+	bool held = al_is_bitmap_drawing_held();
+
+	if(held)
+	{
+		al_hold_bitmap_drawing(false);
+	}
+	al_hold_bitmap_drawing(true);
+	tw = width / scale + 1;
+	th = height / scale + 1;
+	for(i = 0; i < th; i++)
+	{
+		for(j = 0; j < tw; j++)
+		{
+			t3f_draw_scaled_bitmap(bp, t3f_color_white, x + j * scale, y + i * scale, 0, scale, scale, 0);
+		}
+	}
+	al_hold_bitmap_drawing(false);
+	if(held)
+	{
+		al_hold_bitmap_drawing(true);
+	}
+}

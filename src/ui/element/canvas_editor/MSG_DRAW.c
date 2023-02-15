@@ -4,6 +4,7 @@
 #include "ui/ui.h"
 #include "ui/canvas_editor/canvas_editor.h"
 #include "ui/canvas_editor/tools/selection.h"
+#include "modules/bitmap.h"
 
 static void generate_brush_hint(PA_CANVAS_EDITOR * cep)
 {
@@ -47,33 +48,6 @@ static void draw_grid(int ox, int oy, int width, int height, int space, float of
 	}
 }
 
-static void draw_background(ALLEGRO_BITMAP * bp, int x, int y, int width, int height, int scale)
-{
-	int i, j;
-	int tw, th;
-	bool held = al_is_bitmap_drawing_held();
-
-	if(held)
-	{
-		al_hold_bitmap_drawing(false);
-	}
-	al_hold_bitmap_drawing(true);
-	tw = width / scale + 1;
-	th = height / scale + 1;
-	for(i = 0; i < th; i++)
-	{
-		for(j = 0; j < tw; j++)
-		{
-			t3f_draw_scaled_bitmap(bp, t3f_color_white, x + j * scale, y + i * scale, 0, scale, scale, 0);
-		}
-	}
-	al_hold_bitmap_drawing(false);
-	if(held)
-	{
-		al_hold_bitmap_drawing(true);
-	}
-}
-
 void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 {
 	PA_CANVAS_EDITOR * canvas_editor = (PA_CANVAS_EDITOR *)d->dp;
@@ -98,7 +72,7 @@ void pa_canvas_editor_MSG_DRAW(T3GUI_ELEMENT * d, int c)
 	al_identity_transform(&identity);
 	al_use_transform(&identity);
 	al_use_shader(canvas_editor->premultiplied_alpha_shader);
-	draw_background(canvas_editor->bg_bitmap, d->x, d->y, d->w, d->h, canvas_editor->checkerboard_scale);
+	pa_draw_tiled_background(canvas_editor->bg_bitmap, d->x, d->y, d->w, d->h, canvas_editor->checkerboard_scale);
 
 
 	if(canvas_editor->selection.layer < 0 && canvas_editor->selection.bitmap_stack)

@@ -2,6 +2,7 @@
 #include "modules/canvas/canvas.h"
 #include "modules/canvas/canvas_helpers.h"
 #include "modules/pixel_shader.h"
+#include "modules/bitmap.h"
 
 PA_CANVAS_EDITOR_PREVIEW * pa_create_canvas_editor_preview(int width, int height)
 {
@@ -13,8 +14,22 @@ PA_CANVAS_EDITOR_PREVIEW * pa_create_canvas_editor_preview(int width, int height
     memset(pp, 0, sizeof(PA_CANVAS_EDITOR_PREVIEW));
     pp->width = width;
     pp->height = height;
+		pp->background_bitmap = pa_make_checkerboard_bitmap(t3f_color_white, al_map_rgba_f(0.9, 0.9, 0.9, 1.0));
+		if(!pp->background_bitmap)
+		{
+			goto fail;
+		}
   }
   return pp;
+
+	fail:
+	{
+		if(pp)
+		{
+			pa_destroy_canvas_editor_preview(pp);
+		}
+	}
+	return NULL;
 }
 
 void pa_resize_canvas_editor_preview(PA_CANVAS_EDITOR_PREVIEW * pp, int width, int height)
@@ -36,6 +51,10 @@ void pa_resize_canvas_editor_preview(PA_CANVAS_EDITOR_PREVIEW * pp, int width, i
 
 void pa_destroy_canvas_editor_preview(PA_CANVAS_EDITOR_PREVIEW * pp)
 {
+	if(pp->background_bitmap)
+	{
+		al_destroy_bitmap(pp->background_bitmap);
+	}
   if(pp->bitmap)
   {
     al_destroy_bitmap(pp->bitmap);
@@ -73,12 +92,13 @@ void pa_update_canvas_editor_preview(PA_CANVAS_EDITOR_PREVIEW * pp, PA_CANVAS * 
 	{
 		pp->offset_y = al_get_bitmap_height(pp->bitmap) / 2.0 - (pp->canvas_height * pp->scale) / 2.0;
 	}
-	al_build_transform(&transform, pp->offset_x, pp->offset_y, pp->scale, pp->scale, 0.0);
 	al_set_target_bitmap(pp->bitmap);
-	al_clear_to_color(al_map_rgba_f(0.5, 0.5, 0.5, 1.0));
 	pa_set_target_pixel_shader(shader);
+	al_identity_transform(&transform);
 	al_use_transform(&transform);
-	al_draw_filled_rectangle(0, 0, pp->canvas_width, pp->canvas_height, al_map_rgba_f(1.0, 1.0, 1.0, 1.0));
+	pa_draw_tiled_background(pp->background_bitmap, 0, 0, al_get_bitmap_width(pp->bitmap), al_get_bitmap_height(pp->bitmap), pp->background_scale);
+	al_build_transform(&transform, pp->offset_x, pp->offset_y, pp->scale, pp->scale, 0.0);
+	al_use_transform(&transform);
 	for(i = 0; i < cp->layer_max; i++)
 	{
 		al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_INVERSE_ALPHA);

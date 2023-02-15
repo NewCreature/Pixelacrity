@@ -76,6 +76,7 @@ PA_UI * pa_create_ui(PA_CANVAS_EDITOR * cep)
 		cep->box_line_thickness = pa_get_theme_int(uip->main_dialog->theme, "box_line_thickness", 2);
 		cep->grid_thickness = pa_get_theme_float(uip->main_dialog->theme, "grid_thickness", 0.0);
 		cep->checkerboard_scale = pa_get_theme_int(uip->main_dialog->theme, "checkerboard_scale", 24);
+		cep->preview->background_scale = cep->checkerboard_scale;
 		cep->grid_offset = pa_get_theme_float(uip->main_dialog->theme, "grid_offset", 0.5);
 		cep->grid_color = pa_get_theme_color(uip->main_dialog->theme, "grid_color", al_map_rgba_f(0.0, 0.0, 0.0, 0.25));
 	}
