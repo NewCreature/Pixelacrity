@@ -37,7 +37,7 @@ Pixelacrity 0.4.6 Issues
 
 [ ]Make map have a full canvas preview instead of just outlines and boxes.
 
-   [ ]Fill map bitmap with checkerboard pattern and render preview on top.
+   [X]Fill map bitmap with checkerboard pattern and render preview on top.
 
    [ ]Fix map navigation.
 
