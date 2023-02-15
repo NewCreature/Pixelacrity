@@ -49,9 +49,6 @@ static void render_map(PA_CANVAS_EDITOR * cep, int x, int y, int width, int heig
 int pa_gui_map_proc(int msg, T3GUI_ELEMENT * d, int c)
 {
 	PA_CANVAS_EDITOR * cep = (PA_CANVAS_EDITOR *)d->dp;
-	int cx, cy, cwidth, cheight;
-	float scale, scale2;
-	int left, top;
 
 	switch(msg)
 	{
@@ -68,18 +65,9 @@ int pa_gui_map_proc(int msg, T3GUI_ELEMENT * d, int c)
 		{
 			if(d->flags & D_TRACKMOUSE)
 			{
-				pa_get_canvas_dimensions(cep->canvas, &cx, &cy, &cwidth, &cheight, 0, false);
-				if(cwidth > 0 && cheight > 0)
+				if(cep->preview->bitmap)
 				{
-					scale = (float)d->w / (float)cwidth;
-					scale2 = (float)d->h / (float)cheight;
-					left = d->w / 2 - (int)((float)cwidth * scale) / 2;
-					top = d->h / 2 - (int)((float)cheight * scale) / 2;
-					if(scale > scale2)
-					{
-						scale = scale2;
-					}
-					pa_center_canvas_editor_at(cep, (t3gui_get_mouse_x() - left - d->x) / scale + cx, (t3gui_get_mouse_y() - top - d->y) / scale + cy);
+					pa_center_canvas_editor_at(cep, (t3gui_get_mouse_x() - cep->preview->offset_x - d->x) / cep->preview->scale + cep->preview->canvas_x, (t3gui_get_mouse_y() - cep->preview->offset_y - d->y) / cep->preview->scale + cep->preview->canvas_y);
 				}
 			}
 			break;
