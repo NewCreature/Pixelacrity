@@ -1,4 +1,4 @@
-Pixelacrity 0.4.6 Issues
+Pixelacrity 0.4.7 Issues
 ------------------------
 
 [ ]Look into undo rectangle on new layer leaving artifacts. This was happening
