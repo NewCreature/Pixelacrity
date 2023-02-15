@@ -41,7 +41,7 @@ Pixelacrity 0.4.6 Issues
 
    [ ]Fix map navigation.
 
-   [ ]Indicate canvas editor viewport on map.
+   [X]Indicate canvas editor viewport on map.
 
 [ ]See if we can use the image file selector to get image previews.
 
