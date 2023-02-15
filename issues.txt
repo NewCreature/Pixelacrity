@@ -35,14 +35,6 @@ Pixelacrity 0.4.6 Issues
       Otherwise, we might make the scroll bar slightly smaller if it can't fit
       into the last position.
 
-[ ]Make map have a full canvas preview instead of just outlines and boxes.
-
-   [X]Fill map bitmap with checkerboard pattern and render preview on top.
-
-   [ ]Fix map navigation.
-
-   [X]Indicate canvas editor viewport on map.
-
 [ ]See if we can use the image file selector to get image previews.
 
 [ ]Add about screen.
@@ -1191,3 +1183,11 @@ Closed Issues
       cursor.
    
    [X]Implement enforcement for all eight possible handles.
+
+[X]Make map have a full canvas preview instead of just outlines and boxes.
+
+   [X]Fill map bitmap with checkerboard pattern and render preview on top.
+
+   [X]Fix map navigation.
+
+   [X]Indicate canvas editor viewport on map.
