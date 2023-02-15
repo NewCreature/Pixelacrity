@@ -78,6 +78,10 @@ void pa_update_canvas_editor_preview(PA_CANVAS_EDITOR_PREVIEW * pp, PA_CANVAS * 
   {
     pp->bitmap = al_create_bitmap(pp->width, pp->height);
   }
+	if(!pp->overlay)
+	{
+		pp->overlay = al_create_bitmap(pp->width, pp->height);
+	}
   if(!pp->bitmap)
   {
     return;
@@ -107,5 +111,23 @@ void pa_update_canvas_editor_preview(PA_CANVAS_EDITOR_PREVIEW * pp, PA_CANVAS * 
 			pa_draw_canvas_layer(cp, i, cp->layer[i]->flags, pp->bitmap, pp->canvas_x, pp->canvas_y, pp->canvas_width, pp->canvas_height);
 		}
 	}
+	al_restore_state(&old_state);
+}
+
+void pa_update_canvas_editor_preview_overlay(PA_CANVAS_EDITOR_PREVIEW * pp, int x, int y, int width, int height)
+{
+	ALLEGRO_STATE old_state;
+	ALLEGRO_TRANSFORM transform;
+	int start_x, start_y;
+
+	al_store_state(&old_state, ALLEGRO_STATE_TRANSFORM | ALLEGRO_STATE_TARGET_BITMAP | ALLEGRO_STATE_BLENDER);
+	al_set_target_bitmap(pp->overlay);
+	al_identity_transform(&transform);
+	al_use_transform(&transform);
+	al_set_blender(ALLEGRO_ADD, ALLEGRO_ONE, ALLEGRO_ZERO);
+	al_clear_to_color(al_map_rgba_f(0.0, 0.0, 0.0, 0.5));
+	start_x = pp->offset_x + x * pp->scale - pp->canvas_x * pp->scale;
+	start_y = pp->offset_y + y * pp->scale - pp->canvas_y * pp->scale;
+	al_draw_filled_rectangle(start_x, start_y, start_x + width * pp->scale, start_y + height * pp->scale, al_map_rgba_f(0.0, 0.0, 0.0, 0.0));
 	al_restore_state(&old_state);
 }

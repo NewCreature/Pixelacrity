@@ -88,7 +88,9 @@ int pa_gui_map_proc(int msg, T3GUI_ELEMENT * d, int c)
 		{
 			if(cep->preview->bitmap)
 			{
+				pa_update_canvas_editor_preview_overlay(cep->preview, cep->view_x, cep->view_y, cep->view_width, cep->view_height);
 				al_draw_bitmap(cep->preview->bitmap, d->x, d->y, 0);
+				al_draw_bitmap(cep->preview->overlay, d->x, d->y, 0);
 			}
 //			render_map(cep, d->x, d->y, d->w, d->h);
 			break;

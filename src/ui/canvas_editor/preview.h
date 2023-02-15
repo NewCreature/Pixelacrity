@@ -8,6 +8,7 @@ typedef struct
 
   ALLEGRO_BITMAP * bitmap;
   ALLEGRO_BITMAP * background_bitmap;
+  ALLEGRO_BITMAP * overlay;
   int background_scale;
   int width, height;
   int canvas_x, canvas_y, canvas_width, canvas_height;
@@ -23,5 +24,6 @@ void pa_destroy_canvas_editor_preview(PA_CANVAS_EDITOR_PREVIEW * pp);
 
 void pa_resize_canvas_editor_preview(PA_CANVAS_EDITOR_PREVIEW * pp, int width, int height);
 void pa_update_canvas_editor_preview(PA_CANVAS_EDITOR_PREVIEW * pp, PA_CANVAS * cp, ALLEGRO_SHADER * shader);
+void pa_update_canvas_editor_preview_overlay(PA_CANVAS_EDITOR_PREVIEW * pp, int x, int y, int width, int height);
 
 #endif
