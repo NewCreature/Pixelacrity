@@ -4,6 +4,10 @@ Pixelacrity 0.4.7 Issues
 [ ]Look into undo rectangle on new layer leaving artifacts. This was happening
    on an Ubuntu 22 desktop.
 
+   [ ]Happened on Macbook Air as well. Created new layer, drew rectangle, then
+      performed undo. Random artifacting was left behind in the area the
+      rectangle was covering.
+
 [ ]Look into paste undo not working properly.
 
 [ ]Look into Paste Merged leaving artifacts on the merged image.
