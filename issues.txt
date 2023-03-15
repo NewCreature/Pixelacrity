@@ -1,6 +1,9 @@
 Pixelacrity 0.4.7 Issues
 ------------------------
 
+[ ]Copy floating selection dimensions to the clipboard and paste in that size.
+   This behaviour is what the user would most likely expect.
+
 [ ]Look into undo rectangle on new layer leaving artifacts. This was happening
    on an Ubuntu 22 desktop.
 
