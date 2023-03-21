@@ -1965,7 +1965,6 @@ int t3gui_list_proc(int msg, T3GUI_ELEMENT *d, int c)
 {
     int ret = D_O_K;
     assert(d);
-    int l;
 //    const char * right_text = NULL;
     int list_width = d->w;
     char * dp2 = d->dp2;
