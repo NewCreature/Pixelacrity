@@ -720,7 +720,7 @@ int t3gui_check_proc(int msg, T3GUI_ELEMENT *d, int c)
       return ret;
    }
 
-   return ret | t3gui_button_proc(msg, d, 0);
+   return ret | t3gui_button_proc(msg, d, c);
 }
 
 
@@ -973,7 +973,7 @@ int t3gui_slider_proc(int msg, T3GUI_ELEMENT *d, int c)
 
    hmar = hh/2;
    irange = (vert) ? d->h : d->w;
-   slmax = irange - hh - 1;
+   slmax = irange - hh;
    slratio = slmax / (d->d1);
    slpos = slratio * d->d2;
    slp = slpos;
@@ -1203,8 +1203,8 @@ int t3gui_slider_proc(int msg, T3GUI_ELEMENT *d, int c)
             mp = msx - d->x;
          if (mp < 0)
             mp = 0;
-         if (mp > irange-hh-1)
-            mp = irange-hh-1;
+         if (mp > irange-hh)
+            mp = irange-hh;
          slpos = mp;
          slmax = slpos / slratio;
          newpos = slmax;
@@ -1951,7 +1951,7 @@ static void set_selection(T3GUI_ELEMENT * d, int entry, int max)
     }
     else if(t3gui_get_key_state(ALLEGRO_KEY_LCTRL) || t3gui_get_key_state(ALLEGRO_KEY_RCTRL) || t3gui_get_key_state(ALLEGRO_KEY_COMMAND))
     {
-      dp2[entry] = 1;
+      dp2[entry] = !dp2[entry];
     }
     else
     {
@@ -1978,6 +1978,7 @@ int t3gui_list_proc(int msg, T3GUI_ELEMENT *d, int c)
     int y = d->y;
     bool multi;
     int element_size = al_get_font_line_height(font) + d->theme->state[0].top_margin + d->theme->state[0].bottom_margin;
+    int scroll_ticks;
 
     assert(func);
 
@@ -1988,6 +1989,11 @@ int t3gui_list_proc(int msg, T3GUI_ELEMENT *d, int c)
       {
         d->ed1 = nelem;
         d->dp2 = malloc(sizeof(char) * nelem);
+        dp2 = d->dp2;
+        if(d->d1 < nelem)
+        {
+            dp2[d->d1] = 1;
+        }
       }
       else
       {
@@ -2009,7 +2015,13 @@ int t3gui_list_proc(int msg, T3GUI_ELEMENT *d, int c)
       dp2 = d->dp2;
     }
 
+    d->ed2 = element_size;
     visible_elements = d->h / element_size;
+    scroll_ticks = nelem * element_size - d->h;
+    if(scroll_ticks > 0)
+    {
+        scroll_ticks += (d->h % element_size) ? element_size : 0;
+    }
 
     T3GUI_ELEMENT dd =
     {
@@ -2020,7 +2032,7 @@ int t3gui_list_proc(int msg, T3GUI_ELEMENT *d, int c)
         .h = d->h,
         .theme = d->theme,
         .flags = d->flags,
-        .d1 = nelem * element_size - (d->h - d->h % element_size),
+        .d1 = scroll_ticks,
         .d2 = d->d2 * element_size,
         .d4 = d->d4,
         .mousex = d->mousex,
@@ -2171,7 +2183,7 @@ int t3gui_list_proc(int msg, T3GUI_ELEMENT *d, int c)
                     fg = d->theme->state[T3GUI_ELEMENT_STATE_NORMAL].color[T3GUI_THEME_COLOR_EG];
                 }
                 al_set_clipping_rectangle(d->x, d->y, list_width, d->h);
-                if(((d->d1 == n) || (dp2 && dp2[n])) && d->flags & D_GOTFOCUS)
+                if(((!multi && d->d1 == n) || (multi && dp2 && dp2[n])) && d->flags & D_GOTFOCUS)
                 {
                     al_draw_filled_rectangle(d->x, y, d->x + d->w, y + al_get_font_line_height(font) + d->theme->state[0].top_margin + d->theme->state[0].bottom_margin, d->theme->state[T3GUI_ELEMENT_STATE_SELECTED].color[T3GUI_THEME_COLOR_BG]);
                     fg = d->theme->state[T3GUI_ELEMENT_STATE_SELECTED].color[T3GUI_THEME_COLOR_FG];
@@ -2224,8 +2236,8 @@ int t3gui_list_proc(int msg, T3GUI_ELEMENT *d, int c)
 
     if(msg != MSG_START)
     {
-        d->d2 = dd.d2 / element_size;
-        if(d->d2 >= nelem) d->d2 = nelem-1;
+        d->d2 = dd.d2 / element_size; // snap list to the nearest element
+        if(d->d2 + visible_elements > nelem) d->d2 = nelem - visible_elements;
         if(d->d2 < 0) d->d2 = 0;
         d->flags = dd.flags;
     }
