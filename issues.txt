@@ -1,6 +1,12 @@
 Pixelacrity 0.4.7 Issues
 ------------------------
 
+[ ]Look into clearing modifier key states on switch in/out.
+
+[ ]Make it possible to move a frame without floating it.
+
+[ ]Switch back to frame tool if unfloated selection came from a frame move.
+
 [ ]Copy, add layer, and paste pastes an empty floating selection.
 
 [ ]Copy floating selection dimensions to the clipboard and paste in that size.
