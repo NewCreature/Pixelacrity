@@ -1,6 +1,8 @@
 Pixelacrity 0.4.7 Issues
 ------------------------
 
+[ ]Copy, add layer, and paste pastes an empty floating selection.
+
 [ ]Copy floating selection dimensions to the clipboard and paste in that size.
    This behaviour is what the user would most likely expect.
 
