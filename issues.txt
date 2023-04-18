@@ -3,6 +3,11 @@ Pixelacrity 0.4.7 Issues
 
 [ ]Look into clearing modifier key states on switch in/out.
 
+   [ ]Allegro had an issue with bad switch in/out events on Linux under certain
+      circumstances. We implemented a workaround to deal with the issue. This
+      workaround may not be necessary any more due to a fix that was put into
+      Allegro. We need to investigate this.
+
 [ ]Make it possible to move a frame without floating it.
 
 [ ]Switch back to frame tool if unfloated selection came from a frame move.
