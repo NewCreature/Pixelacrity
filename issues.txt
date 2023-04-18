@@ -145,10 +145,6 @@ Allegro Issues
    [ ]This is an Allegro bug. Will look into getting them to fix it on their
       end.
 
-[ ]Crash when resizing on M1 Macbook Air.
-
-   [ ]UNSUPPORTED (log once): setPrimitiveRestartEnabled:index: unsupported!
-
 [ ]Investigate why pixel x-coordinate is offset by -1.
 
    [ ]Mouse coordinates seem to be off when the window size requested by
@@ -1206,3 +1202,7 @@ Closed Issues
    [X]Fix map navigation.
 
    [X]Indicate canvas editor viewport on map.
+
+[X]Crash when resizing on M1 Macbook Air.
+
+   [X]UNSUPPORTED (log once): setPrimitiveRestartEnabled:index: unsupported!
