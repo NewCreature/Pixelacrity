@@ -175,6 +175,10 @@ void pa_handle_unfloat_canvas_editor_selection(PA_CANVAS_EDITOR * cep, PA_BOX * 
 		}
 	}
 	pa_free_selection(cep);
+	if(cep->selection.linked_frame >= 0)
+	{
+		cep->current_tool = PA_TOOL_FRAME;
+	}
 	cep->selection.linked_frame = -1;
 	if(!nomod)
 	{
