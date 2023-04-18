@@ -1,6 +1,10 @@
 Pixelacrity 0.4.7 Issues
 ------------------------
 
+[ ]Switching back to selection tool after unfloating a frame by clicking on the
+   canvas causes a new selection to be created startig from the point the user
+   clicked to unfloat the frame.
+
 [ ]Look into clearing modifier key states on switch in/out.
 
    [ ]Allegro had an issue with bad switch in/out events on Linux under certain
@@ -9,8 +13,6 @@ Pixelacrity 0.4.7 Issues
       Allegro. We need to investigate this.
 
 [ ]Make it possible to move a frame without floating it.
-
-[ ]Switch back to frame tool if unfloated selection came from a frame move.
 
 [ ]Copy, add layer, and paste pastes an empty floating selection.
 
@@ -1211,3 +1213,5 @@ Closed Issues
 [X]Crash when resizing on M1 Macbook Air.
 
    [X]UNSUPPORTED (log once): setPrimitiveRestartEnabled:index: unsupported!
+
+[X]Switch back to frame tool if unfloated selection came from a frame move.
