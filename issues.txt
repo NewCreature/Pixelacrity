@@ -16,8 +16,6 @@ Pixelacrity 0.4.7 Issues
       workaround may not be necessary any more due to a fix that was put into
       Allegro. We need to investigate this.
 
-[ ]Make it possible to move a frame without floating it.
-
 [ ]Copy, add layer, and paste pastes an empty floating selection.
 
 [ ]Copy floating selection dimensions to the clipboard and paste in that size.
@@ -1219,3 +1217,5 @@ Closed Issues
    [X]UNSUPPORTED (log once): setPrimitiveRestartEnabled:index: unsupported!
 
 [X]Switch back to frame tool if unfloated selection came from a frame move.
+
+[X]Make it possible to move a frame without floating it.
