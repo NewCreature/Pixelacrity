@@ -1,4 +1,4 @@
-Pixelacrity 0.4.7 Issues
+Pixelacrity 0.4.8 Issues
 ------------------------
 
 [ ]Loading a PNG, editing and selecting resave saves a 0 byte PNG file.
