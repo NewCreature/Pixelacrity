@@ -385,6 +385,8 @@ int pa_menu_file_save_as(int id, void * data)
 						pa_menu_file_save(id, data);
 						al_set_path_filename(path, "");
 						al_set_config_value(t3f_config, "App Data", "last_canvas_path", al_path_cstr(path, '/'));
+						update_recent_list(app->canvas_editor->canvas_path);
+						pa_update_recent_menu(app->ui);
 						al_destroy_path(path);
 					}
 				}
