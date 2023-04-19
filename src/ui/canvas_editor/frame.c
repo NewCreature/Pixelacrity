@@ -83,7 +83,7 @@ void pa_update_hover_frame(PA_CANVAS_EDITOR * cep, T3GUI_ELEMENT * d)
 		}
 		if(!cep->selection.bitmap_stack && !t3f_key[ALLEGRO_KEY_LCTRL] && !t3f_key[ALLEGRO_KEY_RCTRL] && !t3f_key[ALLEGRO_KEY_COMMAND] && (cep->canvas->frame[cep->hover_frame]->box.start_x != old_box.start_x || cep->canvas->frame[cep->hover_frame]->box.start_y != old_box.start_y))
 		{
-			if(cep->canvas->frame[cep->hover_frame]->box.state == PA_BOX_STATE_MOVING)
+			if(cep->canvas->frame[cep->hover_frame]->box.state == PA_BOX_STATE_MOVING && (t3f_key[ALLEGRO_KEY_ALT] || t3f_key[ALLEGRO_KEY_ALTGR]))
 			{
 				memcpy(&cep->canvas->frame[cep->hover_frame]->box, &old_box, sizeof(PA_BOX));
 				pa_float_frame(cep, cep->hover_frame);
