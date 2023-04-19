@@ -1,6 +1,8 @@
 Pixelacrity 0.4.7 Issues
 ------------------------
 
+[ ]Add newly saved canvas to top of recent list.
+
 [ ]Loading a PNG, editing and selecting resave saves a 0 byte PNG file.
 
    [ ]Resaving fails when the user draws outside the frame of the image.
@@ -121,10 +123,6 @@ Pixelacrity 0.4.7 Issues
       will look correct.
 
 [ ]Implement solid/outline and replace/composite tool mode buttons.
-
-[ ]Add recent documents option to File menu.
-
-[ ]Hold shift to make hover color a composite of what's under the cursor.
 
 [ ]Add tile view. We'll repeat what's in the current frame across the entire
    screen when this view is enabled.
@@ -1206,3 +1204,7 @@ Closed Issues
 [X]Switch back to frame tool if unfloated selection came from a frame move.
 
 [X]Make it possible to move a frame without floating it.
+
+[X]Add recent documents option to File menu.
+
+[X]Hold shift to make hover color a composite of what's under the cursor.
