@@ -46,19 +46,6 @@ Pixelacrity 0.4.7 Issues
 
 [ ]Add ability to copy a frame directly into the clipboard.
 
-[ ]Fix bug in slider_proc() which causes it to not scroll all the way to the
-   bottom in certain circumstances.
-
-   [ ]Rewrite logic to handle slider position calculations outside of the
-      drawing routine.
-
-   [ ]Handle edge case where slider handle is slightly too large to allow the
-      scroll bar to go all the way to the bottom.
-
-      We might click it into the last possible position if it tries to go over.
-      Otherwise, we might make the scroll bar slightly smaller if it can't fit
-      into the last position.
-
 [ ]See if we can use the image file selector to get image previews.
 
 [ ]Add about screen.
