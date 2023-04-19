@@ -7,10 +7,6 @@ Pixelacrity 0.4.7 Issues
 
    [ ]Resaving fails when the user draws outside the frame of the image.
 
-[ ]Switching back to selection tool after unfloating a frame by clicking on the
-   canvas causes a new selection to be created startig from the point the user
-   clicked to unfloat the frame.
-
 [ ]Look into clearing modifier key states on switch in/out.
 
    [ ]Allegro had an issue with bad switch in/out events on Linux under certain
@@ -1208,3 +1204,7 @@ Closed Issues
 [X]Add recent documents option to File menu.
 
 [X]Hold shift to make hover color a composite of what's under the cursor.
+
+[X]Switching back to selection tool after unfloating a frame by clicking on the
+   canvas causes a new selection to be created startig from the point the user
+   clicked to unfloat the frame.
