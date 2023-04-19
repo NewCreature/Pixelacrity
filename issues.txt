@@ -1,6 +1,8 @@
 Pixelacrity 0.4.7 Issues
 ------------------------
 
+[ ]Loading a PNG, editing and selecting resave saves a 0 byte PNG file.
+
 [ ]Switching back to selection tool after unfloating a frame by clicking on the
    canvas causes a new selection to be created startig from the point the user
    clicked to unfloat the frame.
