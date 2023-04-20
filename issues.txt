@@ -5,6 +5,9 @@ Pixelacrity 0.4.8 Issues
 
    [ ]Resaving fails when the user draws outside the frame of the image.
 
+      [ ]Only fails if you draw outside the frame and the result is a blank
+         image.
+
 [ ]Look into clearing modifier key states on switch in/out.
 
    [ ]Allegro had an issue with bad switch in/out events on Linux under certain
