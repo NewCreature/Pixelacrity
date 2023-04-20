@@ -1,12 +1,17 @@
 Pixelacrity 0.4.8 Issues
 ------------------------
 
+[ ]Don't use hard-coded value for canvas tile size.
+
 [ ]Loading a PNG, editing and selecting resave saves a 0 byte PNG file.
 
    [ ]Resaving fails when the user draws outside the frame of the image.
 
       [ ]Only fails if you draw outside the frame and the result is a blank
          image.
+
+         [ ]Recalculating the canvas dimensions is failing somehow. It's
+            finding colors with alpha that aren't supposed to be there.
 
 [ ]Look into clearing modifier key states on switch in/out.
 
