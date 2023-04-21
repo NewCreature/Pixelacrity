@@ -428,13 +428,22 @@ int pa_menu_file_resave_image(int id, void * data)
 {
 	APP_INSTANCE * app = (APP_INSTANCE *)data;
 	int x, y, w, h;
+	bool save_frame = false;
 
 	if(pa_resave_allowed(app->canvas_editor))
 	{
 		pa_get_canvas_dimensions(app->canvas, &x, &y, &w, &h, 0, true);
 		if(app->canvas->frame_max == 1)
 		{
-			if(x >= app->canvas->frame[0]->box.start_x && y >= app->canvas->frame[0]->box.start_y && x + w <= app->canvas->frame[0]->box.start_x + app->canvas->frame[0]->box.width && y + h <= app->canvas->frame[0]->box.start_y + app->canvas->frame[0]->box.height)
+			if(w == 0 || h == 0)
+			{
+				save_frame = true;
+			}
+			else if(x >= app->canvas->frame[0]->box.start_x && y >= app->canvas->frame[0]->box.start_y && x + w <= app->canvas->frame[0]->box.start_x + app->canvas->frame[0]->box.width && y + h <= app->canvas->frame[0]->box.start_y + app->canvas->frame[0]->box.height)
+			{
+				save_frame = true;
+			}
+			if(save_frame)
 			{
 				x = app->canvas->frame[0]->box.start_x;
 				y = app->canvas->frame[0]->box.start_y;
