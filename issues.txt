@@ -1,6 +1,9 @@
 Pixelacrity 0.4.8 Issues
 ------------------------
 
+[ ]Export filename should only show when the frame tool is selected. Only show
+   the filename, not the full path.
+
 [ ]Don't use hard-coded value for canvas tile size.
 
 [ ]Look into clearing modifier key states on switch in/out.
