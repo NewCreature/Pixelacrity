@@ -1,6 +1,10 @@
 Pixelacrity 0.4.8 Issues
 ------------------------
 
+[ ]'Save As' default filename seems incorrect.
+
+[ ]'Save As' should update the window title with the new name while saving.
+
 [ ]Export filename should only show when the frame tool is selected. Only show
    the filename, not the full path.
 
